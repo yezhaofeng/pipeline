@@ -1,9 +1,9 @@
-package com.baidu.langshiquan.module.user.dao;
+package com.jlu.module.user.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.baidu.langshiquan.module.user.module.User;
-import com.baidu.langshiquan.common.db.AbstractBaseDao;
+import com.jlu.module.user.module.User;
+import com.jlu.common.db.AbstractBaseDao;
 
 /**
  * Created by langshiquan on 17/10/7.

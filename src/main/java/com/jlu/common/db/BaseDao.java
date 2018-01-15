@@ -1,4 +1,4 @@
-package com.baidu.langshiquan.common.db;
+package com.jlu.common.db;
 
 import java.io.Serializable;
 

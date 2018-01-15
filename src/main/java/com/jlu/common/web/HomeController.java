@@ -1,4 +1,4 @@
-package com.baidu.langshiquan.common.web;
+package com.jlu.common.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -48,7 +48,7 @@
         </property>
         <property name="packagesToScan">
             <list>
-                <value>com.baidu.langshiquan.module.user.module</value>
+                <value>com.jlu</value>
             </list>
         </property>
     </bean>

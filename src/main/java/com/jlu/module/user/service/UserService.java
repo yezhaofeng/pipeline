@@ -1,11 +1,11 @@
-package com.baidu.langshiquan.module.user.service;
+package com.jlu.module.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baidu.langshiquan.module.user.dao.UserDao;
-import com.baidu.langshiquan.module.user.module.User;
+import com.jlu.module.user.dao.UserDao;
+import com.jlu.module.user.module.User;
 
 /**
  * Created by langshiquan on 17/10/7.

@@ -1,4 +1,4 @@
-package com.baidu.langshiquan.module.user.module;
+package com.jlu.module.user.module;
 
 import java.util.Date;
 
