@@ -58,6 +58,9 @@ public class PipelineConfServiceImpl implements PipelineConfService {
             return null;
         }
         PipelineConf pipelineConf = pipelineConfDao.findById(pipelineConfId);
+        if(pipelineConf == null){
+            return null;
+        }
         BeanUtils.copyProperties(pipelineConf, pipelineConfBean);
         List<JobConfBean> jobConfs = jobConfService.getJobConfs(pipelineConfId);
         pipelineConfBean.setJobConfs(jobConfs);
