@@ -13,43 +13,31 @@ import javax.persistence.Table;
  * 代码提交信息
  */
 @Entity
-@Table(name = "CIHOME_GITHUB_COMMIT")
 public class GitHubCommit {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
-    @Column(name = "PIPELINE_BUILD_ID")
     private int pipelineBuildId;
 
-    @Column(name = "COMMITTER")
     private String committer;
 
-    @Column(name = "COMMITTER_EMAIL")
     private String committerEmail;
 
-    @Column(name = "COMMIT_MESSAGE")
     private String commits;
 
-    @Column(name = "COMMIT_TIME")
     private String commitTime;
 
-    @Column(name = "ADD_FILES")
     private String addedFiles;
 
-    @Column(name = "REMOVE_FILES")
     private String removedFiles;
 
-    @Column(name = "MODIFY_FILES")
     private String  modifiedFiles;
 
-    @Column(name = "VERSION")
     private String revision;
 
-    @Column(name = "COMMIT_URL")
     private String commitUrl;
 
     public GitHubCommit(int pipelineBuildId, String committer, String committerEmail, String commits, String commitTime,

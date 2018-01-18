@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jlu.user.model.CiHomeUser;
+import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
@@ -27,7 +27,7 @@ public class UserController {
     @RequestMapping(value = "/judgeUsernameRepeat", method = RequestMethod.GET)
     @ResponseBody
     public boolean judgeUsernameRepeat(String username) {
-        CiHomeUser ciHomeUser = userService.getUserByName(username);
-        return ciHomeUser == null ? false : true;
+        GithubUser githubUser = userService.getUserByName(username);
+        return githubUser == null ? false : true;
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.jlu.common.cookies.CookiesUtiles;
-import com.jlu.user.model.CiHomeUser;
+import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
@@ -36,7 +36,7 @@ public class LoginController {
         result.put(LOGIN_STATUS, "FAIL");
         result.put(MESSAGE, "请重新输入用户名和密码！");
         if (username != null && password != null) {
-            CiHomeUser user = userService.getUserByName(username);
+            GithubUser user = userService.getUserByName(username);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
                     result.put(LOGIN_STATUS, "SUCC");

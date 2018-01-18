@@ -2,7 +2,7 @@ package com.jlu.github.service;
 
 import java.util.List;
 
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.github.model.Module;
 
 /**
  * Created by niuwanpeng on 17/3/10.
@@ -11,21 +11,21 @@ public interface IModuleService {
 
     /**
      *  保存模块信息
-     * @param ciHomeModule
+     * @param module
      */
-    void saveModule(CiHomeModule ciHomeModule);
+    void saveModule(Module module);
 
     /**
      * 删除模块
-     * @param ciHomeModule
+     * @param module
      */
-    void delete(CiHomeModule ciHomeModule);
+    void delete(Module module);
 
     /**
      * 批量保存模块信息
      * @param list
      */
-    void saveModules(List<CiHomeModule> list);
+    void saveModules(List<Module> list);
 
     /**
      * 搜索模块
@@ -34,14 +34,14 @@ public interface IModuleService {
      * @param limit
      * @return
      */
-    List<CiHomeModule> getSuggestProductModules(String q, String username, int limit);
+    List<Module> getSuggestProductModules(String q, String username, int limit);
 
     /**
      * 通过用户名获得该名下所有模块信息
      * @param username
      * @return
      */
-    List<CiHomeModule> getModulesByUsername(String username);
+    List<Module> getModulesByUsername(String username);
 
     /**
      * 通过用户名和模块名获得模块信息
@@ -49,5 +49,5 @@ public interface IModuleService {
      * @param module
      * @return
      */
-    CiHomeModule getModuleByUserAndModule(String username, String module);
+    Module getModuleByUserAndModule(String username, String module);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.user.dao.IUserDao;
-import com.jlu.user.model.CiHomeUser;
+import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
@@ -19,8 +19,8 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     IUserDao userDao;
 
-    public void saveUser(CiHomeUser ciHomeUser) {
-        userDao.save(ciHomeUser);
+    public void saveUser(GithubUser githubUser) {
+        userDao.save(githubUser);
     }
 
     /**
@@ -28,10 +28,10 @@ public class UserServiceImpl implements IUserService {
      * @param username
      * @return
      */
-    public CiHomeUser getUserByName(String username) {
+    public GithubUser getUserByName(String username) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("username", username);
-        List<CiHomeUser> users = userDao.findByProperties(conditionAndSet);
+        List<GithubUser> users = userDao.findByProperties(conditionAndSet);
         if (users != null && users.size() != 0) {
             return users.get(0);
         }

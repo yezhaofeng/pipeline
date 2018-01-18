@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.db.bean.PageBean;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.github.dao.IModuleDao;
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.github.model.Module;
 import com.jlu.github.service.IModuleService;
 
 /**
@@ -22,19 +22,19 @@ public class ModuleServiceImpl implements IModuleService{
 
     /**
      *  保存模块信息
-     * @param ciHomeModule
+     * @param module
      */
     @Override
-    public void saveModule(CiHomeModule ciHomeModule) {
-        moduleDao.save(ciHomeModule);
+    public void saveModule(Module module) {
+        moduleDao.save(module);
     }
 
     /**
      * 删除模块
-     * @param ciHomeModule
+     * @param module
      */
-    public void delete(CiHomeModule ciHomeModule) {
-        moduleDao.delete(ciHomeModule);
+    public void delete(Module module) {
+        moduleDao.delete(module);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ModuleServiceImpl implements IModuleService{
      * @param list
      */
     @Override
-    public void saveModules(List<CiHomeModule> list) {
+    public void saveModules(List<Module> list) {
         moduleDao.saveOrUpdateAll(list);
     }
 
@@ -54,7 +54,7 @@ public class ModuleServiceImpl implements IModuleService{
      * @return
      */
     @Override
-    public List<CiHomeModule> getSuggestProductModules(String q, String username, int limit) {
+    public List<Module> getSuggestProductModules(String q, String username, int limit) {
         PageBean page = new PageBean(limit);
         return moduleDao.getSuggestProductModules(q, username, page);
     }
@@ -65,7 +65,7 @@ public class ModuleServiceImpl implements IModuleService{
      * @return
      */
     @Override
-    public List<CiHomeModule> getModulesByUsername(String username) {
+    public List<Module> getModulesByUsername(String username) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("username", username);
         return moduleDao.findByProperties(conditionAndSet);
@@ -78,11 +78,11 @@ public class ModuleServiceImpl implements IModuleService{
      * @return
      */
     @Override
-    public CiHomeModule getModuleByUserAndModule(String username, String module) {
+    public Module getModuleByUserAndModule(String username, String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("username", username);
         conditionAndSet.put("module", module);
-        List<CiHomeModule> modules = moduleDao.findByProperties(conditionAndSet);
+        List<Module> modules = moduleDao.findByProperties(conditionAndSet);
         if (modules != null && modules.size() != 0) {
             return modules.get(0);
         }

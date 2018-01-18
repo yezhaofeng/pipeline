@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.github.model.Module;
 import com.jlu.github.service.IModuleService;
 
 /**
@@ -27,20 +27,20 @@ public class ModuleController {
 
     @RequestMapping("/query")
     @ResponseBody
-    public List<CiHomeModule> getSuggetsModules(@RequestParam(value = "q", required = false) String query,
-                                                @RequestParam(value = "username") String username,
-                                                @RequestParam Integer limit) {
-        List<CiHomeModule> modules = new ArrayList<CiHomeModule>();
+    public List<Module> getSuggetsModules(@RequestParam(value = "q", required = false) String query,
+                                          @RequestParam(value = "username") String username,
+                                          @RequestParam Integer limit) {
+        List<Module> modules = new ArrayList<Module>();
         if (StringUtils.isNotBlank(query)) {
             String pathStr = new String(query);
             modules = moduleService.getSuggestProductModules(pathStr, username, limit);
         }
         if (null == modules) {
-            modules = new ArrayList<CiHomeModule>();
+            modules = new ArrayList<Module>();
         }
-        Collections.sort(modules, new Comparator<CiHomeModule>() {
+        Collections.sort(modules, new Comparator<Module>() {
             @Override
-            public int compare(CiHomeModule o1, CiHomeModule o2) {
+            public int compare(Module o1, Module o2) {
                 return o1.getModule().compareTo(o2.getModule());
             }
         });

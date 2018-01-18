@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
-import com.jlu.branch.model.CiHomeBranch;
+import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 import com.jlu.common.utils.DateUtil;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.github.model.Module;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IModuleService;
 import com.jlu.pipeline.model.PipelineBuild;
@@ -54,15 +54,15 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
             repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
                     new TypeToken<HookRepositoryBean>() {
                     }.getType());
-            CiHomeModule ciHomeModule = moduleService.getModuleByUserAndModule(repositoryBean.getOwner().getName(),
+            Module module = moduleService.getModuleByUserAndModule(repositoryBean.getOwner().getName(),
                     repositoryBean.getName());
-            if (ciHomeModule == null) {
+            if (module == null) {
                 LOGGER.info("This module is not exist and ignore compile!user:{}, module:{}",
                         repositoryBean.getOwner().getName(), repositoryBean.getName());
             }
-            boolean checkResult = checkNewBranch(hookMessage, branchName, ciHomeModule);
+            boolean checkResult = checkNewBranch(hookMessage, branchName, module);
             if (!checkResult) {
-                PipelineBuild pipelineBuild = initPipelineBuild(ciHomeModule, branchName, branchType);
+                PipelineBuild pipelineBuild = initPipelineBuild(module, branchName, branchType);
                 commitBean = getCommitByHook(hookMessage, pipelineBuild);
                 LOGGER.info("解析Json数据成功！commits:{}", commitBean.toString());
             } else {
@@ -104,8 +104,8 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
      *
      * @return
      */
-    private PipelineBuild initPipelineBuild(CiHomeModule ciHomeModule, String branchName, BranchType branchType) {
-        CiHomeBranch ciHomeBranch = branchService.getBranchByModule(ciHomeModule.getId(), branchName);
+    private PipelineBuild initPipelineBuild(Module module, String branchName, BranchType branchType) {
+        GithubBranch githubBranch = branchService.getBranchByModule(module.getId(), branchName);
         PipelineBuild pipelineBuild = new PipelineBuild();
         // TODO save
         return pipelineBuild;
@@ -116,18 +116,18 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
      *
      * @param hookMessage
      */
-    private boolean checkNewBranch(JSONObject hookMessage, String branchName, CiHomeModule ciHomeModule) {
+    private boolean checkNewBranch(JSONObject hookMessage, String branchName, Module module) {
         boolean result = false;
         try {
             String status = hookMessage.getString("created");
             if (status.equals("true")) {
-                CiHomeBranch ciHomeBranch = new CiHomeBranch();
-                ciHomeBranch.setBranchType(BranchType.BRANCH);
-                ciHomeBranch.setBranchName(branchName);
-                ciHomeBranch.setCreateTime(DateUtil.getNowDateFormat());
-                ciHomeBranch.setModuleId(ciHomeModule.getId());
-                ciHomeBranch.setVersion(branchService.getLastThreeVersion(ciHomeModule));
-                branchService.saveBranch(ciHomeBranch);
+                GithubBranch githubBranch = new GithubBranch();
+                githubBranch.setBranchType(BranchType.BRANCH);
+                githubBranch.setBranchName(branchName);
+                githubBranch.setCreateTime(DateUtil.getNowDateFormat());
+                githubBranch.setModuleId(module.getId());
+                githubBranch.setVersion(branchService.getLastThreeVersion(module));
+                branchService.saveBranch(githubBranch);
                 LOGGER.info("Create branch:{} is successful!", branchName);
                 result = true;
             }

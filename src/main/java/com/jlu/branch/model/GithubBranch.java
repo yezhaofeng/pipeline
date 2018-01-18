@@ -15,33 +15,25 @@ import com.jlu.branch.bean.BranchType;
  * 分支实体类, 与用户名关联
  */
 @Entity
-@Table(name = "CIHOME_BRANCH")
-public class CiHomeBranch {
+public class GithubBranch {
 
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "MODULE_ID")
     private int moduleId;
 
-    @Column(name = "BRANCH_NAME")
     private String branchName;
 
-    @Column(name = "BRANCH_TYPE")
     private BranchType branchType;
 
-    @Column(name = "CREATE_TIME")
     private String createTime;
 
-    @Column(name = "VERSION")
     private String version;
 
-    @Column(name = "REMARKS")
     private String remarks;
 
-    public CiHomeBranch(int moduleId, String branchName, BranchType branchType, String version, String createTime) {
+    public GithubBranch(int moduleId, String branchName, BranchType branchType, String version, String createTime) {
         this.moduleId = moduleId;
         this.branchName = branchName;
         this.branchType = branchType;
@@ -49,7 +41,7 @@ public class CiHomeBranch {
         this.createTime = createTime;
     }
 
-    public CiHomeBranch() {}
+    public GithubBranch() {}
 
     public int getId() {
         return id;

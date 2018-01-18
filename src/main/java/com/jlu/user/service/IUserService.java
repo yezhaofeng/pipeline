@@ -1,18 +1,18 @@
 package com.jlu.user.service;
 
-import com.jlu.user.model.CiHomeUser;
+import com.jlu.user.model.GithubUser;
 
 /**
  * Created by niuwanpeng on 17/3/10.
  */
 public interface IUserService {
 
-    void saveUser(CiHomeUser ciHomeUser);
+    void saveUser(GithubUser githubUser);
 
     /**
      * 通过用户民获得密码
      * @param username
      * @return
      */
-    CiHomeUser getUserByName(String username);
+    GithubUser getUserByName(String username);
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -36,7 +37,6 @@ import com.jlu.common.db.sqlcondition.LessThanCondition;
 import com.jlu.common.db.sqlcondition.NotEqualCondition;
 import com.jlu.common.db.sqlcondition.NotInCondition;
 import com.jlu.common.db.sqlcondition.OrderCondition;
-import com.sun.deploy.util.StringUtils;
 
 /**
  * Created by Wonpang New on 2016/9/6.

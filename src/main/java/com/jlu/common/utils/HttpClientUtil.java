@@ -446,7 +446,7 @@ public class HttpClientUtil {
             return headers;
         }
         /**
-         * @param heads the heads to set
+         * @param headers the heads to set
          */
         public void setHeaders(Map<String, String> headers) {
             this.headers = headers;

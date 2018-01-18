@@ -14,7 +14,6 @@ public class HomeController {
     private Logger logger = LoggerFactory.getLogger(HomeController.class);
     @RequestMapping("")
     public String home() {
-        logger.info("come a user");
         return "home";
     }
 }

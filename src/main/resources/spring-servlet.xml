@@ -40,7 +40,7 @@
         <property name="order" value="1"/>
         <property name="defaultViews">
             <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"></bean>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>
             </list>
         </property>
     </bean>

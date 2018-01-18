@@ -2,8 +2,8 @@ package com.jlu.branch.service;
 
 import java.util.List;
 
-import com.jlu.branch.model.CiHomeBranch;
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.branch.model.GithubBranch;
+import com.jlu.github.model.Module;
 
 /**
  * Created by niuwanpeng on 17/3/10.
@@ -12,22 +12,22 @@ public interface IBranchService {
 
     /**
      *  保存模块信息
-     * @param ciHomeBranch
+     * @param githubBranch
      */
-    void saveBranch(CiHomeBranch ciHomeBranch);
+    void saveBranch(GithubBranch githubBranch);
 
     /**
      * 批量保存模块信息
-     * @param ciHomeBranches
+     * @param githubBranches
      */
-    void saveBranches(List<CiHomeBranch> ciHomeBranches);
+    void saveBranches(List<GithubBranch> githubBranches);
 
     /**
      * 根据模块数据获得最新的三位版本号＋1
-     * @param ciHomeModule
+     * @param module
      * @return
      */
-    String getLastThreeVersion(CiHomeModule ciHomeModule);
+    String getLastThreeVersion(Module module);
 
     /**
      * 获得分支信息
@@ -35,14 +35,14 @@ public interface IBranchService {
      * @param branchName
      * @return
      */
-    CiHomeBranch getBranchByModule(int moduleId, String branchName);
+    GithubBranch getBranchByModule(int moduleId, String branchName);
 
     /**
      * 获得branchId之前的10条记录
-     * @param ciHomeModule
+     * @param module
      * @return
      */
-    List<CiHomeBranch> getBranches(CiHomeModule ciHomeModule, int branchId, int limit);
+    List<GithubBranch> getBranches(Module module, int branchId, int limit);
 
     /**
      * 获得分支名集合

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.PipelineConfDao;
@@ -26,6 +27,7 @@ public class PipelineConfServiceImpl implements PipelineConfService {
     @Autowired
     private JobConfService jobConfService;
 
+    @Transactional
     @Override
     public void processPipeline(PipelineConfBean pipelineConfBean, String userName) {
         PipelineConf pipelineConf = null;

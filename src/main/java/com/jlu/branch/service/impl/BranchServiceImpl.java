@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.dao.IBranchDao;
-import com.jlu.branch.model.CiHomeBranch;
+import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.db.sqlcondition.DescOrder;
 import com.jlu.common.db.sqlcondition.LessThanCondition;
 import com.jlu.common.db.sqlcondition.OrderCondition;
-import com.jlu.github.model.CiHomeModule;
+import com.jlu.github.model.Module;
 import com.jlu.github.service.IModuleService;
 
 /**
@@ -31,34 +31,34 @@ public class BranchServiceImpl implements IBranchService {
 
     /**
      *  保存模块信息
-     * @param ciHomeBranch
+     * @param githubBranch
      */
     @Override
-    public void saveBranch(CiHomeBranch ciHomeBranch) {
-        branchDao.save(ciHomeBranch);
+    public void saveBranch(GithubBranch githubBranch) {
+        branchDao.save(githubBranch);
     }
 
     /**
      * 批量保存模块信息
-     * @param ciHomeBranches
+     * @param githubBranches
      */
     @Override
-    public void saveBranches(List<CiHomeBranch> ciHomeBranches) {
-        branchDao.saveOrUpdateAll(ciHomeBranches);
+    public void saveBranches(List<GithubBranch> githubBranches) {
+        branchDao.saveOrUpdateAll(githubBranches);
     }
 
     /**
      * 根据模块数据获得最新的三位版本号＋1
-     * @param ciHomeModule
+     * @param module
      * @return
      */
     @Override
-    public String getLastThreeVersion(CiHomeModule ciHomeModule) {
+    public String getLastThreeVersion(Module module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("moduleId", ciHomeModule.getId());
+        conditionAndSet.put("moduleId", module.getId());
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("id"));
-        List<CiHomeBranch> branches = branchDao.findHeadByProperties(conditionAndSet, orders, 0, 1);
+        List<GithubBranch> branches = branchDao.findHeadByProperties(conditionAndSet, orders, 0, 1);
         if (branches != null && branches.size() != 0) {
             String threeVersion = branches.get(0).getVersion();
             String[] numbers = threeVersion.split("\\.");
@@ -75,31 +75,32 @@ public class BranchServiceImpl implements IBranchService {
      * @return
      */
     @Override
-    public CiHomeBranch getBranchByModule(int moduleId, String branchName) {
+    public GithubBranch getBranchByModule(int moduleId, String branchName) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("moduleId", moduleId);
         conditionAndSet.put("branchName", branchName);
-        List<CiHomeBranch> ciHomeBranches = branchDao.findByProperties(conditionAndSet);
-        return ciHomeBranches != null && ciHomeBranches.size() != 0 ? ciHomeBranches.get(0) : null;
+        List<GithubBranch> githubBranches = branchDao.findByProperties(conditionAndSet);
+        return githubBranches != null && githubBranches.size() != 0 ? githubBranches.get(0) : null;
     }
 
     /**
      * 获得branchId之前的10条记录
-     * @param ciHomeModule
+     * @param module
      * @return
      */
     @Override
-    public List<CiHomeBranch> getBranches(CiHomeModule ciHomeModule, int branchId, int limit) {
+    public List<GithubBranch> getBranches(Module module, int branchId, int limit) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("moduleId", ciHomeModule.getId());
+        conditionAndSet.put("moduleId", module.getId());
         conditionAndSet.put("branchType", BranchType.BRANCH);
         if (branchId != 0) {
             conditionAndSet.addCompareCondition(new LessThanCondition("id", branchId));
         }
         List<OrderCondition> orderConditions = new ArrayList<>();
         orderConditions.add(new DescOrder("id"));
-        List<CiHomeBranch> ciHomeBranches = branchDao.findHeadByProperties(conditionAndSet, orderConditions, branchId, limit);
-        return ciHomeBranches != null && ciHomeBranches.size() != 0 ? ciHomeBranches : new ArrayList<CiHomeBranch>();
+        List<GithubBranch>
+                githubBranches = branchDao.findHeadByProperties(conditionAndSet, orderConditions, branchId, limit);
+        return githubBranches != null && githubBranches.size() != 0 ? githubBranches : new ArrayList<GithubBranch>();
     }
 
     /**
@@ -110,14 +111,14 @@ public class BranchServiceImpl implements IBranchService {
      */
     @Override
     public List<String> getBranchesByModule(String username, String module) {
-        CiHomeModule ciHomeModule = moduleService.getModuleByUserAndModule(username, module);
-        List<CiHomeBranch> ciHomeBranches = new ArrayList<>();
+        Module ciHomeModule = moduleService.getModuleByUserAndModule(username, module);
+        List<GithubBranch> githubBranches = new ArrayList<>();
         if (ciHomeModule != null) {
-            ciHomeBranches = getBranches(ciHomeModule, 0, 50);
+            githubBranches = getBranches(ciHomeModule, 0, 50);
         }
         List<String> branchs = new ArrayList<>();
-        for (CiHomeBranch ciHomeBranch : ciHomeBranches) {
-            branchs.add(ciHomeBranch.getBranchName());
+        for (GithubBranch githubBranch : githubBranches) {
+            branchs.add(githubBranch.getBranchName());
         }
         return branchs;
     }
