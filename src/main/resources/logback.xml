@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="/Users/langshiquan/logs/pipe"/>
+    <property name="logStoreDirectory" value="D:\\logs"/>
 
     <!-- 日志文件  appender定义 -->
 
@@ -42,6 +42,11 @@
             <Pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</Pattern>
         </encoder>
     </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %C{0}: %msg%n</Pattern>
+        </layout>
+    </appender>
 
     <appender name="ciHomeAccessAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -68,6 +73,7 @@
         <level value="INFO"/>
         <appender-ref ref="ciHomeAppender"/>
         <appender-ref ref="ciHomeErrorAppender"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="accseeLog" additivity="false">

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,11 @@ public class JobConfServiceImpl implements JobConfService {
             jobConf.setId(jobConfId);
         }
 
-        Map<String, String> parameterMap = jobConfBean.getParameterMap();
+        Map<String, Object> parameterMap = jobConfBean.getParameterMap();
         String params = JSON.toJSONString(parameterMap);
+        if (StringUtils.isBlank(params)) {
+            params = JobConf.DEFAULT_PARAMS;
+        }
         jobConf.setParams(params);
         jobConf.setPipelineConfId(pipelineConfId);
         AbstractPlugin abstractPlugin = pluginInfoService.getRealJobPlugin(jobConf.getPluginType());
@@ -96,7 +100,7 @@ public class JobConfServiceImpl implements JobConfService {
             JobConfBean jobConfBean = new JobConfBean();
             BeanUtils.copyProperties(jobConf, jobConfBean);
             String params = jobConf.getParams();
-            jobConfBean.setParameterMap((Map<String, String>) JSON.parse(params));
+            jobConfBean.setParameterMap((Map<String, Object>) JSON.parse(params));
             jobConfBean.setPluginConf(
                     (JSONObject) pluginInfoService.getRealJobPlugin(jobConf.getPluginType()).getDataOperator()
                             .getJob(jobConf.getPluginConfId()));

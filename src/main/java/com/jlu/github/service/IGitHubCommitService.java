@@ -13,10 +13,7 @@ public interface IGitHubCommitService {
      */
     void save(GitHubCommit gitHubCommit);
 
-    /**
-     * 根据pipelinId获得代码提交信息
-     * @param pipelineBuildId
-     * @return
-     */
-    GitHubCommit getGithubCommitByPipelineId(int pipelineBuildId);
+    GitHubCommit getLastestCommit(String module, String userName);
+
+    GitHubCommit get(Long triggerId);
 }

@@ -30,7 +30,7 @@ public class PipelineConfController extends AbstractController {
 
     @RequestMapping(value = "/{pipelineConfId}", method = RequestMethod.GET)
     public PipelineConfBean getConf(@PathVariable Long pipelineConfId) {
-        return pipelineConfService.getPipelineConf(pipelineConfId);
+        return pipelineConfService.getPipelineConfBean(pipelineConfId);
     }
 
 }

@@ -21,15 +21,17 @@ public class JobBuild {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
- 
+
     protected Long jobConfId;
+    protected Long upStreamJobBuildId;
     protected Long PipelineBuildId;
     protected String name;
     @Enumerated(EnumType.STRING)
     protected PluginType pluginType;
 
+    protected Long pluginBuildId;
     @Enumerated(EnumType.STRING)
-    protected PipelineJobStatus pipelineJobStatus;
+    protected PipelineJobStatus jobStatus;
     protected String inParams;
     protected String outParams;
     protected String triggerUser;
@@ -40,6 +42,14 @@ public class JobBuild {
     protected Date startTime;
     protected Date endTime;
     protected String message;
+
+    public Long getUpStreamJobBuildId() {
+        return upStreamJobBuildId;
+    }
+
+    public void setUpStreamJobBuildId(Long upStreamJobBuildId) {
+        this.upStreamJobBuildId = upStreamJobBuildId;
+    }
 
     public Long getId() {
         return id;
@@ -65,6 +75,14 @@ public class JobBuild {
         PipelineBuildId = pipelineBuildId;
     }
 
+    public Long getPluginBuildId() {
+        return pluginBuildId;
+    }
+
+    public void setPluginBuildId(Long pluginBuildId) {
+        this.pluginBuildId = pluginBuildId;
+    }
+
     public String getName() {
         return name;
     }
@@ -81,12 +99,12 @@ public class JobBuild {
         this.pluginType = pluginType;
     }
 
-    public PipelineJobStatus getPipelineJobStatus() {
-        return pipelineJobStatus;
+    public PipelineJobStatus getJobStatus() {
+        return jobStatus;
     }
 
-    public void setPipelineJobStatus(PipelineJobStatus pipelineJobStatus) {
-        this.pipelineJobStatus = pipelineJobStatus;
+    public void setJobStatus(PipelineJobStatus jobStatus) {
+        this.jobStatus = jobStatus;
     }
 
     public String getInParams() {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.github.bean.GitHubCommitBean;
+import com.jlu.github.bean.GithubFirstCommitBean;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 根据用户注册信息初始化用户
+     *
      * @param userBean
      * @return
      */
@@ -88,6 +91,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 根据用户名获得GitHub代码仓库信息并保存
+     *
      * @param username
      * @return
      */
@@ -95,7 +99,8 @@ public class GithubDataServiceImpl implements IGithubDataService {
     public boolean syncReposByUser(String username) {
         String requestRepoUrl = String.format(CiHomeReadConfig.getConfigValueByKey("github.repos"), username);
         String result = HttpClientUtil.get(requestRepoUrl, null);
-        List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>(){}.getType());
+        List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>() {
+        }.getType());
         List<Module> modules = this.saveCiHomeModuleByBean(repoList, username);
         for (Module module : modules) {
             this.initBranch(module, username);
@@ -105,6 +110,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 为代码仓库创建hook
+     *
      * @param username
      * @param repo
      * @param githubToken
@@ -121,6 +127,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 增加新的模块
+     *
      * @param username
      * @param module
      * @return
@@ -149,7 +156,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                     this.creatHooks(username, module, githubUser.getGitHubToken());
                     LOGGER.info("Add module is successful! module:{}, user:{}", module, username);
                     result.put(ADD_MODULE_STATUS, "OK");
-                    result.put(MESSAGE, "仓库" + module +"配置成功!");
+                    result.put(MESSAGE, "仓库" + module + "配置成功!");
                     result.put("MODULE", module);
                 } catch (Exception e) {
                     moduleService.delete(ciHomeModule);
@@ -161,7 +168,8 @@ public class GithubDataServiceImpl implements IGithubDataService {
     }
 
     /**
-     *  保存模块数据
+     * 保存模块数据
+     *
      * @param repoList
      * @param username
      */
@@ -178,6 +186,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 初始化分支
+     *
      * @param module
      * @param username
      */
@@ -186,18 +195,23 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 = String.format(CiHomeReadConfig.getConfigValueByKey("github.repo.branches"),
                 username, module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
-        List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>(){}.getType());
+        List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>() {
+        }.getType());
         this.saveCiHomeBranchByBean(branchBeans, module, username);
     }
 
     /**
      * 保存分支数据
+     *
      * @param branchBeans
      * @param module
      */
     private void saveCiHomeBranchByBean(List<GithubBranchBean> branchBeans, Module module, String username) {
         List<GithubBranch> githubBranches = new ArrayList<>();
         String version = "1.0.0";
+        if (githubBranches == null) {
+            return;
+        }
         for (GithubBranchBean branchBean : branchBeans) {
             BranchType branchType = branchBean.getName().equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
             GithubBranch githubBranch
@@ -211,6 +225,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 保存一个commit数据，用于触发第一条流水线
+     *
      * @param userName
      * @param module
      * @param branchName
@@ -220,17 +235,19 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 = String.format(CiHomeReadConfig.getConfigValueByKey("github.repo.commits"),
                 userName, module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
-        List<GitHubCommit> commits = GSON.fromJson(result, new TypeToken<List<GitHubCommit>>() {
+        List<GithubFirstCommitBean> commits = GSON.fromJson(result, new TypeToken<List<GithubFirstCommitBean>>() {
         }.getType());
         if (commits == null) {
             return;
         }
-        GitHubCommit gitHubCommit = commits.get(0);
-        gitHubCommitService.save(gitHubCommit);
+        GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
+
+        gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
     }
 
     /**
      * 根据Userbean装配CiHomeUser
+     *
      * @param userBean
      * @return
      */
@@ -246,6 +263,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 获得三位版本号
+     *
      * @param branchType
      * @param version
      * @return

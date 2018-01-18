@@ -15,6 +15,7 @@ import com.jlu.plugin.bean.PluginType;
  */
 @Entity
 public class JobConf {
+    public static final String DEFAULT_PARAMS = "{}";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

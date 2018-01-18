@@ -20,7 +20,7 @@ public abstract class IDataOperator<ConfT, BuildT> {
     public void updateBuild(JSONObject json) {
     }
 
-    public Long initRealJobBuildByRealJobConf(Long realJobConfId) {
+    public Long initRealJobBuildByRealJobConf(Long pluginConfId) {
         return -1L;
     }
 

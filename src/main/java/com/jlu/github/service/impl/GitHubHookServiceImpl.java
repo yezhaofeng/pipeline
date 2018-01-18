@@ -1,5 +1,10 @@
 package com.jlu.github.service.impl;
 
+import com.jlu.github.model.GitHubCommit;
+import com.jlu.github.service.IGitHubCommitService;
+import com.jlu.pipeline.model.PipelineConf;
+import com.jlu.pipeline.service.PipelineBuildService;
+import com.jlu.pipeline.service.PipelineConfService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +35,14 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
 
     @Autowired
     private IBranchService branchService;
-
+    @Autowired
+    private PipelineBuildService pipelineBuildService;
+    @Autowired
+    private PipelineConfService pipelineConfService;
     @Autowired
     private IModuleService moduleService;
+    @Autowired
+    private IGitHubCommitService gitHubCommitService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GitHubHookServiceImpl.class);
 
@@ -45,59 +55,67 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
      */
     @Override
     public void dealHookMessage(JSONObject hookMessage) {
-        GitHubCommitBean commitBean = null;
-        HookRepositoryBean repositoryBean = null;
-        boolean isTriggerCompile = true;
+        GitHubCommit gitHubCommit = getCommitByHook(hookMessage);
+        if (gitHubCommit == null) {
+            return;
+        }
+        gitHubCommitService.save(gitHubCommit);
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConfBean(gitHubCommit.getOwner(), gitHubCommit.getModule(), gitHubCommit.getBranch());
+        pipelineBuildService.build(pipelineConf.getId(), gitHubCommit);
+
         try {
-            String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
-            BranchType branchType = branchName.equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
-            repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
-                    new TypeToken<HookRepositoryBean>() {
-                    }.getType());
-            Module module = moduleService.getModuleByUserAndModule(repositoryBean.getOwner().getName(),
-                    repositoryBean.getName());
-            if (module == null) {
-                LOGGER.info("This module is not exist and ignore compile!user:{}, module:{}",
-                        repositoryBean.getOwner().getName(), repositoryBean.getName());
-            }
-            boolean checkResult = checkNewBranch(hookMessage, branchName, module);
-            if (!checkResult) {
-                PipelineBuild pipelineBuild = initPipelineBuild(module, branchName, branchType);
-                commitBean = getCommitByHook(hookMessage, pipelineBuild);
-                LOGGER.info("解析Json数据成功！commits:{}", commitBean.toString());
-            } else {
-                isTriggerCompile = false;
-            }
         } catch (Exception e) {
             LOGGER.error("解析Json数据失败！hookMessage:{}", hookMessage.toString());
-        }
-        if (isTriggerCompile) {
-            // TODO
         }
     }
 
     /**
-     * 解析json数据，获得commit bean
+     * 解析json数据，获得commit
      *
      * @param hookMessage
-     * @param pipelineBuild
-     *
      * @return
-     *
      * @throws Exception
      */
-    private GitHubCommitBean getCommitByHook(JSONObject hookMessage, PipelineBuild pipelineBuild) throws Exception {
-        GitHubCommitBean commitBean = new GitHubCommitBean();
+    private GitHubCommit getCommitByHook(JSONObject hookMessage) {
+        GitHubCommit gitHubCommit = new GitHubCommit();
+        HookRepositoryBean repositoryBean = null;
+        repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
+                new TypeToken<HookRepositoryBean>() {
+                }.getType());
+        String moduleName = repositoryBean.getName();
+        String moduleOwner = repositoryBean.getOwner().getName();
+        Module module = moduleService.getModuleByUserAndModule(moduleName, moduleOwner);
+        if (module == null) {
+            LOGGER.info("This module is not exist and ignore compile!user:{}, module:{}",
+                    repositoryBean.getOwner().getName(), repositoryBean.getName());
+        }
+        String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
+        BranchType branchType = branchName.equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
         JSONArray commitsArray = hookMessage.getJSONArray("commits");
         String commits = commitsArray.getString(0);
-        commitBean = GSON.fromJson(commits, new TypeToken<GitHubCommitBean>() {
+        GitHubCommitBean commitBean = GSON.fromJson(commits, new TypeToken<GitHubCommitBean>() {
         }.getType());
-        //        commitBean.setRef(pipelineBuild.getBranchName());
-        //        commitBean.setBranchType(pipelineBuild.getBranchType());
-        //        commitBean.setModuleId(pipelineBuild.getModuleId());
-        //        commitBean.setPipelineBuildId(pipelineBuild.getId());
-        return commitBean;
+
+        String commitId = "";
+
+        checkNewBranch(hookMessage, branchName, module);
+
+        gitHubCommit.setCommitId(commitId);
+        gitHubCommit.setBranch(branchName);
+        gitHubCommit.setModule(moduleName);
+        gitHubCommit.setCommitter(commitBean.getCommitter().getName());
+        gitHubCommit.setCommitterEmail(commitBean.getCommitter().getEmail());
+        gitHubCommit.setOwner(moduleOwner);
+        gitHubCommit.setCommitTime(commitBean.getTimestamp());
+//        gitHubCommit.setAddedFiles(commitBean.getAdded());
+        gitHubCommit.setCommitUrl(commitBean.getUrl());
+//        gitHubCommit.setRemovedFiles(commitBean.getRemoved());
+//        gitHubCommit.setModifiedFiles(commitBean.getModified());
+        gitHubCommit.setCommits(commitBean.getMessage());
+        gitHubCommit.setBranchType(branchType);
+        return gitHubCommit;
     }
+
 
     /**
      * 初始化pipelineBuild

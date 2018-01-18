@@ -11,7 +11,7 @@ import com.jlu.pipeline.job.model.JobConf;
  */
 public class JobConfBean extends JobConf {
     private JSONObject pluginConf;
-    private Map<String, String> parameterMap;
+    private Map<String, Object> parameterMap;
 
     public JSONObject getPluginConf() {
         return pluginConf;
@@ -21,11 +21,11 @@ public class JobConfBean extends JobConf {
         this.pluginConf = pluginConf;
     }
 
-    public Map<String, String> getParameterMap() {
+    public Map<String, Object> getParameterMap() {
         return parameterMap;
     }
 
-    public void setParameterMap(Map<String, String> parameterMap) {
+    public void setParameterMap(Map<String, Object> parameterMap) {
         this.parameterMap = parameterMap;
     }
 }

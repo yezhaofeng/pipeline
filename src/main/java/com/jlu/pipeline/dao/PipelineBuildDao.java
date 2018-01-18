@@ -8,4 +8,5 @@ import com.jlu.pipeline.model.PipelineBuild;
  */
 public interface PipelineBuildDao extends IBaseDao<PipelineBuild> {
 
+    Long getNextBuildNumber(String owner, String module);
 }

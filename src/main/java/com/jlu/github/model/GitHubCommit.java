@@ -1,11 +1,11 @@
 package com.jlu.github.model;
 
-import javax.persistence.Column;
+import com.jlu.branch.bean.BranchType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Created by niuwanpeng on 17/4/25.
@@ -17,10 +17,13 @@ public class GitHubCommit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
+    private String module;
 
-    private int pipelineBuildId;
+    private String branch;
+
+    private BranchType branchType;
 
     private String committer;
 
@@ -36,14 +39,14 @@ public class GitHubCommit {
 
     private String  modifiedFiles;
 
-    private String revision;
+    private String commitId;
 
     private String commitUrl;
+    private String owner;
 
-    public GitHubCommit(int pipelineBuildId, String committer, String committerEmail, String commits, String commitTime,
-                        String addedFiles, String removedFiles, String modifiedFiles, String revision,
+    public GitHubCommit( String committer, String committerEmail, String commits, String commitTime,
+                        String addedFiles, String removedFiles, String modifiedFiles, String commitId,
                         String commitUrl) {
-        this.pipelineBuildId = pipelineBuildId;
         this.committer = committer;
         this.committerEmail = committerEmail;
         this.commits = commits;
@@ -51,7 +54,7 @@ public class GitHubCommit {
         this.addedFiles = addedFiles;
         this.removedFiles = removedFiles;
         this.modifiedFiles = modifiedFiles;
-        this.revision = revision;
+        this.commitId = commitId;
         this.commitUrl = commitUrl;
     }
 
@@ -59,21 +62,46 @@ public class GitHubCommit {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getPipelineBuildId() {
-        return pipelineBuildId;
+    public BranchType getBranchType() {
+        return branchType;
     }
 
-    public void setPipelineBuildId(int pipelineBuildId) {
-        this.pipelineBuildId = pipelineBuildId;
+    public void setBranchType(BranchType branchType) {
+        this.branchType = branchType;
     }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
 
     public String getCommitter() {
         return committer;
@@ -131,12 +159,12 @@ public class GitHubCommit {
         this.modifiedFiles = modifiedFiles;
     }
 
-    public String getRevision() {
-        return revision;
+    public String getCommitId() {
+        return commitId;
     }
 
-    public void setRevision(String revision) {
-        this.revision = revision;
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
     }
 
     public String getCommitUrl() {

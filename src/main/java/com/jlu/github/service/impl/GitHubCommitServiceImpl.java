@@ -24,6 +24,7 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
 
     /**
      * save
+     *
      * @param gitHubCommit
      */
     public void save(GitHubCommit gitHubCommit) {
@@ -32,8 +33,20 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
         }
     }
 
+    @Override
+    public GitHubCommit getLastestCommit(String module, String userName) {
+        // TODO: 2018/1/19
+        return null;
+    }
+
+    @Override
+    public GitHubCommit get(Long triggerId) {
+        return gitHubCommitDao.findById(triggerId);
+    }
+
     /**
      * 根据pipelinId获得代码提交信息
+     *
      * @param pipelineBuildId
      * @return
      */
@@ -43,6 +56,6 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("id"));
         List<GitHubCommit> gitHubCommits = gitHubCommitDao.findHeadByProperties(conditionAndSet, orders, 0, 1);
-        return  (null == gitHubCommits || gitHubCommits.size() == 0) ? null : gitHubCommits.get(0);
+        return (null == gitHubCommits || gitHubCommits.size() == 0) ? null : gitHubCommits.get(0);
     }
 }

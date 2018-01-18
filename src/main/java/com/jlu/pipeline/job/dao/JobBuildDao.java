@@ -10,4 +10,5 @@ import com.jlu.pipeline.job.model.JobBuild;
  */
 @Repository
 public interface JobBuildDao extends IBaseDao<JobBuild> {
+    JobBuild get(Long pipelineBuildId, Long upStreamJobBuildId);
 }

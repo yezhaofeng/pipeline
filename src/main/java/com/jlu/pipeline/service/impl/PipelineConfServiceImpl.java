@@ -54,18 +54,28 @@ public class PipelineConfServiceImpl implements PipelineConfService {
     }
 
     @Override
-    public PipelineConfBean getPipelineConf(Long pipelineConfId) {
+    public PipelineConfBean getPipelineConfBean(Long pipelineConfId) {
         PipelineConfBean pipelineConfBean = new PipelineConfBean();
         if (pipelineConfId == null && pipelineConfId == 0L) {
             return null;
         }
         PipelineConf pipelineConf = pipelineConfDao.findById(pipelineConfId);
-        if(pipelineConf == null){
+        if (pipelineConf == null) {
             return null;
         }
         BeanUtils.copyProperties(pipelineConf, pipelineConfBean);
         List<JobConfBean> jobConfs = jobConfService.getJobConfs(pipelineConfId);
         pipelineConfBean.setJobConfs(jobConfs);
         return pipelineConfBean;
+    }
+
+    @Override
+    public PipelineConf getPipelineConf(Long pipelineConfId) {
+        return pipelineConfDao.findById(pipelineConfId);
+    }
+
+    @Override
+    public PipelineConf getPipelineConfBean(String name, String module, String branchName) {
+        return null;
     }
 }

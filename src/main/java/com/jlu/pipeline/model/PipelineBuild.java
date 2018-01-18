@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
+import com.jlu.pipeline.job.bean.TriggerMode;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -21,6 +22,7 @@ public class PipelineBuild {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected Long pipelineConfId;
+    protected String owner;
     protected String module;
     protected String branch;
     protected String commitId;
@@ -30,9 +32,17 @@ public class PipelineBuild {
     protected PipelineJobStatus pipelineJobStatus;
     protected String checkinAuthor;
     protected String triggerUser;
-    protected String triggerMode;
+    protected TriggerMode triggerMode;
     protected Date startTime;
     protected Date endTime;
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
     public Long getId() {
         return id;
@@ -114,11 +124,11 @@ public class PipelineBuild {
         this.triggerUser = triggerUser;
     }
 
-    public String getTriggerMode() {
+    public TriggerMode getTriggerMode() {
         return triggerMode;
     }
 
-    public void setTriggerMode(String triggerMode) {
+    public void setTriggerMode(TriggerMode triggerMode) {
         this.triggerMode = triggerMode;
     }
 

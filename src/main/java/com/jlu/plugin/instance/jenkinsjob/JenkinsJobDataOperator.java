@@ -32,4 +32,10 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobBuild, Jenki
     public JenkinsJobConf getBuild(Long id) {
         return null;
     }
+
+    @Override
+    public Long initRealJobBuildByRealJobConf(Long pluginConfId) {
+        System.out.println(pluginConfId + "============");
+        return super.initRealJobBuildByRealJobConf(pluginConfId);
+    }
 }
