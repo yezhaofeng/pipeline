@@ -1,11 +1,13 @@
 package com.jlu.pipeline.service.impl;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.pipeline.bean.PipelineBuildBean;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
+import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.bean.JobParameter;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
@@ -137,9 +140,20 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     }
 
     @Override
-    public PipelineBuildBean getPipelineBuildBean(Long pipelineConfId) {
-
-        return null;
+    public List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId) {
+        List<PipelineBuildBean> pipelineBuildBeans = new LinkedList<>();
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId);
+        for (PipelineBuild pipelineBuild : pipelineBuilds) {
+            PipelineBuildBean pipelineBuildBean = new PipelineBuildBean();
+            BeanUtils.copyProperties(pipelineBuild, pipelineBuildBean);
+            Long triggerId = pipelineBuild.getTriggerId();
+            GitHubCommit githubCommit = gitHubCommitService.get(triggerId);
+            pipelineBuildBean.setGitHubCommit(githubCommit);
+            List<JobBuildBean> jobBuildBeans = jobBuildService.getJobBuildBeans(pipelineBuild.getId());
+            pipelineBuildBean.setJobBuildBeanList(jobBuildBeans);
+            pipelineBuildBeans.add(pipelineBuildBean);
+        }
+        return pipelineBuildBeans;
     }
 
     private void initJobBuilds(Long pipelineBuildId, List<JobConfBean> jobConfBeanList, Map<String, Object> params) {

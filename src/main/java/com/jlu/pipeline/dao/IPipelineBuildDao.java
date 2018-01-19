@@ -1,5 +1,7 @@
 package com.jlu.pipeline.dao;
 
+import java.util.List;
+
 import com.jlu.common.db.dao.IBaseDao;
 import com.jlu.pipeline.model.PipelineBuild;
 
@@ -9,4 +11,6 @@ import com.jlu.pipeline.model.PipelineBuild;
 public interface IPipelineBuildDao extends IBaseDao<PipelineBuild> {
 
     Long getNextBuildNumber(String owner, String module);
+
+    List<PipelineBuild> get(Long pipelineConfId);
 }

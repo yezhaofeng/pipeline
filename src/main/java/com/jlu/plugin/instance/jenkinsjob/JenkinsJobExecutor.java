@@ -10,9 +10,11 @@ import com.jlu.plugin.bean.JobBuildContext;
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class JenkinsJobExecutor implements IExecutor {
+public class JenkinsJobExecutor extends IExecutor {
+
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
-
+        //        jobBuild.setJobStatus(PipelineJobStatus.SUCCESS);
+        //        jobBuildService.notifiedJobBuildFinished(jobBuild);
     }
 }

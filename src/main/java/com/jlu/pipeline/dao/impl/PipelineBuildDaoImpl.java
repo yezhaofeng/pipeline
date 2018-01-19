@@ -1,6 +1,7 @@
 package com.jlu.pipeline.dao.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -28,5 +29,13 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
         orders.add(new DescOrder("buildNumber"));
         List<PipelineBuild> pipelineBuilds = findHeadByProperties(conditionAndSet, orders, 0, 1);
         return CollectionUtils.isEmpty(pipelineBuilds) ? 1L : pipelineBuilds.get(0).getBuildNumber() + 1L;
+    }
+
+    @Override
+    public List<PipelineBuild> get(Long pipelineConfId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineConfId", pipelineConfId);
+        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet);
+        return CollectionUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 }

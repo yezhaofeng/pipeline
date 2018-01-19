@@ -1,7 +1,9 @@
 package com.jlu.pipeline.job.service;
 
+import java.util.List;
 import java.util.Map;
 
+import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.model.JobBuild;
 
@@ -16,4 +18,6 @@ public interface IJobBuildService {
     void build(Long jobBuildId, Map<String, Object> execParam);
 
     void notifiedJobBuildFinished(JobBuild jobBuild);
+
+    List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 }

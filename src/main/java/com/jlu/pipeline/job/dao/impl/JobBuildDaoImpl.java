@@ -1,5 +1,6 @@
 package com.jlu.pipeline.job.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -26,10 +27,18 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
     }
 
     @Override
-    public JobBuild get(Long upStreamJobBuildId) {
+    public JobBuild getByuUStreamJobBuildId(Long upStreamJobBuildId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("upStreamJobBuildId", upStreamJobBuildId);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
         return CollectionUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
+    }
+
+    @Override
+    public List<JobBuild> getByPipelineBuildId(Long pipelineBuildId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineBuildId", pipelineBuildId);
+        List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
+        return CollectionUtils.isEmpty(jobBuilds) ? new ArrayList<>(0) : jobBuilds;
     }
 }
