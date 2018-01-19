@@ -10,9 +10,9 @@ import com.jlu.pipeline.job.model.JobConf;
  */
 public interface IJobConfService {
 
-    JobConf processJob(JobConfBean jobConfBean, Long pipelineConfId);
+    JobConf processJobWithTransaction(JobConfBean jobConfBean, Long pipelineConfId);
 
-    void processJob(List<JobConfBean> jobConfBeans, Long pipelineConfId);
+    void processJobWithTransaction(List<JobConfBean> jobConfBeans, Long pipelineConfId);
 
     List<JobConfBean> getJobConfs(Long pipelineConfId);
 }

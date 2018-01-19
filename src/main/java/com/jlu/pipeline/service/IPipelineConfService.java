@@ -1,7 +1,6 @@
 package com.jlu.pipeline.service;
 
 import com.jlu.pipeline.bean.PipelineConfBean;
-import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.pipeline.model.PipelineConf;
 
 /**
@@ -9,7 +8,7 @@ import com.jlu.pipeline.model.PipelineConf;
  */
 public interface IPipelineConfService {
 
-    void processPipeline(PipelineConfBean pipelineConfBean, String userName);
+    void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String userName);
 
     PipelineConfBean getPipelineConfBean(Long pipelineConfId);
 

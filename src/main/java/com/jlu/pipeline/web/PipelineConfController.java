@@ -24,7 +24,7 @@ public class PipelineConfController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean) {
-        pipelineConfService.processPipeline(pipelineConfBean, getLoginUserName());
+        pipelineConfService.processPipelineWithTransaction(pipelineConfBean, getLoginUserName());
         return ResponseBean.TRUE;
     }
 

@@ -15,6 +15,7 @@ import com.jlu.pipeline.job.model.JobBuild;
  */
 @Repository
 public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBuildDao {
+
     @Override
     public JobBuild getTopJob(Long pipelineBuildId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();

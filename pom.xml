@@ -124,6 +124,12 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
             <version>4.2.7.Final</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>c3p0</artifactId>
+                    <groupId>c3p0</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -157,10 +163,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.6</version>
         </dependency>
+        <!--@Lob org.springframework.web.util.NestedServletException: Handler processing failed; nested exception is java.lang.AbstractMethodError: Method com/mchange/v2/c3p0/impl/NewProxyPreparedStatement.setCharacterStream(ILjava/io/Reader;J)V is abstract-->
         <dependency>
-            <groupId>c3p0</groupId>
+            <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
-            <version>0.9.1.2</version>
+            <version>0.9.5</version>
         </dependency>
         <dependency>
             <groupId>com.mchange</groupId>

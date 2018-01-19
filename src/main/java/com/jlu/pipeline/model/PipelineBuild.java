@@ -29,7 +29,7 @@ public class PipelineBuild {
     protected Long triggerId;
     protected Long buildNumber;
     @Enumerated(EnumType.STRING)
-    protected PipelineJobStatus pipelineJobStatus;
+    protected PipelineJobStatus pipelineStatus;
     protected String checkinAuthor;
     protected String triggerUser;
     protected TriggerMode triggerMode;
@@ -100,12 +100,12 @@ public class PipelineBuild {
         this.buildNumber = buildNumber;
     }
 
-    public PipelineJobStatus getPipelineJobStatus() {
-        return pipelineJobStatus;
+    public PipelineJobStatus getPipelineStatus() {
+        return pipelineStatus;
     }
 
-    public void setPipelineJobStatus(PipelineJobStatus pipelineJobStatus) {
-        this.pipelineJobStatus = pipelineJobStatus;
+    public void setPipelineStatus(PipelineJobStatus pipelineStatus) {
+        this.pipelineStatus = pipelineStatus;
     }
 
     public String getCheckinAuthor() {

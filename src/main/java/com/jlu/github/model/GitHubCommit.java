@@ -1,11 +1,13 @@
 package com.jlu.github.model;
 
-import com.jlu.branch.bean.BranchType;
-
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.jlu.branch.bean.BranchType;
 
 /**
  * Created by niuwanpeng on 17/4/25.
@@ -23,6 +25,7 @@ public class GitHubCommit {
 
     private String branch;
 
+    @Enumerated(EnumType.STRING)
     private BranchType branchType;
 
     private String committer;

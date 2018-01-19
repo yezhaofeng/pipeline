@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
+import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.pipeline.job.dao.IJobConfDao;
 import com.jlu.pipeline.job.model.JobConf;
 
@@ -13,8 +14,12 @@ import com.jlu.pipeline.job.model.JobConf;
  */
 @Repository
 public class JobConfDaoImpl extends AbstractBaseDao<JobConf> implements IJobConfDao {
+
     @Override
     public List<JobConf> findByPipelineConfIdAndDeleteStatus(Long pipelineConfId, Boolean deleteStatus) {
-        return null;
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineConfId", pipelineConfId);
+        conditionAndSet.put("deleteStatus", deleteStatus);
+        return findByProperties(conditionAndSet);
     }
 }

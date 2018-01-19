@@ -35,7 +35,7 @@ public class JobConfServiceImpl implements IJobConfService {
     private IPluginInfoService pluginInfoService;
 
     @Override
-    public JobConf processJob(JobConfBean jobConfBean, Long pipelineConfId) {
+    public JobConf processJobWithTransaction(JobConfBean jobConfBean, Long pipelineConfId) {
         JobConf jobConf = null;
         Long jobConfId = jobConfBean.getId();
         if (jobConfId != null) {
@@ -65,7 +65,7 @@ public class JobConfServiceImpl implements IJobConfService {
     }
 
     @Override
-    public void processJob(List<JobConfBean> jobConfBeans, Long pipelineConfId) {
+    public void processJobWithTransaction(List<JobConfBean> jobConfBeans, Long pipelineConfId) {
         List<JobConf> jobConfsInDb = jobConfDao.findByPipelineConfIdAndDeleteStatus(pipelineConfId, false);
         if (CollectionUtils.isEmpty(jobConfBeans)) {
             return;
@@ -74,18 +74,20 @@ public class JobConfServiceImpl implements IJobConfService {
         for (int i = 0; jobConfBeans != null && i < jobConfBeans.size(); i++) {
             JobConfBean confBean = jobConfBeans.get(i);
             confBean.setUpStreamJobConfId(upStreamJobConfId);
-            JobConf jobConf = processJob(confBean, pipelineConfId);
+            JobConf jobConf = processJobWithTransaction(confBean, pipelineConfId);
             // remove normal job
-            Iterator<JobConf> jobConfIterator = jobConfsInDb.iterator();
-            while (jobConfIterator.hasNext()) {
-                JobConf currentJobConf = jobConfIterator.next();
-                Long currentId = currentJobConf.getId();
-                Long id = jobConf.getId();
-                if (currentId.equals(id)) {
-                    jobConfIterator.remove();
+            if (jobConfsInDb != null) {
+                Iterator<JobConf> jobConfIterator = jobConfsInDb.iterator();
+                while (jobConfIterator.hasNext()) {
+                    JobConf currentJobConf = jobConfIterator.next();
+                    Long currentId = currentJobConf.getId();
+                    Long id = jobConf.getId();
+                    if (currentId.equals(id)) {
+                        jobConfIterator.remove();
+                    }
                 }
-
             }
+
             upStreamJobConfId = jobConf.getId();
         }
 
@@ -96,6 +98,7 @@ public class JobConfServiceImpl implements IJobConfService {
     public List<JobConfBean> getJobConfs(Long pipelineConfId) {
         List<JobConfBean> jobConfBeanList = new ArrayList<>();
         List<JobConf> jobConfs = jobConfDao.findByPipelineConfIdAndDeleteStatus(pipelineConfId, false);
+
         for (JobConf jobConf : jobConfs) {
             JobConfBean jobConfBean = new JobConfBean();
             BeanUtils.copyProperties(jobConf, jobConfBean);

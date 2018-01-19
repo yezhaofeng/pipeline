@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
@@ -27,9 +26,8 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     @Autowired
     private IJobConfService jobConfService;
 
-    @Transactional
     @Override
-    public void processPipeline(PipelineConfBean pipelineConfBean, String userName) {
+    public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String userName) {
         PipelineConf pipelineConf = null;
         Long pipelineConfId = pipelineConfBean.getId();
         if (pipelineConfId != null) {
@@ -50,7 +48,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         pipelineConf.setLastModifiedTime(new Date());
         pipelineConfDao.save(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
-        jobConfService.processJob(jobConfBeans, pipelineConf.getId());
+        jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
     }
 
     @Override

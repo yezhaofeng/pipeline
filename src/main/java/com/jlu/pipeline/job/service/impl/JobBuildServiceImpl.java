@@ -56,6 +56,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setPluginType(pluginType);
         Long pluginBuildId = pluginInfoService.getRealJobPlugin(pluginType).getDataOperator().initRealJobBuildByRealJobConf(jobConfBean.getPluginConfId());
         jobBuild.setPluginBuildId(pluginBuildId);
+
         jobBuildDao.save(jobBuild);
         return jobBuild.getId();
     }
@@ -83,18 +84,24 @@ public class JobBuildServiceImpl implements IJobBuildService {
             throw new PipelineRuntimeException("TODO");
         }
 
-        jobBuild.setStartTime(new Date());
-        jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
-        jobBuildDao.save(jobBuild);
-
         // 手动则不执行
         if (TriggerMode.MANUAL.equals(jobBuild.getTriggerMode())) {
             return;
         }
+        updatePipelineBuild(pipelineBuildId);
+        jobBuild.setStartTime(new Date());
+        jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+        jobBuildDao.save(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>());
         pluginInfoService.getRealJobPlugin(pluginType).getExecutor().execute(jobBuildContext, jobBuild);
+    }
+
+    private void updatePipelineBuild(Long pipelineBuildId) {
+        PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
+        pipelineBuild.setStartTime(new Date());
+        pipelineBuild.setPipelineStatus(PipelineJobStatus.RUNNING);
     }
 
     private JobBuildContext initJobBuildContext(Long pipelineBuildId, JobBuild jobBuild, Map<String, Object> params) {

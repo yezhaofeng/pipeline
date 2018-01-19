@@ -3,12 +3,14 @@ package com.jlu.pipeline.job.model;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 import com.google.gson.Gson;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
@@ -26,7 +28,7 @@ public class JobBuild {
 
     protected Long jobConfId;
     protected Long upStreamJobBuildId;
-    protected Long PipelineBuildId;
+    protected Long pipelineBuildId;
     protected String name;
     @Enumerated(EnumType.STRING)
     protected PluginType pluginType;
@@ -34,7 +36,13 @@ public class JobBuild {
     protected Long pluginBuildId;
     @Enumerated(EnumType.STRING)
     protected PipelineJobStatus jobStatus;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     protected String inParams;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     protected String outParams;
     protected String triggerUser;
 
@@ -70,11 +78,11 @@ public class JobBuild {
     }
 
     public Long getPipelineBuildId() {
-        return PipelineBuildId;
+        return pipelineBuildId;
     }
 
     public void setPipelineBuildId(Long pipelineBuildId) {
-        PipelineBuildId = pipelineBuildId;
+        this.pipelineBuildId = pipelineBuildId;
     }
 
     public Long getPluginBuildId() {

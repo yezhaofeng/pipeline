@@ -14,6 +14,7 @@ import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.CiHomeReadConfig;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
+import com.jlu.pipeline.bean.PipelineBuildBean;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.bean.JobParameter;
@@ -45,6 +46,9 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
 
     @Autowired
     private IPipelineBuildDao IPipelineBuildDao;
+
+    @Autowired
+    private IPipelineBuildDao pipelineBuildDao;
 
     /**
      * 根据confId找到最新一次commit进行构建
@@ -95,10 +99,16 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      */
     @Override
     public Long initPipelineBuild(PipelineConf pipelineConf) {
+        if (pipelineConf == null) {
+            throw new PipelineRuntimeException("未找到配置");
+        }
         Long pipelineConfId = pipelineConf.getId();
         String module = pipelineConf.getModule();
         String userName = pipelineConf.getCreateUser();
         GitHubCommit gitHubCommit = gitHubCommitService.getLastestCommit(module, userName);
+        if (gitHubCommit == null) {
+            throw new PipelineRuntimeException("无提交信息");
+        }
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConfId, TriggerMode.MANUAL, LoginHelper.getLoginerUserName());
         Map<String, Object> params = initJobParams(pipelineBuild, gitHubCommit);
         IPipelineBuildDao.save(pipelineBuild);
@@ -124,6 +134,12 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         Long pipelineBuildId = pipelineBuild.getId();
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
         return pipelineBuildId;
+    }
+
+    @Override
+    public PipelineBuildBean getPipelineBuildBean(Long pipelineConfId) {
+
+        return null;
     }
 
     private void initJobBuilds(Long pipelineBuildId, List<JobConfBean> jobConfBeanList, Map<String, Object> params) {
@@ -160,7 +176,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         } else {
             pipelineBuild.setTriggerUser(triggerUser);
         }
-        pipelineBuild.setPipelineJobStatus(PipelineJobStatus.INIT);
+        pipelineBuild.setPipelineStatus(PipelineJobStatus.INIT);
         pipelineBuild.setCheckinAuthor(gitHubCommit.getCommitter());
         pipelineBuild.setTriggerId(gitHubCommit.getId());
         pipelineBuild.setPipelineConfId(pipelineConfId);

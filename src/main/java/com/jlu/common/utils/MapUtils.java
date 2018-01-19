@@ -9,6 +9,12 @@ import java.util.Set;
 public class MapUtils {
     // 系统参数优于用户自定义参数
     public static Map<String, Object> merge(Map<String, Object> source, Map<String, Object> target) {
+        if (source == null) {
+            return target;
+        }
+        if (target == null) {
+            return source;
+        }
         Set<String> keySet = source.keySet();
         for (String key : keySet) {
             target.put(key, target.get(key));
