@@ -14,25 +14,25 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.jlu.pipeline.job.bean.JobConfBean;
-import com.jlu.pipeline.job.dao.JobConfDao;
+import com.jlu.pipeline.job.dao.IJobConfDao;
 import com.jlu.pipeline.job.model.JobConf;
-import com.jlu.pipeline.job.service.JobConfService;
+import com.jlu.pipeline.job.service.IJobConfService;
 import com.jlu.plugin.AbstractPlugin;
-import com.jlu.plugin.service.PluginInfoService;
+import com.jlu.plugin.service.IPluginInfoService;
 
 /**
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class JobConfServiceImpl implements JobConfService {
+public class JobConfServiceImpl implements IJobConfService {
 
     private final Long topJobId = 0L;
 
     @Autowired
-    private JobConfDao jobConfDao;
+    private IJobConfDao jobConfDao;
 
     @Autowired
-    private PluginInfoService pluginInfoService;
+    private IPluginInfoService pluginInfoService;
 
     @Override
     public JobConf processJob(JobConfBean jobConfBean, Long pipelineConfId) {

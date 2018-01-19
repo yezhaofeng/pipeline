@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import com.jlu.jenkins.bean.JenkinsBuildDTO;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
-import com.jlu.jenkins.service.JenkinsBuildService;
-import com.jlu.jenkins.service.JenkinsServerService;
+import com.jlu.jenkins.service.IJenkinsBuildService;
+import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
-import com.jlu.jenkins.timer.service.TimerService;
+import com.jlu.jenkins.timer.service.ITimerService;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 
@@ -24,15 +24,15 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
  * Created by langshiquan on 18/1/13.
  */
 @Service
-public class JenkinsBuildServiceImpl implements JenkinsBuildService {
+public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
 
     private Logger logger = LoggerFactory.getLogger(JenkinsBuildServiceImpl.class);
     private final Long defaultPerid = 5000L;
     @Autowired
-    private JenkinsServerService jenkinsServerService;
+    private IJenkinsServerService jenkinsServerService;
 
     @Autowired
-    private TimerService timerService;
+    private ITimerService timerService;
 
     @Override
     public Integer buildJob(JenkinsBuildDTO jenkinsBuildDTO) throws IOException {

@@ -7,7 +7,7 @@ import com.jlu.pipeline.model.PipelineConf;
 /**
  * Created by langshiquan on 18/1/14.
  */
-public interface PipelineBuildService {
+public interface IPipelineBuildService {
     void build(Long pipelineConfId);
 
     void build(Long pipelineConfId, Long triggerId);

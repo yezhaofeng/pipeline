@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
-import com.jlu.jenkins.service.JenkinsBuildService;
-import com.jlu.jenkins.service.JenkinsServerService;
+import com.jlu.jenkins.service.IJenkinsBuildService;
+import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -16,8 +16,8 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
  */
 public class JenkinsBuildTimerTask extends TimerTask {
 
-    private JenkinsBuildService jenkinsBuildService;
-    private JenkinsServerService jenkinsServerService;
+    private IJenkinsBuildService jenkinsBuildService;
+    private IJenkinsServerService jenkinsServerService;
     private JenkinsServer jenkinsServer;
     private String jobName;
     private Integer buildNumber;
@@ -25,8 +25,8 @@ public class JenkinsBuildTimerTask extends TimerTask {
     public JenkinsBuildTimerTask() {
     }
 
-    public JenkinsBuildTimerTask(JenkinsBuildService jenkinsBuildService,
-                                 JenkinsServerService jenkinsServerService,
+    public JenkinsBuildTimerTask(IJenkinsBuildService jenkinsBuildService,
+                                 IJenkinsServerService jenkinsServerService,
                                  JenkinsServer jenkinsServer, String jobName, Integer buildNumber) {
         this.jenkinsBuildService = jenkinsBuildService;
         this.jenkinsServerService = jenkinsServerService;
@@ -35,13 +35,13 @@ public class JenkinsBuildTimerTask extends TimerTask {
         this.buildNumber = buildNumber;
     }
 
-    public JenkinsBuildTimerTask setJenkinsBuildService(JenkinsBuildService jenkinsBuildService) {
+    public JenkinsBuildTimerTask setJenkinsBuildService(IJenkinsBuildService jenkinsBuildService) {
         this.jenkinsBuildService = jenkinsBuildService;
         return this;
     }
 
     public JenkinsBuildTimerTask setJenkinsServerService(
-            JenkinsServerService jenkinsServerService) {
+            IJenkinsServerService jenkinsServerService) {
         this.jenkinsServerService = jenkinsServerService;
         return this;
     }

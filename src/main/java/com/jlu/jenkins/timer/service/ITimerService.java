@@ -5,7 +5,7 @@ import java.util.TimerTask;
 /**
  * Created by langshiquan on 18/1/10.
  */
-public interface TimerService {
+public interface ITimerService {
 
     void register(TimerTask timerTask, Long delay, Long period);
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.common.web.AbstractController;
 import com.jlu.jenkins.bean.JenkinsBuildDTO;
-import com.jlu.jenkins.service.JenkinsBuildService;
+import com.jlu.jenkins.service.IJenkinsBuildService;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -22,7 +22,7 @@ import com.jlu.jenkins.service.JenkinsBuildService;
 public class JenkinsBuildController extends AbstractController {
 
     @Autowired
-    private JenkinsBuildService jenkinsBuildService;
+    private IJenkinsBuildService jenkinsBuildService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody

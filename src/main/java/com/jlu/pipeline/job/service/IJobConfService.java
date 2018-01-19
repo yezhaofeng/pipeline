@@ -8,7 +8,7 @@ import com.jlu.pipeline.job.model.JobConf;
 /**
  * Created by langshiquan on 18/1/14.
  */
-public interface JobConfService {
+public interface IJobConfService {
 
     JobConf processJob(JobConfBean jobConfBean, Long pipelineConfId);
 

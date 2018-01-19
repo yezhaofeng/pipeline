@@ -8,7 +8,7 @@ import com.jlu.plugin.model.PluginInfo;
 /**
  * Created by langshiquan on 18/1/13.
  */
-public interface PluginInfoDao extends IBaseDao<PluginInfo> {
+public interface IPluginInfoDao extends IBaseDao<PluginInfo> {
     PluginInfo findByJobType(String jobType);
 
 }

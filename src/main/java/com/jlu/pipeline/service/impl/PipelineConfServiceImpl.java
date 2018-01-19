@@ -9,23 +9,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jlu.pipeline.bean.PipelineConfBean;
-import com.jlu.pipeline.dao.PipelineConfDao;
+import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
-import com.jlu.pipeline.job.service.JobConfService;
+import com.jlu.pipeline.job.service.IJobConfService;
 import com.jlu.pipeline.model.PipelineConf;
-import com.jlu.pipeline.service.PipelineConfService;
+import com.jlu.pipeline.service.IPipelineConfService;
 
 /**
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class PipelineConfServiceImpl implements PipelineConfService {
+public class PipelineConfServiceImpl implements IPipelineConfService {
 
     @Autowired
-    private PipelineConfDao pipelineConfDao;
+    private IPipelineConfDao pipelineConfDao;
 
     @Autowired
-    private JobConfService jobConfService;
+    private IJobConfService jobConfService;
 
     @Transactional
     @Override

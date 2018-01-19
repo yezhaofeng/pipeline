@@ -11,7 +11,7 @@ import com.offbytwo.jenkins.model.Build;
 /**
  * Created by langshiquan on 17/12/23.
  */
-public interface JenkinsServerService {
+public interface IJenkinsServerService {
     /**
      * @param serverUrl
      * @param username

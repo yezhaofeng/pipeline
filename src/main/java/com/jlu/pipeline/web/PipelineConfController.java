@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.pipeline.bean.PipelineConfBean;
-import com.jlu.pipeline.service.PipelineConfService;
+import com.jlu.pipeline.service.IPipelineConfService;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -20,7 +20,7 @@ import com.jlu.pipeline.service.PipelineConfService;
 public class PipelineConfController extends AbstractController {
 
     @Autowired
-    private PipelineConfService pipelineConfService;
+    private IPipelineConfService pipelineConfService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean) {

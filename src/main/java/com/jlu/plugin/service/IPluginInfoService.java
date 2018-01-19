@@ -9,7 +9,7 @@ import com.jlu.plugin.bean.PluginType;
 /**
  * Created by langshiquan on 18/1/13.
  */
-public interface PluginInfoService {
+public interface IPluginInfoService {
     List<AbstractPlugin> getAllPlugin();
 
     List<PluginConfig> getAllPluginConf();

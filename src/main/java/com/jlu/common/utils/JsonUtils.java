@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Created by niuwanpeng on 17/3/24.
  */
+@Deprecated
 public class JsonUtils {
 
     private static final Gson GSON = new Gson();

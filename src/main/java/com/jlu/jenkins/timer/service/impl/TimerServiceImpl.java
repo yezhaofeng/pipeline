@@ -6,13 +6,13 @@ import java.util.TimerTask;
 
 import org.springframework.stereotype.Service;
 
-import com.jlu.jenkins.timer.service.TimerService;
+import com.jlu.jenkins.timer.service.ITimerService;
 
 /**
  * Created by langshiquan on 18/1/10.
  */
 @Service
-public class TimerServiceImpl implements TimerService {
+public class TimerServiceImpl implements ITimerService {
 
     private final Timer timer = new Timer();
 

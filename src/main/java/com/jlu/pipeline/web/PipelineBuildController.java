@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
-import com.jlu.pipeline.service.PipelineBuildService;
+import com.jlu.pipeline.service.IPipelineBuildService;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -18,7 +18,7 @@ import com.jlu.pipeline.service.PipelineBuildService;
 public class PipelineBuildController extends AbstractController {
 
     @Autowired
-    private PipelineBuildService pipelineBuildService;
+    private IPipelineBuildService pipelineBuildService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean build(Long pipelineConfId, @RequestParam(required = false, defaultValue = "0") Long triggerId) {

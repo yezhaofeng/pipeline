@@ -7,5 +7,5 @@ import com.jlu.pipeline.model.PipelineConf;
  * Created by langshiquan on 18/1/14.
  */
 
-public interface PipelineConfDao extends IBaseDao<PipelineConf> {
+public interface IPipelineConfDao extends IBaseDao<PipelineConf> {
 }

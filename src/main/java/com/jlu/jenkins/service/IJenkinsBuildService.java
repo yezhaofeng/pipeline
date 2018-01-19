@@ -9,7 +9,7 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 /**
  * Created by langshiquan on 18/1/13.
  */
-public interface JenkinsBuildService {
+public interface IJenkinsBuildService {
     Integer buildJob(JenkinsBuildDTO jenkinsBuildDTO) throws IOException;
 
     void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,

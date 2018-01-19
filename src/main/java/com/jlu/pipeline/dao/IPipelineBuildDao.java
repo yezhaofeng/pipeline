@@ -6,7 +6,7 @@ import com.jlu.pipeline.model.PipelineBuild;
 /**
  * Created by langshiquan on 18/1/14.
  */
-public interface PipelineBuildDao extends IBaseDao<PipelineBuild> {
+public interface IPipelineBuildDao extends IBaseDao<PipelineBuild> {
 
     Long getNextBuildNumber(String owner, String module);
 }

@@ -1,24 +1,23 @@
 package com.jlu.pipeline.service.impl;
 
-import com.google.gson.Gson;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
-import com.jlu.pipeline.dao.PipelineBuildDao;
+import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.service.IJobBuildService;
-import com.jlu.pipeline.job.service.JobConfService;
+import com.jlu.pipeline.job.service.IJobConfService;
 import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.pipeline.model.PipelineConf;
-import com.jlu.pipeline.service.PipelineConfService;
+import com.jlu.pipeline.service.IPipelineConfService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlu.pipeline.service.PipelineBuildService;
+import com.jlu.pipeline.service.IPipelineBuildService;
 
 import java.util.Date;
 import java.util.List;
@@ -28,12 +27,12 @@ import java.util.Map;
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class PipelineBuildServiceImpl implements PipelineBuildService {
+public class PipelineBuildServiceImpl implements IPipelineBuildService {
     @Autowired
-    private PipelineConfService pipelineConfService;
+    private IPipelineConfService pipelineConfService;
 
     @Autowired
-    private JobConfService jobConfService;
+    private IJobConfService jobConfService;
 
     @Autowired
     private IJobBuildService jobBuildService;
@@ -42,7 +41,7 @@ public class PipelineBuildServiceImpl implements PipelineBuildService {
     private IGitHubCommitService gitHubCommitService;
 
     @Autowired
-    private PipelineBuildDao pipelineBuildDao;
+    private IPipelineBuildDao IPipelineBuildDao;
 
     /**
      * 根据confId找到最新一次commit进行构建
@@ -99,7 +98,7 @@ public class PipelineBuildServiceImpl implements PipelineBuildService {
         GitHubCommit gitHubCommit = gitHubCommitService.getLastestCommit(module, userName);
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConfId, TriggerMode.MANUAL, LoginHelper.getLoginerUserName());
         Map<String, Object> params = initJobParams(pipelineBuild);
-        pipelineBuildDao.save(pipelineBuild);
+        IPipelineBuildDao.save(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConfId);
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
@@ -118,7 +117,7 @@ public class PipelineBuildServiceImpl implements PipelineBuildService {
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf.getId(), TriggerMode.AUTO, StringUtils.EMPTY);
         Map<String, Object> params = initJobParams(pipelineBuild);
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConf.getId());
-        pipelineBuildDao.save(pipelineBuild);
+        IPipelineBuildDao.save(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
         return pipelineBuildId;
@@ -145,7 +144,7 @@ public class PipelineBuildServiceImpl implements PipelineBuildService {
         PipelineBuild pipelineBuild = new PipelineBuild();
         pipelineBuild.setOwner(gitHubCommit.getOwner());
         pipelineBuild.setBranch(gitHubCommit.getBranch());
-        Long buildNumber = pipelineBuildDao.getNextBuildNumber(gitHubCommit.getOwner(), gitHubCommit.getModule());
+        Long buildNumber = IPipelineBuildDao.getNextBuildNumber(gitHubCommit.getOwner(), gitHubCommit.getModule());
         pipelineBuild.setBuildNumber(buildNumber);
         pipelineBuild.setModule(gitHubCommit.getModule());
         pipelineBuild.setBranch(gitHubCommit.getBranch());

@@ -14,7 +14,7 @@ import com.jlu.common.web.ResponseBean;
 import com.jlu.common.web.AbstractController;
 import com.jlu.jenkins.bean.JenkinsConfDTO;
 import com.jlu.jenkins.model.JenkinsConf;
-import com.jlu.jenkins.service.JenkinsConfService;
+import com.jlu.jenkins.service.IJenkinsConfService;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -24,7 +24,7 @@ import com.jlu.jenkins.service.JenkinsConfService;
 public class JenkinsConfController extends AbstractController {
 
     @Autowired
-    private JenkinsConfService jenkinsConfService;
+    private IJenkinsConfService jenkinsConfService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody

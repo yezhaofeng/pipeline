@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.common.web.ResponseBean;
 import com.jlu.plugin.bean.PluginConfig;
-import com.jlu.plugin.service.PluginInfoService;
+import com.jlu.plugin.service.IPluginInfoService;
 
 /**
  * Job plugin controller
@@ -20,7 +20,7 @@ import com.jlu.plugin.service.PluginInfoService;
 public class JobPluginController {
 
     @Autowired
-    private PluginInfoService pluginInfoService;
+    private IPluginInfoService pluginInfoService;
 
     @RequestMapping(value = "/configs", method = RequestMethod.GET)
     @ResponseBody

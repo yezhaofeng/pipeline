@@ -42,6 +42,7 @@ public class GitHubCommit {
     private String commitId;
 
     private String commitUrl;
+
     private String owner;
 
     public GitHubCommit( String committer, String committerEmail, String commits, String commitTime,

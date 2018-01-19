@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
 import com.jlu.jenkins.model.JenkinsConf;
-import com.jlu.jenkins.service.JenkinsServerService;
+import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.Job;
@@ -29,7 +29,7 @@ import com.offbytwo.jenkins.model.QueueReference;
  */
 
 @Service
-public class JenkinsServerServiceImpl implements JenkinsServerService {
+public class JenkinsServerServiceImpl implements IJenkinsServerService {
 
     private Logger logger = LoggerFactory.getLogger(JenkinsServerServiceImpl.class);
     private ConcurrentHashMap<String, JenkinsServer> jenkinsServerMap = new ConcurrentHashMap<>();

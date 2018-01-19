@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import com.jlu.plugin.AbstractPlugin;
 import com.jlu.plugin.bean.PluginConfig;
 import com.jlu.plugin.bean.PluginType;
-import com.jlu.plugin.dao.PluginInfoDao;
+import com.jlu.plugin.dao.IPluginInfoDao;
 import com.jlu.plugin.model.PluginInfo;
-import com.jlu.plugin.service.PluginInfoService;
+import com.jlu.plugin.service.IPluginInfoService;
 
 /**
  * Created by langshiquan on 18/1/13.
  */
 @Service
-public class PluginInfoServiceImpl implements PluginInfoService {
+public class PluginInfoServiceImpl implements IPluginInfoService {
 
     private List<PluginConfig> pluginConfigs;
 
@@ -27,7 +27,7 @@ public class PluginInfoServiceImpl implements PluginInfoService {
     private List<AbstractPlugin> jobPlugins;
 
     @Autowired
-    private PluginInfoDao pluginInfoDao;
+    private IPluginInfoDao pluginInfoDao;
 
     @Override
     public List<AbstractPlugin> getAllPlugin() {

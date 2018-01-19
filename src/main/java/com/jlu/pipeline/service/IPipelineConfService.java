@@ -7,7 +7,7 @@ import com.jlu.pipeline.model.PipelineConf;
 /**
  * Created by langshiquan on 18/1/14.
  */
-public interface PipelineConfService {
+public interface IPipelineConfService {
 
     void processPipeline(PipelineConfBean pipelineConfBean, String userName);
 

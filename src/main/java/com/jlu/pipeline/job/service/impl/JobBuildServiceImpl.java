@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
-import com.jlu.pipeline.job.dao.JobBuildDao;
+import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.bean.PluginType;
-import com.jlu.plugin.service.PluginInfoService;
-import org.apache.commons.collections.MapUtils;
+import com.jlu.plugin.service.IPluginInfoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,13 +20,14 @@ import java.util.Set;
 /**
  * Created by Administrator on 2018/1/18.
  */
+@Service
 public class JobBuildServiceImpl implements IJobBuildService {
 
     @Autowired
-    private PluginInfoService pluginInfoService;
+    private IPluginInfoService pluginInfoService;
 
     @Autowired
-    private JobBuildDao jobBuildDao;
+    private IJobBuildDao jobBuildDao;
 
     @Override
     public Long init(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId, Map<String, Object> params) {

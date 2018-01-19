@@ -1,10 +1,5 @@
 package com.jlu.github.service.impl;
 
-import com.jlu.github.model.GitHubCommit;
-import com.jlu.github.service.IGitHubCommitService;
-import com.jlu.pipeline.model.PipelineConf;
-import com.jlu.pipeline.service.PipelineBuildService;
-import com.jlu.pipeline.service.PipelineConfService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +14,15 @@ import com.jlu.branch.service.IBranchService;
 import com.jlu.common.utils.DateUtil;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
+import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.model.Module;
+import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IModuleService;
 import com.jlu.pipeline.model.PipelineBuild;
+import com.jlu.pipeline.model.PipelineConf;
+import com.jlu.pipeline.service.IPipelineBuildService;
+import com.jlu.pipeline.service.IPipelineConfService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -36,9 +36,9 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
     @Autowired
     private IBranchService branchService;
     @Autowired
-    private PipelineBuildService pipelineBuildService;
+    private IPipelineBuildService pipelineBuildService;
     @Autowired
-    private PipelineConfService pipelineConfService;
+    private IPipelineConfService pipelineConfService;
     @Autowired
     private IModuleService moduleService;
     @Autowired
