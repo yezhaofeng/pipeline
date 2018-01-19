@@ -286,7 +286,7 @@ public class HttpClientUtil {
                     returnContent = EntityUtils.toString(entity, charset);
                 }
             }else {
-                LOGGER.error("Failed to get URL: " + url + " with response: " + response.getStatusLine().getReasonPhrase());
+                LOGGER.error("Failed to getTopJob URL: " + url + " with response: " + response.getStatusLine().getReasonPhrase());
             }
             LOGGER.info("[HTTP GET]:{} end!!!", url);
         }catch (Exception e) {

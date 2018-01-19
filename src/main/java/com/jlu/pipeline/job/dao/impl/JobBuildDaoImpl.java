@@ -1,14 +1,14 @@
 package com.jlu.pipeline.job.dao.impl;
 
-import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
+import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
-
-import java.util.List;
 
 /**
  * Created by langshiquan on 18/1/15.
@@ -16,9 +16,17 @@ import java.util.List;
 @Repository
 public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBuildDao {
     @Override
-    public JobBuild get(Long pipelineBuildId, Long upStreamJobBuildId) {
+    public JobBuild getTopJob(Long pipelineBuildId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineBuildId", pipelineBuildId);
+        conditionAndSet.put("upStreamJobBuildId", 0L);
+        List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
+        return CollectionUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
+    }
+
+    @Override
+    public JobBuild get(Long upStreamJobBuildId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("upStreamJobBuildId", upStreamJobBuildId);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
         return CollectionUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);

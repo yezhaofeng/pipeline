@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
-import com.jlu.common.utils.DateUtil;
+import com.jlu.common.utils.DateUtils;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
 import com.jlu.github.model.GitHubCommit;
@@ -19,7 +19,6 @@ import com.jlu.github.model.Module;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IModuleService;
-import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.pipeline.model.PipelineConf;
 import com.jlu.pipeline.service.IPipelineBuildService;
 import com.jlu.pipeline.service.IPipelineConfService;
@@ -118,18 +117,6 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
 
 
     /**
-     * 初始化pipelineBuild
-     *
-     * @return
-     */
-    private PipelineBuild initPipelineBuild(Module module, String branchName, BranchType branchType) {
-        GithubBranch githubBranch = branchService.getBranchByModule(module.getId(), branchName);
-        PipelineBuild pipelineBuild = new PipelineBuild();
-        // TODO save
-        return pipelineBuild;
-    }
-
-    /**
      * 检查本次提交是否为新的分支，如果是则将该分支写库
      *
      * @param hookMessage
@@ -142,7 +129,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
                 GithubBranch githubBranch = new GithubBranch();
                 githubBranch.setBranchType(BranchType.BRANCH);
                 githubBranch.setBranchName(branchName);
-                githubBranch.setCreateTime(DateUtil.getNowDateFormat());
+                githubBranch.setCreateTime(DateUtils.getNowDateFormat());
                 githubBranch.setModuleId(module.getId());
                 githubBranch.setVersion(branchService.getLastThreeVersion(module));
                 branchService.saveBranch(githubBranch);

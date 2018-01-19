@@ -10,19 +10,18 @@ import com.jlu.github.model.GitHubCommit;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GithubFirstCommitBean {
     @JsonProperty("sha")
-    private String commitId;
+    private String sha;
 
     private Commit commit;
     @JsonProperty("html_url")
-    private String htmlUrl;
+    private String html_url;
 
-
-    public String getCommitId() {
-        return commitId;
+    public String getSha() {
+        return sha;
     }
 
-    public void setCommitId(String commitId) {
-        this.commitId = commitId;
+    public void setSha(String sha) {
+        this.sha = sha;
     }
 
     public Commit getCommit() {
@@ -33,12 +32,12 @@ public class GithubFirstCommitBean {
         this.commit = commit;
     }
 
-    public String getHtmlUrl() {
-        return htmlUrl;
+    public String getHtml_url() {
+        return html_url;
     }
 
-    public void setHtmlUrl(String htmlUrl) {
-        this.htmlUrl = htmlUrl;
+    public void setHtml_url(String html_url) {
+        this.html_url = html_url;
     }
 
     public class Commit {
@@ -73,10 +72,10 @@ public class GithubFirstCommitBean {
 
     public GitHubCommit toGithubCommit() {
         GitHubCommit gitHubCommit = new GitHubCommit();
-        gitHubCommit.setCommitUrl(this.getHtmlUrl());
+        gitHubCommit.setCommitUrl(this.getHtml_url());
         gitHubCommit.setCommitter(this.getCommit().getCommitter().getName());
         gitHubCommit.setCommitterEmail(this.getCommit().getCommitter().getEmail());
-        gitHubCommit.setCommitId(this.getCommitId());
+        gitHubCommit.setCommitId(this.getSha());
         return gitHubCommit;
     }
 

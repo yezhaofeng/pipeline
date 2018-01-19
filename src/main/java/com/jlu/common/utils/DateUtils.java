@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by niuwanpeng on 17/3/24.
  */
-public class DateUtil {
+public class DateUtils {
 
     private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

@@ -3,6 +3,7 @@ package com.jlu.github.web;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.jlu.common.utils.CiHomeReadConfig;
+import com.jlu.common.utils.HttpClientUtil;
+import com.jlu.github.bean.GithubFirstCommitBean;
+import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
 import com.jlu.user.bean.UserBean;
@@ -34,6 +41,8 @@ public class GithubDataController {
     @Autowired
     private IGithubDataService githubDataService;
 
+    @Autowired
+    private IGitHubCommitService gitHubCommitService;
     @Autowired
     private IGitHubHookService gitHubHookService;
 
@@ -104,5 +113,23 @@ public class GithubDataController {
     public String addModule(@RequestParam(value = "module") String module,
                             @RequestParam(value = "username") String username) {
         return githubDataService.addModule(username, module);
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test(String userName, String module) {
+        String requestBranchUrl
+                = String.format(CiHomeReadConfig.getConfigValueByKey("github.repo.commits"),
+                userName, module);
+        String result = HttpClientUtil.get(requestBranchUrl, null);
+        List<GithubFirstCommitBean> commits = new Gson().fromJson(result, new TypeToken<List<GithubFirstCommitBean>>() {
+        }.getType());
+        if (commits == null) {
+            return "";
+        }
+        GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
+
+        gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
+        return "";
     }
 }

@@ -1,6 +1,7 @@
 package com.jlu.pipeline.job.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.google.gson.Gson;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.plugin.bean.PluginType;
@@ -169,5 +171,13 @@ public class JobBuild {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Map<String, Object> getInParameterMap() {
+        return new Gson().fromJson(getInParams(), Map.class);
+    }
+
+    public Map<String, Object> getOutParameterMap() {
+        return new Gson().fromJson(getOutParams(), Map.class);
     }
 }

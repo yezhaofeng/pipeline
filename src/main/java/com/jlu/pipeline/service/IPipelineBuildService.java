@@ -14,8 +14,8 @@ public interface IPipelineBuildService {
 
     void build(Long pipelineConfId, GitHubCommit gitHubCommit);
 
-    Long initPipeline(PipelineConf pipelineConf);
+    Long initPipelineBuild(PipelineConf pipelineConf);
 
-    Long initPipeline(PipelineConf pipelineConf, GitHubCommit gitHubCommit);
+    Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit);
 
 }

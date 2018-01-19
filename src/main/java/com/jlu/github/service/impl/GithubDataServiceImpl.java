@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -19,12 +18,11 @@ import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 import com.jlu.common.utils.CiHomeReadConfig;
-import com.jlu.common.utils.DateUtil;
+import com.jlu.common.utils.DateUtils;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubRepoBean;
-import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.model.Module;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGithubDataService;
@@ -145,12 +143,12 @@ public class GithubDataServiceImpl implements IGithubDataService {
             if (module1 != null) {
                 result.put(MESSAGE, "该模块已存在，不需要再次配置！");
             } else {
-                LOGGER.info("Start init module:{} on user:{}", module, username);
-                Module ciHomeModule = new Module(module, username, DateUtil.getNowDateFormat());
+                LOGGER.info("Start initBuild module:{} on user:{}", module, username);
+                Module ciHomeModule = new Module(module, username, DateUtils.getNowDateFormat());
                 ciHomeModule.setVersion("1.0.0");
                 moduleService.saveModule(ciHomeModule);
                 try {
-                    LOGGER.info("Start init branch on module:{}, user:{}", module, username);
+                    LOGGER.info("Start initBuild branch on module:{}, user:{}", module, username);
                     this.initBranch(ciHomeModule, username);
                     LOGGER.info("Start create hook on module:{}, user:{}", module, username);
                     this.creatHooks(username, module, githubUser.getGitHubToken());
@@ -176,7 +174,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
     private List<Module> saveCiHomeModuleByBean(List<GithubRepoBean> repoList, String username) {
         List<Module> modules = new ArrayList<>();
         for (GithubRepoBean githubRepoBean : repoList) {
-            Module module = new Module(githubRepoBean.getName(), username, DateUtil.getNowDateFormat());
+            Module module = new Module(githubRepoBean.getName(), username, DateUtils.getNowDateFormat());
             module.setVersion("1.0.0");
             modules.add(module);
         }
@@ -216,7 +214,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
             BranchType branchType = branchBean.getName().equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
             GithubBranch githubBranch
                     = new GithubBranch(module.getId(), branchBean.getName(), branchType,
-                    this.getThreeVersion(branchType, version), DateUtil.getNowDateFormat());
+                    this.getThreeVersion(branchType, version), DateUtils.getNowDateFormat());
             githubBranches.add(githubBranch);
             this.initOneCommit(username, module, branchBean.getName());
         }
@@ -256,7 +254,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         githubUser.setUsername(userBean.getUsername());
         githubUser.setPassword(userBean.getPassword());
         githubUser.setUserEmail(userBean.getEmail());
-        githubUser.setCreateTime(DateUtil.getNowDateFormat());
+        githubUser.setCreateTime(DateUtils.getNowDateFormat());
         githubUser.setGitHubToken(userBean.getGitHubToken());
         return githubUser;
     }

@@ -80,7 +80,7 @@ public class MessageHolder {
 		} 
 		else {
 			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("The message source injected is not a CustomResourceBundleMessageSource, so we cannot get all messages.");
+				LOGGER.warn("The message source injected is not a CustomResourceBundleMessageSource, so we cannot getTopJob all messages.");
 			}
 			return new Properties();
 		}

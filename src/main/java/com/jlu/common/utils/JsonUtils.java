@@ -114,7 +114,7 @@ public class JsonUtils {
     }
 
     /**
-     * get JSONObject instance
+     * getTopJob JSONObject instance
      * @param json
      * @return
      */
@@ -127,7 +127,7 @@ public class JsonUtils {
     }
 
     /**
-     * get JSONObject instance
+     * getTopJob JSONObject instance
      * @param t
      * @param <T>
      * @return
