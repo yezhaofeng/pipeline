@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jlu.github.bean.GithubFirstCommitBean;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,7 @@ import com.jlu.common.utils.DateUtils;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.github.bean.GithubBranchBean;
+import com.jlu.github.bean.GithubFirstCommitBean;
 import com.jlu.github.bean.GithubRepoBean;
 import com.jlu.github.model.Module;
 import com.jlu.github.service.IGitHubCommitService;
@@ -100,8 +100,9 @@ public class GithubDataServiceImpl implements IGithubDataService {
         List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>() {
         }.getType());
         List<Module> modules = this.saveCiHomeModuleByBean(repoList, username);
-        for (Module module : modules) {
-            this.initBranch(module, username);
+        // 只初始化最新的3个模块
+        for (int i = 0; modules != null && i < modules.size() && i < 3; i++) {
+            this.initBranch(modules.get(i), username);
         }
         return true;
     }
@@ -173,6 +174,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      */
     private List<Module> saveCiHomeModuleByBean(List<GithubRepoBean> repoList, String username) {
         List<Module> modules = new ArrayList<>();
+
         for (GithubRepoBean githubRepoBean : repoList) {
             Module module = new Module(githubRepoBean.getName(), username, DateUtils.getNowDateFormat());
             module.setVersion("1.0.0");
