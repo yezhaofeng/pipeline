@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.JobConfBean;
+import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.model.JobBuild;
 
 /**
@@ -13,11 +14,14 @@ import com.jlu.pipeline.job.model.JobBuild;
 public interface IJobBuildService {
     Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId, Map<String, Object> params);
 
-    void buildTopJob(Long pipelineBuildId);
+    // 当构建整条流水线的时候执行
+    void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode, String triggerUser);
 
-    void build(Long jobBuildId, Map<String, Object> execParam);
+    void build(Long jobBuildId, Map<String, Object> execParam, TriggerMode triggerMode, String triggerUser);
 
-    void notifiedJobBuildFinished(JobBuild jobBuild);
+    void notifiedJobBuildFinished(JobBuild jobBuild, Map<String,Object> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
+
+    void saveOrUpdate(JobBuild jobBuild);
 }

@@ -62,7 +62,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public void build(Long pipelineConfId) {
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
         Long pipelineBuildId = initPipelineBuild(pipelineConf);
-        jobBuildService.buildTopJob(pipelineBuildId);
+        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, LoginHelper.getLoginerUserName());
     }
 
     /**
@@ -90,7 +90,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public void build(Long pipelineConfId, GitHubCommit gitHubCommit) {
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
         Long pipelineBuildId = initPipelineBuild(pipelineConf, gitHubCommit);
-        jobBuildService.buildTopJob(pipelineBuildId);
+        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
     }
 
 

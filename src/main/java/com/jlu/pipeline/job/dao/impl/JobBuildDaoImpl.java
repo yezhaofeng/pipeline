@@ -27,7 +27,7 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
     }
 
     @Override
-    public JobBuild getByuUStreamJobBuildId(Long upStreamJobBuildId) {
+    public JobBuild getByUpStreamJobBuildId(Long upStreamJobBuildId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("upStreamJobBuildId", upStreamJobBuildId);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);

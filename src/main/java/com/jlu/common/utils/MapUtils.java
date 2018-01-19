@@ -17,7 +17,7 @@ public class MapUtils {
         }
         Set<String> keySet = source.keySet();
         for (String key : keySet) {
-            target.put(key, target.get(key));
+            target.put(key, source.get(key));
         }
         return target;
     }

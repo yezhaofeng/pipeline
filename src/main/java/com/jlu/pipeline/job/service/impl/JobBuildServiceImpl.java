@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.MapUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
@@ -52,6 +51,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setPipelineBuildId(pipelineBuildId);
         jobBuild.setJobStatus(PipelineJobStatus.INIT);
         jobBuild.setName(jobConfBean.getName());
+        jobBuild.setTriggerMode(jobConfBean.getTriggerMode());
         Map<String, Object> confParam = jobConfBean.getParameterMap();
         // 系统参数优于用户自定义参数
         Map<String, Object> mergedParam = MapUtils.merge(confParam, params);
@@ -66,13 +66,15 @@ public class JobBuildServiceImpl implements IJobBuildService {
     }
 
     @Override
-    public void build(Long jobBuildId, Map<String, Object> execParam) {
+    public void build(Long jobBuildId, Map<String, Object> execParam, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("TODO");
         }
-        jobBuild.setStartTime(new Date());
+        jobBuild.setTriggerTime(new Date());
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+        jobBuild.setTriggerUser(triggerUser);
+        jobBuild.setTriggerMode(triggerMode);
         jobBuildDao.save(jobBuild);
         // 如果是头job，则更新流水线状态
         if (jobBuild.getUpStreamJobBuildId() == 0L) {
@@ -81,11 +83,11 @@ public class JobBuildServiceImpl implements IJobBuildService {
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PluginType pluginType = jobBuild.getPluginType();
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam);
-        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().execute(jobBuildContext, jobBuild);
+        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
     }
 
     @Override
-    public void buildTopJob(Long pipelineBuildId) {
+    public void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.getTopJob(pipelineBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("未找到job");
@@ -96,13 +98,15 @@ public class JobBuildServiceImpl implements IJobBuildService {
             return;
         }
         updatePipelineBuild(pipelineBuildId, PipelineJobStatus.RUNNING);
-        jobBuild.setStartTime(new Date());
+        jobBuild.setTriggerUser(triggerUser);
+        jobBuild.setTriggerMode(triggerMode);
+        jobBuild.setTriggerTime(new Date());
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         jobBuildDao.save(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>());
-        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().execute(jobBuildContext, jobBuild);
+        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
     }
 
     private void updatePipelineBuild(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
@@ -118,37 +122,39 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuildContext.setPipelineBuild(pipelineBuild);
         jobBuildContext.setJobExecParam(params);
         // 处理jobBuild的参数
-        // FIXME: 18/1/19 
-        Map<String, Object> originParams = new Gson().fromJson(jobBuild.getInParams(), Map.class);
+        Map<String, Object> originParams = jobBuild.getInParameterMap();
         Map<String, Object> newParams = MapUtils.merge(originParams, params);
-        String paramStr = new Gson().toJson(newParams);
+        String paramStr = JSON.toJSONString(newParams);
         jobBuild.setInParams(paramStr);
         jobBuildDao.save(jobBuild);
         return jobBuildContext;
     }
 
     @Override
-    public void notifiedJobBuildFinished(JobBuild jobBuild) {
-        // 保存job状态
+    public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, Object> newOutParams) {
+        // 保存job状态，以及参数
+        Map<String, Object> outParams = MapUtils.merge(jobBuild.getInParameterMap(), newOutParams);
+        jobBuild.setOutParams(JSON.toJSONString(outParams));
         jobBuild.setEndTime(new Date());
         jobBuildDao.save(jobBuild);
         // 更新下游job状态
         Long jobBuildId = jobBuild.getId();
         Map<String, Object> params = jobBuild.getOutParameterMap();
-        JobBuild lowStreamJobBuild = jobBuildDao.getByuUStreamJobBuildId(jobBuildId);
+        JobBuild lowStreamJobBuild = jobBuildDao.getByUpStreamJobBuildId(jobBuildId);
         if (lowStreamJobBuild == null) {
             // 流水线结束
-            updatePipelineBuild(lowStreamJobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
+            updatePipelineBuild(jobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
+            return;
         }
         Map<String, Object> originParams = lowStreamJobBuild.getInParameterMap();
         Map<String, Object> newParams = MapUtils.merge(originParams, params);
-        lowStreamJobBuild.setInParams(new Gson().toJson(newParams));
+        lowStreamJobBuild.setInParams(JSON.toJSONString(newParams));
         jobBuildDao.save(lowStreamJobBuild);
 
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建
-            build(lowStreamJobBuild.getId(), new HashedMap());
+            build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
         }
     }
 
@@ -163,6 +169,11 @@ public class JobBuildServiceImpl implements IJobBuildService {
         }
         // jobBuild是按照id从小到大的顺序排列的,此处查询出来也是如此，不需要再次排序
         return jobBuildBeanList;
+    }
+
+    @Override
+    public void saveOrUpdate(JobBuild jobBuild) {
+        jobBuildDao.save(jobBuild);
     }
 
 }

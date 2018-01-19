@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.plugin.bean.PluginType;
@@ -182,10 +182,10 @@ public class JobBuild {
     }
 
     public Map<String, Object> getInParameterMap() {
-        return new Gson().fromJson(getInParams(), Map.class);
+        return JSON.parseObject(getInParams());
     }
 
     public Map<String, Object> getOutParameterMap() {
-        return new Gson().fromJson(getOutParams(), Map.class);
+        return JSON.parseObject(getOutParams());
     }
 }

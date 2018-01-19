@@ -11,7 +11,7 @@ public class LoginHelper {
     }
 
     public static String getLoginerUserName() {
-        return getLoginerUser().getUsername();
+        return getLoginerUser().getUsername() + "login";
     }
 
 }

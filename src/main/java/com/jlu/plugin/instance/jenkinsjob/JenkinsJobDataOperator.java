@@ -35,7 +35,7 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobBuild, Jenki
 
     @Override
     public Long initRealJobBuildByRealJobConf(Long pluginConfId) {
-        System.out.println(pluginConfId + "============");
+        System.out.println(pluginConfId + "=x===========");
         return super.initRealJobBuildByRealJobConf(pluginConfId);
     }
 }

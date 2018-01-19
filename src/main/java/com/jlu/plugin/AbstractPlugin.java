@@ -24,8 +24,10 @@ public abstract class AbstractPlugin<JobT, BuildT> {
     public abstract PluginConfig getConfig();
 
     private final IExecutor defaultExcutor = new IExecutor() {
+
         @Override
         public void execute(JobBuildContext context, JobBuild jobBuild) {
+
         }
     };
 
