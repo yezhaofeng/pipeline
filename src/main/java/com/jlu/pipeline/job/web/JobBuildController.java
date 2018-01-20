@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
+import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.service.IJobBuildService;
 
@@ -29,5 +30,11 @@ public class JobBuildController extends AbstractController {
         jobBuildService.build(jobBuildId, execParam, TriggerMode.MANUAL, getLoginUserName());
         return ResponseBean.TRUE;
     }
+
+    @RequestMapping(value = "{jobBuildId}", method = RequestMethod.GET)
+    public JobBuildBean buildInfo(@PathVariable Long jobBuildId) {
+        return jobBuildService.getBuildInfo(jobBuildId);
+    }
+
 }
 

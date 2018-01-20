@@ -54,7 +54,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setTriggerMode(jobConfBean.getTriggerMode());
         Map<String, Object> confParam = jobConfBean.getParameterMap();
         // 系统参数优于用户自定义参数
-        Map<String, Object> mergedParam = MapUtils.merge(confParam, params);
+        Map<String, Object> mergedParam = MapUtils.merge(params, confParam);
         jobBuild.setInParams(JSON.toJSONString(mergedParam));
         PluginType pluginType = jobConfBean.getPluginType();
         jobBuild.setPluginType(pluginType);
@@ -116,14 +116,15 @@ public class JobBuildServiceImpl implements IJobBuildService {
         pipelineBuildDao.save(pipelineBuild);
     }
 
-    private JobBuildContext initJobBuildContext(Long pipelineBuildId, JobBuild jobBuild, Map<String, Object> params) {
+    private JobBuildContext initJobBuildContext(Long pipelineBuildId, JobBuild jobBuild,
+                                                Map<String, Object> execParams) {
         JobBuildContext jobBuildContext = new JobBuildContext();
         PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
         jobBuildContext.setPipelineBuild(pipelineBuild);
-        jobBuildContext.setJobExecParam(params);
+        jobBuildContext.setJobExecParam(execParams);
         // 处理jobBuild的参数
         Map<String, Object> originParams = jobBuild.getInParameterMap();
-        Map<String, Object> newParams = MapUtils.merge(originParams, params);
+        Map<String, Object> newParams = MapUtils.merge(execParams, originParams);
         String paramStr = JSON.toJSONString(newParams);
         jobBuild.setInParams(paramStr);
         jobBuildDao.save(jobBuild);
@@ -133,7 +134,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
     @Override
     public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, Object> newOutParams) {
         // 保存job状态，以及参数
-        Map<String, Object> outParams = MapUtils.merge(jobBuild.getInParameterMap(), newOutParams);
+        Map<String, Object> outParams = MapUtils.merge(newOutParams, jobBuild.getInParameterMap());
         jobBuild.setOutParams(JSON.toJSONString(outParams));
         jobBuild.setEndTime(new Date());
         jobBuildDao.save(jobBuild);
@@ -147,7 +148,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
             return;
         }
         Map<String, Object> originParams = lowStreamJobBuild.getInParameterMap();
-        Map<String, Object> newParams = MapUtils.merge(originParams, params);
+        Map<String, Object> newParams = MapUtils.merge(params, originParams);
         lowStreamJobBuild.setInParams(JSON.toJSONString(newParams));
         jobBuildDao.save(lowStreamJobBuild);
 
@@ -174,6 +175,17 @@ public class JobBuildServiceImpl implements IJobBuildService {
     @Override
     public void saveOrUpdate(JobBuild jobBuild) {
         jobBuildDao.save(jobBuild);
+    }
+
+    @Override
+    public JobBuildBean getBuildInfo(Long jobBuildId) {
+        JobBuildBean jobBuildBean = new JobBuildBean();
+        JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
+        BeanUtils.copyProperties(jobBuild, jobBuildBean);
+        Object pluginBuild = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator()
+                .getBuild(jobBuild.getPipelineBuildId());
+        jobBuildBean.setPluginBuild(pluginBuild);
+        return jobBuildBean;
     }
 
 }
