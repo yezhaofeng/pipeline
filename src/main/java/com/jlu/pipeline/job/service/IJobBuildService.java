@@ -24,4 +24,6 @@ public interface IJobBuildService {
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 
     void saveOrUpdate(JobBuild jobBuild);
+
+    JobBuildBean getBuildInfo(Long jobBuildId);
 }

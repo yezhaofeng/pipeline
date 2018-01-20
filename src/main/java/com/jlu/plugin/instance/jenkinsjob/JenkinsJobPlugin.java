@@ -15,7 +15,7 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobConf;
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class JenkinsJobPlugin extends AbstractPlugin<JenkinsJobBuild,JenkinsJobConf> {
+public class JenkinsJobPlugin extends AbstractPlugin<JenkinsJobConf, JenkinsJobBuild> {
 
     private final PluginType pluginType = PluginType.JENKINS_JOB;
     private final PluginConfig pluginConfig = new PluginConfig(pluginType, pluginType.getPluginName());
@@ -31,7 +31,7 @@ public class JenkinsJobPlugin extends AbstractPlugin<JenkinsJobBuild,JenkinsJobC
     }
 
     @Override
-    public IDataOperator<JenkinsJobBuild, JenkinsJobConf> getDataOperator() {
+    public IDataOperator<JenkinsJobConf, JenkinsJobBuild> getDataOperator() {
         return jenkinsJobDataOperator;
     }
 

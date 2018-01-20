@@ -7,4 +7,6 @@ import com.jlu.jenkins.model.JenkinsConf;
  */
 public interface IJenkinsConfService {
     void saveOrUpdate(JenkinsConf jenkinsConf);
+
+    JenkinsConf get(Long id);
 }

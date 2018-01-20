@@ -19,6 +19,10 @@ public abstract class IExecutor {
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
         jobBuild.setStartTime(new Date());
         jobBuildService.saveOrUpdate(jobBuild);
+        Long pluginBuildId = jobBuild.getPluginBuildId();
+        if (pluginBuildId == null || pluginBuildId == -1L) {
+            return;
+        }
         execute(context, jobBuild);
     }
 

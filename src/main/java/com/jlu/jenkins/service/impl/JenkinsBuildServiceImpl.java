@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.jenkins.bean.JenkinsBuildDTO;
+import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
+import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
@@ -31,6 +33,8 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     @Autowired
     private IJenkinsServerService jenkinsServerService;
 
+    @Autowired
+    private IJenkinsConfDao jenkinsConfDao;
     @Autowired
     private ITimerService timerService;
 
@@ -57,6 +61,28 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
                 jenkinsServer, jobName, buildNumber);
         timerService.register(jenkinsBuildTimerTask, delay, period);
         return buildNumber;
+    }
+
+    @Override
+    public Integer buildJob(Long jenkinsServerId, String jobName, Map<String, Object> params) throws IOException {
+        JenkinsConf jenkinsConf = jenkinsConfDao.findById(jenkinsServerId);
+        JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(jenkinsConf.getServerUrl(),
+                jenkinsConf.getMasterUser(), jenkinsConf.getMasterPassword());
+        Boolean isExists = jenkinsServerService.isExists(jenkinsServer, jobName);
+        if (!isExists) {
+            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.NOT_FOUND_JOB);
+        }
+        Long lastSuccessfulBuildDuration = jenkinsServerService.getLastSuccessfulBuildDuration(jenkinsServer, jobName);
+        Long delay = lastSuccessfulBuildDuration / 2;
+        Long period = lastSuccessfulBuildDuration / 20;
+        period = period > defaultPerid ? period : defaultPerid;
+
+        Integer buildNumber = jenkinsServerService.build(jenkinsServer, jobName, params);
+        JenkinsBuildTimerTask jenkinsBuildTimerTask = new JenkinsBuildTimerTask(this, jenkinsServerService,
+                jenkinsServer, jobName, buildNumber);
+        timerService.register(jenkinsBuildTimerTask, delay, period);
+        return buildNumber;
+        return null;
     }
 
     @Override

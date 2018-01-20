@@ -3,7 +3,7 @@ package com.jlu.jenkins.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlu.jenkins.dao.JenkinsConfDao;
+import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsConfService;
 
@@ -14,10 +14,15 @@ import com.jlu.jenkins.service.IJenkinsConfService;
 public class JenkinsConfServiceImpl implements IJenkinsConfService {
 
     @Autowired
-    private JenkinsConfDao jenkinsConfDao;
+    private IJenkinsConfDao IJenkinsConfDao;
 
     @Override
     public void saveOrUpdate(JenkinsConf jenkinsConf) {
-        jenkinsConfDao.save(jenkinsConf);
+        IJenkinsConfDao.save(jenkinsConf);
+    }
+
+    @Override
+    public JenkinsConf get(Long id) {
+        return IJenkinsConfDao.findById(id);
     }
 }
