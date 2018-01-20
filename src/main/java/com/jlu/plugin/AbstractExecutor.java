@@ -11,7 +11,7 @@ import com.jlu.plugin.bean.JobBuildContext;
 /**
  * Job executor
  */
-public abstract class IExecutor {
+public abstract class AbstractExecutor {
 
     @Autowired
     protected IJobBuildService jobBuildService;
@@ -20,7 +20,7 @@ public abstract class IExecutor {
         jobBuild.setStartTime(new Date());
         jobBuildService.saveOrUpdate(jobBuild);
         Long pluginBuildId = jobBuild.getPluginBuildId();
-        if (pluginBuildId == null || pluginBuildId == -1L) {
+        if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
             return;
         }
         execute(context, jobBuild);

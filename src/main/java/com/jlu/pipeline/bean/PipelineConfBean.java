@@ -2,12 +2,15 @@ package com.jlu.pipeline.bean;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.model.PipelineConf;
 
 /**
  * Created by langshiquan on 18/1/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PipelineConfBean extends PipelineConf {
 
     private List<JobConfBean> jobConfs;

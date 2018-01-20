@@ -59,7 +59,7 @@ public class JobConfServiceImpl implements IJobConfService {
         jobConf.setParams(params);
         jobConf.setPipelineConfId(pipelineConfId);
         AbstractPlugin abstractPlugin = pluginInfoService.getRealJobPlugin(jobConf.getPluginType());
-        Long pluginConfId = abstractPlugin.getDataOperator().saveJob(jobConfBean.getPluginConf());
+        Long pluginConfId = abstractPlugin.getDataOperator().saveConf(jobConfBean.getPluginConf());
         jobConf.setPluginConfId(pluginConfId);
         jobConfDao.saveOrUpdate(jobConf);
         return jobConf;
@@ -107,7 +107,7 @@ public class JobConfServiceImpl implements IJobConfService {
             jobConfBean.setParameterMap((Map<String, String>) JSON.parse(params));
             jobConfBean.setPluginConf((JSONObject) JsonUtils
                     .getJsonObject(pluginInfoService.getRealJobPlugin(jobConf.getPluginType()).getDataOperator()
-                            .getJob(jobConf.getPluginConfId())));
+                            .getConf(jobConf.getPluginConfId())));
             jobConfBeanList.add(jobConfBean);
         }
         return sortJobConfBeanList(jobConfBeanList);

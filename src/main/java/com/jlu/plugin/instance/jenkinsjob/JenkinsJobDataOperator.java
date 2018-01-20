@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.common.utils.JsonUtils;
-import com.jlu.plugin.IDataOperator;
+import com.jlu.plugin.AbstractDataOperator;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobConfDao;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
@@ -16,7 +16,7 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobConf;
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, JenkinsJobBuild> {
+public class JenkinsJobDataOperator extends AbstractDataOperator<JenkinsJobConf, JenkinsJobBuild> {
 
     @Autowired
     private IJenkinsJobConfDao jenkinsJobConfDao;
@@ -25,7 +25,7 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, Jenkin
     private IJenkinsJobBuildDao jenkinsJobBuildDao;
 
     @Override
-    public Long saveJob(JSONObject json) {
+    public Long saveConf(JSONObject json) {
         // FIXME: 18/1/20
         JenkinsJobConf jenkinsJobConf = JsonUtils.getObjectByJsonObject(json, JenkinsJobConf.class);
         jenkinsJobConfDao.saveOrUpdate(jenkinsJobConf);
@@ -33,7 +33,7 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, Jenkin
     }
 
     @Override
-    public JenkinsJobConf getJob(Long id) {
+    public JenkinsJobConf getConf(Long id) {
         return jenkinsJobConfDao.findById(id);
     }
 
@@ -43,7 +43,7 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, Jenkin
     }
 
     @Override
-    public Long initRealJobBuildByRealJobConf(Long pluginConfId) {
+    public Long initPluginBuildByPluginConf(Long pluginConfId) {
         JenkinsJobConf jenkinsJobConf = jenkinsJobConfDao.findById(pluginConfId);
         JenkinsJobBuild jenkinsJobBuild = new JenkinsJobBuild();
         BeanUtils.copyProperties(jenkinsJobConf,jenkinsJobBuild);

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.plugin.AbstractPlugin;
-import com.jlu.plugin.IDataOperator;
-import com.jlu.plugin.IExecutor;
+import com.jlu.plugin.AbstractDataOperator;
+import com.jlu.plugin.AbstractExecutor;
 import com.jlu.plugin.bean.PluginConfig;
 import com.jlu.plugin.bean.PluginType;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
@@ -21,17 +21,17 @@ public class JenkinsJobPlugin extends AbstractPlugin<JenkinsJobConf, JenkinsJobB
     private final PluginConfig pluginConfig = new PluginConfig(pluginType, pluginType.getPluginName());
 
     @Autowired
-    private JenkinsJobExecutor jenkinsJobExecutor;
+    private JenkinsJobAbstractExecutor jenkinsJobExecutor;
     @Autowired
     private JenkinsJobDataOperator jenkinsJobDataOperator;
 
     @Override
-    public IExecutor getExecutor() {
+    public AbstractExecutor getExecutor() {
         return jenkinsJobExecutor;
     }
 
     @Override
-    public IDataOperator<JenkinsJobConf, JenkinsJobBuild> getDataOperator() {
+    public AbstractDataOperator<JenkinsJobConf, JenkinsJobBuild> getDataOperator() {
         return jenkinsJobDataOperator;
     }
 

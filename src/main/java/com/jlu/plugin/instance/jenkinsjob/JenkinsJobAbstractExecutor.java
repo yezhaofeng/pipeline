@@ -10,7 +10,7 @@ import com.jlu.jenkins.service.IJenkinsConfService;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
-import com.jlu.plugin.IExecutor;
+import com.jlu.plugin.AbstractExecutor;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
@@ -19,7 +19,7 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
  * Created by langshiquan on 18/1/14.
  */
 @Service
-public class JenkinsJobExecutor extends IExecutor {
+public class JenkinsJobAbstractExecutor extends AbstractExecutor {
 
     @Autowired
     private IJenkinsBuildService jenkinsBuildService;

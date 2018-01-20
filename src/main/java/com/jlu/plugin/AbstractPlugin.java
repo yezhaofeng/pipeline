@@ -11,10 +11,10 @@ import com.jlu.plugin.bean.PluginConfig;
 /**
  * Agile Real Job Plugin
  *
- * @param <JobT>   Job type
+ * @param <ConfT>   Job type
  * @param <BuildT> JobBuild type
  */
-public abstract class AbstractPlugin<JobT, BuildT> {
+public abstract class AbstractPlugin<ConfT, BuildT> {
 
     /**
      * Get job common base config
@@ -23,7 +23,7 @@ public abstract class AbstractPlugin<JobT, BuildT> {
      */
     public abstract PluginConfig getConfig();
 
-    private final IExecutor defaultExcutor = new IExecutor() {
+    private final AbstractExecutor defaultExcutor = new AbstractExecutor() {
 
         @Override
         public void execute(JobBuildContext context, JobBuild jobBuild) {
@@ -37,19 +37,19 @@ public abstract class AbstractPlugin<JobT, BuildT> {
      * @return excutor, not null
      */
     @NotNull
-    public IExecutor getExecutor() {
+    public AbstractExecutor getExecutor() {
         return defaultExcutor;
     }
 
-    private final IDataOperator<JobT, BuildT> defaultDataOperator = new IDataOperator<JobT, BuildT>() {
+    private final AbstractDataOperator<ConfT, BuildT> defaultDataOperator = new AbstractDataOperator<ConfT, BuildT>() {
         @Override
-        public Long saveJob(JSONObject json) {
+        public Long saveConf(JSONObject json) {
             // do nothing
             return 0L;
         }
 
         @Override
-        public JobT getJob(Long id) {
+        public ConfT getConf(Long id) {
             return null;
         }
 
@@ -65,7 +65,7 @@ public abstract class AbstractPlugin<JobT, BuildT> {
      * @return data operator, not null
      */
     @NotNull
-    public IDataOperator<JobT, BuildT> getDataOperator() {
+    public AbstractDataOperator<ConfT, BuildT> getDataOperator() {
         return defaultDataOperator;
     }
 

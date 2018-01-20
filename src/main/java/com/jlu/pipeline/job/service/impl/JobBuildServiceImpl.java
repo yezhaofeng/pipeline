@@ -58,7 +58,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setInParams(JSON.toJSONString(mergedParam));
         PluginType pluginType = jobConfBean.getPluginType();
         jobBuild.setPluginType(pluginType);
-        Long pluginBuildId = pluginInfoService.getRealJobPlugin(pluginType).getDataOperator().initRealJobBuildByRealJobConf(jobConfBean.getPluginConfId());
+        Long pluginBuildId = pluginInfoService.getRealJobPlugin(pluginType).getDataOperator().initPluginBuildByPluginConf(jobConfBean.getPluginConfId());
         jobBuild.setPluginBuildId(pluginBuildId);
 
         jobBuildDao.save(jobBuild);

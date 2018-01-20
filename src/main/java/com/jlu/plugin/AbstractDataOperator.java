@@ -8,18 +8,18 @@ import org.codehaus.jettison.json.JSONObject;
  * @param <ConfT>  Job conf type
  * @param <BuildT> Job build type
  */
-public abstract class IDataOperator<ConfT, BuildT> {
+public abstract class AbstractDataOperator<ConfT, BuildT> {
 
-    public abstract Long saveJob(JSONObject json);
+    public abstract Long saveConf(JSONObject json);
 
-    public abstract ConfT getJob(Long id);
+    public abstract ConfT getConf(Long id);
 
     public abstract BuildT getBuild(Long id);
 
     public void updateBuild(JSONObject json) {
     }
 
-    public Long initRealJobBuildByRealJobConf(Long pluginConfId) {
+    public Long initPluginBuildByPluginConf(Long pluginConfId) {
         return -1L;
     }
 
