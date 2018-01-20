@@ -40,4 +40,13 @@ public class JenkinsJobConf {
         this.jobName = jobName;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JenkinsJobConf{");
+        sb.append("id=").append(id);
+        sb.append(", jenkinsServerId=").append(jenkinsServerId);
+        sb.append(", jobName='").append(jobName).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

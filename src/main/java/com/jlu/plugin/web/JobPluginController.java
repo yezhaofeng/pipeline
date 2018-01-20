@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,17 @@ public class JobPluginController {
         pluginInfoService.initJobPluginConfigs();
         return ResponseBean.TRUE;
     }
+
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseBean test(@RequestBody ConfBean confBean) {
+
+        System.out.println(confBean);
+        confBean.getBuild();
+        System.out.println(confBean.getConf());
+        return ResponseBean.TRUE;
+    }
+
 
 }
 

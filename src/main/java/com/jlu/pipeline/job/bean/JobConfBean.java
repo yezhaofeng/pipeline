@@ -2,11 +2,11 @@ package com.jlu.pipeline.job.bean;
 
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jlu.common.deserializer.JSONObjectDeserializer;
 import com.jlu.common.deserializer.JSONObjectSerializer;
 import com.jlu.pipeline.job.model.JobConf;
@@ -17,6 +17,7 @@ import com.jlu.pipeline.job.model.JobConf;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobConfBean extends JobConf {
     private JSONObject pluginConf;
+
     private Map<String, String> parameterMap;
 
     @JsonSerialize(using = JSONObjectSerializer.class)
