@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import com.alibaba.fastjson.JSON;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
@@ -181,11 +183,11 @@ public class JobBuild {
         this.message = message;
     }
 
-    public Map<String, Object> getInParameterMap() {
-        return JSON.parseObject(getInParams());
+    public Map<String, String> getInParameterMap() {
+        return new HashedMap((Map) JSON.parseObject(getInParams()));
     }
 
-    public Map<String, Object> getOutParameterMap() {
-        return JSON.parseObject(getOutParams());
+    public Map<String, String> getOutParameterMap() {
+        return new HashedMap((Map) JSON.parseObject(getInParams()));
     }
 }

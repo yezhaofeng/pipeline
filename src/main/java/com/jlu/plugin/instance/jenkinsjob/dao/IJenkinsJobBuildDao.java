@@ -6,5 +6,6 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
 /**
  * Created by langshiquan on 18/1/20.
  */
+
 public interface IJenkinsJobBuildDao extends IBaseDao<JenkinsJobBuild> {
 }

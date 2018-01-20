@@ -17,4 +17,5 @@ public interface IPluginInfoService {
     void initJobPluginConfigs();
 
     AbstractPlugin getRealJobPlugin(PluginType pluginType);
+
 }

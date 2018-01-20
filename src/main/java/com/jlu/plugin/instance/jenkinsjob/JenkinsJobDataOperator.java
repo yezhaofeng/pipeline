@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
+import com.jlu.common.utils.JsonUtils;
 import com.jlu.plugin.IDataOperator;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobConfDao;
@@ -26,8 +26,9 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, Jenkin
 
     @Override
     public Long saveJob(JSONObject json) {
-        JenkinsJobConf jenkinsJobConf = (JenkinsJobConf) JSON.parse(json.toString());
-        jenkinsJobConfDao.save(jenkinsJobConf);
+        // FIXME: 18/1/20
+        JenkinsJobConf jenkinsJobConf = JsonUtils.getObjectByJsonObject(json, JenkinsJobConf.class);
+        jenkinsJobConfDao.saveOrUpdate(jenkinsJobConf);
         return jenkinsJobConf.getId();
     }
 
@@ -47,7 +48,7 @@ public class JenkinsJobDataOperator extends IDataOperator<JenkinsJobConf, Jenkin
         JenkinsJobBuild jenkinsJobBuild = new JenkinsJobBuild();
         BeanUtils.copyProperties(jenkinsJobConf,jenkinsJobBuild);
         jenkinsJobBuild.setId(null);
-        jenkinsJobBuildDao.save(jenkinsJobBuild);
+        jenkinsJobBuildDao.saveOrUpdate(jenkinsJobBuild);
         return jenkinsJobBuild.getId();
     }
 }

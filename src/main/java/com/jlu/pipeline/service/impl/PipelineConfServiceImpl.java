@@ -46,7 +46,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
 
         pipelineConf.setLastModifiedUser(userName);
         pipelineConf.setLastModifiedTime(new Date());
-        pipelineConfDao.save(pipelineConf);
+        pipelineConfDao.saveOrUpdate(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
         jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
     }

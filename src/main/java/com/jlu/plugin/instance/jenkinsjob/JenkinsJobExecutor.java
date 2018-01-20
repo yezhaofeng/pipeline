@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsConfService;
+import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
+import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.IExecutor;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
@@ -28,7 +30,8 @@ public class JenkinsJobExecutor extends IExecutor {
     @Autowired
     private IJenkinsJobBuildDao jenkinsJobDao;
 
-
+    @Autowired
+    private IJobBuildService jobBuildService;
 
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
@@ -36,9 +39,11 @@ public class JenkinsJobExecutor extends IExecutor {
 
         try {
             jenkinsBuildService.buildJob(jenkinsJobBuild.getJenkinsServerId(), jenkinsJobBuild.getJobName(), jobBuild
-                    .getInParameterMap());
+                    .getInParameterMap(), jobBuild);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+        jobBuildService.saveOrUpdate(jobBuild);
     }
 }

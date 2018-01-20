@@ -44,7 +44,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
 
     @Override
     public Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId,
-                          Map<String, Object> params) {
+                          Map<String, String> params) {
         JobBuild jobBuild = new JobBuild();
         jobBuild.setJobConfId(jobConfBean.getId());
         jobBuild.setUpStreamJobBuildId(upStreamJobBuildId);
@@ -52,9 +52,9 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setJobStatus(PipelineJobStatus.INIT);
         jobBuild.setName(jobConfBean.getName());
         jobBuild.setTriggerMode(jobConfBean.getTriggerMode());
-        Map<String, Object> confParam = jobConfBean.getParameterMap();
+        Map<String, String> confParam = jobConfBean.getParameterMap();
         // 系统参数优于用户自定义参数
-        Map<String, Object> mergedParam = MapUtils.merge(params, confParam);
+        Map<String, String> mergedParam = MapUtils.merge(params, confParam);
         jobBuild.setInParams(JSON.toJSONString(mergedParam));
         PluginType pluginType = jobConfBean.getPluginType();
         jobBuild.setPluginType(pluginType);
@@ -66,7 +66,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
     }
 
     @Override
-    public void build(Long jobBuildId, Map<String, Object> execParam, TriggerMode triggerMode, String triggerUser) {
+    public void build(Long jobBuildId, Map<String, String> execParam, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("TODO");
@@ -75,7 +75,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         jobBuild.setTriggerUser(triggerUser);
         jobBuild.setTriggerMode(triggerMode);
-        jobBuildDao.save(jobBuild);
+        jobBuildDao.saveOrUpdate(jobBuild);
         // 如果是头job，则更新流水线状态
         if (jobBuild.getUpStreamJobBuildId() == 0L) {
             updatePipelineBuild(jobBuild.getPipelineBuildId(), PipelineJobStatus.RUNNING);
@@ -102,7 +102,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuild.setTriggerMode(triggerMode);
         jobBuild.setTriggerTime(new Date());
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
-        jobBuildDao.save(jobBuild);
+        jobBuildDao.saveOrUpdate(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>());
@@ -113,44 +113,44 @@ public class JobBuildServiceImpl implements IJobBuildService {
         PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
         pipelineBuild.setStartTime(new Date());
         pipelineBuild.setPipelineStatus(pipelineStatus);
-        pipelineBuildDao.save(pipelineBuild);
+        pipelineBuildDao.saveOrUpdate(pipelineBuild);
     }
 
     private JobBuildContext initJobBuildContext(Long pipelineBuildId, JobBuild jobBuild,
-                                                Map<String, Object> execParams) {
+                                                Map<String, String> execParams) {
         JobBuildContext jobBuildContext = new JobBuildContext();
         PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
         jobBuildContext.setPipelineBuild(pipelineBuild);
         jobBuildContext.setJobExecParam(execParams);
         // 处理jobBuild的参数
-        Map<String, Object> originParams = jobBuild.getInParameterMap();
-        Map<String, Object> newParams = MapUtils.merge(execParams, originParams);
+        Map<String, String> originParams = jobBuild.getInParameterMap();
+        Map<String, String> newParams = MapUtils.merge(execParams, originParams);
         String paramStr = JSON.toJSONString(newParams);
         jobBuild.setInParams(paramStr);
-        jobBuildDao.save(jobBuild);
+        jobBuildDao.saveOrUpdate(jobBuild);
         return jobBuildContext;
     }
 
     @Override
-    public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, Object> newOutParams) {
+    public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams) {
         // 保存job状态，以及参数
-        Map<String, Object> outParams = MapUtils.merge(newOutParams, jobBuild.getInParameterMap());
+        Map<String, String> outParams = MapUtils.merge(newOutParams, jobBuild.getInParameterMap());
         jobBuild.setOutParams(JSON.toJSONString(outParams));
         jobBuild.setEndTime(new Date());
-        jobBuildDao.save(jobBuild);
+        jobBuildDao.saveOrUpdate(jobBuild);
         // 更新下游job状态
         Long jobBuildId = jobBuild.getId();
-        Map<String, Object> params = jobBuild.getOutParameterMap();
+        Map<String, String> params = jobBuild.getOutParameterMap();
         JobBuild lowStreamJobBuild = jobBuildDao.getByUpStreamJobBuildId(jobBuildId);
         if (lowStreamJobBuild == null) {
             // 流水线结束
             updatePipelineBuild(jobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
             return;
         }
-        Map<String, Object> originParams = lowStreamJobBuild.getInParameterMap();
-        Map<String, Object> newParams = MapUtils.merge(params, originParams);
+        Map<String, String> originParams = lowStreamJobBuild.getInParameterMap();
+        Map<String, String> newParams = MapUtils.merge(params, originParams);
         lowStreamJobBuild.setInParams(JSON.toJSONString(newParams));
-        jobBuildDao.save(lowStreamJobBuild);
+        jobBuildDao.saveOrUpdate(lowStreamJobBuild);
 
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
@@ -174,7 +174,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
 
     @Override
     public void saveOrUpdate(JobBuild jobBuild) {
-        jobBuildDao.save(jobBuild);
+        jobBuildDao.saveOrUpdate(jobBuild);
     }
 
     @Override

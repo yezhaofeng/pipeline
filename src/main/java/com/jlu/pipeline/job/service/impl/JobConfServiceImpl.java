@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.jlu.common.utils.JsonUtils;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.dao.IJobConfDao;
 import com.jlu.pipeline.job.model.JobConf;
@@ -50,7 +51,7 @@ public class JobConfServiceImpl implements IJobConfService {
             jobConf.setId(jobConfId);
         }
 
-        Map<String, Object> parameterMap = jobConfBean.getParameterMap();
+        Map<String, String> parameterMap = jobConfBean.getParameterMap();
         String params = JSON.toJSONString(parameterMap);
         if (StringUtils.isBlank(params)) {
             params = JobConf.DEFAULT_PARAMS;
@@ -60,7 +61,7 @@ public class JobConfServiceImpl implements IJobConfService {
         AbstractPlugin abstractPlugin = pluginInfoService.getRealJobPlugin(jobConf.getPluginType());
         Long pluginConfId = abstractPlugin.getDataOperator().saveJob(jobConfBean.getPluginConf());
         jobConf.setPluginConfId(pluginConfId);
-        jobConfDao.save(jobConf);
+        jobConfDao.saveOrUpdate(jobConf);
         return jobConf;
     }
 
@@ -103,10 +104,10 @@ public class JobConfServiceImpl implements IJobConfService {
             JobConfBean jobConfBean = new JobConfBean();
             BeanUtils.copyProperties(jobConf, jobConfBean);
             String params = jobConf.getParams();
-            jobConfBean.setParameterMap((Map<String, Object>) JSON.parse(params));
-            jobConfBean.setPluginConf(
-                    (JSONObject) pluginInfoService.getRealJobPlugin(jobConf.getPluginType()).getDataOperator()
-                            .getJob(jobConf.getPluginConfId()));
+            jobConfBean.setParameterMap((Map<String, String>) JSON.parse(params));
+            jobConfBean.setPluginConf((JSONObject) JsonUtils
+                    .getJsonObject(pluginInfoService.getRealJobPlugin(jobConf.getPluginType()).getDataOperator()
+                            .getJob(jobConf.getPluginConfId())));
             jobConfBeanList.add(jobConfBean);
         }
         return sortJobConfBeanList(jobConfBeanList);
@@ -143,7 +144,7 @@ public class JobConfServiceImpl implements IJobConfService {
         }
         for (JobConf jobConf : jobConfs) {
             jobConf.setDeleteStatus(true);
-            jobConfDao.save(jobConf);
+            jobConfDao.saveOrUpdate(jobConf);
         }
     }
 }

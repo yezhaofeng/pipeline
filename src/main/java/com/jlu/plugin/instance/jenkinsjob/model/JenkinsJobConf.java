@@ -13,7 +13,7 @@ public class JenkinsJobConf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long jenkinsConfId;
+    private Long jenkinsServerId;
     private String jobName;
 
     public Long getId() {
@@ -24,12 +24,12 @@ public class JenkinsJobConf {
         this.id = id;
     }
 
-    public Long getJenkinsConfId() {
-        return jenkinsConfId;
+    public Long getJenkinsServerId() {
+        return jenkinsServerId;
     }
 
-    public void setJenkinsConfId(Long jenkinsConfId) {
-        this.jenkinsConfId = jenkinsConfId;
+    public void setJenkinsServerId(Long jenkinsServerId) {
+        this.jenkinsServerId = jenkinsServerId;
     }
 
     public String getJobName() {

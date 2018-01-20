@@ -4,86 +4,82 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.type.TypeReference;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 /**
- * Created by niuwanpeng on 17/3/24.
+ * 使用jackson进行对json的处理
+ * @author Adun
+ * 2010-06-09
  */
-@Deprecated
 public class JsonUtils {
 
-    private static final Gson GSON = new Gson();
+	public static ObjectMapper getMapper(){
+		ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return mapper;
+	}
+	
+	/**
+	 * 将一个对象转换为json格式的字符串
+	 * @param <T>
+	 * @param t
+	 * @return
+	 */
+	public static <T> String getJsonString(T t){
+		try {
+			StringWriter writer = new StringWriter();
+			getMapper().writeValue(writer, t);
+			return writer.getBuffer().toString();
+		} catch (Exception e) {
+			throw new RuntimeException("生成json数据时发生异常:");
+		}
+	}
+	
+	/**
+	 * 根据json字符串和给定的class,解析为指定class的一个实例
+	 * @param <T>
+	 * @param jsonString
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T getObjectByJsonString(String jsonString, Class<T> clazz){
+		if(null==jsonString || null==clazz){
+			return null;
+		}
+		try{
+			T obj = getMapper().<T>readValue(jsonString, clazz);
+			return obj;
+		}catch(Exception e){
+			throw new RuntimeException("解析json数据时发生异常:");
+		}
+	}
+	
+	/**
+	 * 根据json字符串和给定的typeReference,解析为指定class的一个实例
+	 * @param <T>
+	 * @param jsonString
+	 * @param type
+	 * @return
+	 */
+	public static <T> T getObjectByJsonString(String jsonString, TypeReference<T> type){
+		try{
+			return getMapper().<T>readValue(jsonString, type);
+		}catch(Exception e){
+			throw new RuntimeException("解析json数据时发生异常:");
+		}
+	}
 
-    public static ObjectMapper getMapper(){
-        ObjectMapper mapper = new ObjectMapper();
-        // FIXME
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
-        return mapper;
-    }
-
-    /**
-     * 将一个对象转换为json格式的字符串
-     * @param <T>
-     * @param t
-     * @return
-     */
-    public static <T> String getJsonString(T t){
-        try {
-            StringWriter writer = new StringWriter();
-            getMapper().writeValue(writer, t);
-            return writer.getBuffer().toString();
-        } catch (Exception e) {
-            throw new RuntimeException("生成json数据时发生异常:");
-        }
-    }
-
-    /**
-     * 根据json字符串和给定的class,解析为指定class的一个实例
-     * @param <T>
-     * @param jsonString
-     * @param clazz
-     * @return
-     */
-    public static <T> T getObjectByJsonString(String jsonString, Class<T> clazz){
-        if(null==jsonString || null==clazz){
-            return null;
-        }
-        try{
-            T obj = GSON.fromJson(jsonString, new TypeToken<T>(){}.getType());
-            return obj;
-        }catch(Exception e){
-            throw new RuntimeException("解析json数据时发生异常:");
-        }
-    }
-
-    /**
-     * 根据json字符串和给定的typeReference,解析为指定class的一个实例
-     * @param <T>
-     * @param jsonString
-     * @param type
-     * @return
-     */
-    public static <T> T getObjectByJsonString(String jsonString, TypeReference<T> type){
-        try{
-            return getMapper().<T>readValue(jsonString, type);
-        }catch(Exception e){
-            throw new RuntimeException("解析json数据时发生异常:");
-        }
-    }
-
-    public static ArrayNode getArrayNode()throws Exception {
-        return getMapper().createArrayNode();
-    }
+	public static ArrayNode getArrayNode()throws Exception {
+		return getMapper().createArrayNode();
+	}
 
     /**
      * 根据JSONObject和给定的typeReference,解析为指定class的一个实例
@@ -102,7 +98,7 @@ public class JsonUtils {
             throw new RuntimeException("解析json数据时发生异常:");
         }
     }
-
+    
     public static JsonNode getJsonTree(String json){
         JsonNode node = null;
         try {
@@ -114,7 +110,7 @@ public class JsonUtils {
     }
 
     /**
-     * getTopJob JSONObject instance
+     * get JSONObject instance
      * @param json
      * @return
      */
@@ -127,7 +123,7 @@ public class JsonUtils {
     }
 
     /**
-     * getTopJob JSONObject instance
+     * get JSONObject instance
      * @param t
      * @param <T>
      * @return
@@ -152,21 +148,21 @@ public class JsonUtils {
      * @throws IllegalAccessException
      */
     public static <T> T convertFieldMapToObject(Map<String, Object> map, Class<T> t) throws InstantiationException, IllegalAccessException {
-        T o = (T) t.newInstance();
-        for(Map.Entry<String, Object> entry : map.entrySet()) {
-            try {
-                Field field = t.getDeclaredField(entry.getKey());
-                field.setAccessible(true);
-                if(field.getType() == Long.class && entry.getValue() instanceof Integer) {
-                    entry.setValue(((Integer)entry.getValue()).longValue());
-                }
-                field.set(o, entry.getValue());
-            } catch (NoSuchFieldException e) {
-                continue;
-            } catch (SecurityException e) {
-                continue;
-            }
-        }
-        return o;
-    }
+		T o = (T) t.newInstance();
+		for(Entry<String, Object> entry : map.entrySet()) {
+			try {
+				Field field = t.getDeclaredField(entry.getKey());
+				field.setAccessible(true);
+				if(field.getType() == Long.class && entry.getValue() instanceof Integer) {
+					entry.setValue(((Integer)entry.getValue()).longValue());
+				}
+				field.set(o, entry.getValue());
+			} catch (NoSuchFieldException e) {
+				continue;
+			} catch (SecurityException e) {
+				continue;
+			}
+		}
+		return o;
+	}
 }

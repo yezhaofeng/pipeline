@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
+import com.jlu.pipeline.job.model.JobBuild;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -21,6 +22,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
     private JenkinsServer jenkinsServer;
     private String jobName;
     private Integer buildNumber;
+    private JobBuild jobBuild;
 
     public JenkinsBuildTimerTask() {
     }
@@ -35,30 +37,15 @@ public class JenkinsBuildTimerTask extends TimerTask {
         this.buildNumber = buildNumber;
     }
 
-    public JenkinsBuildTimerTask setJenkinsBuildService(IJenkinsBuildService jenkinsBuildService) {
+    public JenkinsBuildTimerTask(IJenkinsBuildService jenkinsBuildService,
+                                 IJenkinsServerService jenkinsServerService,
+                                 JenkinsServer jenkinsServer, String jobName, Integer buildNumber, JobBuild jobBuild) {
         this.jenkinsBuildService = jenkinsBuildService;
-        return this;
-    }
-
-    public JenkinsBuildTimerTask setJenkinsServerService(
-            IJenkinsServerService jenkinsServerService) {
         this.jenkinsServerService = jenkinsServerService;
-        return this;
-    }
-
-    public JenkinsBuildTimerTask setJenkinsServer(JenkinsServer jenkinsServer) {
         this.jenkinsServer = jenkinsServer;
-        return this;
-    }
-
-    public JenkinsBuildTimerTask setJobName(String jobName) {
         this.jobName = jobName;
-        return this;
-    }
-
-    public JenkinsBuildTimerTask setBuildNumber(Integer buildNumber) {
         this.buildNumber = buildNumber;
-        return this;
+        this.jobBuild = jobBuild;
     }
 
     @Override
@@ -73,7 +60,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
             } else {
                 this.cancel();
                 jenkinsBuildService.handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
-                        buildWithDetails);
+                        buildWithDetails, jobBuild);
             }
         } catch (IOException e) {
             e.printStackTrace();

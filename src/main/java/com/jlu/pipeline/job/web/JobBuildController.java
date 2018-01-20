@@ -26,7 +26,7 @@ public class JobBuildController extends AbstractController {
     private IJobBuildService jobBuildService;
 
     @RequestMapping(value = "{jobBuildId}", method = RequestMethod.POST)
-    public ResponseBean build(@PathVariable Long jobBuildId, @RequestBody Map<String, Object> execParam) {
+    public ResponseBean build(@PathVariable Long jobBuildId, @RequestBody Map<String, String> execParam) {
         jobBuildService.build(jobBuildId, execParam, TriggerMode.MANUAL, getLoginUserName());
         return ResponseBean.TRUE;
     }

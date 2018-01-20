@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.jlu.jenkins.bean.JenkinsBuildDTO;
+import com.jlu.pipeline.job.model.JobBuild;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 
@@ -13,8 +14,9 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 public interface IJenkinsBuildService {
     Integer buildJob(JenkinsBuildDTO jenkinsBuildDTO) throws IOException;
 
-    Integer buildJob(Long jenkinsServerId, String jobName, Map<String,Object> params) throws IOException;
+    Integer buildJob(Long jenkinsServerId, String jobName, Map<String, String> params, JobBuild jobBuild)
+            throws IOException;
 
     void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,
-                                BuildWithDetails buildWithDetails) throws IOException;
+                                BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException;
 }

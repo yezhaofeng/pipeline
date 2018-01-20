@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.CiHomeReadConfig;
+import com.jlu.common.utils.DateUtils;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -113,8 +114,8 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
             throw new PipelineRuntimeException("无提交信息");
         }
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConfId, TriggerMode.MANUAL, LoginHelper.getLoginerUserName());
-        Map<String, Object> params = initJobParams(pipelineBuild, gitHubCommit);
-        IPipelineBuildDao.save(pipelineBuild);
+        Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
+        IPipelineBuildDao.saveOrUpdate(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConfId);
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
@@ -131,9 +132,9 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     @Override
     public Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit) {
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf.getId(), TriggerMode.AUTO, StringUtils.EMPTY);
-        Map<String, Object> params = initJobParams(pipelineBuild, gitHubCommit);
+        Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConf.getId());
-        IPipelineBuildDao.save(pipelineBuild);
+        IPipelineBuildDao.saveOrUpdate(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
         return pipelineBuildId;
@@ -156,7 +157,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         return pipelineBuildBeans;
     }
 
-    private void initJobBuilds(Long pipelineBuildId, List<JobConfBean> jobConfBeanList, Map<String, Object> params) {
+    private void initJobBuilds(Long pipelineBuildId, List<JobConfBean> jobConfBeanList, Map<String, String> params) {
         Long upStreamJobBuildId = 0L;
         for (JobConfBean jobConfBean : jobConfBeanList) {
             Long jobBuildId = jobBuildService.initBuild(jobConfBean, pipelineBuildId, upStreamJobBuildId, params);
@@ -197,20 +198,20 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         return pipelineBuild;
     }
 
-    private Map<String, Object> initJobParams(PipelineBuild pipelineBuild, GitHubCommit gitHubCommit) {
-        Map<String, Object> params = new HashedMap();
+    private Map<String, String> initJobParams(PipelineBuild pipelineBuild, GitHubCommit gitHubCommit) {
+        Map<String, String> params = new HashedMap();
         params.put(JobParameter.PIPELINE_BRANCH, pipelineBuild.getBranch());
-        params.put(JobParameter.PIPELINE_BUILD_ID, pipelineBuild.getId());
-        params.put(JobParameter.PIPELINE_BUILD_NUMBER, pipelineBuild.getBuildNumber());
+        params.put(JobParameter.PIPELINE_BUILD_ID, String.valueOf(pipelineBuild.getId()));
+        params.put(JobParameter.PIPELINE_BUILD_NUMBER, String.valueOf(pipelineBuild.getBuildNumber()));
         params.put(JobParameter.PIPELINE_COMMIT_COMMENTS, gitHubCommit.getCommits());
         params.put(JobParameter.PIPELINE_MODULE, pipelineBuild.getModule());
         params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(CiHomeReadConfig.getConfigValueByKey
                 ("github.base.repo"), gitHubCommit.getOwner(), gitHubCommit.getModule()));
-        params.put(JobParameter.PIPELINE_START_TIME, pipelineBuild.getStartTime());
+        params.put(JobParameter.PIPELINE_START_TIME, DateUtils.format(pipelineBuild.getStartTime()));
         params.put(JobParameter.PIPELINE_TRIGGER_USER, pipelineBuild.getTriggerUser());
         params.put(JobParameter.PIPELINE_CHECKIN_AUTHOR, pipelineBuild.getCheckinAuthor());
         params.put(JobParameter.PIPELINE_COMMIT_ID, pipelineBuild.getCommitId());
-        params.put(JobParameter.PIPELINE_TRIGGER_MODE, pipelineBuild.getTriggerMode());
+        params.put(JobParameter.PIPELINE_TRIGGER_MODE, pipelineBuild.getTriggerMode().name());
         return params;
     }
 

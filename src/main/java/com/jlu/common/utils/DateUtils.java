@@ -17,4 +17,9 @@ public class DateUtils {
     public static String getNowDateFormat() {
         return df.format(new Date());
     }
+
+    public static String format(Date time) {
+
+        return df.format(time);
+    }
 }

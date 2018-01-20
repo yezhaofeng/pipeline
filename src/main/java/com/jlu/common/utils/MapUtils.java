@@ -8,7 +8,7 @@ import java.util.Set;
  */
 public class MapUtils {
     // 系统参数优于用户自定义参数,执行期参数优于配置参数
-    public static Map<String, Object> merge(Map<String, Object> from, Map<String, Object> to) {
+    public static Map<String, String> merge(Map<String, String> from, Map<String, String> to) {
         if (from == null) {
             return to;
         }

@@ -12,14 +12,14 @@ import com.jlu.pipeline.job.model.JobBuild;
  * Created by Administrator on 2018/1/18.
  */
 public interface IJobBuildService {
-    Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId, Map<String, Object> params);
+    Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId, Map<String, String> params);
 
     // 当构建整条流水线的时候执行
     void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode, String triggerUser);
 
-    void build(Long jobBuildId, Map<String, Object> execParam, TriggerMode triggerMode, String triggerUser);
+    void build(Long jobBuildId, Map<String, String> execParam, TriggerMode triggerMode, String triggerUser);
 
-    void notifiedJobBuildFinished(JobBuild jobBuild, Map<String,Object> newOutParams);
+    void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 

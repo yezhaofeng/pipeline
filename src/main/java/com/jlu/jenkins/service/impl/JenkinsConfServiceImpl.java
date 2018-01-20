@@ -18,7 +18,7 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
 
     @Override
     public void saveOrUpdate(JenkinsConf jenkinsConf) {
-        IJenkinsConfDao.save(jenkinsConf);
+        IJenkinsConfDao.saveOrUpdate(jenkinsConf);
     }
 
     @Override
