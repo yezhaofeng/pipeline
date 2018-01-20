@@ -20,6 +20,8 @@ public class JobConfBean extends JobConf {
 
     private Map<String, String> parameterMap;
 
+    // jackson2.x 无JSONObject对象
+    // 此处是做一个适配
     @JsonSerialize(using = JSONObjectSerializer.class)
     public JSONObject getPluginConf() {
         return pluginConf;

@@ -24,7 +24,7 @@ public class CompilePlugin extends AbstractPlugin<CompileConf, CompileBuild> {
     private CompileDataOperator compileDataOperator;
 
     @Autowired
-    private CompileAbstractExecutor compileAbstractExecutor;
+    private CompileExecutor compileExecutor;
 
     @Override
     public PluginConfig getConfig() {
@@ -33,7 +33,7 @@ public class CompilePlugin extends AbstractPlugin<CompileConf, CompileBuild> {
 
     @Override
     public AbstractExecutor getExecutor() {
-        return compileAbstractExecutor;
+        return compileExecutor;
     }
 
     @Override

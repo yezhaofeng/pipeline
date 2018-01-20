@@ -21,7 +21,7 @@ public class JenkinsJobPlugin extends AbstractPlugin<JenkinsJobConf, JenkinsJobB
     private final PluginConfig pluginConfig = new PluginConfig(pluginType, pluginType.getPluginName());
 
     @Autowired
-    private JenkinsJobAbstractExecutor jenkinsJobExecutor;
+    private JenkinsJobExecutor jenkinsJobExecutor;
     @Autowired
     private JenkinsJobDataOperator jenkinsJobDataOperator;
 

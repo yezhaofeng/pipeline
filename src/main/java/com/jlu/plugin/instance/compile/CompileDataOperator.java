@@ -4,6 +4,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.utils.JsonUtils;
 import com.jlu.plugin.AbstractDataOperator;
 import com.jlu.plugin.instance.compile.dao.ICompileBuildDao;
 import com.jlu.plugin.instance.compile.dao.ICompileConfDao;
@@ -24,7 +25,9 @@ public class CompileDataOperator extends AbstractDataOperator<CompileConf, Compi
 
     @Override
     public Long saveConf(JSONObject json) {
-        return null;
+        CompileConf compileConf = JsonUtils.getObjectByJsonObject(json, CompileConf.class);
+        compileConfDao.save(compileConf);
+        return compileConf.getId();
     }
 
     @Override
@@ -35,5 +38,12 @@ public class CompileDataOperator extends AbstractDataOperator<CompileConf, Compi
     @Override
     public CompileBuild getBuild(Long id) {
         return compileBuildDao.findById(id);
+    }
+
+    @Override
+    public Long initPluginBuildByPluginConf(Long pluginConfId) {
+        CompileBuild compileBuild = new CompileBuild();
+        compileBuildDao.save(compileBuild);
+        return compileBuild.getId();
     }
 }

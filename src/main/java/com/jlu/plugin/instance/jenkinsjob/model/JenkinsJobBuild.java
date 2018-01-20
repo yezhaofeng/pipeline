@@ -16,6 +16,7 @@ public class JenkinsJobBuild {
     private Long jenkinsServerId;
     private String jobName;
     private String buildUrl;
+    private String message;
 
     public Long getId() {
         return id;
@@ -47,5 +48,13 @@ public class JenkinsJobBuild {
 
     public void setBuildUrl(String buildUrl) {
         this.buildUrl = buildUrl;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -8,5 +8,6 @@ import com.jlu.jenkins.model.JenkinsConf;
 public interface IJenkinsConfService {
     void saveOrUpdate(JenkinsConf jenkinsConf);
 
+    JenkinsConf get(String serverUrl, String username, String password);
     JenkinsConf get(Long id);
 }

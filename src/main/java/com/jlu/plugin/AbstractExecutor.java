@@ -1,6 +1,7 @@
 package com.jlu.plugin;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +27,9 @@ public abstract class AbstractExecutor {
         execute(context, jobBuild);
     }
 
-    public abstract void execute(JobBuildContext context, JobBuild jobBuild);
+    protected abstract void execute(JobBuildContext context, JobBuild jobBuild);
 
+    public void handleCallback(JobBuild jobBuild) {
+        jobBuildService.notifiedJobBuildFinished(jobBuild, new HashMap());
+    }
 }

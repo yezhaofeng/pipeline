@@ -26,7 +26,6 @@ public class JenkinsJobDataOperator extends AbstractDataOperator<JenkinsJobConf,
 
     @Override
     public Long saveConf(JSONObject json) {
-        // FIXME: 18/1/20
         JenkinsJobConf jenkinsJobConf = JsonUtils.getObjectByJsonObject(json, JenkinsJobConf.class);
         jenkinsJobConfDao.saveOrUpdate(jenkinsJobConf);
         return jenkinsJobConf.getId();

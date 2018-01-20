@@ -1,7 +1,6 @@
 package com.jlu.jenkins.service.impl;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -22,6 +21,7 @@ import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.jenkins.timer.service.ITimerService;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.plugin.instance.jenkinsjob.service.IJenkinsJobService;
+import com.jlu.plugin.service.IPluginInfoService;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 
@@ -43,6 +43,9 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
 
     @Autowired
     private IJenkinsJobService jenkinsJobService;
+
+    @Autowired
+    private IPluginInfoService pluginInfoService;
 
     @Deprecated
     @Override
@@ -95,23 +98,12 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     @Override
     public void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,
                                        BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException {
-        System.out.println(new SimpleDateFormat().format(new Date()));
-        System.out.println(
-                jobName + " " + buildNumber + " has fininshed , stastus:" + buildWithDetails.getResult().name());
 
-        switch (jobBuild.getPluginType()) {
-            case JENKINS_JOB:
-                jobBuild.setJobStatus(BuildStatusUtils.toJobStatus(buildWithDetails.getResult()));
-                jobBuild.setEndTime(new Date());
-                jenkinsJobService.notifiedJenkinsJobBuildFinished(jobBuild);
-                break;
-            case COMPILE:
-            case RELEASE:
-                // TODO: 18/1/20
-            default:
-                break;
-        }
-
+        // FIXME: 18/1/21
+        logger.info(jobName + " " + buildNumber + " has fininshed , stastus:" + buildWithDetails.getResult().name());
+        jobBuild.setJobStatus(BuildStatusUtils.toJobStatus(buildWithDetails.getResult()));
+        jobBuild.setEndTime(new Date());
+        pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
     }
 
 }
