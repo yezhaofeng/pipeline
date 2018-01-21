@@ -8,4 +8,5 @@ import com.jlu.jenkins.model.JenkinsConf;
  */
 
 public interface IJenkinsConfDao extends IBaseDao<JenkinsConf> {
+    JenkinsConf findByServerUrlAndUserNameAndPassword(String serverUrl, String username, String password);
 }

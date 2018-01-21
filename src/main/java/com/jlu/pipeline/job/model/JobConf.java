@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.plugin.bean.PluginType;
 
@@ -37,8 +38,10 @@ public class JobConf {
      */
     @Lob
     @Column(columnDefinition = "TEXT")
-    protected String params;
-    protected Boolean deleteStatus = false;
+    @JsonIgnore
+    private String params;
+    @JsonIgnore
+    private Boolean deleteStatus = false;
 
     public Long getId() {
         return id;

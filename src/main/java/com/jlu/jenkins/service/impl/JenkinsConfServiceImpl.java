@@ -22,6 +22,11 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
     }
 
     @Override
+    public JenkinsConf get(String serverUrl, String username, String password) {
+        return IJenkinsConfDao.findByServerUrlAndUserNameAndPassword(serverUrl, username, password);
+    }
+
+    @Override
     public JenkinsConf get(Long id) {
         return IJenkinsConfDao.findById(id);
     }

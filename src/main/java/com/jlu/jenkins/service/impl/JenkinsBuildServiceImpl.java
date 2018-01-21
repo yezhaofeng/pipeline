@@ -20,7 +20,6 @@ import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.jenkins.timer.service.ITimerService;
 import com.jlu.pipeline.job.model.JobBuild;
-import com.jlu.plugin.instance.jenkinsjob.service.IJenkinsJobService;
 import com.jlu.plugin.service.IPluginInfoService;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -40,9 +39,6 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     private IJenkinsConfDao jenkinsConfDao;
     @Autowired
     private ITimerService timerService;
-
-    @Autowired
-    private IJenkinsJobService jenkinsJobService;
 
     @Autowired
     private IPluginInfoService pluginInfoService;

@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by langshiquan on 18/1/10.
  */
@@ -23,7 +25,8 @@ public class PipelineConf {
     protected Date createTime;
     protected Date lastModifiedTime;
     protected String lastModifiedUser;
-    protected Boolean deleteStats = false;
+    @JsonIgnore
+    private Boolean deleteStats = false;
 
     public Long getId() {
         return id;
