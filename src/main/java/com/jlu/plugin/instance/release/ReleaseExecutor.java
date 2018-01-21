@@ -117,7 +117,7 @@ public class ReleaseExecutor extends AbstractExecutor {
         releaseService.saveOrUpdate(releaseBuild);
         Map<String, String> newParams = new HashedMap();
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)) {
-            newParams.put(JobParameter.PIPELINE_COMPILE_PRODUCT_PATH, releaseBuild.getReleasePath());
+            newParams.put(JobParameter.PIPELINE_RELEASE_PRODUCT_PATH, releaseBuild.getReleasePath());
             newParams.put(JobParameter.PIPELINE_RELEASE_VERSION, releaseBuild.getVersion());
         }
         jobBuildService.notifiedJobBuildUpdated(jobBuild, newParams);
