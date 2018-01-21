@@ -25,9 +25,9 @@ public class ReleaseDataOperator extends AbstractDataOperator<ReleaseConf, Relea
 
     @Override
     public Long saveConf(JSONObject json) {
-        ReleaseConf compileConf = JsonUtils.getObjectByJsonObject(json, ReleaseConf.class);
-        releaseConfDao.save(compileConf);
-        return compileConf.getId();
+        ReleaseConf releaseConf = JsonUtils.getObjectByJsonObject(json, ReleaseConf.class);
+        releaseConfDao.save(releaseConf);
+        return releaseConf.getId();
     }
 
     @Override

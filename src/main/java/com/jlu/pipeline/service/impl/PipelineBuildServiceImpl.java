@@ -113,7 +113,8 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         if (gitHubCommit == null) {
             throw new PipelineRuntimeException("无提交信息");
         }
-        PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConfId, TriggerMode.MANUAL, LoginHelper.getLoginerUserName());
+        PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf, TriggerMode.MANUAL,
+                LoginHelper.getLoginerUserName());
         Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         IPipelineBuildDao.saveOrUpdate(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
@@ -131,7 +132,8 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      */
     @Override
     public Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit) {
-        PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf.getId(), TriggerMode.AUTO, StringUtils.EMPTY);
+        PipelineBuild pipelineBuild =
+                initPipelineBuildByCommit(gitHubCommit, pipelineConf, TriggerMode.AUTO, StringUtils.EMPTY);
         Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConf.getId());
         IPipelineBuildDao.saveOrUpdate(pipelineBuild);
@@ -169,12 +171,15 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      * 初始化pipelineBuild对象
      *
      * @param gitHubCommit
-     * @param pipelineConfId
+     * @param pipelineConf
      * @param triggerMode
      * @param triggerUser
      * @return
      */
-    private PipelineBuild initPipelineBuildByCommit(GitHubCommit gitHubCommit, Long pipelineConfId, TriggerMode triggerMode, String triggerUser) {
+    private PipelineBuild initPipelineBuildByCommit(GitHubCommit gitHubCommit, PipelineConf pipelineConf,
+                                                    TriggerMode triggerMode,
+                                                    String
+                                                            triggerUser) {
         PipelineBuild pipelineBuild = new PipelineBuild();
         pipelineBuild.setOwner(gitHubCommit.getOwner());
         pipelineBuild.setBranch(gitHubCommit.getBranch());
@@ -194,7 +199,8 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         pipelineBuild.setPipelineStatus(PipelineJobStatus.INIT);
         pipelineBuild.setCheckinAuthor(gitHubCommit.getCommitter());
         pipelineBuild.setTriggerId(gitHubCommit.getId());
-        pipelineBuild.setPipelineConfId(pipelineConfId);
+        pipelineBuild.setPipelineConfId(pipelineConf.getId());
+        pipelineBuild.setName(pipelineConf.getName());
         return pipelineBuild;
     }
 

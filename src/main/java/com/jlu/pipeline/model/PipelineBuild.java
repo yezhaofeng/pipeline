@@ -22,6 +22,7 @@ public class PipelineBuild {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected Long pipelineConfId;
+    protected String name;
     protected String owner;
     protected String module;
     protected String branch;
@@ -36,6 +37,14 @@ public class PipelineBuild {
     protected TriggerMode triggerMode;
     protected Date startTime;
     protected Date endTime;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getOwner() {
         return owner;
