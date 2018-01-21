@@ -16,7 +16,7 @@ public class ReleaseBuild {
 
     private String logUrl;
 
-    private String buildPath;
+    private String releasePath;
 
     private String version;
 
@@ -38,12 +38,12 @@ public class ReleaseBuild {
         this.logUrl = logUrl;
     }
 
-    public String getBuildPath() {
-        return buildPath;
+    public String getReleasePath() {
+        return releasePath;
     }
 
-    public void setBuildPath(String buildPath) {
-        this.buildPath = buildPath;
+    public void setReleasePath(String releasePath) {
+        this.releasePath = releasePath;
     }
 
     public String getMessage() {
