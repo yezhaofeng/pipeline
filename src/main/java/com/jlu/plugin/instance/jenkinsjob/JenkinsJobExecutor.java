@@ -3,18 +3,20 @@ package com.jlu.plugin.instance.jenkinsjob;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.collections.map.HashedMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
+import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
-import com.jlu.jenkins.service.IJenkinsConfService;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.AbstractExecutor;
 import com.jlu.plugin.bean.JobBuildContext;
-import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
 
@@ -24,11 +26,9 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
 @Service
 public class JenkinsJobExecutor extends AbstractExecutor {
 
+    private Logger logger = LoggerFactory.getLogger(JenkinsJobExecutor.class);
     @Autowired
     private IJenkinsBuildService jenkinsBuildService;
-
-    @Autowired
-    private IJenkinsConfService jenkinsConfService;
 
     @Autowired
     private IJenkinsJobBuildDao jenkinsJobDao;
@@ -64,9 +64,10 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage(jre.getMessage());
         } catch (Exception e) {
+            logger.error("jenkins job error", e);
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage("UnKnown Error:" + e.getMessage());
         }
-        jobBuildService.saveOrUpdate(jobBuild);
+        jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashedMap());
     }
 }

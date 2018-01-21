@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         jobBuildDao.saveOrUpdate(jobBuild);
         // 如果是头job，则更新流水线状态
         if (jobBuild.getUpStreamJobBuildId() == 0L) {
-            updatePipelineBuild(jobBuild.getPipelineBuildId(), PipelineJobStatus.RUNNING);
+            updatePipelineBuildStart(jobBuild.getPipelineBuildId(), PipelineJobStatus.RUNNING);
         }
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PluginType pluginType = jobBuild.getPluginType();
@@ -97,7 +98,7 @@ public class JobBuildServiceImpl implements IJobBuildService {
         if (TriggerMode.MANUAL.equals(jobBuild.getTriggerMode())) {
             return;
         }
-        updatePipelineBuild(pipelineBuildId, PipelineJobStatus.RUNNING);
+        updatePipelineBuildStart(pipelineBuildId, PipelineJobStatus.RUNNING);
         jobBuild.setTriggerUser(triggerUser);
         jobBuild.setTriggerMode(triggerMode);
         jobBuild.setTriggerTime(new Date());
@@ -109,9 +110,16 @@ public class JobBuildServiceImpl implements IJobBuildService {
         pluginInfoService.getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
     }
 
-    private void updatePipelineBuild(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
+    private void updatePipelineBuildStart(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
         PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
         pipelineBuild.setStartTime(new Date());
+        pipelineBuild.setPipelineStatus(pipelineStatus);
+        pipelineBuildDao.saveOrUpdate(pipelineBuild);
+    }
+
+    private void updatePipelineBuildEnd(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
+        PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
+        pipelineBuild.setEndTime(new Date());
         pipelineBuild.setPipelineStatus(pipelineStatus);
         pipelineBuildDao.saveOrUpdate(pipelineBuild);
     }
@@ -132,26 +140,29 @@ public class JobBuildServiceImpl implements IJobBuildService {
     }
 
     @Override
-    public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams) {
+    public void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams) {
         // 保存job状态，以及参数
         Map<String, String> outParams = MapUtils.merge(newOutParams, jobBuild.getInParameterMap());
         jobBuild.setOutParams(JSON.toJSONString(outParams));
         jobBuild.setEndTime(new Date());
         jobBuildDao.saveOrUpdate(jobBuild);
-        // 更新下游job状态
-        Long jobBuildId = jobBuild.getId();
-        Map<String, String> params = jobBuild.getOutParameterMap();
-        JobBuild lowStreamJobBuild = jobBuildDao.getByUpStreamJobBuildId(jobBuildId);
+        // 更新下游job参数
+        Long upStreamJobBuildId = jobBuild.getId();
+        Map<String, String> upStreamJobOutParams = jobBuild.getOutParameterMap();
+        JobBuild lowStreamJobBuild = jobBuildDao.getByUpStreamJobBuildId(upStreamJobBuildId);
         if (lowStreamJobBuild == null) {
             // 流水线结束
-            updatePipelineBuild(jobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
+            updatePipelineBuildEnd(jobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
             return;
         }
+
         Map<String, String> originParams = lowStreamJobBuild.getInParameterMap();
-        Map<String, String> newParams = MapUtils.merge(params, originParams);
+        Map<String, String> newParams = MapUtils.merge(upStreamJobOutParams, originParams);
         lowStreamJobBuild.setInParams(JSON.toJSONString(newParams));
         jobBuildDao.saveOrUpdate(lowStreamJobBuild);
-
+        if (jobBuild.getJobStatus().equals(PipelineJobStatus.FAILED)) {
+            updatePipelineBuildEnd(jobBuild.getPipelineBuildId(), jobBuild.getJobStatus());
+        }
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建

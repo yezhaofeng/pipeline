@@ -3,6 +3,7 @@ package com.jlu.plugin;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jlu.pipeline.job.model.JobBuild;
@@ -19,6 +20,7 @@ public abstract class AbstractExecutor {
 
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
         jobBuild.setStartTime(new Date());
+        jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildService.saveOrUpdate(jobBuild);
         Long pluginBuildId = jobBuild.getPluginBuildId();
         if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
@@ -30,6 +32,6 @@ public abstract class AbstractExecutor {
     protected abstract void execute(JobBuildContext context, JobBuild jobBuild);
 
     public void handleCallback(JobBuild jobBuild) {
-        jobBuildService.notifiedJobBuildFinished(jobBuild, new HashMap());
+        jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashMap());
     }
 }

@@ -188,6 +188,6 @@ public class JobBuild {
     }
 
     public Map<String, String> getOutParameterMap() {
-        return new HashedMap((Map) JSON.parseObject(getInParams()));
+        return new HashedMap((Map) JSON.parseObject(getOutParams()));
     }
 }

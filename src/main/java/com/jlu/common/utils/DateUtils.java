@@ -8,18 +8,23 @@ import java.util.Date;
  */
 public class DateUtils {
 
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 获取当前时间格式化输出
      * @return
      */
-    public static String getNowDateFormat() {
-        return df.format(new Date());
+    public static String getNowTimeFormat() {
+        return timeFormat.format(new Date());
     }
 
     public static String format(Date time) {
 
-        return df.format(time);
+        return timeFormat.format(time);
+    }
+
+    public static String getNowDateFormat() {
+        return dateFormat.format(new Date());
     }
 }

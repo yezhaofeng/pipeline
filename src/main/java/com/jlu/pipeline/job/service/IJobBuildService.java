@@ -19,7 +19,7 @@ public interface IJobBuildService {
 
     void build(Long jobBuildId, Map<String, String> execParam, TriggerMode triggerMode, String triggerUser);
 
-    void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams);
+    void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 

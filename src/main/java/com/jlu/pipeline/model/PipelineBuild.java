@@ -32,6 +32,7 @@ public class PipelineBuild {
     protected PipelineJobStatus pipelineStatus;
     protected String checkinAuthor;
     protected String triggerUser;
+    @Enumerated(EnumType.STRING)
     protected TriggerMode triggerMode;
     protected Date startTime;
     protected Date endTime;

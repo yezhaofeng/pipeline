@@ -129,7 +129,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
                 GithubBranch githubBranch = new GithubBranch();
                 githubBranch.setBranchType(BranchType.BRANCH);
                 githubBranch.setBranchName(branchName);
-                githubBranch.setCreateTime(DateUtils.getNowDateFormat());
+                githubBranch.setCreateTime(DateUtils.getNowTimeFormat());
                 githubBranch.setModuleId(module.getId());
                 githubBranch.setVersion(branchService.getLastThreeVersion(module));
                 branchService.saveBranch(githubBranch);

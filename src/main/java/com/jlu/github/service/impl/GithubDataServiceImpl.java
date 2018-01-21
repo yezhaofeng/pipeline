@@ -145,7 +145,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 result.put(MESSAGE, "该模块已存在，不需要再次配置！");
             } else {
                 LOGGER.info("Start initBuild module:{} on user:{}", module, username);
-                Module ciHomeModule = new Module(module, username, DateUtils.getNowDateFormat());
+                Module ciHomeModule = new Module(module, username, DateUtils.getNowTimeFormat());
                 ciHomeModule.setVersion("1.0.0");
                 moduleService.saveModule(ciHomeModule);
                 try {
@@ -176,7 +176,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         List<Module> modules = new ArrayList<>();
 
         for (GithubRepoBean githubRepoBean : repoList) {
-            Module module = new Module(githubRepoBean.getName(), username, DateUtils.getNowDateFormat());
+            Module module = new Module(githubRepoBean.getName(), username, DateUtils.getNowTimeFormat());
             module.setVersion("1.0.0");
             modules.add(module);
         }
@@ -217,7 +217,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
             BranchType branchType = branchBean.getName().equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
             GithubBranch githubBranch
                     = new GithubBranch(module.getId(), branchBean.getName(), branchType,
-                    this.getThreeVersion(branchType, version), DateUtils.getNowDateFormat());
+                    this.getThreeVersion(branchType, version), DateUtils.getNowTimeFormat());
             githubBranches.add(githubBranch);
             this.initOneCommit(username, module, branchBean.getName());
         }
@@ -257,7 +257,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         githubUser.setUsername(userBean.getUsername());
         githubUser.setPassword(userBean.getPassword());
         githubUser.setUserEmail(userBean.getEmail());
-        githubUser.setCreateTime(DateUtils.getNowDateFormat());
+        githubUser.setCreateTime(DateUtils.getNowTimeFormat());
         githubUser.setGitHubToken(userBean.getGitHubToken());
         return githubUser;
     }
