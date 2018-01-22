@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.common.utils.AopTargetUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,7 +93,17 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public void build(Long pipelineConfId, GitHubCommit gitHubCommit) {
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
         Long pipelineBuildId = initPipelineBuild(pipelineConf, gitHubCommit);
-        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ((IJobBuildService) AopTargetUtils.getTarget(IJobBuildService.class)).buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+//        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
     }
 
 

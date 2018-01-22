@@ -19,7 +19,7 @@ import com.jlu.pipeline.service.IPipelineBuildService;
  * Created by langshiquan on 18/1/14.
  */
 @RestController
-@RequestMapping("/pipeline/build/")
+@RequestMapping("/pipeline/build")
 public class PipelineBuildController extends AbstractController {
 
     private Logger logger = LoggerFactory.getLogger(PipelineBuildController.class);

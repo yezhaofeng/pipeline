@@ -166,7 +166,13 @@ public class JobBuildServiceImpl implements IJobBuildService {
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建
-            build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
+                }
+            }).start();
+
         }
     }
 

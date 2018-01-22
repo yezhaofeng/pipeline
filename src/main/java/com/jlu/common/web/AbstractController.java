@@ -7,6 +7,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class AbstractController {
     protected String getLoginUserName() {
-        return StringUtils.EMPTY + "unkown";
+        return "z521598";
     }
 }

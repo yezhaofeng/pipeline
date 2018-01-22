@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="/Users/langshiquan/logs/pipe"/>
+    <property name="logStoreDirectory" value="D:\\logs"/>
 
     <!-- 日志文件  appender定义 -->
-
-    <appender name="ciHomeAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${logStoreDirectory}/cihome.log</File>
+    <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/pipeline.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.cihome.%i.log</fileNamePattern>
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline.%i.log</fileNamePattern>
             <maxHistory>20</maxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>50MB</maxFileSize>
@@ -21,13 +20,30 @@
         </encoder>
     </appender>
 
+    <!-- 日志文件  appender定义 -->
+    <appender name="springAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/spring.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.spring.%i.log</fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <appender name="ciHomeErrorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
 
-        <File>${logStoreDirectory}/cihome_error.log</File>
+        <File>${logStoreDirectory}/pipeline_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <FileNamePattern>${logStoreDirectory}/history/cihome_error.log.%i.log</FileNamePattern>
             <MinIndex>1</MinIndex>
@@ -71,11 +87,15 @@
 
     <logger name="com.jlu" additivity="false">
         <level value="INFO"/>
-        <appender-ref ref="ciHomeAppender"/>
+        <appender-ref ref="pipelineAppender"/>
         <appender-ref ref="ciHomeErrorAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-
+    <logger name="org.springframework">
+        <level value="debug"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="springAppender"/>
+    </logger>
     <logger name="accseeLog" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="ciHomeAccessAppender"/>
@@ -86,6 +106,6 @@
     <!-- ===================================================================== -->
     <root>
         <level value="ERROR"/>
-        <appender-ref ref="ciHomeAppender"/>
+        <appender-ref ref="pipelineAppender"/>
     </root>
 </configuration>
