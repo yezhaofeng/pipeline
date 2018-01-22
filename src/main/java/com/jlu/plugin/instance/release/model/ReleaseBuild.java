@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.jlu.common.utils.bean.AbstractPropertyGetter;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 
 /**
@@ -14,6 +15,15 @@ import com.jlu.pipeline.job.bean.PipelineJobStatus;
  */
 @Entity
 public class ReleaseBuild {
+
+    public static final AbstractPropertyGetter<String, ReleaseBuild> VERSION_GETTER =
+            new AbstractPropertyGetter<String, ReleaseBuild>() {
+                @Override
+                public String get(ReleaseBuild releaseBuild) {
+                    return null == releaseBuild ? null : releaseBuild.getVersion();
+                }
+            };
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

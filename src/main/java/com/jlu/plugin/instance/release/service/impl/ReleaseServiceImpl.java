@@ -1,6 +1,5 @@
 package com.jlu.plugin.instance.release.service.impl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.utils.ListUtils;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
@@ -36,10 +36,7 @@ public class ReleaseServiceImpl implements IReleaseService {
         if (CollectionUtils.isEmpty(releaseBuilds)) {
             return VersionService.FIRST_VERSION;
         }
-        List<String> versions = new LinkedList<>();
-        for (ReleaseBuild releaseBuild : releaseBuilds) {
-            versions.add(releaseBuild.getVersion());
-        }
+        List<String> versions = ListUtils.toList(releaseBuilds, ReleaseBuild.VERSION_GETTER);
         String maxVersion = versionService.getMaxReleaseVersion(versions);
         return versionService.increaseVersion(maxVersion);
 
