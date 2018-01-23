@@ -12,7 +12,6 @@ import com.jlu.pipeline.model.PipelineBuild;
 // job执行的上下文信息
 public class JobBuildContext {
     PipelineBuild pipelineBuild;
-
     Map<String, String> jobExecParam = new HashedMap();
 
     public PipelineBuild getPipelineBuild() {

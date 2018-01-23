@@ -15,6 +15,7 @@ public class PluginConfig {
 
     protected Integer priority = 0;
 
+    // TODO 手动执行运行时参数依赖
     protected PluginPage configPage;
 
     protected PluginPage buildPage;

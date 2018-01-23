@@ -96,7 +96,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
                                        BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException {
 
         // FIXME: 18/1/21
-        logger.info(jobName + " " + buildNumber + " has fininshed , stastus:" + buildWithDetails.getResult().name());
+        logger.info(jobName + " " + buildNumber + " has fininshed , status:" + buildWithDetails.getResult().name());
         jobBuild.setJobStatus(BuildStatusUtils.toJobStatus(buildWithDetails.getResult()));
         jobBuild.setEndTime(new Date());
         pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
