@@ -1,5 +1,8 @@
 package com.jlu.jenkins.model;
 
+import com.jlu.jenkins.bean.JenkinsConfDTO;
+import org.springframework.beans.BeanUtils;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -97,5 +100,11 @@ public class JenkinsConf {
 
     public void setLastModifiedTime(Date lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
+    }
+
+    public JenkinsConfDTO toJenkinsConfDTO() {
+        JenkinsConfDTO jenkinsConfDTO = new JenkinsConfDTO();
+        BeanUtils.copyProperties(jenkinsConfDTO, this);
+        return jenkinsConfDTO;
     }
 }

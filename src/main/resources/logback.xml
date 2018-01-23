@@ -38,7 +38,7 @@
         </encoder>
     </appender>
 
-    <appender name="ciHomeErrorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="pipelineErrorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
@@ -64,13 +64,32 @@
         </layout>
     </appender>
 
-    <appender name="ciHomeAccessAppender"
+    <appender name="pipelineAccessAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-
-        <File>${logStoreDirectory}/ciHome_access.log</File>
+        <File>${logStoreDirectory}/pipeline_access.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.ciHome_access.%i.log
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline_access.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--fixme-->
+    <appender name="jenkinsAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/jenkins.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.jenkins.%i.log
             </fileNamePattern>
             <maxHistory>20</maxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy
@@ -85,20 +104,24 @@
         </encoder>
     </appender>
 
-    <logger name="com.jlu" additivity="false">
+    <logger name="com.jlu">
         <level value="INFO"/>
         <appender-ref ref="pipelineAppender"/>
-        <appender-ref ref="ciHomeErrorAppender"/>
+        <appender-ref ref="pipelineErrorAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="org.springframework">
-        <level value="debug"/>
+    <logger name="com.jlu.jenkins">
+        <level value="INFO"/>
+        <appender-ref ref="jenkinsAppender"/>
         <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework" additivity="false">
+        <level value="debug"/>
         <appender-ref ref="springAppender"/>
     </logger>
     <logger name="accseeLog" additivity="false">
         <level value="INFO"/>
-        <appender-ref ref="ciHomeAccessAppender"/>
+        <appender-ref ref="pipelineAccessAppender"/>
     </logger>
 
     <!-- ===================================================================== -->

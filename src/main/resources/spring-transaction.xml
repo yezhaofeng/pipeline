@@ -64,7 +64,10 @@
     <aop:config>
         <aop:pointcut id="ServiceOperation"
                       expression="(execution(* com.jlu..*ServiceImpl.*(..)))"/>
+        <aop:pointcut id="ExecutorOperation"
+                      expression="(execution(* com.jlu..*Executor.*(..)))"/>
         <aop:advisor pointcut-ref="ServiceOperation" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="ExecutorOperation" advice-ref="txAdvice"/>
     </aop:config>
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">

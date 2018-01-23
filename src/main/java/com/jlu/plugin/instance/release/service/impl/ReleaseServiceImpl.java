@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
-import com.jlu.common.utils.ListUtils;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import com.jlu.plugin.instance.release.service.IReleaseService;
-import com.jlu.plugin.instance.release.service.VersionService;
 
 /**
  * Created by langshiquan on 18/1/22.
@@ -20,26 +18,21 @@ import com.jlu.plugin.instance.release.service.VersionService;
 @Repository
 public class ReleaseServiceImpl implements IReleaseService {
 
+    public final static String FIRST_VERSION = "1.0.0";
     @Autowired
     private IReleaseBuildDao releaseBuildDao;
 
-    @Autowired
-    private VersionService versionService;
-
     @Override
-    public String getNextVersion(String owner, String module) {
+    public String getMaxVersion(String owner, String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
-        List<ReleaseBuild> releaseBuilds = releaseBuildDao.findByProperties(conditionAndSet);
+        List<ReleaseBuild> releaseBuilds = releaseBuildDao.findHeadByProperties(conditionAndSet, null, 0, 1);
         if (CollectionUtils.isEmpty(releaseBuilds)) {
-            return VersionService.FIRST_VERSION;
+            return FIRST_VERSION;
         }
-        List<String> versions = ListUtils.toList(releaseBuilds, ReleaseBuild.VERSION_GETTER);
-        String maxVersion = versionService.getMaxReleaseVersion(versions);
-        return versionService.increaseVersion(maxVersion);
-
+        return releaseBuilds.get(0).getVersion();
     }
 
     @Override
@@ -50,5 +43,18 @@ public class ReleaseServiceImpl implements IReleaseService {
     @Override
     public ReleaseBuild find(Long id) {
         return releaseBuildDao.findById(id);
+    }
+
+    @Override
+    public String increaseVersion(String version) {
+        String[] everyVersion = version.split("\\.");
+        Integer thirdVersion = Integer.parseInt(everyVersion[2]);
+        return everyVersion[0] + "." + everyVersion[1] + "." + (thirdVersion + 1);
+    }
+
+    @Override
+    public Boolean compare(String version1, String version2) {
+        // TODO
+        return null;
     }
 }

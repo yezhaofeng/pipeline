@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.common.utils.AopTargetUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,7 +86,17 @@ public class JobBuildServiceImpl implements IJobBuildService {
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PluginType pluginType = jobBuild.getPluginType();
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam);
-        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     @Override
@@ -107,7 +119,16 @@ public class JobBuildServiceImpl implements IJobBuildService {
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>());
-        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void updatePipelineBuildStart(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
@@ -166,13 +187,8 @@ public class JobBuildServiceImpl implements IJobBuildService {
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
-                }
-            }).start();
-
+            IJobBuildService jobBuildService = this;
+            build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
         }
     }
 

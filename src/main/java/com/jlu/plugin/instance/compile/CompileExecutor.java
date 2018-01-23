@@ -27,7 +27,7 @@ import com.jlu.plugin.instance.compile.model.CompileBuild;
  */
 @Service
 public class CompileExecutor extends AbstractExecutor {
-
+    private final static String SEPARATOR = "/";
     private final static String COMPILE_JENKINS_JOB_NAME = "compile";
     private final static String JOB_BUILD_ID = "JOB_BUILD_ID";
     private final static String RANDOM_UUID = "RANDOM_UUID";
@@ -63,17 +63,17 @@ public class CompileExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
                             jobBuild);
             StringBuilder buildPath = new StringBuilder();
-            buildPath.append(FTP_SERVER_URL).append(compileParam.get(JobParameter.PIPELINE_MODULE))
-                    .append(File.separator).append(context.getPipelineBuild().getOwner())
-                    .append(File.separator).append(compileParam.get(JobParameter.PIPELINE_COMMIT_ID))
-                    .append(File.separator).append(compileParam.get(CURRENT_DATA))
-                    .append(File.separator).append(compileParam.get(JOB_BUILD_ID))
-                    .append(File.separator).append(compileParam.get(RANDOM_UUID));
+            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(context.getPipelineBuild().getOwner())
+                    .append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_MODULE))
+                    .append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_COMMIT_ID))
+                    .append(SEPARATOR).append(compileParam.get(CURRENT_DATA))
+                    .append(SEPARATOR).append(compileParam.get(JOB_BUILD_ID))
+                    .append(SEPARATOR).append(compileParam.get(RANDOM_UUID));
             StringBuilder logUrl = new StringBuilder();
-            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(File.separator)
-                    .append("job").append(File.separator).append(COMPILE_JENKINS_JOB_NAME)
-                    .append(File.separator).append(buildNumber)
-                    .append(File.separator).append("console");
+            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(SEPARATOR)
+                    .append("job").append(SEPARATOR).append(COMPILE_JENKINS_JOB_NAME)
+                    .append(SEPARATOR).append(buildNumber)
+                    .append(SEPARATOR).append("console");
             compileBuild.setBuildPath(buildPath.toString());
             compileBuild.setLogUrl(logUrl.toString());
             compileBuildDao.saveOrUpdate(compileBuild);

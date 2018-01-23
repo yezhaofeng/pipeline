@@ -1,14 +1,15 @@
 package com.jlu.jenkins.web;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
+import com.jlu.jenkins.bean.JenkinsJobsBean;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.jlu.common.web.ResponseBean;
 import com.jlu.common.web.AbstractController;
@@ -19,7 +20,7 @@ import com.jlu.jenkins.service.IJenkinsConfService;
 /**
  * Created by langshiquan on 18/1/10.
  */
-@Controller
+@RestController
 @RequestMapping("/pipeline/jenkins/server")
 public class JenkinsConfController extends AbstractController {
 
@@ -27,14 +28,23 @@ public class JenkinsConfController extends AbstractController {
     private IJenkinsConfService jenkinsConfService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    @ResponseBody
     public ResponseBean add(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
-        JenkinsConf jenkinsConf = new JenkinsConf();
-        BeanUtils.copyProperties(jenkinsConfDTO, jenkinsConf);
-        jenkinsConf.setCreateTime(new Date());
-        jenkinsConf.setCreateUser(getLoginUserName());
-        jenkinsConf.setLastModifiedUser(getLoginUserName());
-        jenkinsConfService.saveOrUpdate(jenkinsConf);
+        jenkinsConfService.saveOrUpdate(jenkinsConfDTO.toJenkinsConf(getLoginUserName()));
         return ResponseBean.TRUE;
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public JenkinsConfDTO get(@PathVariable Long id) {
+        JenkinsConf jenkinsConf = jenkinsConfService.get(id);
+        if (jenkinsConf != null) {
+            return jenkinsConf.toJenkinsConfDTO();
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/jobs")
+    public List<JenkinsJobsBean> getJobs() throws IOException {
+        String userName = getLoginUserName();
+        return jenkinsConfService.getByCreateUser(userName);
     }
 }

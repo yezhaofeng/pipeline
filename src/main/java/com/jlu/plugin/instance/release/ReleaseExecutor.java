@@ -29,6 +29,7 @@ import com.jlu.plugin.instance.release.service.IReleaseService;
 @Service
 public class ReleaseExecutor extends AbstractExecutor {
 
+    private final static String SEPARATOR = "/";
     private final static String RELEASE_JENKINS_JOB_NAME = "release";
     private final static String TEMP_PRODUCT_SOURCE_LOCATION = "TEMP_PRODUCT_SOURCE_LOCATION";
     private final static String RELEASE_PRODUCT_TARGET_LOCATION = "RELEASE_PRODUCT_TARGET_LOCATION";
@@ -43,7 +44,6 @@ public class ReleaseExecutor extends AbstractExecutor {
     @Autowired
     private IReleaseService releaseService;
 
-
     @Override
     protected void execute(JobBuildContext context, JobBuild jobBuild) {
         ReleaseBuild releaseBuild = releaseService.find(jobBuild.getPluginBuildId());
@@ -56,35 +56,39 @@ public class ReleaseExecutor extends AbstractExecutor {
             jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashedMap());
             return;
         }
-        String owner = pipelineBuild.getOwner();
-        String module = pipelineBuild.getModule();
-        String compileProductLocation = getCompileLocation(compileProductFtpPath);
-        String version = releaseService.getNextVersion(owner, module);
-        StringBuilder releaseTargetLocation = new StringBuilder();
-        releaseTargetLocation.append("release").append(File.separator)
-                .append(owner).append(File.separator)
-                .append(module).append(File.separator)
-                .append(version.replace(".", "_"));
-        HashMap<String, String> releaseParams = new HashMap<>();
-        releaseParams.put(TEMP_PRODUCT_SOURCE_LOCATION, compileProductLocation);
-        releaseParams.put(RELEASE_PRODUCT_TARGET_LOCATION, releaseTargetLocation.toString());
+        // TODO  检验用户版本号是否增加
         try {
+            String owner = pipelineBuild.getOwner();
+            String module = pipelineBuild.getModule();
+            String compileProductLocation = getCompileLocation(compileProductFtpPath);
+            String maxVersion = releaseService.getMaxVersion(owner, module);
+            String version = releaseService.increaseVersion(maxVersion);
+            StringBuilder releaseTargetLocation = new StringBuilder();
+            releaseTargetLocation.append("release").append(SEPARATOR)
+                    .append(owner).append(SEPARATOR)
+                    .append(module).append(SEPARATOR)
+                    .append(maxVersion.replace(".", "_"));
+            HashMap<String, String> releaseParams = new HashMap<>();
+            releaseParams.put(TEMP_PRODUCT_SOURCE_LOCATION, compileProductLocation);
+            releaseParams.put(RELEASE_PRODUCT_TARGET_LOCATION, releaseTargetLocation.toString());
+
             Integer buildNumber = jenkinsBuildService
                     .buildJob(DefaultJenkinsServer.ID, RELEASE_JENKINS_JOB_NAME, releaseParams, jobBuild);
 
             StringBuilder releasePath = new StringBuilder();
             releasePath.append(FTP_SERVER_URL).append(owner)
-                    .append(File.separator).append(module)
-                    .append(File.separator).append(version.replace(".", "_"));
+                    .append(SEPARATOR).append(module)
+                    .append(SEPARATOR).append(version.replace(".", "_"));
             StringBuilder logUrl = new StringBuilder();
-            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(File.separator)
-                    .append("job").append(File.separator).append(RELEASE_JENKINS_JOB_NAME)
-                    .append(File.separator).append(buildNumber)
-                    .append(File.separator).append("console");
+            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(SEPARATOR)
+                    .append("job").append(SEPARATOR).append(RELEASE_JENKINS_JOB_NAME)
+                    .append(SEPARATOR).append(buildNumber)
+                    .append(SEPARATOR).append("console");
             releaseBuild.setReleasePath(releasePath.toString());
             releaseBuild.setLogUrl(logUrl.toString());
             releaseBuild.setOwner(owner);
             releaseBuild.setModule(module);
+            releaseBuild.setVersion(version);
             releaseBuild.setBranch(pipelineBuild.getBranch());
             releaseBuild.setCommitId(pipelineBuild.getCommitId());
             releaseBuild.setTriggerUser(jobBuild.getTriggerUser());
@@ -107,7 +111,7 @@ public class ReleaseExecutor extends AbstractExecutor {
 
     private String getCompileLocation(String compileProductFtpPath) {
         // "ftp://139.199.15.115/" 长度为21
-        return "snapshot" + File.separator + compileProductFtpPath.substring(21, compileProductFtpPath.length() - 1);
+        return "snapshot" + compileProductFtpPath.substring(21, compileProductFtpPath.length());
     }
 
     @Override
