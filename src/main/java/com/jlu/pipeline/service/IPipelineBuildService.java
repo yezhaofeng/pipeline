@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.pipeline.bean.PipelineBuildBean;
+import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.pipeline.model.PipelineConf;
 
 /**
@@ -21,4 +22,6 @@ public interface IPipelineBuildService {
     Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit);
 
     List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId);
+
+    PipelineBuild get(Long pipelineBuildId);
 }

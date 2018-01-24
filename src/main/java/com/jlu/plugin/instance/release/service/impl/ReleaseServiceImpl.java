@@ -22,7 +22,7 @@ import com.jlu.plugin.instance.release.service.IReleaseService;
 public class ReleaseServiceImpl implements IReleaseService {
 
     public final static String FIRST_VERSION = "1.0.0";
-    private final static String VERSION_REGEX = "\\d+\\.\\d+\\.\\d+";
+    public final static String VERSION_REGEX = "\\d+\\.\\d+\\.\\d+";
     @Autowired
     private IReleaseBuildDao releaseBuildDao;
 

@@ -51,4 +51,8 @@ public class CompileBuild {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getProductWgetCommand() {
+        return buildPath;
+    }
 }

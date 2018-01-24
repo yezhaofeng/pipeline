@@ -171,6 +171,11 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         return pipelineBuildBeans;
     }
 
+    @Override
+    public PipelineBuild get(Long pipelineBuildId) {
+        return pipelineBuildDao.findById(pipelineBuildId);
+    }
+
     private void initJobBuilds(Long pipelineBuildId, List<JobConfBean> jobConfBeanList, Map<String, String> params) {
         Long upStreamJobBuildId = 0L;
         for (JobConfBean jobConfBean : jobConfBeanList) {

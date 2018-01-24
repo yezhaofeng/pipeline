@@ -66,11 +66,8 @@
                       expression="(execution(* com.jlu..*ServiceImpl.*(..)))"/>
         <aop:pointcut id="ExecutorOperation"
                       expression="(execution(* com.jlu..*Executor.*(..)))"/>
-        <!--<aop:pointcut id="ValueGeneratorrOperation"-->
-                      <!--expression="(execution(* com.jlu..*Generator.*(..)))"/>-->
         <aop:advisor pointcut-ref="ServiceOperation" advice-ref="txAdvice"/>
         <aop:advisor pointcut-ref="ExecutorOperation" advice-ref="txAdvice"/>
-        <!--<aop:advisor pointcut-ref="ValueGeneratorrOperation" advice-ref="valueTxAdvice"/>-->
     </aop:config>
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -79,12 +76,5 @@
             <tx:method name="*WithTransaction" read-only="false" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
-
-    <tx:advice id="valueTxAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="*" read-only="true" propagation="NOT_SUPPORTED"/>
-        </tx:attributes>
-    </tx:advice>
-
 
 </beans>

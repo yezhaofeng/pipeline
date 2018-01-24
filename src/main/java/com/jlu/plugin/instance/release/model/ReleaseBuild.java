@@ -9,6 +9,10 @@ import javax.persistence.Id;
 
 import com.jlu.common.utils.bean.AbstractPropertyGetter;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
+import com.jlu.plugin.instance.release.VersionValueGenerator;
+import com.jlu.plugin.instance.release.dao.impl.ReleaseBuildDaoImpl;
+import com.jlu.plugin.instance.release.service.impl.ReleaseServiceImpl;
+import com.jlu.plugin.runtime.RuntimeRequire;
 
 /**
  * Created by langshiquan on 18/1/20.
@@ -44,11 +48,14 @@ public class ReleaseBuild {
 
     private String releasePath;
 
+    @RuntimeRequire(defaultValueClass = VersionValueGenerator.class,
+            checkRegex = ReleaseServiceImpl.VERSION_REGEX, description = "版本号")
     private String version;
 
     @Enumerated(EnumType.STRING)
     private PipelineJobStatus status;
 
+    @RuntimeRequire(description = "发布备注")
     private String remark;
 
     private String message;
@@ -155,5 +162,9 @@ public class ReleaseBuild {
 
     public void setStatus(PipelineJobStatus status) {
         this.status = status;
+    }
+
+    public String getReleaseProductWgetCommand() {
+        return releasePath;
     }
 }

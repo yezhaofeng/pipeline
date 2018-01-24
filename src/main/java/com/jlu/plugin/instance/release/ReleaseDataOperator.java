@@ -37,7 +37,8 @@ public class ReleaseDataOperator extends AbstractDataOperator<ReleaseConf, Relea
 
     @Override
     public ReleaseBuild getBuild(Long id) {
-        return releaseBuildDao.findById(id);
+        ReleaseBuild releaseBuild = releaseBuildDao.findById(id);
+        return releaseBuild;
     }
 
     @Override

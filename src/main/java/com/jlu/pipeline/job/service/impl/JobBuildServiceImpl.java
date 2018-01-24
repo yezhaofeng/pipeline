@@ -1,17 +1,18 @@
 package com.jlu.pipeline.job.service.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import com.jlu.common.utils.AopTargetUtils;
+import com.jlu.plugin.runtime.service.PluginDefaultValueGenerator;
+import com.jlu.plugin.runtime.bean.RunTimeBean;
+import com.jlu.plugin.runtime.RuntimeRequire;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -34,8 +35,9 @@ import com.jlu.plugin.service.IPluginInfoService;
  * Created by Administrator on 2018/1/18.
  */
 @Service
-public class JobBuildServiceImpl implements IJobBuildService {
+public class JobBuildServiceImpl implements IJobBuildService, ApplicationContextAware {
 
+    private ApplicationContext applicationContext;
     @Autowired
     private IPluginInfoService pluginInfoService;
 
@@ -217,8 +219,45 @@ public class JobBuildServiceImpl implements IJobBuildService {
         BeanUtils.copyProperties(jobBuild, jobBuildBean);
         Object pluginBuild = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator()
                 .getBuild(jobBuild.getPipelineBuildId());
+
         jobBuildBean.setPluginBuild(pluginBuild);
         return jobBuildBean;
     }
 
+    @Override
+    public List<RunTimeBean> getRuntimeRequire(Long jobBuildId) {
+        List<RunTimeBean> runTimeBeanList = new ArrayList<>();
+        JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
+        if (jobBuild == null) {
+            return runTimeBeanList;
+        }
+        Field[] fields = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator().getBuild(jobBuild.getPluginBuildId()).getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field filed = fields[i];
+            RuntimeRequire runtimeRequire = filed.getAnnotation(RuntimeRequire.class);
+            if (runtimeRequire != null) {
+                Class defaultValueClass = runtimeRequire.defaultValueClass();
+                try {
+                    PluginDefaultValueGenerator pluginDefaultValueGenerator = (PluginDefaultValueGenerator) applicationContext.getBean(defaultValueClass);
+                    Object value = pluginDefaultValueGenerator.generator(jobBuild);
+                    RunTimeBean runTimeBean = new RunTimeBean();
+                    runTimeBean.setName(filed.getName())
+                            .setDefaultValue(value)
+                            .setDescription(runtimeRequire.description())
+                            .setFormType(runtimeRequire.formType().getType())
+                            .setCheckRegex(runtimeRequire.checkRegex());
+                    runTimeBeanList.add(runTimeBean);
+                } catch (Exception e) {
+                    // TODO log
+                    continue;
+                }
+            }
+        }
+        return runTimeBeanList;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

@@ -7,7 +7,6 @@ import com.jlu.pipeline.job.model.JobBuild;
  */
 public class JobBuildBean extends JobBuild{
     Object pluginBuild;
-
     public Object getPluginBuild() {
         return pluginBuild;
     }

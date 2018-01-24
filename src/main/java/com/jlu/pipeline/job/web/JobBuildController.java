@@ -1,7 +1,10 @@
 package com.jlu.pipeline.job.web;
 
+import java.util.List;
 import java.util.Map;
 
+import com.jlu.pipeline.job.bean.JobRuntimeDTO;
+import com.jlu.plugin.runtime.bean.RunTimeBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +29,8 @@ public class JobBuildController extends AbstractController {
     private IJobBuildService jobBuildService;
 
     @RequestMapping(value = "{jobBuildId}", method = RequestMethod.POST)
-    public ResponseBean build(@PathVariable Long jobBuildId, @RequestBody Map<String, String> execParam) {
-        jobBuildService.build(jobBuildId, execParam, TriggerMode.MANUAL, getLoginUserName());
+    public ResponseBean build(@PathVariable Long jobBuildId, @RequestBody JobRuntimeDTO jobRuntimeDTO) {
+        jobBuildService.build(jobBuildId, jobRuntimeDTO, TriggerMode.MANUAL, getLoginUserName());
         return ResponseBean.TRUE;
     }
 
@@ -36,5 +39,9 @@ public class JobBuildController extends AbstractController {
         return jobBuildService.getBuildInfo(jobBuildId);
     }
 
+    @RequestMapping(value = "/runtimeRequire/{jobBuildId}")
+    public List<RunTimeBean> runtimeRequire(@PathVariable Long jobBuildId) {
+        return jobBuildService.getRuntimeRequire(jobBuildId);
+    }
 }
 
