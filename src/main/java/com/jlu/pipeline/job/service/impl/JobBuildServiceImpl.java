@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import com.jlu.common.utils.AopTargetUtils;
+import com.jlu.pipeline.job.bean.*;
 import com.jlu.plugin.runtime.service.PluginDefaultValueGenerator;
 import com.jlu.plugin.runtime.bean.RunTimeBean;
 import com.jlu.plugin.runtime.RuntimeRequire;
@@ -19,10 +20,6 @@ import com.alibaba.fastjson.JSON;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.MapUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
-import com.jlu.pipeline.job.bean.JobBuildBean;
-import com.jlu.pipeline.job.bean.JobConfBean;
-import com.jlu.pipeline.job.bean.PipelineJobStatus;
-import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
@@ -71,7 +68,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     @Override
-    public void build(Long jobBuildId, Map<String, String> execParam, TriggerMode triggerMode, String triggerUser) {
+    public void build(Long jobBuildId, Map<String, String> execParam, Map<String, Object> runtimeJobParam, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("TODO");
@@ -87,7 +84,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PluginType pluginType = jobBuild.getPluginType();
-        JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam);
+        JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam, runtimeJobParam);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -98,7 +95,6 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
                 }
             }
         }).start();
-
     }
 
     @Override
@@ -120,7 +116,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuildDao.saveOrUpdate(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
-        JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>());
+        JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>(), new HashMap<>());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -148,11 +144,12 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     private JobBuildContext initJobBuildContext(Long pipelineBuildId, JobBuild jobBuild,
-                                                Map<String, String> execParams) {
+                                                Map<String, String> execParams, Map<String, Object> runtimePluginParam) {
         JobBuildContext jobBuildContext = new JobBuildContext();
         PipelineBuild pipelineBuild = pipelineBuildDao.findById(pipelineBuildId);
         jobBuildContext.setPipelineBuild(pipelineBuild);
         jobBuildContext.setJobExecParam(execParams);
+        jobBuildContext.setRuntimePluginParam(runtimePluginParam);
         // 处理jobBuild的参数
         Map<String, String> originParams = jobBuild.getInParameterMap();
         Map<String, String> newParams = MapUtils.merge(execParams, originParams);
@@ -190,7 +187,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建
             IJobBuildService jobBuildService = this;
-            build(lowStreamJobBuild.getId(), new HashedMap(), TriggerMode.AUTO, jobBuild.getTriggerUser());
+            build(lowStreamJobBuild.getId(), new HashedMap(), new HashMap<>(), TriggerMode.AUTO, jobBuild.getTriggerUser());
         }
     }
 

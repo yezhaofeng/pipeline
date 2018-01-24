@@ -19,9 +19,7 @@ public interface IJobBuildService {
     // 当构建整条流水线的时候执行
     void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode, String triggerUser);
 
-    void build(Long jobBuildId, Map<String, String> execParam, TriggerMode triggerMode, String triggerUser);
-
-    void build(Long jobBuildId, JobRuntimeDTO jobRuntimeDTO, TriggerMode triggerMode, String triggerUser);
+    void build(Long jobBuildId, Map<String, String> execParam, Map<String, Object> runtimeJobParam, TriggerMode triggerMode, String triggerUser);
 
     void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams);
 

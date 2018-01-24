@@ -12,7 +12,16 @@ import com.jlu.pipeline.model.PipelineBuild;
 // job执行的上下文信息
 public class JobBuildContext {
     PipelineBuild pipelineBuild;
+    Map<String, Object> runtimePluginParam;
     Map<String, String> jobExecParam = new HashedMap();
+
+    public Map<String, Object> getRuntimePluginParam() {
+        return runtimePluginParam;
+    }
+
+    public void setRuntimePluginParam(Map<String, Object> runtimePluginParam) {
+        this.runtimePluginParam = runtimePluginParam;
+    }
 
     public PipelineBuild getPipelineBuild() {
         return pipelineBuild;

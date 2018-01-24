@@ -47,4 +47,9 @@ public class ReleaseDataOperator extends AbstractDataOperator<ReleaseConf, Relea
         releaseBuildDao.saveOrUpdate(releaseBuild);
         return releaseBuild.getId();
     }
+
+    @Override
+    public void updateBuild(ReleaseBuild releaseBuild) {
+        releaseBuildDao.update(releaseBuild);
+    }
 }

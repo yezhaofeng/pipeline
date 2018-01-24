@@ -30,7 +30,7 @@ public class JobBuildController extends AbstractController {
 
     @RequestMapping(value = "{jobBuildId}", method = RequestMethod.POST)
     public ResponseBean build(@PathVariable Long jobBuildId, @RequestBody JobRuntimeDTO jobRuntimeDTO) {
-        jobBuildService.build(jobBuildId, jobRuntimeDTO, TriggerMode.MANUAL, getLoginUserName());
+        jobBuildService.build(jobBuildId, jobRuntimeDTO.getExecParam(), jobRuntimeDTO.getRuntimePluginParam(), TriggerMode.MANUAL, getLoginUserName());
         return ResponseBean.TRUE;
     }
 

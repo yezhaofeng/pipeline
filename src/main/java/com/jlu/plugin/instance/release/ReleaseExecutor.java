@@ -61,13 +61,16 @@ public class ReleaseExecutor extends AbstractExecutor {
             String owner = pipelineBuild.getOwner();
             String module = pipelineBuild.getModule();
             String compileProductLocation = getCompileLocation(compileProductFtpPath);
-            String maxVersion = releaseService.getMaxVersion(owner, module);
-            String version = releaseService.increaseVersion(maxVersion);
+            String version = releaseBuild.getVersion();
+            if (StringUtils.isBlank(version)) {
+                String maxVersion = releaseService.getMaxVersion(owner, module);
+                version = releaseService.increaseVersion(maxVersion);
+            }
             StringBuilder releaseTargetLocation = new StringBuilder();
             releaseTargetLocation.append("release").append(SEPARATOR)
                     .append(owner).append(SEPARATOR)
                     .append(module).append(SEPARATOR)
-                    .append(maxVersion.replace(".", "_"));
+                    .append(version.replace(".", "_"));
             HashMap<String, String> releaseParams = new HashMap<>();
             releaseParams.put(TEMP_PRODUCT_SOURCE_LOCATION, compileProductLocation);
             releaseParams.put(RELEASE_PRODUCT_TARGET_LOCATION, releaseTargetLocation.toString());
