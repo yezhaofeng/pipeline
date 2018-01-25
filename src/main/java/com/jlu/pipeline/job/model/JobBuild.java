@@ -1,6 +1,7 @@
 package com.jlu.pipeline.job.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
@@ -184,10 +185,16 @@ public class JobBuild {
     }
 
     public Map<String, String> getInParameterMap() {
-        return new HashedMap((Map) JSON.parseObject(getInParams()));
+        if (StringUtils.isBlank(getInParams())) {
+            return new HashMap<>();
+        }
+        return new HashMap<>((Map) JSON.parseObject(getInParams()));
     }
 
     public Map<String, String> getOutParameterMap() {
-        return new HashedMap((Map) JSON.parseObject(getOutParams()));
+        if (StringUtils.isBlank(getInParams())) {
+            return new HashMap<>();
+        }
+        return new HashMap<>((Map) JSON.parseObject(getOutParams()));
     }
 }
