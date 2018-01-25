@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.utils.MapUtils;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
@@ -56,7 +56,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setTriggerMode(jobConfBean.getTriggerMode());
         Map<String, String> confParam = jobConfBean.getParameterMap();
         // 系统参数优于用户自定义参数
-        Map<String, String> mergedParam = MapUtils.merge(params, confParam);
+        Map<String, String> mergedParam = CollUtils.merge(params, confParam);
         jobBuild.setInParams(JSON.toJSONString(mergedParam));
         PluginType pluginType = jobConfBean.getPluginType();
         jobBuild.setPluginType(pluginType);
@@ -152,7 +152,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuildContext.setRuntimePluginParam(runtimePluginParam);
         // 处理jobBuild的参数
         Map<String, String> originParams = jobBuild.getInParameterMap();
-        Map<String, String> newParams = MapUtils.merge(execParams, originParams);
+        Map<String, String> newParams = CollUtils.merge(execParams, originParams);
         String paramStr = JSON.toJSONString(newParams);
         jobBuild.setInParams(paramStr);
         jobBuildDao.saveOrUpdate(jobBuild);
@@ -162,7 +162,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     @Override
     public void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams) {
         // 保存job状态，以及参数
-        Map<String, String> outParams = MapUtils.merge(newOutParams, jobBuild.getInParameterMap());
+        Map<String, String> outParams = CollUtils.merge(newOutParams, jobBuild.getInParameterMap());
         jobBuild.setOutParams(JSON.toJSONString(outParams));
         jobBuild.setEndTime(new Date());
         jobBuildDao.saveOrUpdate(jobBuild);
@@ -177,7 +177,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
 
         Map<String, String> originParams = lowStreamJobBuild.getInParameterMap();
-        Map<String, String> newParams = MapUtils.merge(upStreamJobOutParams, originParams);
+        Map<String, String> newParams = CollUtils.merge(upStreamJobOutParams, originParams);
         lowStreamJobBuild.setInParams(JSON.toJSONString(newParams));
         jobBuildDao.saveOrUpdate(lowStreamJobBuild);
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.FAILED)) {

@@ -1,20 +1,21 @@
 package com.jlu.jenkins.service.impl;
 
-import com.jlu.jenkins.bean.JenkinsJobsBean;
-import com.jlu.jenkins.service.IJenkinsBuildService;
-import com.jlu.jenkins.service.IJenkinsServerService;
-import com.offbytwo.jenkins.JenkinsServer;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.jenkins.bean.JenkinsJobsBean;
 import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsConfService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.jlu.jenkins.service.IJenkinsServerService;
+import com.offbytwo.jenkins.JenkinsServer;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -46,7 +47,15 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
     @Override
     public List<JenkinsJobsBean> getByCreateUser(String createUser) throws IOException {
         List<JenkinsJobsBean> jenkinsJobs = new ArrayList<>();
-        List<JenkinsConf> jenkinsConfs = jenkinsConfDao.find(createUser);
+
+        // 防止相同的jenkins配置重复出现，重写了JenkinsConf的hashcode和equals
+        Set<JenkinsConf> jenkinsConfs = new HashSet<>();
+        List<JenkinsConf> jenkinsConfList = jenkinsConfDao.find(createUser);
+        if (CollectionUtils.isEmpty(jenkinsConfList)) {
+            return jenkinsJobs;
+        }
+
+        CollectionUtils.addAll(jenkinsConfs, jenkinsConfList.iterator());
         for (JenkinsConf jenkinsConf : jenkinsConfs) {
             JenkinsJobsBean jenkinsJobsBean = new JenkinsJobsBean();
             jenkinsJobsBean.setServerUrl(jenkinsConf.getServerUrl());

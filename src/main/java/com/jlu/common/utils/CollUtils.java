@@ -15,7 +15,7 @@ import com.jlu.common.utils.bean.AbstractBeanProcessor;
 /**
  * Created by langshiquan on 18/1/22.
  */
-public class ListUtils extends CollectionUtils {
+public class CollUtils extends CollectionUtils {
     /**
      * 集合批量处理
      *
@@ -95,5 +95,19 @@ public class ListUtils extends CollectionUtils {
             map.put(kp.process(t), vp.process(t));
         }
         return map;
+    }
+
+    public static Map<String, String> merge(Map<String, String> from, Map<String, String> to) {
+        if (from == null) {
+            return to;
+        }
+        if (to == null) {
+            return from;
+        }
+        Set<String> keySet = from.keySet();
+        for (String key : keySet) {
+            to.put(key, from.get(key));
+        }
+        return to;
     }
 }

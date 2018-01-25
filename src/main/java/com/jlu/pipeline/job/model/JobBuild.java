@@ -197,4 +197,27 @@ public class JobBuild {
         }
         return new HashMap<>((Map) JSON.parseObject(getOutParams()));
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JobBuild{");
+        sb.append("id=").append(id);
+        sb.append(", jobConfId=").append(jobConfId);
+        sb.append(", upStreamJobBuildId=").append(upStreamJobBuildId);
+        sb.append(", pipelineBuildId=").append(pipelineBuildId);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", pluginType=").append(pluginType);
+        sb.append(", pluginBuildId=").append(pluginBuildId);
+        sb.append(", jobStatus=").append(jobStatus);
+        sb.append(", inParams='").append(inParams).append('\'');
+        sb.append(", outParams='").append(outParams).append('\'');
+        sb.append(", triggerUser='").append(triggerUser).append('\'');
+        sb.append(", triggerMode=").append(triggerMode);
+        sb.append(", triggerTime=").append(triggerTime);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

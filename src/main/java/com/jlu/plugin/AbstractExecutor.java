@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
@@ -25,18 +26,18 @@ public abstract class AbstractExecutor {
     @Autowired
     protected IJobBuildService jobBuildService;
 
+    @LogExecTime
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
         if (jobBuild == null) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("未找到构建");
-            jobBuildService.saveOrUpdate(jobBuild);
+            notifyJobStartFailed(jobBuild, "未找到Job构建记录");
             return;
         }
-        jobBuild.setStartTime(new Date());
+        // 清空message
         jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildService.saveOrUpdate(jobBuild);
         Long pluginBuildId = jobBuild.getPluginBuildId();
         if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
+            notifyJobStartFailed(jobBuild, "未找到插件配置");
             return;
         }
         // 插件运行时的参数保存到PluginBuild中
@@ -44,9 +45,7 @@ public abstract class AbstractExecutor {
         AbstractDataOperator abstractDataOperator = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator();
         Object pluginBuild = abstractDataOperator.getBuild(jobBuild.getPluginBuildId());
         if (pluginBuild == null) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("插件初始化失败");
-            jobBuildService.saveOrUpdate(jobBuild);
+            notifyJobStartFailed(jobBuild, "插件初始化失败");
             return;
         }
         Class buildClass = abstractDataOperator.getBuildClass();
@@ -73,4 +72,19 @@ public abstract class AbstractExecutor {
     public void handleCallback(JobBuild jobBuild) {
         jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashMap());
     }
+
+    protected void notifyJobStartFailed(JobBuild jobBuild, String message) {
+        jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+        jobBuild.setStartTime(new Date());
+        jobBuild.setMessage(message);
+        jobBuildService.saveOrUpdate(jobBuild);
+    }
+
+    protected void notifyJobStartSucc(JobBuild jobBuild) {
+        jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+        jobBuild.setStartTime(new Date());
+        jobBuild.setEndTime(new Date());
+        jobBuildService.saveOrUpdate(jobBuild);
+    }
+
 }

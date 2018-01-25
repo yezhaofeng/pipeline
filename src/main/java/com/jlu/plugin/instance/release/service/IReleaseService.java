@@ -15,4 +15,6 @@ public interface IReleaseService {
     String increaseVersion(String version);
 
     Boolean compare(String version1, String version2);
+
+    Boolean check(String version);
 }

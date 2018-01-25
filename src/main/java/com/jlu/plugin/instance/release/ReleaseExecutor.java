@@ -1,6 +1,5 @@
 package com.jlu.plugin.instance.release;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +34,9 @@ public class ReleaseExecutor extends AbstractExecutor {
     private final static String RELEASE_PRODUCT_TARGET_LOCATION = "RELEASE_PRODUCT_TARGET_LOCATION";
     private final static String FTP_SERVER_URL = "ftp://139.199.15.115/";
 
+    private final static String VERSION_LESS_MESSAGE = "版本号不能减小";
+    private final static String VERSION_FORMAT_ERROR_MESSAGE = "版本号格式不正确";
+
     @Autowired
     private IJenkinsBuildService jenkinsBuildService;
 
@@ -51,19 +53,31 @@ public class ReleaseExecutor extends AbstractExecutor {
         Map<String, String> inParams = jobBuild.getInParameterMap();
         String compileProductFtpPath = inParams.get(JobParameter.PIPELINE_COMPILE_PRODUCT_PATH);
         if (StringUtils.isBlank(compileProductFtpPath)) {
-            jobBuild.setMessage("未发现编译产出，请在发版Job之前配置构建Job");
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashedMap());
+            notifyJobStartFailed(jobBuild, "未发现编译产出，请在发版Job之前配置构建Job");
             return;
         }
-        // TODO  检验用户版本号是否增加
         try {
             String owner = pipelineBuild.getOwner();
             String module = pipelineBuild.getModule();
             String compileProductLocation = getCompileLocation(compileProductFtpPath);
+            String maxVersion = releaseService.getMaxVersion(owner, module);
             String version = releaseBuild.getVersion();
+
+            if (!releaseService.check(version)) {
+                releaseBuild.setStatus(PipelineJobStatus.FAILED);
+                releaseBuild.setMessage(VERSION_FORMAT_ERROR_MESSAGE);
+                releaseService.saveOrUpdate(releaseBuild);
+                notifyJobStartFailed(jobBuild, VERSION_FORMAT_ERROR_MESSAGE);
+                return;
+            }
+            if (!releaseService.compare(version, maxVersion)) {
+                releaseBuild.setStatus(PipelineJobStatus.FAILED);
+                releaseBuild.setMessage(VERSION_LESS_MESSAGE);
+                releaseService.saveOrUpdate(releaseBuild);
+                notifyJobStartFailed(jobBuild, VERSION_LESS_MESSAGE);
+                return;
+            }
             if (StringUtils.isBlank(version)) {
-                String maxVersion = releaseService.getMaxVersion(owner, module);
                 version = releaseService.increaseVersion(maxVersion);
             }
             StringBuilder releaseTargetLocation = new StringBuilder();
@@ -100,16 +114,13 @@ public class ReleaseExecutor extends AbstractExecutor {
             releaseService.saveOrUpdate(releaseBuild);
             jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         } catch (IOException ioe) {
-            jobBuild.setMessage("网络异常");
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+            notifyJobStartFailed(jobBuild, "网络异常");
         } catch (JenkinsRuntimeException jre) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage(jre.getMessage());
+            notifyJobStartFailed(jobBuild, jre.getMessage());
         } catch (Exception e) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("UnKnown Error:" + e.getMessage());
+            notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
         }
-        jobBuildService.saveOrUpdate(jobBuild);
+        notifyJobStartSucc(jobBuild);
     }
 
     private String getCompileLocation(String compileProductFtpPath) {

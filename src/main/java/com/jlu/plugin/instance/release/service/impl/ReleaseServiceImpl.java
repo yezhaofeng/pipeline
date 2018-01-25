@@ -1,15 +1,14 @@
 package com.jlu.plugin.instance.release.service.impl;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jlu.common.exception.PipelineRuntimeException;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
@@ -86,5 +85,10 @@ public class ReleaseServiceImpl implements IReleaseService {
             i++;
         }
         return true;
+    }
+
+    @Override
+    public Boolean check(String version) {
+        return Pattern.matches(VERSION_REGEX, version);
     }
 }

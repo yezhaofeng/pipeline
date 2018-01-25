@@ -1,18 +1,13 @@
 package com.jlu.plugin.runtime;
 
-import com.jlu.common.utils.AopTargetUtils;
-import com.jlu.pipeline.job.model.JobBuild;
-import com.jlu.pipeline.job.service.IJobBuildService;
-import com.jlu.plugin.instance.release.VersionValueGenerator;
-import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.lang.reflect.Field;
-import java.util.Map;
+import com.jlu.pipeline.job.service.IJobBuildService;
+import com.jlu.plugin.instance.release.VersionValueGenerator;
 
 /**
  * Created by Administrator on 2018/1/24.
@@ -32,9 +27,4 @@ public class PluginValueGeneratorTest {
         jobBuildService.getRuntimeRequire(15L);
     }
 
-    @Test
-    public void testComponent() throws Exception {
-        JobBuild jobBuild = new JobBuild();
-        versionValueGenerator.generator(jobBuild);
-    }
 }

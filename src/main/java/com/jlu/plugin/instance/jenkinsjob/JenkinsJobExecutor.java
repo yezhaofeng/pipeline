@@ -3,7 +3,6 @@ package com.jlu.plugin.instance.jenkinsjob;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
-import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.AbstractExecutor;
@@ -50,18 +48,15 @@ public class JenkinsJobExecutor extends AbstractExecutor {
                     .append(File.separator).append("console");
             jenkinsJobBuild.setBuildUrl(logUrl.toString());
             jenkinsJobDao.saveOrUpdate(jenkinsJobBuild);
-            jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+            notifyJobStartSucc(jobBuild);
         } catch (IOException ioe) {
-            jobBuild.setMessage("通讯异常");
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+            notifyJobStartFailed(jobBuild, "通讯异常");
         } catch (JenkinsRuntimeException jre) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage(jre.getMessage());
+            notifyJobStartFailed(jobBuild, jre.getMessage());
         } catch (Exception e) {
             logger.error("jenkins job error", e);
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("UnKnown Error:" + e.getMessage());
+            notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
         }
-        jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashedMap());
+        notifyJobStartSucc(jobBuild);
     }
 }

@@ -5,16 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.jlu.common.utils.AopTargetUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.utils.AopTargetUtils;
 import com.jlu.common.utils.CiHomeReadConfig;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.github.model.GitHubCommit;
@@ -113,6 +113,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      * @param pipelineConf
      * @return pipelineBuild
      */
+    @LogExecTime
     @Override
     public Long initPipelineBuild(PipelineConf pipelineConf) {
         if (pipelineConf == null) {
@@ -142,6 +143,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      * @param gitHubCommit
      * @return pipelineBuild
      */
+    @LogExecTime
     @Override
     public Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit) {
         PipelineBuild pipelineBuild =

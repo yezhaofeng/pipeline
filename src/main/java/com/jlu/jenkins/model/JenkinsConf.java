@@ -1,14 +1,16 @@
 package com.jlu.jenkins.model;
 
-import com.jlu.jenkins.bean.JenkinsConfDTO;
-import org.springframework.beans.BeanUtils;
-
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.springframework.beans.BeanUtils;
+
+import com.jlu.jenkins.bean.JenkinsConfDTO;
 
 /**
  * Created by langshiquan on 17/12/23.
@@ -106,5 +108,24 @@ public class JenkinsConf {
         JenkinsConfDTO jenkinsConfDTO = new JenkinsConfDTO();
         BeanUtils.copyProperties(jenkinsConfDTO, this);
         return jenkinsConfDTO;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        JenkinsConf that = (JenkinsConf) o;
+        return Objects.equals(serverUrl, that.serverUrl) &&
+                Objects.equals(masterUser, that.masterUser) &&
+                Objects.equals(masterPassword, that.masterPassword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serverUrl, masterUser, masterPassword);
     }
 }

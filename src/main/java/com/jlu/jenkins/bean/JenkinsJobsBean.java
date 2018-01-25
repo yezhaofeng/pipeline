@@ -1,6 +1,5 @@
 package com.jlu.jenkins.bean;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,5 +32,15 @@ public class JenkinsJobsBean {
 
     public void setJobs(Set<String> jobs) {
         this.jobs = jobs;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JenkinsJobsBean{");
+        sb.append("serverUrl='").append(serverUrl).append('\'');
+        sb.append(", jenkinsServerId=").append(jenkinsServerId);
+        sb.append(", jobs=").append(jobs);
+        sb.append('}');
+        return sb.toString();
     }
 }

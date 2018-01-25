@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="D:\\logs"/>
+    <property name="logStoreDirectory" value="/Users/langshiquan/logs/pipe"/>
 
     <!-- 日志文件  appender定义 -->
     <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -103,6 +103,31 @@
             <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
         </encoder>
     </appender>
+
+    <appender name="methodExecTimeLogAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/methodExecTimeLog.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.methodExecTimeLog.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="methodExecTimeLog">
+        <level value="INFO"/>
+        <appender-ref ref="methodExecTimeLogAppender"/>
+    </logger>
 
     <logger name="com.jlu">
         <level value="INFO"/>

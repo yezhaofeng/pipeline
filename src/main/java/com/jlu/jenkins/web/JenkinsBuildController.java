@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jlu.common.web.ResponseBean;
 import com.jlu.common.web.AbstractController;
+import com.jlu.common.web.ResponseBean;
 import com.jlu.jenkins.bean.JenkinsBuildDTO;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 
@@ -27,7 +27,7 @@ public class JenkinsBuildController extends AbstractController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean add(@RequestBody JenkinsBuildDTO jenkinsBuildDTO) throws IOException {
-        jenkinsBuildService.buildJob(jenkinsBuildDTO);
+
         return ResponseBean.TRUE;
     }
 }

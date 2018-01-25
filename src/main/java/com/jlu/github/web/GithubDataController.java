@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jlu.common.utils.AopTargetUtils;
 import com.jlu.common.utils.CiHomeReadConfig;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.github.bean.GithubFirstCommitBean;
@@ -70,7 +71,12 @@ public class GithubDataController {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        gitHubHookService.dealHookMessage(paramJson);
+                        try {
+                            ((IGitHubHookService) AopTargetUtils.getTarget(gitHubHookService)).dealHookMessage
+                                        (paramJson);
+                        } catch (Exception e) {
+                            // todo log
+                        }
                     }
                 }).start();
             }
