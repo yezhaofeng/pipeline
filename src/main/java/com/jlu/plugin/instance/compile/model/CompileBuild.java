@@ -10,6 +10,9 @@ import javax.persistence.Id;
  */
 @Entity
 public class CompileBuild {
+    private static final String WGET_COMMAND_PREFIX = "wget -r -nH --level=0 --cut-dirs=4 ";
+    private static final String WGET_COMMAND_SUFFIX =
+            "/output --user getprod --password getprod@123 --preserve-permissions";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,6 +56,6 @@ public class CompileBuild {
     }
 
     public String getProductWgetCommand() {
-        return buildPath;
+        return WGET_COMMAND_PREFIX + buildPath + WGET_COMMAND_SUFFIX;
     }
 }

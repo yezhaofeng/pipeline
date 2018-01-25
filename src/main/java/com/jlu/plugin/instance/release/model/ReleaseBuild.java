@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import com.jlu.common.utils.bean.AbstractPropertyGetter;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.VersionValueGenerator;
-import com.jlu.plugin.instance.release.dao.impl.ReleaseBuildDaoImpl;
 import com.jlu.plugin.instance.release.service.impl.ReleaseServiceImpl;
 import com.jlu.plugin.runtime.RuntimeRequire;
 
@@ -19,6 +18,10 @@ import com.jlu.plugin.runtime.RuntimeRequire;
  */
 @Entity
 public class ReleaseBuild {
+
+    private static final String WGET_COMMAND_PREFIX = "wget -r -nH --level=0 --cut-dirs=6 ";
+    private static final String WGET_COMMAND_SUFFIX =
+            "/output --user release --password release@123 --preserve-permissions";
 
     public static final AbstractPropertyGetter<String, ReleaseBuild> VERSION_GETTER =
             new AbstractPropertyGetter<String, ReleaseBuild>() {
@@ -165,6 +168,7 @@ public class ReleaseBuild {
     }
 
     public String getReleaseProductWgetCommand() {
-        return releasePath;
+        return WGET_COMMAND_PREFIX + releasePath + WGET_COMMAND_SUFFIX;
     }
+
 }
