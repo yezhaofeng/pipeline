@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:applicationContext-test.xml"})
-public class PluginDefaultValueGeneratorTest {
+public class PluginValueGeneratorTest {
 
     @Autowired
     private IJobBuildService jobBuildService;

@@ -39,12 +39,6 @@ public class JenkinsJobExecutor extends AbstractExecutor {
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
         JenkinsJobBuild jenkinsJobBuild = jenkinsJobDao.findById(jobBuild.getPluginBuildId());
-        if (jobBuild == null) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("未找到构建");
-            jobBuildService.saveOrUpdate(jobBuild);
-            return;
-        }
         try {
             Integer buildNumber = jenkinsBuildService.buildJob(jenkinsJobBuild.getJenkinsServerId(), jenkinsJobBuild
                     .getJobName(), jobBuild

@@ -47,12 +47,6 @@ public class CompileExecutor extends AbstractExecutor {
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
         CompileBuild compileBuild = compileBuildDao.findById(jobBuild.getPluginBuildId());
-        if (jobBuild == null) {
-            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage("未找到构建");
-            jobBuildService.saveOrUpdate(jobBuild);
-            return;
-        }
         Map<String, String> compileParam = jobBuild.getInParameterMap();
         compileParam.put(JOB_BUILD_ID, String.valueOf(jobBuild.getId()));
         compileParam.put(RANDOM_UUID, UUID.randomUUID().toString());

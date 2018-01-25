@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.jlu.common.utils.AopTargetUtils;
 import com.jlu.pipeline.job.bean.*;
-import com.jlu.plugin.runtime.service.PluginDefaultValueGenerator;
+import com.jlu.plugin.runtime.service.PluginValueGenerator;
 import com.jlu.plugin.runtime.bean.RunTimeBean;
 import com.jlu.plugin.runtime.RuntimeRequire;
 import org.apache.commons.collections.map.HashedMap;
@@ -235,8 +235,8 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
             if (runtimeRequire != null) {
                 Class defaultValueClass = runtimeRequire.defaultValueClass();
                 try {
-                    PluginDefaultValueGenerator pluginDefaultValueGenerator = (PluginDefaultValueGenerator) applicationContext.getBean(defaultValueClass);
-                    Object value = pluginDefaultValueGenerator.generator(jobBuild);
+                    PluginValueGenerator pluginValueGenerator = (PluginValueGenerator) applicationContext.getBean(defaultValueClass);
+                    Object value = pluginValueGenerator.generator(jobBuild);
                     RunTimeBean runTimeBean = new RunTimeBean();
                     runTimeBean.setName(filed.getName())
                             .setDefaultValue(value)

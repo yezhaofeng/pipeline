@@ -1,5 +1,7 @@
 package com.jlu.plugin;
 
+import java.lang.reflect.ParameterizedType;
+
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jettison.json.JSONObject;
@@ -15,7 +17,15 @@ import com.jlu.plugin.bean.PluginConfig;
  * @param <BuildT> JobBuild type
  */
 public abstract class AbstractPlugin<ConfT, BuildT> {
+    public Class getConfClass() {
+        // 通过范型反射，获取在子类中定义的entityClass.
+        return (Class<ConfT>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
 
+    public Class getBuildClass() {
+        // 通过范型反射，获取在子类中定义的entityClass.
+        return (Class<BuildT>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    }
     /**
      * Get job common base config
      *

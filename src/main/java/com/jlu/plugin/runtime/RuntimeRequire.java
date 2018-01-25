@@ -1,7 +1,7 @@
 package com.jlu.plugin.runtime;
 
 import com.jlu.plugin.runtime.bean.FormType;
-import com.jlu.plugin.runtime.service.DefaultPluginDefaultValueGenerator;
+import com.jlu.plugin.runtime.service.DefaultPluginValueGenerator;
 
 import java.lang.annotation.*;
 
@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 public @interface RuntimeRequire {
-    Class defaultValueClass() default DefaultPluginDefaultValueGenerator.class;
+    Class defaultValueClass() default DefaultPluginValueGenerator.class;
 
     String description() default "无描述信息";
 
