@@ -17,6 +17,7 @@ import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.jenkins.timer.service.ITimerService;
+import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.plugin.service.IPluginInfoService;
 import com.offbytwo.jenkins.JenkinsServer;
@@ -56,7 +57,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
         }
         Long lastSuccessfulBuildDuration = jenkinsServerService.getLastSuccessfulBuildDuration(jenkinsServer, jobName);
         Long delay = lastSuccessfulBuildDuration / 2;
-        Long period = lastSuccessfulBuildDuration / 20;
+        Long period = lastSuccessfulBuildDuration / 10;
         period = period > DEFAULT_PERIOD ? period : DEFAULT_PERIOD;
 
         Integer buildNumber = jenkinsServerService.build(jenkinsServer, jobName, params);
@@ -69,8 +70,14 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     @Override
     public void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,
                                        BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException {
+        if (buildWithDetails == null) {
+            jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+            jobBuild.setMessage(JenkinsRuntimeExceptionEnum.NETWORK_UNREACHABLE.name());
+            pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
+            return;
+        }
         BuildResult buildResult = buildWithDetails.getResult();
-        logger.info("jobBuildId-{} {} {} has fininshed,status:{}", jobBuild.getId(), jobName, buildNumber,
+        logger.info("jobBuildId-{} {} {} has finished,status:{}", jobBuild.getId(), jobName, buildNumber,
                 buildResult.name());
         jobBuild.setJobStatus(BuildStatusUtils.toJobStatus(buildResult));
         pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);

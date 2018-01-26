@@ -1,10 +1,11 @@
 package com.jlu.jenkins.timer.bean;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimerTask;
 import java.util.Vector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
@@ -18,6 +19,10 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
  */
 public class JenkinsBuildTimerTask extends TimerTask {
 
+    private Logger logger = LoggerFactory.getLogger(JenkinsBuildTimerTask.class);
+    private Integer ioErrorTimes = 0;
+    // 允许发生异常的次数
+    private final Integer maxIoErrorTimes = 5;
     private IJenkinsBuildService jenkinsBuildService;
     private IJenkinsServerService jenkinsServerService;
     private JenkinsServer jenkinsServer;
@@ -55,22 +60,38 @@ public class JenkinsBuildTimerTask extends TimerTask {
             BuildWithDetails buildWithDetails = build.details();
             Boolean isBuilding = buildWithDetails.isBuilding();
             if (isBuilding) {
-                System.out.println(new SimpleDateFormat().format(new Date()) + " " + buildNumber + " " + isBuilding);
+                logger.info("jobBuildId-{} jobName-{} buildNumber-{} is building", jobBuild.getId(), jobName,
+                        buildNumber);
                 return;
             } else {
                 this.cancel();
                 if (vector != null) {
                     vector.remove(this.getJobBuild());
                 }
-
                 jenkinsBuildService.handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
                         buildWithDetails, jobBuild);
             }
         } catch (IOException e) {
-            // TODO
-            e.printStackTrace();
-        } finally {
-            // TODO
+            logger.warn("jobBuildId-{} jobName-{} buildNumber-{} occur IOException {} times,error:", jobBuild.getId
+                    (), jobName, buildNumber, ++ioErrorTimes, e);
+            if (ioErrorTimes >= maxIoErrorTimes) {
+                this.cancel();
+                if (vector != null) {
+                    vector.remove(this.getJobBuild());
+                }
+                try {
+                    jenkinsBuildService.handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
+                            null, jobBuild);
+                } catch (Exception ce) {
+                    logger.info("jobBuildId-{} jobName-{} buildNumber-{} notify IOException message occur Exception,"
+                            + "error:", jobBuild.getId(), jobName, buildNumber, ce);
+                }
+            }
+
+        } catch (Exception e) {
+            logger.info("jobBuildId-{} jobName-{} buildNumber-{} occur Exception,error:", jobBuild.getId(), jobName,
+                    buildNumber, e);
+            this.cancel();
         }
 
     }

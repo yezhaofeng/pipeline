@@ -78,7 +78,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public void build(Long pipelineConfId, Long triggerId) {
         GitHubCommit gitHubCommit = gitHubCommitService.get(triggerId);
         if (gitHubCommit == null) {
-            throw new PipelineRuntimeException("TODO");
+            throw new PipelineRuntimeException("未找到提交记录");
         }
         build(pipelineConfId, gitHubCommit);
     }
@@ -103,7 +103,6 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
                 }
             }
         }).start();
-//        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
     }
 
 

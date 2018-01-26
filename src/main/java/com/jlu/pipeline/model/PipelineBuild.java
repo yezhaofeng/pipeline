@@ -157,4 +157,26 @@ public class PipelineBuild {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("PipelineBuild{");
+        sb.append("id=").append(id);
+        sb.append(", pipelineConfId=").append(pipelineConfId);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", owner='").append(owner).append('\'');
+        sb.append(", module='").append(module).append('\'');
+        sb.append(", branch='").append(branch).append('\'');
+        sb.append(", commitId='").append(commitId).append('\'');
+        sb.append(", triggerId=").append(triggerId);
+        sb.append(", buildNumber=").append(buildNumber);
+        sb.append(", pipelineStatus=").append(pipelineStatus);
+        sb.append(", checkinAuthor='").append(checkinAuthor).append('\'');
+        sb.append(", triggerUser='").append(triggerUser).append('\'');
+        sb.append(", triggerMode=").append(triggerMode);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append('}');
+        return sb.toString();
+    }
 }

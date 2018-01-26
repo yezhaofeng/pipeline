@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.branch.bean.BranchType;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
@@ -73,7 +74,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     }
 
     @Override
-    public PipelineConf getPipelineConfBean(String name, String module, String branchName) {
-        return null;
+    public PipelineConf getPipelineConf(String name, String module, String branchName) {
+        return pipelineConfDao.get(name, module, BranchType.parseType(branchName));
     }
 }

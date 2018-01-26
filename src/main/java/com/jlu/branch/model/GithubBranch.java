@@ -1,5 +1,7 @@
 package com.jlu.branch.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,17 +30,15 @@ public class GithubBranch {
     @Enumerated(EnumType.STRING)
     private BranchType branchType;
 
-    private String createTime;
+    private Date createTime;
 
-    private String version;
 
     private String remarks;
 
-    public GithubBranch(int moduleId, String branchName, BranchType branchType, String version, String createTime) {
+    public GithubBranch(int moduleId, String branchName, BranchType branchType, Date createTime) {
         this.moduleId = moduleId;
         this.branchName = branchName;
         this.branchType = branchType;
-        this.version = version;
         this.createTime = createTime;
     }
 
@@ -76,20 +76,12 @@ public class GithubBranch {
         this.branchType = branchType;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 
     public String getRemarks() {

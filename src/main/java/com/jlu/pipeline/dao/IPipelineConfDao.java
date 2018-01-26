@@ -1,5 +1,8 @@
 package com.jlu.pipeline.dao;
 
+import java.util.List;
+
+import com.jlu.branch.bean.BranchType;
 import com.jlu.common.db.dao.IBaseDao;
 import com.jlu.pipeline.model.PipelineConf;
 
@@ -8,4 +11,7 @@ import com.jlu.pipeline.model.PipelineConf;
  */
 
 public interface IPipelineConfDao extends IBaseDao<PipelineConf> {
+    List<PipelineConf> get(String owner,String module);
+
+    PipelineConf get(String owner, String module, BranchType branchType);
 }

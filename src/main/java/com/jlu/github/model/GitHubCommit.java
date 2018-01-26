@@ -179,4 +179,24 @@ public class GitHubCommit {
         this.commitUrl = commitUrl;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("GitHubCommit{");
+        sb.append("id=").append(id);
+        sb.append(", module='").append(module).append('\'');
+        sb.append(", branch='").append(branch).append('\'');
+        sb.append(", branchType=").append(branchType);
+        sb.append(", committer='").append(committer).append('\'');
+        sb.append(", committerEmail='").append(committerEmail).append('\'');
+        sb.append(", commits='").append(commits).append('\'');
+        sb.append(", commitTime='").append(commitTime).append('\'');
+        sb.append(", addedFiles='").append(addedFiles).append('\'');
+        sb.append(", removedFiles='").append(removedFiles).append('\'');
+        sb.append(", modifiedFiles='").append(modifiedFiles).append('\'');
+        sb.append(", commitId='").append(commitId).append('\'');
+        sb.append(", commitUrl='").append(commitUrl).append('\'');
+        sb.append(", owner='").append(owner).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

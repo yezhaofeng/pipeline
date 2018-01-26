@@ -47,26 +47,6 @@ public class BranchServiceImpl implements IBranchService {
         branchDao.saveOrUpdateAll(githubBranches);
     }
 
-    /**
-     * 根据模块数据获得最新的三位版本号＋1
-     * @param module
-     * @return
-     */
-    @Override
-    public String getLastThreeVersion(Module module) {
-        ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("moduleId", module.getId());
-        List<OrderCondition> orders = new ArrayList<OrderCondition>();
-        orders.add(new DescOrder("id"));
-        List<GithubBranch> branches = branchDao.findHeadByProperties(conditionAndSet, orders, 0, 1);
-        if (branches != null && branches.size() != 0) {
-            String threeVersion = branches.get(0).getVersion();
-            String[] numbers = threeVersion.split("\\.");
-            return (Integer.parseInt(numbers[0]) + 1) + ".0.0";
-        } else {
-            return "2.0.0";
-        }
-    }
 
     /**
      * 获得分支信息

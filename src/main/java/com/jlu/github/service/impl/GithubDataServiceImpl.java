@@ -1,6 +1,7 @@
 package com.jlu.github.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,8 +217,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
             GithubBranchBean branchBean = branchBeans.get(i);
             BranchType branchType = branchBean.getName().equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
             GithubBranch githubBranch
-                    = new GithubBranch(module.getId(), branchBean.getName(), branchType,
-                    this.getThreeVersion(branchType, version), DateUtils.getNowTimeFormat());
+                    = new GithubBranch(module.getId(), branchBean.getName(), branchType, new Date());
             githubBranches.add(githubBranch);
             this.initOneCommit(username, module, branchBean.getName());
         }
@@ -243,6 +243,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         }
         GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
 
+        // TODO
         gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
     }
 
@@ -262,19 +263,4 @@ public class GithubDataServiceImpl implements IGithubDataService {
         return githubUser;
     }
 
-    /**
-     * 获得三位版本号
-     *
-     * @param branchType
-     * @param version
-     * @return
-     */
-    private String getThreeVersion(BranchType branchType, String version) {
-        if (branchType.equals(BranchType.TRUNK)) {
-            return version;
-        } else {
-            String[] numbers = version.split("\\.");
-            return (Integer.parseInt(numbers[0]) + 1) + ".0.0";
-        }
-    }
 }

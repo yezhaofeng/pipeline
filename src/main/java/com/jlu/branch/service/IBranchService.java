@@ -11,23 +11,16 @@ import com.jlu.github.model.Module;
 public interface IBranchService {
 
     /**
-     *  保存模块信息
+     * 保存模块分支信息
      * @param githubBranch
      */
     void saveBranch(GithubBranch githubBranch);
 
     /**
-     * 批量保存模块信息
+     * 批量保存模块分支信息
      * @param githubBranches
      */
     void saveBranches(List<GithubBranch> githubBranches);
-
-    /**
-     * 根据模块数据获得最新的三位版本号＋1
-     * @param module
-     * @return
-     */
-    String getLastThreeVersion(Module module);
 
     /**
      * 获得分支信息

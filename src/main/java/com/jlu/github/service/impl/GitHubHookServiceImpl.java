@@ -1,5 +1,7 @@
 package com.jlu.github.service.impl;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
-import com.jlu.common.utils.DateUtils;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
 import com.jlu.github.model.GitHubCommit;
@@ -43,7 +44,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
     @Autowired
     private IGitHubCommitService gitHubCommitService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GitHubHookServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(GitHubHookServiceImpl.class);
 
     private static final Gson GSON = new Gson();
 
@@ -59,13 +60,13 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
             return;
         }
         gitHubCommitService.save(gitHubCommit);
-        PipelineConf pipelineConf = pipelineConfService.getPipelineConfBean(gitHubCommit.getOwner(), gitHubCommit.getModule(), gitHubCommit.getBranch());
-        pipelineBuildService.build(pipelineConf.getId(), gitHubCommit);
-
-        try {
-        } catch (Exception e) {
-            LOGGER.error("解析Json数据失败！hookMessage:{}", hookMessage.toString());
+        PipelineConf pipelineConf = pipelineConfService
+                .getPipelineConf(gitHubCommit.getOwner(), gitHubCommit.getModule(), gitHubCommit.getBranch());
+        if (pipelineConf == null) {
+            logger.info("{} github commit not found pipeline conf", gitHubCommit);
+            return;
         }
+        pipelineBuildService.build(pipelineConf.getId(), gitHubCommit);
     }
 
     /**
@@ -85,7 +86,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         String moduleOwner = repositoryBean.getOwner().getName();
         Module module = moduleService.getModuleByUserAndModule(moduleName, moduleOwner);
         if (module == null) {
-            LOGGER.info("This module is not exist and ignore compile!user:{}, module:{}",
+            logger.info("This module is not exist and ignore compile!user:{}, module:{}",
                     repositoryBean.getOwner().getName(), repositoryBean.getName());
         }
         String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
@@ -129,15 +130,14 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
                 GithubBranch githubBranch = new GithubBranch();
                 githubBranch.setBranchType(BranchType.BRANCH);
                 githubBranch.setBranchName(branchName);
-                githubBranch.setCreateTime(DateUtils.getNowTimeFormat());
+                githubBranch.setCreateTime(new Date());
                 githubBranch.setModuleId(module.getId());
-                githubBranch.setVersion(branchService.getLastThreeVersion(module));
                 branchService.saveBranch(githubBranch);
-                LOGGER.info("Create branch:{} is successful!", branchName);
+                logger.info("Create branch:{} is successful!", branchName);
                 result = true;
             }
         } catch (Exception e) {
-            LOGGER.error("Create branch:{} is fail!", branchName);
+            logger.error("Create branch:{} is fail!", branchName);
         } finally {
             return result;
         }

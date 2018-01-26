@@ -3,11 +3,14 @@ package com.jlu.pipeline.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jlu.branch.bean.BranchType;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -25,6 +28,8 @@ public class PipelineConf {
     protected Date createTime;
     protected Date lastModifiedTime;
     protected String lastModifiedUser;
+    @Enumerated(EnumType.STRING)
+    protected BranchType branchType;
     @JsonIgnore
     private Boolean deleteStats = false;
 
@@ -106,5 +111,30 @@ public class PipelineConf {
 
     public void setDeleteStats(Boolean deleteStats) {
         this.deleteStats = deleteStats;
+    }
+
+    public BranchType getBranchType() {
+        return branchType;
+    }
+
+    public void setBranchType(BranchType branchType) {
+        this.branchType = branchType;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("PipelineConf{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", remark='").append(remark).append('\'');
+        sb.append(", isAuto=").append(isAuto);
+        sb.append(", module='").append(module).append('\'');
+        sb.append(", createUser='").append(createUser).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append(", lastModifiedTime=").append(lastModifiedTime);
+        sb.append(", lastModifiedUser='").append(lastModifiedUser).append('\'');
+        sb.append(", deleteStats=").append(deleteStats);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -4,11 +4,15 @@ package com.jlu.branch.bean;
  * Created by niuwanpeng on 17/3/10.
  */
 public enum BranchType {
-    TRUNK(1), BRANCH(2);
+    TRUNK, BRANCH;
 
-    private int var;
+    private static final String MASTER = "master";
 
-    private BranchType(int var) {
-        this.var = var;
+    public static BranchType parseType(String branchName) {
+        if (MASTER.equals(branchName)) {
+            return TRUNK;
+        } else {
+            return BRANCH;
+        }
     }
 }

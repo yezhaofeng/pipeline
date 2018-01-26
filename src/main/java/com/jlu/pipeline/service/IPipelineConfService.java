@@ -14,5 +14,5 @@ public interface IPipelineConfService {
 
     PipelineConf getPipelineConf(Long pipelineConfId);
 
-    PipelineConf getPipelineConfBean(String name, String module, String branchName);
+    PipelineConf getPipelineConf(String name, String module, String branchName);
 }

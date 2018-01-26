@@ -50,7 +50,7 @@ public class GithubDataController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GithubDataController.class);
 
     /**
-     * 监听代码提交事件（push），触法ci
+     * 监听代码提交事件（push），触法流水线
      * @param request
      * @param response
      */
@@ -75,7 +75,7 @@ public class GithubDataController {
                             ((IGitHubHookService) AopTargetUtils.getTarget(gitHubHookService)).dealHookMessage
                                         (paramJson);
                         } catch (Exception e) {
-                            // todo log
+                            LOGGER.error("deal hook-message failed,json:{},error:", paramJson, e);
                         }
                     }
                 }).start();

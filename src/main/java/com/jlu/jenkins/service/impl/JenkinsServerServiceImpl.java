@@ -39,10 +39,12 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
     public JenkinsServer getJenkinsServer(String serverUrl, String username, String password) {
         JenkinsServer jenkinsServer = jenkinsServerMap.get(serverUrl);
         if (jenkinsServer != null) {
+            logger.info("get JenkinsServer from cache:{}", serverUrl);
             return jenkinsServer;
         }
         JenkinsServer newJenkinsServer = initJenkinsServer(serverUrl, username, password);
         jenkinsServerMap.put(serverUrl, newJenkinsServer);
+        logger.info("init a new JenkinsServer:{}", serverUrl);
         return newJenkinsServer;
     }
 
@@ -56,9 +58,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
 
     @Override
     public Set<String> getJobs(JenkinsServer jenkinsServer) throws IOException {
-        Map<String, Job> jobMap = null;
-
-        jobMap = jenkinsServer.getJobs();
+        Map<String, Job> jobMap = jenkinsServer.getJobs();
 
         if (jobMap == null) {
             return new HashSet<>();
