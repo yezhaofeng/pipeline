@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.utils.DateUtils;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.jenkins.timer.service.ITimerService;
 import com.jlu.pipeline.job.model.JobBuild;
@@ -33,7 +34,8 @@ public class TimerServiceImpl implements ITimerService {
 
     @Override
     public void register(JenkinsBuildTimerTask timerTask, Long delay, Long period) {
-        logger.info("register timer task:{} delay:{} period:{}", timerTask, period);
+        logger.info("register timer task:{} delay:{} period:{}", timerTask, DateUtils.getRealableTime(delay),
+                DateUtils.getRealableTime(period));
         timerTask.setVector(vector);
         vector.add(timerTask.getJobBuild());
         timer.schedule(timerTask, delay, period);

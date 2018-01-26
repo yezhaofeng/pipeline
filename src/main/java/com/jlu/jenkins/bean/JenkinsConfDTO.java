@@ -54,4 +54,15 @@ public class JenkinsConfDTO {
         jenkinsConf.setLastModifiedUser(userName);
         return jenkinsConf;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JenkinsConfDTO{");
+        sb.append("id=").append(id);
+        sb.append(", serverUrl='").append(serverUrl).append('\'');
+        sb.append(", masterUser='").append(masterUser).append('\'');
+        sb.append(", masterPassword='").append(masterPassword).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

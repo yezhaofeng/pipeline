@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.utils.DateUtils;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
 import com.jlu.jenkins.model.JenkinsConf;
@@ -74,11 +75,13 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
     @Override
     public Integer build(JenkinsServer jenkinsServer, String jobName, Map<String, String> params) throws IOException {
         Job job = jenkinsServer.getJob(jobName);
+        logger.info("build job-{} with {}", job.getUrl(), params);
         QueueReference queueReference;
         try {
             queueReference = job.build(params, true);
         } catch (HttpResponseException e) {
-            // log e.getMessage()
+            logger.warn("job-{} don't have params,buildWithParameter response code-{} error:{}", job.getUrl(), e
+                    .getStatusCode(), e.getMessage());
             queueReference = job.build(true);
         }
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
@@ -95,6 +98,8 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         Job job = jenkinsServer.getJob(jobName);
         JobWithDetails jobWithDetails = job.details();
         Long duration = jobWithDetails.getLastSuccessfulBuild().details().getDuration();
+        logger.info("job-{} last successful build duration {}", job.getUrl(),
+                DateUtils.getRealableTime(duration));
         return duration;
     }
 
@@ -121,6 +126,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         return jenkinsServer;
     }
 
+    @Deprecated
     @Override
     public Integer build(JenkinsServer jenkinsServer, String jobName) throws IOException {
         Job job = jenkinsServer.getJob(jobName);
@@ -133,6 +139,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         return build.getNumber();
     }
 
+    @Deprecated
     @Override
     public Integer buildWithParamters(JenkinsServer jenkinsServer, String jobName, Map<String, String> params)
             throws IOException {

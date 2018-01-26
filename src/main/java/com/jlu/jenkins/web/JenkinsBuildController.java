@@ -17,6 +17,7 @@ import com.jlu.jenkins.service.IJenkinsBuildService;
 /**
  * Created by langshiquan on 18/1/10.
  */
+@Deprecated
 @Controller
 @RequestMapping("/pipeline/jenkins/build")
 public class JenkinsBuildController extends AbstractController {

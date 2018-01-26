@@ -30,7 +30,7 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
 
     private Logger logger = LoggerFactory.getLogger(JenkinsBuildServiceImpl.class);
-    private final Long defaultPerid = 5000L;
+    private final static Long DEFAULT_PERIOD = 5000L;
     @Autowired
     private IJenkinsServerService jenkinsServerService;
 
@@ -57,7 +57,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
         Long lastSuccessfulBuildDuration = jenkinsServerService.getLastSuccessfulBuildDuration(jenkinsServer, jobName);
         Long delay = lastSuccessfulBuildDuration / 2;
         Long period = lastSuccessfulBuildDuration / 20;
-        period = period > defaultPerid ? period : defaultPerid;
+        period = period > DEFAULT_PERIOD ? period : DEFAULT_PERIOD;
 
         Integer buildNumber = jenkinsServerService.build(jenkinsServer, jobName, params);
         JenkinsBuildTimerTask jenkinsBuildTimerTask = new JenkinsBuildTimerTask(this, jenkinsServerService,

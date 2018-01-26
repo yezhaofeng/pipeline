@@ -128,4 +128,20 @@ public class JenkinsConf {
     public int hashCode() {
         return Objects.hash(serverUrl, masterUser, masterPassword);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JenkinsConf{");
+        sb.append("id=").append(id);
+        sb.append(", serverUrl='").append(serverUrl).append('\'');
+        sb.append(", masterUser='").append(masterUser).append('\'');
+        sb.append(", masterPassword='").append(masterPassword).append('\'');
+        sb.append(", deleteStatus=").append(deleteStatus);
+        sb.append(", createUser='").append(createUser).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append(", lastModifiedUser='").append(lastModifiedUser).append('\'');
+        sb.append(", lastModifiedTime=").append(lastModifiedTime);
+        sb.append('}');
+        return sb.toString();
+    }
 }

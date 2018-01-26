@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * Created by langshiquan on 18/1/10.
  */
+@Deprecated
 public class JenkinsBuildDTO {
     String serverUrl;
     String masterUser;
