@@ -32,9 +32,6 @@ public abstract class AbstractExecutor {
             notifyJobStartFailed(jobBuild, "未找到Job构建记录");
             return;
         }
-        // 清空message
-        jobBuild.setMessage(StringUtils.EMPTY);
-        jobBuildService.saveOrUpdate(jobBuild);
         Long pluginBuildId = jobBuild.getPluginBuildId();
         if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
             notifyJobStartFailed(jobBuild, "未找到插件配置");

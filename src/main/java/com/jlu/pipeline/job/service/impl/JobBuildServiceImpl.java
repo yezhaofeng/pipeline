@@ -1,14 +1,15 @@
 package com.jlu.pipeline.job.service.impl;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-import com.jlu.common.utils.AopTargetUtils;
-import com.jlu.pipeline.job.bean.*;
-import com.jlu.plugin.runtime.service.PluginValueGenerator;
-import com.jlu.plugin.runtime.bean.RunTimeBean;
-import com.jlu.plugin.runtime.RuntimeRequire;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,22 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.utils.AopTargetUtils;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
+import com.jlu.pipeline.job.bean.JobBuildBean;
+import com.jlu.pipeline.job.bean.JobConfBean;
+import com.jlu.pipeline.job.bean.PipelineJobStatus;
+import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.bean.PluginType;
+import com.jlu.plugin.runtime.RuntimeRequire;
+import com.jlu.plugin.runtime.bean.RunTimeBean;
+import com.jlu.plugin.runtime.service.PluginValueGenerator;
 import com.jlu.plugin.service.IPluginInfoService;
 
 /**
@@ -77,6 +86,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         jobBuild.setTriggerUser(triggerUser);
         jobBuild.setTriggerMode(triggerMode);
+        jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildDao.saveOrUpdate(jobBuild);
         // 如果是头job，则更新流水线状态
         if (jobBuild.getUpStreamJobBuildId() == 0L) {
@@ -113,6 +123,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setTriggerMode(triggerMode);
         jobBuild.setTriggerTime(new Date());
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
+        jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildDao.saveOrUpdate(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
         // 自动执行的job无用户自定义参数
