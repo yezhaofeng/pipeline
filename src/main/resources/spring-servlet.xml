@@ -27,6 +27,8 @@
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/html/**" location="/html/"/>
+    <mvc:resources mapping="/error/**" location="/html/error/"/>
+
 
     <!--定义视图解析器-->
     <!--jsp视图解析器-->
@@ -66,6 +68,20 @@
                     </property>
                 </bean>
             </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="ResourceNotFoundException" value="common/html.error/resourceNotFoundError"/>
+                <entry key=".DataAccessException" value="common/html.error/dataAccessError"/>
+            </map>
+        </property>
+        <property name="statusCodes">
+            <map>
+                <entry key="html/404.error/resourceNotFoundError" value="404"/>
+                <entry key="html/500.error/dataAccessError" value="500"/>
+            </map>
         </property>
     </bean>
 </beans>

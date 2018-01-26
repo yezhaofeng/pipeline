@@ -47,7 +47,7 @@ public class GithubDataController {
     @Autowired
     private IGitHubHookService gitHubHookService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GithubDataController.class);
+    private final Logger logger = LoggerFactory.getLogger(GithubDataController.class);
 
     /**
      * 监听代码提交事件（push），触法流水线
@@ -68,6 +68,7 @@ public class GithubDataController {
             }
             if (info != null) {
                 final JSONObject paramJson = JSONObject.fromObject(info.toString());
+                logger.info("whook-message:{}", paramJson);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -75,13 +76,13 @@ public class GithubDataController {
                             ((IGitHubHookService) AopTargetUtils.getTarget(gitHubHookService)).dealHookMessage
                                         (paramJson);
                         } catch (Exception e) {
-                            LOGGER.error("deal hook-message failed,json:{},error:", paramJson, e);
+                            logger.error("deal hook-message failed,json:{},html.error:", paramJson, e);
                         }
                     }
                 }).start();
             }
         } catch (IOException e) {
-            LOGGER.error("Resolving hook-message is fail! hook:{}", info.toString());
+            logger.error("Resolving hook-message is fail! hook:{}", info.toString());
         }
     }
 

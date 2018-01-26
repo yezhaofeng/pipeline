@@ -10,7 +10,7 @@ public interface I18nMsgKey {
 	  * ######################################
 	  */
 	 ////@I18NMessage("对不起！当前系统执行错误，原因： {0}。 当前时间： {1}") 
-	 String COMMON_ERROR_INFO="common.error.info";
+	 String COMMON_ERROR_INFO="common.html.error.info";
 	 
 	 //@I18NMessage("常规版本") 
 	 String COMMON_FOURVERSION_COMMON="common.fourversion.common";
@@ -23,12 +23,12 @@ public interface I18nMsgKey {
 	 //@I18NMessage("操作成功") 
 	 String COMMON_SUCCESS="common.success";
 	 //@I18NMessage("操作失败") 
-	 String COMMON_ERROR="common.error";
+	 String COMMON_ERROR="common.html.error";
 	 
 	 String COMMON_NODATA="common.nodata";
 	 
 	 //@I18NMessage("参数错误") 
-	 String COMMON_PARAM_ERROR="common.param.error";
+	 String COMMON_PARAM_ERROR="common.param.html.error";
 	 //@I18NMessage("当前没有可显示的记录") 
 	 String PAGINATCION_NODATA ="pagination.nodata";
 	 //@I18NMessage("总共<b>{0}</b>页,<b>{1}</b>条记录") 

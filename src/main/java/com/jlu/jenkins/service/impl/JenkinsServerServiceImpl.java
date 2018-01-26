@@ -80,7 +80,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         try {
             queueReference = job.build(params, true);
         } catch (HttpResponseException e) {
-            logger.warn("job-{} don't have params,buildWithParameter response code-{} error:{}", job.getUrl(), e
+            logger.warn("job-{} don't have params,buildWithParameter response code-{} html.error:{}", job.getUrl(), e
                     .getStatusCode(), e.getMessage());
             queueReference = job.build(true);
         }

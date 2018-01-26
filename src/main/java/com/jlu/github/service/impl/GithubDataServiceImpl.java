@@ -81,7 +81,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 GithubUser githubUser = this.assembleCiHomeUser(userBean);
                 userService.saveUser(githubUser);
             } catch (Exception e) {
-                LOGGER.error("注册失败！The message is userbean:{},error:", userBean, e);
+                LOGGER.error("注册失败！The message is userbean:{},html.error:", userBean, e);
                 result.put(MESSAGE, "不可预知错误，请重新注册！");
             }
         }
@@ -243,7 +243,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         }
         GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
 
-        // TODO
+        // FIXME
         gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
     }
 
@@ -258,7 +258,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         githubUser.setUsername(userBean.getUsername());
         githubUser.setPassword(userBean.getPassword());
         githubUser.setUserEmail(userBean.getEmail());
-        githubUser.setCreateTime(DateUtils.getNowTimeFormat());
+        githubUser.setCreateTime(new Date());
         githubUser.setGitHubToken(userBean.getGitHubToken());
         return githubUser;
     }

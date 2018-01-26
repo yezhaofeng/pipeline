@@ -28,7 +28,7 @@ public class TimerServiceImpl implements ITimerService {
 
     private final Timer timer = new Timer();
 
-    private final Long CLEAR_TASK_PERIOD = 30000L;
+    private final Long CLEAR_TASK_PERIOD = 60000L;
 
     private final Vector<JobBuild> vector = new Vector();
 
@@ -53,7 +53,7 @@ public class TimerServiceImpl implements ITimerService {
                 try {
                     logger.info("remove {} has canceled timer task ", getTimer().purge());
                 } catch (Exception e) {
-                    logger.error("clear timer task error:{}", e);
+                    logger.error("clear timer task html.error:{}", e);
                 }
             }
         }, new Date(), CLEAR_TASK_PERIOD);

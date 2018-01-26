@@ -72,7 +72,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
                         buildWithDetails, jobBuild);
             }
         } catch (IOException e) {
-            logger.warn("jobBuildId-{} jobName-{} buildNumber-{} occur IOException {} times,error:", jobBuild.getId
+            logger.warn("jobBuildId-{} jobName-{} buildNumber-{} occur IOException {} times,html.error:", jobBuild.getId
                     (), jobName, buildNumber, ++ioErrorTimes, e);
             if (ioErrorTimes >= maxIoErrorTimes) {
                 this.cancel();
@@ -84,12 +84,12 @@ public class JenkinsBuildTimerTask extends TimerTask {
                             null, jobBuild);
                 } catch (Exception ce) {
                     logger.info("jobBuildId-{} jobName-{} buildNumber-{} notify IOException message occur Exception,"
-                            + "error:", jobBuild.getId(), jobName, buildNumber, ce);
+                            + "html.error:", jobBuild.getId(), jobName, buildNumber, ce);
                 }
             }
 
         } catch (Exception e) {
-            logger.info("jobBuildId-{} jobName-{} buildNumber-{} occur Exception,error:", jobBuild.getId(), jobName,
+            logger.info("jobBuildId-{} jobName-{} buildNumber-{} occur Exception,html.error:", jobBuild.getId(), jobName,
                     buildNumber, e);
             this.cancel();
         }

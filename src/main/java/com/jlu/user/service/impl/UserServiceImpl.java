@@ -3,8 +3,6 @@ package com.jlu.user.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +43,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     // 插入管理员账户
-    @PostConstruct
+    // FIXME: 18/1/26
+    //    @PostConstruct
     public void initAdmin() {
         GithubUser githubUser = getUserByName(ADMIN_USERNAME);
         if (githubUser != null) {

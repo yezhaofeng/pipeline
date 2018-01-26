@@ -36,7 +36,7 @@ public class PipelineBuildController extends AbstractController {
                 pipelineBuildService.build(pipelineConfId, triggerId);
             }
         } catch (Exception e) {
-            logger.error("error:{}", e);
+            logger.error("html.error:{}", e);
             return ResponseBean.fail(e.getMessage());
         }
         return ResponseBean.TRUE;
