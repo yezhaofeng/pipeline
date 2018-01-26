@@ -12,8 +12,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final Long[] MSECONDS =
-            new Long[] {MILLIS_PER_DAY, MILLIS_PER_HOUR, MILLIS_PER_MINUTE, MILLIS_PER_SECOND};
+    private static final String ZERO_SECONDS_READAVLE = "0s";
+    private static final String MSEC_READABLE = "ms";
     private static final List<DateRealableBean> readableList = new LinkedList<>();
 
     static {
@@ -74,6 +74,12 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * @return
      */
     public static String getRealableTime(Long time) {
+        if (time == 0L) {
+            return ZERO_SECONDS_READAVLE;
+        }
+        if (time < MILLIS_PER_SECOND) {
+            return time + MSEC_READABLE;
+        }
         StringBuilder timeSb = new StringBuilder();
         for (int i = 0; i < readableList.size(); i++) {
             DateRealableBean dateRealableBean = readableList.get(i);
