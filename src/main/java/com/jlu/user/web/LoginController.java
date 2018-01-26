@@ -20,7 +20,7 @@ import com.jlu.user.service.IUserService;
  * Created by niuwanpeng on 17/3/16.
  */
 @Controller
-@RequestMapping("cihome/login")
+@RequestMapping("/pipeline/login")
 public class LoginController {
 
     @Autowired

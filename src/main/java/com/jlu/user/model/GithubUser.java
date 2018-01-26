@@ -1,5 +1,7 @@
 package com.jlu.user.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +27,7 @@ public class GithubUser {
 
     private String gitHubToken;
 
-    private String createTime;
+    private Date createTime;
 
     public int getId() {
         return id;
@@ -59,11 +61,11 @@ public class GithubUser {
         this.userEmail = userEmail;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
