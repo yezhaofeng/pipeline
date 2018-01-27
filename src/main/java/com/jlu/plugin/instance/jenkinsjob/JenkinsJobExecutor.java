@@ -51,11 +51,14 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             notifyJobStartSucc(jobBuild);
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "通讯异常");
+            return;
         } catch (JenkinsRuntimeException jre) {
             notifyJobStartFailed(jobBuild, jre.getMessage());
+            return;
         } catch (Exception e) {
             logger.error("jenkins job html.error", e);
             notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
+            return;
         }
         notifyJobStartSucc(jobBuild);
     }

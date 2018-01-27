@@ -115,10 +115,13 @@ public class ReleaseExecutor extends AbstractExecutor {
             jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "网络异常");
+            return;
         } catch (JenkinsRuntimeException jre) {
             notifyJobStartFailed(jobBuild, jre.getMessage());
+            return;
         } catch (Exception e) {
             notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
+            return;
         }
         notifyJobStartSucc(jobBuild);
     }

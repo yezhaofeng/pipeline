@@ -75,12 +75,15 @@ public class CompileExecutor extends AbstractExecutor {
         } catch (IOException ioe) {
             jobBuild.setMessage("网络异常");
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+            return;
         } catch (JenkinsRuntimeException jre) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage(jre.getMessage());
+            return;
         } catch (Exception e) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage("UnKnown Error:" + e.getMessage());
+            return;
         }
         jobBuildService.saveOrUpdate(jobBuild);
     }
