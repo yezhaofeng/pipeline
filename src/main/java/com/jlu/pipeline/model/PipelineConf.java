@@ -28,6 +28,7 @@ public class PipelineConf {
     protected Date createTime;
     protected Date lastModifiedTime;
     protected String lastModifiedUser;
+    private String owner;
     @Enumerated(EnumType.STRING)
     protected BranchType branchType;
     @JsonIgnore
@@ -121,6 +122,14 @@ public class PipelineConf {
         this.branchType = branchType;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PipelineConf{");
@@ -133,6 +142,8 @@ public class PipelineConf {
         sb.append(", createTime=").append(createTime);
         sb.append(", lastModifiedTime=").append(lastModifiedTime);
         sb.append(", lastModifiedUser='").append(lastModifiedUser).append('\'');
+        sb.append(", owner='").append(owner).append('\'');
+        sb.append(", branchType=").append(branchType);
         sb.append(", deleteStats=").append(deleteStats);
         sb.append('}');
         return sb.toString();

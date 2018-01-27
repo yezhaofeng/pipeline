@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="/root/logs/pipeline"/>
+    <property name="logStoreDirectory" value="/Users/langshiquan/logs/pipe"/>
 
     <!-- pipeline日志 -->
     <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -158,9 +158,9 @@
         <appender-ref ref="pipelineAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.jlu.github">
+    <logger name="com.jlu.github" additivity="false">
         <level value="INFI"/>
-        <appender-ref ref=""/>
+        <appender-ref ref="githubAppender"/>
     </logger>
     <logger name="com.jlu.jenkins" additivity="false">
         <level value="INFO"/>

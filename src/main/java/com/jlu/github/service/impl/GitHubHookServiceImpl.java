@@ -85,7 +85,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         String moduleOwner = repositoryBean.getOwner().getName();
         Module module = moduleService.getModuleByUserAndModule(moduleName, moduleOwner);
         if (module == null) {
-            logger.info("This module is not exist and ignore compile!user:{}, module:{}",
+            logger.info("This module is not exist and ignore message,user:{}, module:{}",
                     repositoryBean.getOwner().getName(), repositoryBean.getName());
         }
         String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");

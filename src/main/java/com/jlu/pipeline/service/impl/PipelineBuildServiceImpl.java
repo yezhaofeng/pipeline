@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ import com.jlu.pipeline.service.IPipelineConfService;
  */
 @Service
 public class PipelineBuildServiceImpl implements IPipelineBuildService {
+
+    private final Logger logger = LoggerFactory.getLogger(PipelineBuildServiceImpl.class);
     @Autowired
     private IPipelineConfService pipelineConfService;
 
@@ -91,7 +95,11 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      */
     @Override
     public void build(Long pipelineConfId, GitHubCommit gitHubCommit) {
+        logger.info("build confId-{} pipeline, github commit :{}", gitHubCommit);
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
+        if (pipelineConf == null) {
+            throw new PipelineRuntimeException("未找到流水线配置");
+        }
         Long pipelineBuildId = initPipelineBuild(pipelineConf, gitHubCommit);
         new Thread(new Runnable() {
             @Override
