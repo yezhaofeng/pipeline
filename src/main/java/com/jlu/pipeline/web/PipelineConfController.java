@@ -33,4 +33,12 @@ public class PipelineConfController extends AbstractController {
         return pipelineConfService.getPipelineConfBean(pipelineConfId);
     }
 
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ResponseBean test() {
+        return ResponseBean.TRUE;
+    }
+
+
+
+
 }
