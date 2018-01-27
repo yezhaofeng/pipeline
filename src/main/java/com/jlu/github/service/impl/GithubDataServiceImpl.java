@@ -18,7 +18,6 @@ import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 import com.jlu.common.utils.CiHomeReadConfig;
-import com.jlu.common.utils.DateUtils;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.github.bean.GithubBranchBean;
@@ -101,8 +100,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>() {
         }.getType());
         List<Module> modules = this.saveCiHomeModuleByBean(repoList, username);
-        // 只初始化最新的3个模块
-        for (int i = 0; modules != null && i < modules.size() && i < 3; i++) {
+        for (int i = 0; modules != null && i < modules.size(); i++) {
             this.initBranch(modules.get(i), username);
         }
         return true;
@@ -146,8 +144,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 result.put(MESSAGE, "该模块已存在，不需要再次配置！");
             } else {
                 LOGGER.info("Start initBuild module:{} on user:{}", module, username);
-                Module ciHomeModule = new Module(module, username, DateUtils.getNowTimeFormat());
-                ciHomeModule.setVersion("1.0.0");
+                Module ciHomeModule = new Module(module, username, new Date());
                 moduleService.saveModule(ciHomeModule);
                 try {
                     LOGGER.info("Start initBuild branch on module:{}, user:{}", module, username);
@@ -175,12 +172,12 @@ public class GithubDataServiceImpl implements IGithubDataService {
      */
     private List<Module> saveCiHomeModuleByBean(List<GithubRepoBean> repoList, String username) {
         List<Module> modules = new ArrayList<>();
-
-        for (GithubRepoBean githubRepoBean : repoList) {
-            Module module = new Module(githubRepoBean.getName(), username, DateUtils.getNowTimeFormat());
-            module.setVersion("1.0.0");
+        // 只初始化最新的3个模块
+        for (int i = 0; repoList != null && i < repoList.size() && i < 3; i++) {
+            Module module = new Module(repoList.get(i).getName(), username, new Date());
             modules.add(module);
         }
+
         moduleService.saveModules(modules);
         return moduleService.getModulesByUsername(username);
     }

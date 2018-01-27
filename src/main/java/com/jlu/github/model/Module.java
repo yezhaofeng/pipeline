@@ -1,5 +1,7 @@
 package com.jlu.github.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,11 +23,9 @@ public class Module {
 
     private String username;
 
-    private String createTime;
+    private Date createTime;
 
-    private String version;
-
-    public Module(String module, String username, String createTime) {
+    public Module(String module, String username, Date createTime) {
         this.module = module;
         this.username = username;
         this.createTime = createTime;
@@ -58,19 +58,12 @@ public class Module {
         this.username = username;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 }

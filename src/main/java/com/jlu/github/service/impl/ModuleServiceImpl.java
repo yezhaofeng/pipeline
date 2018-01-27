@@ -43,7 +43,17 @@ public class ModuleServiceImpl implements IModuleService{
      */
     @Override
     public void saveModules(List<Module> list) {
-        moduleDao.saveOrUpdateAll(list);
+        if (list == null) {
+            return;
+        }
+        for (Module module : list) {
+            Module moduleInDb = getModuleByUserAndModule(module.getUsername(), module.getModule());
+            if (moduleInDb != null) {
+                continue;
+            }
+            moduleDao.saveOrUpdate(module);
+        }
+
     }
 
     /**
