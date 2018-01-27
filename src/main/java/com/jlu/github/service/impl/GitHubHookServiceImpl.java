@@ -1,5 +1,6 @@
 package com.jlu.github.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,7 +25,6 @@ import com.jlu.pipeline.model.PipelineConf;
 import com.jlu.pipeline.service.IPipelineBuildService;
 import com.jlu.pipeline.service.IPipelineConfService;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -49,7 +49,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
     private static final Gson GSON = new Gson();
 
     /**
-     * 解析hook信息，触发编译
+     * 解析hook信息，触发流水线
      *
      * @param hookMessage
      */
@@ -78,8 +78,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
      */
     private GitHubCommit getCommitByHook(JSONObject hookMessage) {
         GitHubCommit gitHubCommit = new GitHubCommit();
-        HookRepositoryBean repositoryBean = null;
-        repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
+        HookRepositoryBean repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
                 new TypeToken<HookRepositoryBean>() {
                 }.getType());
         String moduleName = repositoryBean.getName();
@@ -91,26 +90,21 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         }
         String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
         BranchType branchType = branchName.equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
-        JSONArray commitsArray = hookMessage.getJSONArray("commits");
-        String commits = commitsArray.getString(0);
-        GitHubCommitBean commitBean = GSON.fromJson(commits, new TypeToken<GitHubCommitBean>() {
+        String headCommit = hookMessage.getString("head_commit");
+        GitHubCommitBean commitBean = GSON.fromJson(headCommit, new TypeToken<GitHubCommitBean>() {
         }.getType());
-
-        String commitId = "";
-
         checkNewBranch(hookMessage, branchName, module);
-
-        gitHubCommit.setCommitId(commitId);
+        gitHubCommit.setCommitId(commitBean.getId());
         gitHubCommit.setBranch(branchName);
         gitHubCommit.setModule(moduleName);
         gitHubCommit.setCommitter(commitBean.getCommitter().getName());
         gitHubCommit.setCommitterEmail(commitBean.getCommitter().getEmail());
         gitHubCommit.setOwner(moduleOwner);
         gitHubCommit.setCommitTime(commitBean.getTimestamp());
-//        gitHubCommit.setAddedFiles(commitBean.getAdded());
+        gitHubCommit.setAddedFiles(Arrays.asList(commitBean.getAdded()).toString());
         gitHubCommit.setCommitUrl(commitBean.getUrl());
-//        gitHubCommit.setRemovedFiles(commitBean.getRemoved());
-//        gitHubCommit.setModifiedFiles(commitBean.getModified());
+        gitHubCommit.setRemovedFiles(Arrays.asList(commitBean.getRemoved()).toString());
+        gitHubCommit.setModifiedFiles(Arrays.asList(commitBean.getModified()).toString());
         gitHubCommit.setCommits(commitBean.getMessage());
         gitHubCommit.setBranchType(branchType);
         return gitHubCommit;

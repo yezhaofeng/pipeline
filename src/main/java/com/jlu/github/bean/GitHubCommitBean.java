@@ -21,8 +21,6 @@ public class GitHubCommitBean {
     private String[] added;
     private String[] removed;
     private String[] modified;
-    private int moduleId;
-    private int pipelineBuildId;
     private Committer committer;
 
     public String getRef() {
@@ -87,22 +85,6 @@ public class GitHubCommitBean {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public int getModuleId() {
-        return moduleId;
-    }
-
-    public void setModuleId(int moduleId) {
-        this.moduleId = moduleId;
-    }
-
-    public int getPipelineBuildId() {
-        return pipelineBuildId;
-    }
-
-    public void setPipelineBuildId(int pipelineBuildId) {
-        this.pipelineBuildId = pipelineBuildId;
     }
 
     public Committer getCommitter() {

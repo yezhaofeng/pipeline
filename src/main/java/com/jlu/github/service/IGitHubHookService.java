@@ -8,7 +8,7 @@ import net.sf.json.JSONObject;
 public interface IGitHubHookService {
 
     /**
-     * 解析hook信息，触发编译
+     * 解析hook信息，触发流水线
      * @param hookMessage
      */
     void dealHookMessage(JSONObject hookMessage);

@@ -38,7 +38,7 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/github")
 public class GithubDataController {
-
+    private final Logger logger = LoggerFactory.getLogger(GithubDataController.class);
     @Autowired
     private IGithubDataService githubDataService;
 
@@ -46,8 +46,6 @@ public class GithubDataController {
     private IGitHubCommitService gitHubCommitService;
     @Autowired
     private IGitHubHookService gitHubHookService;
-
-    private final Logger logger = LoggerFactory.getLogger(GithubDataController.class);
 
     /**
      * 监听代码提交事件（push），触法流水线
@@ -67,16 +65,16 @@ public class GithubDataController {
                 info.append(new String(buffer,0,iRead,"gbk"));
             }
             if (info != null) {
-                final JSONObject paramJson = JSONObject.fromObject(info.toString());
-                logger.info("whook-message:{}", paramJson);
+                final JSONObject hookMessage = JSONObject.fromObject(info.toString());
+                logger.info("whook-message:{}", hookMessage);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             ((IGitHubHookService) AopTargetUtils.getTarget(gitHubHookService)).dealHookMessage
-                                        (paramJson);
+                                        (hookMessage);
                         } catch (Exception e) {
-                            logger.error("deal hook-message failed,json:{},html.error:", paramJson, e);
+                            logger.error("deal hook-message failed,json:{},html.error:", hookMessage, e);
                         }
                     }
                 }).start();

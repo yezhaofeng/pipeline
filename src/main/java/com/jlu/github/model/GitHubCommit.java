@@ -32,7 +32,7 @@ public class GitHubCommit {
 
     private String committerEmail;
 
-    private String commits;
+    private String message;
 
     private String commitTime;
 
@@ -40,7 +40,7 @@ public class GitHubCommit {
 
     private String removedFiles;
 
-    private String  modifiedFiles;
+    private String modifiedFiles;
 
     private String commitId;
 
@@ -48,12 +48,12 @@ public class GitHubCommit {
 
     private String owner;
 
-    public GitHubCommit( String committer, String committerEmail, String commits, String commitTime,
+    public GitHubCommit( String committer, String committerEmail, String message, String commitTime,
                         String addedFiles, String removedFiles, String modifiedFiles, String commitId,
                         String commitUrl) {
         this.committer = committer;
         this.committerEmail = committerEmail;
-        this.commits = commits;
+        this.message = message;
         this.commitTime = commitTime;
         this.addedFiles = addedFiles;
         this.removedFiles = removedFiles;
@@ -124,11 +124,11 @@ public class GitHubCommit {
     }
 
     public String getCommits() {
-        return commits;
+        return message;
     }
 
-    public void setCommits(String commits) {
-        this.commits = commits;
+    public void setCommits(String message) {
+        this.message = message;
     }
 
     public String getCommitTime() {
@@ -188,7 +188,7 @@ public class GitHubCommit {
         sb.append(", branchType=").append(branchType);
         sb.append(", committer='").append(committer).append('\'');
         sb.append(", committerEmail='").append(committerEmail).append('\'');
-        sb.append(", commits='").append(commits).append('\'');
+        sb.append(", message='").append(message).append('\'');
         sb.append(", commitTime='").append(commitTime).append('\'');
         sb.append(", addedFiles='").append(addedFiles).append('\'');
         sb.append(", removedFiles='").append(removedFiles).append('\'');
