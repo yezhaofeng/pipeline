@@ -46,7 +46,7 @@
 
         <File>${logStoreDirectory}/pipeline_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <FileNamePattern>${logStoreDirectory}/history/cihome_error.log.%i.log</FileNamePattern>
+            <FileNamePattern>${logStoreDirectory}/history/pipeline_error.log.%i.log</FileNamePattern>
             <MinIndex>1</MinIndex>
             <MaxIndex>13</MaxIndex>
         </rollingPolicy>

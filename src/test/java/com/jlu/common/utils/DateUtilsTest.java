@@ -23,7 +23,6 @@ public class DateUtilsTest {
     public void testGetChineseRealableTime() {
         Long mills = 654856780L;
         String readableTime = DateUtils.getRealableChineseTime(mills);
-        System.out.println(readableTime);
         Assert.assertEquals("7天13时54分16秒", readableTime);
     }
 
