@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="logStoreDirectory" value="/root/logs/pipeline"/>
+
+    <!-- pipeline日志 -->
+    <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/pipeline.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline.%i.log</fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- spring启动日志 -->
+    <appender name="springAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/spring.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.spring.%i.log</fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 异常日志 -->
+    <appender name="pipelineErrorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <File>${logStoreDirectory}/pipeline_error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <FileNamePattern>${logStoreDirectory}/history/cihome_error.log.%i.log</FileNamePattern>
+            <MinIndex>1</MinIndex>
+            <MaxIndex>13</MaxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>50MB</MaxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %C{0}: %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!-- access日志-->
+    <appender name="pipelineAccessAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/pipeline_access.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.pipeline_access.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- github日志-->
+    <appender name="githubAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/github.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.github.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- jenkins日志 -->
+    <appender name="jenkinsAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/jenkins.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.jenkins.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="methodExecTimeLogAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logStoreDirectory}/methodExecTimeLog.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${logStoreDirectory}/history/%d{yyyy-MM-dd}.methodExecTimeLog.%i.log
+            </fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="methodExecTimeLog">
+        <level value="INFO"/>
+        <appender-ref ref="methodExecTimeLogAppender"/>
+    </logger>
+
+    <logger name="com.jlu">
+        <level value="INFO"/>
+        <appender-ref ref="pipelineAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.jlu.github" additivity="false">
+        <level value="INFI"/>
+        <appender-ref ref="githubAppender"/>
+    </logger>
+    <logger name="com.jlu.jenkins" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="jenkinsAppender"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="com.jlu">
+        <level value="ERROR"/>
+        <appender-ref ref="pipelineErrorAppender"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="springAppender"/>
+    </logger>
+    <logger name="accseeLog" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="pipelineAccessAppender"/>
+    </logger>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
