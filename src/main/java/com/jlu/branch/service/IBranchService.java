@@ -43,7 +43,7 @@ public interface IBranchService {
      * @param module
      * @return
      */
-    List<String> getBranchesByModule(String username, String module);
+    List<GithubBranch> getBranchesByModule(String username, String module);
 
     void updateRemark(Long branchId, String remark);
 }

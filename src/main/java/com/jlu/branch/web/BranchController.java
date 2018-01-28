@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 import com.jlu.common.web.ResponseBean;
 
@@ -32,7 +33,7 @@ public class BranchController {
      */
     @RequestMapping(value = "/getBranches", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getBranchesByModule(@RequestParam("username") String username,
+    public List<GithubBranch> getBranchesByModule(@RequestParam("username") String username,
                                                   @RequestParam("module") String module) {
         return branchService.getBranchesByModule(username, module);
     }

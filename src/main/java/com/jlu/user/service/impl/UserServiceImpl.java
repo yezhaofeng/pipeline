@@ -1,6 +1,5 @@
 package com.jlu.user.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ import com.jlu.user.service.IUserService;
  */
 @Service
 public class UserServiceImpl implements IUserService {
-    private static final String ADMIN_USERNAME = "pipeline_admin";
-    private static final String ADMIN_PASSWORD = "admin@123";
-    private static final String ADMIN_EMAIl = "576506402@qq.com";
 
     @Autowired
     private IUserDao userDao;
@@ -40,22 +36,6 @@ public class UserServiceImpl implements IUserService {
             return users.get(0);
         }
         return null;
-    }
-
-    // 插入管理员账户
-    // FIXME: 18/1/26
-    //    @PostConstruct
-    public void initAdmin() {
-        GithubUser githubUser = getUserByName(ADMIN_USERNAME);
-        if (githubUser != null) {
-            return;
-        }
-        GithubUser adminUser = new GithubUser();
-        adminUser.setUsername(ADMIN_USERNAME);
-        adminUser.setPassword(ADMIN_PASSWORD);
-        adminUser.setEmail(ADMIN_EMAIl);
-        adminUser.setCreateTime(new Date());
-        userDao.saveOrUpdate(adminUser);
     }
 
 }

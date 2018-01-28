@@ -2,8 +2,7 @@ package com.jlu.pipeline.bean;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.model.PipelineConf;
 

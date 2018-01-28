@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.branch.bean.BranchType;
 
 /**
@@ -22,7 +23,7 @@ public class GithubBranch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @JsonIgnore
     private int moduleId;
 
     private String branchName;
