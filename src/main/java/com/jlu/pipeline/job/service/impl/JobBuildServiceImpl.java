@@ -53,6 +53,9 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     @Autowired
     private IPipelineBuildDao pipelineBuildDao;
 
+    @Autowired
+    private IJobBuildService jobBuildService;
+
     @Override
     public Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId,
                           Map<String, String> params) {
@@ -126,6 +129,11 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildDao.saveOrUpdate(jobBuild);
         PluginType pluginType = jobBuild.getPluginType();
+        Map<String, Object> runtimeParamMap = new HashedMap();
+        List<RunTimeBean> runTimeBeanList = getRuntimeRequire(jobBuild.getId());
+        for (RunTimeBean runTimeBean : runTimeBeanList) {
+            runtimeParamMap.put(runTimeBean.getName(), runTimeBean.getDefaultValue());
+        }
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>(), new HashMap<>());
         new Thread(new Runnable() {
@@ -197,8 +205,13 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)
                 && TriggerMode.AUTO.equals(lowStreamJobBuild.getTriggerMode())) {
             // 如果下一个job是自动，则继续构建
-            IJobBuildService jobBuildService = this;
-            build(lowStreamJobBuild.getId(), new HashedMap(), new HashMap<>(), TriggerMode.AUTO, jobBuild.getTriggerUser());
+            Map<String, Object> runtimeParamMap = new HashedMap();
+            List<RunTimeBean> runTimeBeanList = getRuntimeRequire(jobBuild.getId());
+            for (RunTimeBean runTimeBean : runTimeBeanList) {
+                runtimeParamMap.put(runTimeBean.getName(), runTimeBean.getDefaultValue());
+            }
+            build(lowStreamJobBuild.getId(), new HashedMap(), runtimeParamMap, TriggerMode.AUTO,
+                    jobBuild.getTriggerUser());
         }
     }
 

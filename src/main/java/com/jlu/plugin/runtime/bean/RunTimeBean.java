@@ -1,9 +1,15 @@
 package com.jlu.plugin.runtime.bean;
 
+import java.util.Map;
+
+import org.apache.commons.collections.map.HashedMap;
+
+
 /**
  * Created by Administrator on 2018/1/25.
  */
 public class RunTimeBean {
+
     String name;
     String formType;
     Object defaultValue;
@@ -55,6 +61,11 @@ public class RunTimeBean {
         return this;
     }
 
+    public Map<String, Object> toRuntimeMap() {
+        Map<String, Object> map = new HashedMap();
+        map.put(this.name, this.defaultValue);
+        return map;
+    }
     @Override
     public String toString() {
         return "RunTimeBean{" +
