@@ -11,7 +11,7 @@
     <!--jdbc and transaction-->
     <import resource="classpath:spring-transaction-test.xml"/>
     <util:properties id="applicationProperties" location="classpath:application.properties"/>
-    <bean id="ciHomeConfig" class="com.jlu.common.utils.CiHomeReadConfig" lazy-init="false" scope="singleton">
+    <bean id="ciHomeConfig" class="com.jlu.common.utils.PipelineReadConfig" lazy-init="false" scope="singleton">
         <property name="props">
             <list>
                 <ref bean="applicationProperties"/>

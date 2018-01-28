@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.utils.CiHomeReadConfig;
+import com.jlu.common.utils.PipelineReadConfig;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
@@ -227,7 +227,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         params.put(JobParameter.PIPELINE_BUILD_NUMBER, String.valueOf(pipelineBuild.getBuildNumber()));
         params.put(JobParameter.PIPELINE_COMMIT_COMMENTS, gitHubCommit.getCommits());
         params.put(JobParameter.PIPELINE_MODULE, pipelineBuild.getModule());
-        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(CiHomeReadConfig.getConfigValueByKey
+        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(PipelineReadConfig.getConfigValueByKey
                 ("github.base.repo"), gitHubCommit.getOwner(), gitHubCommit.getModule()));
         params.put(JobParameter.PIPELINE_START_TIME, DateUtils.format(pipelineBuild.getStartTime()));
         params.put(JobParameter.PIPELINE_TRIGGER_USER, pipelineBuild.getTriggerUser());

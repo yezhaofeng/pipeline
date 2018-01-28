@@ -11,7 +11,7 @@ import org.springframework.util.SystemPropertyUtils;
  *
  * 系统常量配置工具类
  */
-public class CiHomeReadConfig {
+public class PipelineReadConfig {
 
     private static Properties props = null;
 
@@ -20,7 +20,7 @@ public class CiHomeReadConfig {
         for(Properties properties:lists){
             Proper.putAll(properties);
         }
-        CiHomeReadConfig.props = Proper;
+        PipelineReadConfig.props = Proper;
 
     }
 

@@ -3,7 +3,6 @@ package com.jlu.github.web;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jlu.common.utils.AopTargetUtils;
-import com.jlu.common.utils.CiHomeReadConfig;
-import com.jlu.common.utils.HttpClientUtil;
-import com.jlu.github.bean.GithubFirstCommitBean;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
