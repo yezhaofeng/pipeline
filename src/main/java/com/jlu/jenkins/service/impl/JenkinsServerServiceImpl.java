@@ -86,7 +86,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         }
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         String why = queueItem.getWhy();
-        logger.info("job-{} why:{}", job.getUrl(), why);
+        logger.info("job-{} build info :{}", job.getUrl(), why);
         if (why != null) {
             throw new JenkinsRuntimeException(formatWhy(why));
         }
@@ -95,6 +95,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
     }
 
     private JenkinsRuntimeExceptionEnum formatWhy(String why) {
+
         if (why.contains("offline")) {
             return JenkinsRuntimeExceptionEnum.SLAVE_OFFLINE;
         } else if (why.contains("no nodes")) {
