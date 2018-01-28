@@ -83,10 +83,11 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
                 }.getType());
         String moduleName = repositoryBean.getName();
         String moduleOwner = repositoryBean.getOwner().getName();
-        Module module = moduleService.getModuleByUserAndModule(moduleName, moduleOwner);
+        Module module = moduleService.getModuleByUserAndModule(moduleOwner, moduleName);
         if (module == null) {
             logger.info("This module is not exist and ignore message,user:{}, module:{}",
                     repositoryBean.getOwner().getName(), repositoryBean.getName());
+            return null;
         }
         String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
         BranchType branchType = branchName.equals("master") ? BranchType.TRUNK : BranchType.BRANCH;

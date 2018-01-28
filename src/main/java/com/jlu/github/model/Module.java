@@ -21,13 +21,13 @@ public class Module {
 
     private String module;
 
-    private String username;
+    private String owner;
 
     private Date createTime;
 
-    public Module(String module, String username, Date createTime) {
+    public Module(String module, String owner, Date createTime) {
         this.module = module;
-        this.username = username;
+        this.owner = owner;
         this.createTime = createTime;
     }
 
@@ -50,12 +50,12 @@ public class Module {
         this.module = module;
     }
 
-    public String getUsername() {
-        return username;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public Date getCreateTime() {

@@ -25,7 +25,7 @@ public class ModuleDaoImpl extends AbstractBaseDao<Module> implements IModuleDao
         String hql = "from CiHomeModule cm where cm.username = :username AND cm.module like :module";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("module", "%" + query + "%");
-        params.put("username", username);
+        params.put("owner", username);
         return queryByHQL(hql, params, null, page);
     }
 }

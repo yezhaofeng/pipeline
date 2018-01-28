@@ -120,21 +120,4 @@ public class GithubDataController {
         return githubDataService.addModule(username, module);
     }
 
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test(String userName, String module) {
-        String requestBranchUrl
-                = String.format(CiHomeReadConfig.getConfigValueByKey("github.repo.commits"),
-                userName, module);
-        String result = HttpClientUtil.get(requestBranchUrl, null);
-        List<GithubFirstCommitBean> commits = new Gson().fromJson(result, new TypeToken<List<GithubFirstCommitBean>>() {
-        }.getType());
-        if (commits == null) {
-            return "";
-        }
-        GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
-
-        gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
-        return "";
-    }
 }
