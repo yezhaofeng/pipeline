@@ -206,19 +206,18 @@ public class GithubDataServiceImpl implements IGithubDataService {
             GithubBranch githubBranch
                     = new GithubBranch(module.getId(), branchBean.getName(), branchType, new Date());
             githubBranches.add(githubBranch);
-            // FIXME: 18/1/28 暂时无法知道commit的哪个分支的
-            // this.initOneCommit(username, module, branchBean.getName());
         }
         branchService.saveBranches(githubBranches);
     }
 
     /**
      * 保存一个commit数据，用于触发第一条流水线
-     *
+     * FIXME: 18/1/28 暂时无法知道commit所属分支
      * @param userName
      * @param module
      * @param branchName
      */
+    @Deprecated
     private void initOneCommit(String userName, Module module, String branchName) {
         String requestBranchUrl
                 = String.format(PipelineReadConfig.getConfigValueByKey("github.repo.commits"),
@@ -230,8 +229,6 @@ public class GithubDataServiceImpl implements IGithubDataService {
             return;
         }
         GithubFirstCommitBean githubFirstCommitBean = commits.get(0);
-
-        // FIXME
         gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
     }
 

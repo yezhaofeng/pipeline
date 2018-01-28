@@ -36,7 +36,7 @@ public class ModuleController {
             modules = moduleService.getSuggestProductModules(pathStr, username, limit);
         }
         if (null == modules) {
-            modules = new ArrayList<Module>();
+            modules = new ArrayList<>();
         }
         Collections.sort(modules, new Comparator<Module>() {
             @Override

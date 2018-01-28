@@ -1,6 +1,7 @@
 package com.jlu.pipeline.service.impl;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -11,9 +12,11 @@ import com.jlu.branch.bean.BranchType;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
+import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.service.IJobConfService;
 import com.jlu.pipeline.model.PipelineConf;
 import com.jlu.pipeline.service.IPipelineConfService;
+import com.jlu.plugin.bean.PluginType;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -77,4 +80,54 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     public PipelineConf getPipelineConf(String name, String module, String branchName) {
         return pipelineConfDao.get(name, module, BranchType.parseType(branchName));
     }
+
+    private final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
+    private final String DEFAULT_BRANCH_PIPELINE_NAME = "BranchPipeline";
+    private final String DEFAULT_MASTER_PIPELINE_REMARK = "主干";
+    private final String DEFAULT_BRANCH_PIPELINE_REMARK = "分支";
+    private final String DEFAULT_COMPILE_JOB_NAME = "构建";
+    private final String DEFAULT_RELEASE_JOB_NAME = "发版";
+
+    @Override
+    public void initDefaultConf(String owner, String module) {
+        // 主干流水线
+        PipelineConfBean masterPipelineConf = initDefaultPipelineConf(module, DEFAULT_MASTER_PIPELINE_NAME,
+                BranchType.TRUNK, DEFAULT_MASTER_PIPELINE_REMARK);
+        processPipelineWithTransaction(masterPipelineConf, owner);
+        // 分支流水线
+        PipelineConfBean branchPipelineConf = initDefaultPipelineConf(module, DEFAULT_BRANCH_PIPELINE_NAME,
+                BranchType.BRANCH, DEFAULT_BRANCH_PIPELINE_REMARK);
+        processPipelineWithTransaction(branchPipelineConf, owner);
+
+    }
+
+    private PipelineConfBean initDefaultPipelineConf(String module, String pipelineName,
+                                                     BranchType branchType, String remark) {
+        PipelineConfBean defaultPipelineConf = new PipelineConfBean();
+        defaultPipelineConf.setAuto(true);
+        defaultPipelineConf.setModule(module);
+        defaultPipelineConf.setName(pipelineName);
+        defaultPipelineConf.setBranchType(branchType);
+        defaultPipelineConf.setRemark(remark);
+        defaultPipelineConf.setAuto(true);
+
+        List<JobConfBean> jobConfBeanList = new LinkedList<>();
+
+        // 编译构建Job
+        JobConfBean compileJobConf = new JobConfBean();
+        compileJobConf.setPluginType(PluginType.COMPILE);
+        compileJobConf.setName(DEFAULT_COMPILE_JOB_NAME);
+        compileJobConf.setTriggerMode(TriggerMode.AUTO);
+        jobConfBeanList.add(compileJobConf);
+
+        // 发版Job
+        JobConfBean releaseJobConf = new JobConfBean();
+        releaseJobConf.setPluginType(PluginType.RELEASE);
+        releaseJobConf.setName(DEFAULT_RELEASE_JOB_NAME);
+        releaseJobConf.setTriggerMode(TriggerMode.MANUAL);
+        jobConfBeanList.add(releaseJobConf);
+        defaultPipelineConf.setJobConfs(jobConfBeanList);
+        return defaultPipelineConf;
+    }
+
 }

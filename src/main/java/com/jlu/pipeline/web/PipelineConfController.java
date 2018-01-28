@@ -33,11 +33,15 @@ public class PipelineConfController extends AbstractController {
         return pipelineConfService.getPipelineConfBean(pipelineConfId);
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseBean test() {
+    @RequestMapping(value = "/initDefault", method = RequestMethod.POST)
+    public ResponseBean init(String owner, String module) {
+        try {
+            pipelineConfService.initDefaultConf(owner, module);
+        } catch (Exception e) {
+            return ResponseBean.fail(e.getMessage());
+        }
         return ResponseBean.TRUE;
     }
-
 
 
 
