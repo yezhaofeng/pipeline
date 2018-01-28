@@ -44,4 +44,6 @@ public interface IBranchService {
      * @return
      */
     List<String> getBranchesByModule(String username, String module);
+
+    void updateRemark(Long branchId, String remark);
 }

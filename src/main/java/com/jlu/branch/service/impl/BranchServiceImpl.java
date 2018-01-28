@@ -103,4 +103,11 @@ public class BranchServiceImpl implements IBranchService {
         return branchs;
     }
 
+    @Override
+    public void updateRemark(Long branchId, String remark) {
+        GithubBranch githubBranch = branchDao.findById(branchId);
+        githubBranch.setRemarks(remark);
+        branchDao.saveOrUpdate(githubBranch);
+    }
+
 }

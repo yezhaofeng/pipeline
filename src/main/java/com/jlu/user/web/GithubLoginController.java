@@ -58,11 +58,7 @@ public class GithubLoginController {
     @RequestMapping(value = "/initUser", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean initUser(HttpServletResponse response, @RequestBody UserBean userBean) {
-        try {
-            githubDataService.initUser(userBean);
-        } catch (Exception e) {
-            return ResponseBean.fail(e.getMessage());
-        }
+        githubDataService.initUser(userBean);
         CookiesUtiles.addCookies(response, userBean.getUsername());
         return ResponseBean.TRUE;
     }

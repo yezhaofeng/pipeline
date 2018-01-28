@@ -29,15 +29,10 @@ public class PipelineBuildController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean build(Long pipelineConfId, @RequestParam(required = false, defaultValue = "0") Long triggerId) {
-        try {
-            if (triggerId == 0L) {
-                pipelineBuildService.build(pipelineConfId);
-            } else {
-                pipelineBuildService.build(pipelineConfId, triggerId);
-            }
-        } catch (Exception e) {
-            logger.error("html.error:{}", e);
-            return ResponseBean.fail(e.getMessage());
+        if (triggerId == 0L) {
+            pipelineBuildService.build(pipelineConfId);
+        } else {
+            pipelineBuildService.build(pipelineConfId, triggerId);
         }
         return ResponseBean.TRUE;
     }

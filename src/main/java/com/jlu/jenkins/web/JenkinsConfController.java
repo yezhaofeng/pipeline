@@ -36,10 +36,10 @@ public class JenkinsConfController extends AbstractController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public JenkinsConfDTO get(@PathVariable Long id) {
         JenkinsConf jenkinsConf = jenkinsConfService.get(id);
-        if (jenkinsConf != null) {
-            return jenkinsConf.toJenkinsConfDTO();
+        if (jenkinsConf == null) {
+            return null;
         }
-        return null;
+        return jenkinsConf.toJenkinsConfDTO();
     }
 
     @RequestMapping(value = "/jobs")

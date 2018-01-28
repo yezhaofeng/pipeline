@@ -32,7 +32,6 @@ public class GithubBranch {
 
     private Date createTime;
 
-
     private String remarks;
 
     public GithubBranch(int moduleId, String branchName, BranchType branchType, Date createTime) {

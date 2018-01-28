@@ -1,7 +1,5 @@
 package com.jlu.common.web;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Created by langshiquan on 18/1/10.
  */

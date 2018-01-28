@@ -88,6 +88,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     private final String DEFAULT_COMPILE_JOB_NAME = "构建";
     private final String DEFAULT_RELEASE_JOB_NAME = "发版";
 
+    // TODO 锁
     @Override
     public void initDefaultConf(String owner, String module) {
         // 主干流水线

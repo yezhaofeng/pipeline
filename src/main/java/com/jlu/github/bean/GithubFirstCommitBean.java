@@ -7,6 +7,7 @@ import com.jlu.github.model.GitHubCommit;
 /**
  * Created by Administrator on 2018/1/18.
  */
+@Deprecated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GithubFirstCommitBean {
     @JsonProperty("sha")
