@@ -1,5 +1,7 @@
 package com.jlu.plugin.instance.release.service;
 
+import java.util.List;
+
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
 
 /**
@@ -17,4 +19,7 @@ public interface IReleaseService {
     Boolean compare(String version1, String version2);
 
     Boolean check(String version);
+
+    List<ReleaseBuild> getReleaseInfo(String owner, String module);
+
 }

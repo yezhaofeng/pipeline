@@ -3,13 +3,10 @@ package com.jlu.plugin.instance.release.service.impl;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import com.jlu.plugin.instance.release.service.IReleaseService;
@@ -27,15 +24,11 @@ public class ReleaseServiceImpl implements IReleaseService {
 
     @Override
     public String getMaxVersion(String owner, String module) {
-        ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
-        conditionAndSet.put("module", module);
-        conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
-        List<ReleaseBuild> releaseBuilds = releaseBuildDao.findHeadByProperties(conditionAndSet, null, 0, 1);
-        if (CollectionUtils.isEmpty(releaseBuilds)) {
+        ReleaseBuild releaseBuild = releaseBuildDao.getLastest(owner, module);
+        if (releaseBuild == null) {
             return FIRST_VERSION;
         }
-        return releaseBuilds.get(0).getVersion();
+        return releaseBuild.getVersion();
     }
 
     @Override
@@ -46,6 +39,11 @@ public class ReleaseServiceImpl implements IReleaseService {
     @Override
     public ReleaseBuild find(Long id) {
         return releaseBuildDao.findById(id);
+    }
+
+    @Override
+    public List<ReleaseBuild> getReleaseInfo(String owner, String module) {
+        return releaseBuildDao.get(owner, module);
     }
 
     @Override
@@ -91,4 +89,5 @@ public class ReleaseServiceImpl implements IReleaseService {
     public Boolean check(String version) {
         return Pattern.matches(VERSION_REGEX, version);
     }
+
 }
