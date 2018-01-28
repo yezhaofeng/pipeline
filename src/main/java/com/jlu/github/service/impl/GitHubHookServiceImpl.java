@@ -90,7 +90,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
             return null;
         }
         String branchName = StringUtils.substringAfterLast(hookMessage.getString("ref"), "refs/heads/");
-        BranchType branchType = branchName.equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
+        BranchType branchType = branchName.equals(BranchType.MASTER) ? BranchType.TRUNK : BranchType.BRANCH;
         String headCommit = hookMessage.getString("head_commit");
         GitHubCommitBean commitBean = GSON.fromJson(headCommit, new TypeToken<GitHubCommitBean>() {
         }.getType());

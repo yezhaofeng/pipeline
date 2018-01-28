@@ -202,7 +202,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         }
         for (int i = 0; branchBeans != null && i < branchBeans.size(); i++) {
             GithubBranchBean branchBean = branchBeans.get(i);
-            BranchType branchType = branchBean.getName().equals("master") ? BranchType.TRUNK : BranchType.BRANCH;
+            BranchType branchType = branchBean.getName().equals(BranchType.MASTER) ? BranchType.TRUNK : BranchType.BRANCH;
             GithubBranch githubBranch
                     = new GithubBranch(module.getId(), branchBean.getName(), branchType, new Date());
             githubBranches.add(githubBranch);

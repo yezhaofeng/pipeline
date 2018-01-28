@@ -6,7 +6,7 @@ package com.jlu.branch.bean;
 public enum BranchType {
     TRUNK, BRANCH;
 
-    private static final String MASTER = "master";
+    public static final String MASTER = "master";
 
     public static BranchType parseType(String branchName) {
         if (MASTER.equals(branchName)) {
