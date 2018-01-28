@@ -158,11 +158,11 @@
         <appender-ref ref="pipelineAppender"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.jlu.github" additivity="false">
+    <logger name="com.jlu.github">
         <level value="INFI"/>
         <appender-ref ref="githubAppender"/>
     </logger>
-    <logger name="com.jlu.jenkins" additivity="false">
+    <logger name="com.jlu.jenkins">
         <level value="INFO"/>
         <appender-ref ref="jenkinsAppender"/>
         <appender-ref ref="STDOUT"/>
@@ -184,6 +184,7 @@
 
     <root>
         <level value="INFO"/>
+        <appender-ref ref="pipelineAppender"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
