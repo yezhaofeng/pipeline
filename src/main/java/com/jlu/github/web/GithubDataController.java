@@ -3,7 +3,6 @@ package com.jlu.github.web;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,17 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.common.utils.AopTargetUtils;
-import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
-import com.jlu.user.bean.UserBean;
 
 import net.sf.json.JSONObject;
 
@@ -35,9 +31,6 @@ public class GithubDataController {
     private final Logger logger = LoggerFactory.getLogger(GithubDataController.class);
     @Autowired
     private IGithubDataService githubDataService;
-
-    @Autowired
-    private IGitHubCommitService gitHubCommitService;
     @Autowired
     private IGitHubHookService gitHubHookService;
 
@@ -79,34 +72,12 @@ public class GithubDataController {
     }
 
     /**
-     * 根据用户名获得GitHub代码仓库信息并保存
-     * 注册时调用
-     * @param username
-     * @return
-     */
-    @RequestMapping("/syncReposByUser")
-    @ResponseBody
-    public boolean syncReposByUser(@RequestParam(value = "username") String username) {
-        return githubDataService.syncReposByUser(username);
-    }
-
-    /**
-     * 根据用户注册信息初始化用户
-     * @param userBean
-     * @return
-     */
-    @RequestMapping(value = "/initUser", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> initUser(@RequestBody UserBean userBean) {
-       return githubDataService.initUser(userBean);
-    }
-
-    /**
      * 配置新的模块
      * @param module
      * @param username
      * @return
      */
+    // TODO
     @RequestMapping(value = "/addModule", method = RequestMethod.GET)
     @ResponseBody
     public String addModule(@RequestParam(value = "module") String module,

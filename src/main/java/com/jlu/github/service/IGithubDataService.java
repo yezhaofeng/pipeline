@@ -13,17 +13,17 @@ public interface IGithubDataService {
 
     /**
      * 根据用户名获得GitHub代码仓库信息并保存
-     * @param username
+     * @param userBean
      * @return
      */
-    boolean syncReposByUser(String username);
+    void syncReposByUser(UserBean userBean);
 
     /**
      * 根据用户注册信息初始化用户
      * @param userBean
      * @return
      */
-    Map<String, Object> initUser(UserBean userBean);
+    void initUser(UserBean userBean);
 
     /**
      * 为代码仓库创建hook

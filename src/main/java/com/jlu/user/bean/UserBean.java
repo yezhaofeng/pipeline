@@ -1,6 +1,14 @@
 package com.jlu.user.bean;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.BeanUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jlu.user.model.GithubUser;
 
 /**
  * Created by niuwanpeng on 17/3/29.
@@ -8,15 +16,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBean {
 
+    @NotNull
     private String username;
 
-    private String password;
-
+    @NotNull
     private String gitHubToken;
 
+    @NotNull
     private String email;
 
-    private boolean syncGithub;
+    // 头像地址
+    private String avatarUrl;
+
+    private List<String> syncRepos;
 
     public String getUsername() {
         return username;
@@ -24,14 +36,6 @@ public class UserBean {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getGitHubToken() {
@@ -50,11 +54,38 @@ public class UserBean {
         this.email = email;
     }
 
-    public boolean isSyncGithub() {
-        return syncGithub;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setSyncGithub(boolean syncGithub) {
-        this.syncGithub = syncGithub;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public List<String> getSyncRepos() {
+        return syncRepos;
+    }
+
+    public void setSyncRepos(List<String> syncRepos) {
+        this.syncRepos = syncRepos;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserBean{");
+        sb.append("username='").append(username).append('\'');
+        sb.append(", gitHubToken='").append(gitHubToken).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", avatarUrl='").append(avatarUrl).append('\'');
+        sb.append(", syncRepos=").append(syncRepos);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public GithubUser toUser() {
+        GithubUser githubUser = new GithubUser();
+        BeanUtils.copyProperties(this, githubUser);
+        githubUser.setCreateTime(new Date());
+        return githubUser;
     }
 }

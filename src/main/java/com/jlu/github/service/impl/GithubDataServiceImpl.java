@@ -17,9 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
-import com.jlu.common.utils.PipelineReadConfig;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
+import com.jlu.common.utils.PipelineReadConfig;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
 import com.jlu.github.bean.GithubRepoBean;
@@ -37,6 +37,8 @@ import com.jlu.user.service.IUserService;
 @Service
 public class GithubDataServiceImpl implements IGithubDataService {
 
+    private final Logger logger = LoggerFactory.getLogger(GithubDataServiceImpl.class);
+
     @Autowired
     private IModuleService moduleService;
 
@@ -50,7 +52,6 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GithubDataServiceImpl.class);
     private static final Gson GSON = new Gson();
-    private final static String REGISTER_STATUS = "REGISTER_STATUS";
     private final static String MESSAGE = "MESSAGE";
     private final static String ADD_MODULE_STATUS = "ADD_MODULE_STATUS";
 
@@ -61,49 +62,34 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @return
      */
     @Override
-    public Map<String, Object> initUser(UserBean userBean) {
-        Map<String, Object> result = new HashMap<>();
-        result.put(REGISTER_STATUS, false);
-        if (userBean == null) {
-            result.put(MESSAGE, "输入信息有误，请重新注册！");
-            LOGGER.error("注册失败！The message is userbean:{}", userBean);
-        } else {
-            try {
-                if (userBean.isSyncGithub()) {
-                    this.syncReposByUser(userBean.getUsername());
-                    List<Module> modules = moduleService.getModulesByUsername(userBean.getUsername());
-                    for (Module module : modules) {
-                        this.creatHooks(userBean.getUsername(), module.getModule(), userBean.getGitHubToken());
-                    }
-                }
-                result.put(REGISTER_STATUS, true);
-                GithubUser githubUser = this.assembleCiHomeUser(userBean);
-                userService.saveUser(githubUser);
-            } catch (Exception e) {
-                LOGGER.error("注册失败！The message is userbean:{},html.error:", userBean, e);
-                result.put(MESSAGE, "不可预知错误，请重新注册！");
-            }
+    public void initUser(UserBean userBean) {
+        syncReposByUser(userBean);
+        List<Module> modules = moduleService.getModulesByUsername(userBean.getUsername());
+        for (Module module : modules) {
+            this.creatHooks(userBean.getUsername(), module.getModule(), userBean.getGitHubToken());
         }
-        return result;
+        userService.saveUser(userBean.toUser());
+
     }
 
     /**
      * 根据用户名获得GitHub代码仓库信息并保存
      *
-     * @param username
+     * @param userBean
      * @return
      */
     @Override
-    public boolean syncReposByUser(String username) {
+    public void syncReposByUser(UserBean userBean) {
+        String username = userBean.getUsername();
+        List<String> reposName = userBean.getSyncRepos();
         String requestRepoUrl = String.format(PipelineReadConfig.getConfigValueByKey("github.repos"), username);
         String result = HttpClientUtil.get(requestRepoUrl, null);
         List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>() {
         }.getType());
-        List<Module> modules = this.saveCiHomeModuleByBean(repoList, username);
+        List<Module> modules = this.saveModules(repoList, username, reposName);
         for (int i = 0; modules != null && i < modules.size(); i++) {
             this.initBranch(modules.get(i), username);
         }
-        return true;
     }
 
     /**
@@ -167,13 +153,19 @@ public class GithubDataServiceImpl implements IGithubDataService {
     /**
      * 保存模块数据
      *
-     * @param repoList
+     * @param repoList 所有仓库列表
      * @param username
+     * @param reposName 应该被同步的仓库列表
      */
-    private List<Module> saveCiHomeModuleByBean(List<GithubRepoBean> repoList, String username) {
+    private List<Module> saveModules(List<GithubRepoBean> repoList, String username,
+                                     List<String> reposName) {
         List<Module> modules = new ArrayList<>();
-        // 只初始化最新的3个模块
-        for (int i = 0; repoList != null && i < repoList.size() && i < 3; i++) {
+        for (int i = 0; repoList != null && i < repoList.size(); i++) {
+            String name = repoList.get(i).getName();
+            if (!reposName.contains(name)) {
+                logger.info("ignore repository {}", name);
+                continue;
+            }
             Module module = new Module(repoList.get(i).getName(), username, new Date());
             modules.add(module);
         }
@@ -189,13 +181,12 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @param username
      */
     private void initBranch(Module module, String username) {
-        String requestBranchUrl
-                = String.format(PipelineReadConfig.getConfigValueByKey("github.repo.branches"),
+        String requestBranchUrl = String.format(PipelineReadConfig.getConfigValueByKey("github.repo.branches"),
                 username, module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
         List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>() {
         }.getType());
-        this.saveCiHomeBranchByBean(branchBeans, module, username);
+        saveBranchs(branchBeans, module, username);
     }
 
     /**
@@ -204,9 +195,8 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @param branchBeans
      * @param module
      */
-    private void saveCiHomeBranchByBean(List<GithubBranchBean> branchBeans, Module module, String username) {
+    private void saveBranchs(List<GithubBranchBean> branchBeans, Module module, String username) {
         List<GithubBranch> githubBranches = new ArrayList<>();
-        String version = "1.0.0";
         if (githubBranches == null) {
             return;
         }
@@ -216,7 +206,8 @@ public class GithubDataServiceImpl implements IGithubDataService {
             GithubBranch githubBranch
                     = new GithubBranch(module.getId(), branchBean.getName(), branchType, new Date());
             githubBranches.add(githubBranch);
-            this.initOneCommit(username, module, branchBean.getName());
+            // FIXME: 18/1/28 暂时无法知道commit的哪个分支的
+            // this.initOneCommit(username, module, branchBean.getName());
         }
         branchService.saveBranches(githubBranches);
     }
@@ -242,22 +233,6 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
         // FIXME
         gitHubCommitService.save(githubFirstCommitBean.toGithubCommit());
-    }
-
-    /**
-     * 根据Userbean装配CiHomeUser
-     *
-     * @param userBean
-     * @return
-     */
-    private GithubUser assembleCiHomeUser(UserBean userBean) {
-        GithubUser githubUser = new GithubUser();
-        githubUser.setUsername(userBean.getUsername());
-        githubUser.setPassword(userBean.getPassword());
-        githubUser.setUserEmail(userBean.getEmail());
-        githubUser.setCreateTime(new Date());
-        githubUser.setGitHubToken(userBean.getGitHubToken());
-        return githubUser;
     }
 
 }

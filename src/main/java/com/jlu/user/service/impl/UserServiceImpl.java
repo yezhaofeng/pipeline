@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
         GithubUser adminUser = new GithubUser();
         adminUser.setUsername(ADMIN_USERNAME);
         adminUser.setPassword(ADMIN_PASSWORD);
-        adminUser.setUserEmail(ADMIN_EMAIl);
+        adminUser.setEmail(ADMIN_EMAIl);
         adminUser.setCreateTime(new Date());
         userDao.saveOrUpdate(adminUser);
     }

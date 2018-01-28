@@ -15,17 +15,12 @@ public class CookiesUtiles {
      * 添加cookies
      * @param response
      * @param username
-     * @param password
      */
-    public static void addCookies(HttpServletResponse response, String username, String password) {
+    public static void addCookies(HttpServletResponse response, String username) {
         Cookie usernameCookie = new Cookie("loginUsername", EncryUtil.encrypt(username));
-        Cookie passwordCookie = new Cookie("loginPassword", EncryUtil.encrypt(password));
         usernameCookie.setMaxAge(AUTO_LOGIN_TIMEOUT);
-        passwordCookie.setMaxAge(AUTO_LOGIN_TIMEOUT);
         usernameCookie.setPath("/");
-        passwordCookie.setPath("/");
         response.addCookie(usernameCookie);
-        response.addCookie(passwordCookie);
     }
 
     public static void deleteCookies(HttpServletResponse response, HttpServletRequest request, String username) {

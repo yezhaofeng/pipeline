@@ -21,9 +21,9 @@ public class GithubUser {
 
     private String username;
 
-    private String password;
+    private String email;
 
-    private String userEmail;
+    private String avatarUrl;
 
     private String gitHubToken;
 
@@ -45,20 +45,12 @@ public class GithubUser {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getCreateTime() {
@@ -75,5 +67,26 @@ public class GithubUser {
 
     public void setGitHubToken(String gitHubToken) {
         this.gitHubToken = gitHubToken;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("GithubUser{");
+        sb.append("id=").append(id);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", avatarUrl='").append(avatarUrl).append('\'');
+        sb.append(", gitHubToken='").append(gitHubToken).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append('}');
+        return sb.toString();
     }
 }
