@@ -188,13 +188,6 @@
             <version>3.12.0.GA</version>
         </dependency>
 
-        <!-- dbcp连接池需要的jar包 -->
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>
