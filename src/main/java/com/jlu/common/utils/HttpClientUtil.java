@@ -252,7 +252,7 @@ public class HttpClientUtil {
      * @param url
      * @param charset
      * @param params
-     * @param timeout 超时时间
+     * @param socketTimeout 超时时间
      * @return
      */
     public static String getUrlForDefinedTimeout(String url, String charset, Map<String,String> params, int socketTimeout){
@@ -286,7 +286,8 @@ public class HttpClientUtil {
                     returnContent = EntityUtils.toString(entity, charset);
                 }
             }else {
-                LOGGER.error("Failed to getTopJob URL: " + url + " with response: " + response.getStatusLine().getReasonPhrase());
+                LOGGER.error("Failed to get URL: " + url + " with response: " + response.getStatusLine()
+                        .getReasonPhrase());
             }
             LOGGER.info("[HTTP GET]:{} end!!!", url);
         }catch (Exception e) {

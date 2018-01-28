@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.jlu.common.exception.ForbiddenException;
 import com.jlu.github.service.IGithubOAuthService;
 
 /**
@@ -29,10 +29,10 @@ public class GithubLoginController {
 
     // github回调pipeline
     @RequestMapping(value = "/login/callback", method = RequestMethod.GET)
-    @ResponseBody
     public String callback(String code, String state, Model model) {
+        // avoid CSRF
         if (!githubOAuthService.checkState(state)) {
-            //TODO 无权限
+            throw new ForbiddenException();
         }
         githubOAuthService.handleCallback(code, model);
         return "register";
