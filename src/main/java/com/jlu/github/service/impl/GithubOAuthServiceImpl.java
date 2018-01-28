@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -23,12 +25,14 @@ import com.jlu.github.service.IGithubOAuthService;
  */
 @Service
 public class GithubOAuthServiceImpl implements IGithubOAuthService {
+    private Logger logger = LoggerFactory.getLogger(IGithubOAuthService.class);
     private final Vector<String> stateList = new Vector<>();
 
     @Override
     public String getAuthorizationUrl() {
         String state = UUID.randomUUID().toString();
         stateList.add(state);
+        logger.info("state:{} add in cache,current cache size:{}", state, stateList.size());
         String authorizationUrl = String.format(PipelineReadConfig.getConfigValueByKey("github.authorize.url"),
                 PipelineReadConfig.getConfigValueByKey("github.client.id"), state);
         return authorizationUrl;
@@ -38,6 +42,7 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
     public Boolean checkState(String state) {
         if (stateList.contains(state)) {
             stateList.remove(state);
+            logger.info("state:{} has callback,current cache size:{}", state, stateList.size());
             return true;
         }
         return false;
