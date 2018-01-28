@@ -32,7 +32,7 @@ public class GithubLoginController {
     public String callback(String code, String state, Model model) {
         // avoid CSRF
         if (!githubOAuthService.checkState(state)) {
-            throw new ForbiddenException();
+            throw new ForbiddenException("鉴权失败");
         }
         githubOAuthService.handleCallback(code, model);
         return "register";
