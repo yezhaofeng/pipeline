@@ -31,9 +31,9 @@
                 <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
                 <!--!!!!!注意：大部分属性需要带hibernate标签!!!!!!!!!!-->
                 <!--为true表示将Hibernate发送给数据库的sql显示出来 -->
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <!--对sql语句进行排版-->
-                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
                 <!-- 添加自动创建数据库表格的配置 create|update|create-drop|validate-->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <!-- SQL方言，这边设定的是MySQL -->

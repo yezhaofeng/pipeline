@@ -38,4 +38,14 @@ public class JobBuildContext {
     public void setJobExecParam(Map<String, String> jobExecParam) {
         this.jobExecParam = jobExecParam;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JobBuildContext{");
+        sb.append("pipelineBuild=").append(pipelineBuild);
+        sb.append(", runtimePluginParam=").append(runtimePluginParam);
+        sb.append(", jobExecParam=").append(jobExecParam);
+        sb.append('}');
+        return sb.toString();
+    }
 }

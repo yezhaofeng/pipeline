@@ -5,7 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jlu.common.aop.annotations.LogExecTime;
@@ -21,6 +22,7 @@ import com.jlu.plugin.service.IPluginInfoService;
  */
 public abstract class AbstractExecutor {
 
+    private final Logger logger = LoggerFactory.getLogger(AbstractExecutor.class);
     @Autowired
     private IPluginInfoService pluginInfoService;
     @Autowired
@@ -28,6 +30,7 @@ public abstract class AbstractExecutor {
 
     @LogExecTime
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
+        logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
         if (jobBuild == null) {
             notifyJobStartFailed(jobBuild, "未找到Job构建记录");
             return;
