@@ -148,7 +148,7 @@
         </encoder>
     </appender>
 
-    <logger name="methodExecTimeLog">
+    <logger name="methodExecTimeLog" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="methodExecTimeLogAppender"/>
     </logger>
@@ -184,7 +184,6 @@
 
     <root>
         <level value="INFO"/>
-        <appender-ref ref="pipelineAppender"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
