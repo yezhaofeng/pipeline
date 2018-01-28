@@ -26,10 +26,10 @@ public class LogExecTimeAspect {
     private final Logger logger = LoggerFactory.getLogger("methodExecTimeLog");
 
     @Pointcut("@annotation(logExecTime)")
-    public void logExecanno(LogExecTime logExecTime) {
+    public void logExecAnno(LogExecTime logExecTime) {
     }
 
-    @Around("logExecanno(logExecTime)")
+    @Around("logExecAnno(logExecTime)")
     public Object logExecAround(ProceedingJoinPoint joinPoint, LogExecTime logExecTime) throws Throwable {
         // 获取方法名字
         Signature sig = joinPoint.getSignature();
