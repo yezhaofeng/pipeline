@@ -1,6 +1,7 @@
 package com.jlu.github.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jlu.common.utils.bean.AbstractPropertyGetter;
 
 /**
  * Created by niuwanpeng on 17/3/24.
@@ -8,6 +9,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GithubRepoBean {
 
+    public static final AbstractPropertyGetter<String, GithubRepoBean> NAME_GETTER =
+            new AbstractPropertyGetter<String, GithubRepoBean>() {
+                @Override
+                public String get(GithubRepoBean githubRepoBean) {
+                    return null == githubRepoBean ? null : githubRepoBean.getName();
+                }
+            };
     private String name;
 
     private String git_url;
