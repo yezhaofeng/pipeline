@@ -1,4 +1,4 @@
-package com.jlu.github.service.impl;
+package com.jlu.user.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.common.utils.JsonUtils;
 import com.jlu.common.utils.PipelineReadConfig;
 import com.jlu.github.bean.GithubRepoBean;
-import com.jlu.github.service.IGithubOAuthService;
+import com.jlu.user.service.IGithubOAuthService;
 
 /**
  * Created by langshiquan on 18/1/28.
@@ -60,11 +60,17 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
         Map<String, String> userInfoMap = JsonUtils.getObjectByJsonString(userInfo, Map.class);
         String username = userInfoMap.get("login");
         String reposUrl = userInfoMap.get("repos_url");
+        String avatarUrl = userInfoMap.get("avatar_url");
+        String githubHome = userInfoMap.get("html_url");
+        String email = userInfoMap.get("email");
         String result = HttpClientUtil.get(reposUrl, null);
         List<GithubRepoBean> repoList = new Gson().fromJson(result, new TypeToken<List<GithubRepoBean>>() {
         }.getType());
         List<String> repoNameList = CollUtils.toList(repoList, GithubRepoBean.NAME_GETTER);
         model.addAttribute("username", username);
         model.addAttribute("repoNames", repoNameList);
+        model.addAttribute("avatarUrl", avatarUrl);
+        model.addAttribute("githubHome", githubHome);
+        model.addAttribute("email", email);
     }
 }

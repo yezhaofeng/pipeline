@@ -59,9 +59,4 @@ public class LoginController {
         return true;
     }
 
-    @RequestMapping("/register")
-    public String registerToJsp() {
-        return "register";
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.jlu.github.service;
+package com.jlu.user.service;
 
 import org.springframework.ui.Model;
 

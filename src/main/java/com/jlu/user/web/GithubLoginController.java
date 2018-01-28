@@ -1,4 +1,4 @@
-package com.jlu.github.web;
+package com.jlu.user.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.jlu.common.exception.ForbiddenException;
-import com.jlu.github.service.IGithubOAuthService;
+import com.jlu.user.service.IGithubOAuthService;
 
 /**
  * Created by langshiquan on 18/1/28.
