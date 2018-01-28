@@ -53,9 +53,6 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     @Autowired
     private IPipelineBuildDao pipelineBuildDao;
 
-    @Autowired
-    private IJobBuildService jobBuildService;
-
     @Override
     public Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId,
                           Map<String, String> params) {

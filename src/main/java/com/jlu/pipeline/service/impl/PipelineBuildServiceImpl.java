@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.utils.AopTargetUtils;
 import com.jlu.common.utils.CiHomeReadConfig;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.github.model.GitHubCommit;
@@ -101,16 +100,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
             throw new PipelineRuntimeException("未找到流水线配置");
         }
         Long pipelineBuildId = initPipelineBuild(pipelineConf, gitHubCommit);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ((IJobBuildService) AopTargetUtils.getTarget(IJobBuildService.class)).buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, gitHubCommit.getCommitter());
     }
 
 
