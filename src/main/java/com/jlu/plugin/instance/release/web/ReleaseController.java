@@ -22,7 +22,6 @@ public class ReleaseController {
 
     @RequestMapping("/{owner}/{module}")
     public List<ReleaseBuild> releaseInfo(@PathVariable String owner, @PathVariable String module) {
-
         return releaseService.getReleaseInfo(owner, module);
     }
 }

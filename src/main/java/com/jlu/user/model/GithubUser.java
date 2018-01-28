@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jlu.common.utils.PipelineReadConfig;
+
 /**
  * Created by niuwanpeng on 17/3/10.
  *
@@ -25,8 +28,10 @@ public class GithubUser {
 
     private String avatarUrl;
 
+    private String pipelineToken;
+    @JsonIgnore
     private String gitHubToken;
-
+    @JsonIgnore
     private Date createTime;
 
     public int getId() {
@@ -77,6 +82,14 @@ public class GithubUser {
         this.avatarUrl = avatarUrl;
     }
 
+    public String getPipelineToken() {
+        return pipelineToken;
+    }
+
+    public void setPipelineToken(String pipelineToken) {
+        this.pipelineToken = pipelineToken;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("GithubUser{");
@@ -88,5 +101,9 @@ public class GithubUser {
         sb.append(", createTime=").append(createTime);
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getGithubHome() {
+        return PipelineReadConfig.getConfigValueByKey("github.user.home");
     }
 }

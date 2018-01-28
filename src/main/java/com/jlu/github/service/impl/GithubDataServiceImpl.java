@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -68,7 +69,9 @@ public class GithubDataServiceImpl implements IGithubDataService {
         for (Module module : modules) {
             this.creatHooks(userBean.getUsername(), module.getModule(), userBean.getGitHubToken());
         }
-        userService.saveUser(userBean.toUser());
+        GithubUser githubUser = userBean.toUser();
+        githubUser.setPipelineToken(UUID.randomUUID().toString());
+        userService.saveUser(githubUser);
 
     }
 
