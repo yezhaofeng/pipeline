@@ -23,19 +23,23 @@ public class ExceptionControllerAdvice {
 
     private Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
+    // 403
     @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView forbiddenExceptionHandler(ForbiddenException fbex) {
         ModelAndView mv = new ModelAndView("403");
         mv.addObject("message", fbex.getMessage());
         return mv;
     }
 
+    // 400
     @ExceptionHandler(PipelineRuntimeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseBean pipelineRuntimeExceptionHandler(PipelineRuntimeException pre) {
         return ResponseBean.fail(pre.getMessage());
     }
 
+    // 500
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseBean exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
