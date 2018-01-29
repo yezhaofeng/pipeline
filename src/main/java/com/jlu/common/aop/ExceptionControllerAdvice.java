@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jlu.common.exception.ForbiddenException;
+import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.web.ResponseBean;
 
 /**
@@ -22,14 +23,20 @@ public class ExceptionControllerAdvice {
 
     private Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
-    @ExceptionHandler
-    public ModelAndView exceptionHandler(ForbiddenException fbex) {
+    @ExceptionHandler(ForbiddenException.class)
+    public ModelAndView forbiddenExceptionHandler(ForbiddenException fbex) {
         ModelAndView mv = new ModelAndView("403");
         mv.addObject("message", fbex.getMessage());
         return mv;
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(PipelineRuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseBean pipelineRuntimeExceptionHandler(PipelineRuntimeException pre) {
+        return ResponseBean.fail(pre.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseBean exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
         logger.info("request {} error:", request.getRequestURI(), e);
