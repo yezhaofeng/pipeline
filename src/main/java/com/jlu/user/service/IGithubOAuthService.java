@@ -1,5 +1,7 @@
 package com.jlu.user.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
 /**
@@ -7,6 +9,15 @@ import org.springframework.ui.Model;
  */
 public interface IGithubOAuthService {
     String getAuthorizationUrl();
+
     Boolean checkState(String state);
-    void handleCallback(String code,Model model);
+
+    /**
+     * @param code    github回调码
+     * @param model   注册页面的model
+     * @param session HttpSession
+     *
+     * @return 该用户是否存在
+     */
+    Boolean handleCallback(String code, Model model, HttpSession session);
 }

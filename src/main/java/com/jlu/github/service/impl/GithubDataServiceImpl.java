@@ -63,7 +63,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @return
      */
     @Override
-    public void initUser(UserBean userBean) {
+    public GithubUser initUser(UserBean userBean) {
         syncReposByUser(userBean);
         List<Module> modules = moduleService.getModulesByUsername(userBean.getUsername());
         for (Module module : modules) {
@@ -72,7 +72,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         GithubUser githubUser = userBean.toUser();
         githubUser.setPipelineToken(UUID.randomUUID().toString());
         userService.saveUser(githubUser);
-
+        return githubUser;
     }
 
     /**

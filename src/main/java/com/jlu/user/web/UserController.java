@@ -1,5 +1,9 @@
 package com.jlu.user.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +17,8 @@ import com.jlu.user.model.GithubUser;
 public class UserController {
 
     @RequestMapping("/current")
-    public GithubUser currentUser() {
-        // TODO
-        return null;
+    public GithubUser currentUser(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        return (GithubUser) session.getAttribute(GithubUser.CURRENT_USER_NAME);
     }
 }

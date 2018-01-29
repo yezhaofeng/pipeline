@@ -2,6 +2,7 @@ package com.jlu.user.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.jlu.common.cookies.CookiesUtiles;
 import com.jlu.common.exception.ForbiddenException;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.github.service.IGithubDataService;
 import com.jlu.user.bean.UserBean;
+import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IGithubOAuthService;
 
 /**
@@ -45,29 +46,35 @@ public class GithubLoginController {
 
     // github回调pipeline
     @RequestMapping(value = "/login/callback", method = RequestMethod.GET)
-    public String callback(String code, String state, Model model) {
+    public String callback(Model model, HttpServletRequest request, String code, String state) {
         // avoid CSRF
         if (!githubOAuthService.checkState(state)) {
             throw new ForbiddenException("鉴权失败");
         }
-        githubOAuthService.handleCallback(code, model);
-        return "register";
+        HttpSession session = request.getSession();
+        Boolean isExits = githubOAuthService.handleCallback(code, model, session);
+        if (isExits) {
+            return "redirect:/";
+        } else {
+            return "register";
+        }
     }
 
     // 根据用户注册信息初始化用户
     @RequestMapping(value = "/initUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean initUser(HttpServletResponse response, @RequestBody UserBean userBean) {
-        githubDataService.initUser(userBean);
-        CookiesUtiles.addCookies(response, userBean.getUsername());
+    public ResponseBean initUser(HttpServletRequest request, HttpServletResponse response,
+                                 @RequestBody UserBean userBean) {
+        GithubUser githubUser = githubDataService.initUser(userBean);
+        request.getSession().setAttribute(GithubUser.CURRENT_USER_NAME, githubUser);
         return ResponseBean.TRUE;
     }
 
     @RequestMapping("/exit")
     @ResponseBody
-    public ResponseBean exitLogin(HttpServletResponse response, HttpServletRequest request, String username) {
-        CookiesUtiles.deleteCookies(response, request, username);
-        return ResponseBean.TRUE;
+    public String exitLogin(HttpServletResponse response, HttpServletRequest request) {
+        request.getSession().removeAttribute(GithubUser.CURRENT_USER_NAME);
+        return "login";
     }
 
 }

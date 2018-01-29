@@ -3,6 +3,7 @@ package com.jlu.github.service;
 import java.util.Map;
 
 import com.jlu.user.bean.UserBean;
+import com.jlu.user.model.GithubUser;
 
 /**
  * Created by niuwanpeng on 17/3/24.
@@ -23,7 +24,7 @@ public interface IGithubDataService {
      * @param userBean
      * @return
      */
-    void initUser(UserBean userBean);
+    GithubUser initUser(UserBean userBean);
 
     /**
      * 为代码仓库创建hook

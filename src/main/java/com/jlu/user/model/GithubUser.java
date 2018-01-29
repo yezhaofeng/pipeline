@@ -1,5 +1,6 @@
 package com.jlu.user.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -16,7 +17,9 @@ import com.jlu.common.utils.PipelineReadConfig;
  *  用户信息实体类
  */
 @Entity
-public class GithubUser {
+public class GithubUser implements Serializable{
+
+    public static final String CURRENT_USER_NAME="currentUser";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
