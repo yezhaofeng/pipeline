@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jlu.common.exception.ForbiddenException;
 import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.utils.AccessLogHelper;
 import com.jlu.common.web.ResponseBean;
 
 /**
@@ -21,7 +22,6 @@ import com.jlu.common.web.ResponseBean;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-    private Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
     // 403
     @ExceptionHandler(ForbiddenException.class)
@@ -43,7 +43,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseBean exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
-        logger.info("request {} error:", request.getRequestURI(), e);
+        AccessLogHelper.logAccess(request, response,e);
         return ResponseBean.fail(e.getMessage());
     }
 

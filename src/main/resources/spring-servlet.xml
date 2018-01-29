@@ -30,6 +30,16 @@
     <mvc:resources mapping="/error/**" location="/html/error/"/>
 
 
+    <!--拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 进行拦截：/**表示拦截所有controller -->
+            <mvc:mapping path="/**"/>
+            <bean class="com.jlu.common.interceptor.LogInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
     <!--定义视图解析器-->
     <!--jsp视图解析器-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
