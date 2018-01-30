@@ -29,6 +29,7 @@
     <mvc:resources mapping="/images/**" location="/WEB-INF/resource/images/"/>
     <mvc:resources mapping="/error/**" location="/WEB-INF/views/error/"/>
     <mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/"/>
+    <mvc:resources mapping="/api-doc/**" location="/api-doc/" />
     <!--Swagger-->
     <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
     <!--拦截器-->
