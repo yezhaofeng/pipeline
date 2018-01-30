@@ -42,7 +42,7 @@ public class JenkinsConfController extends AbstractController {
         return jenkinsConf.toJenkinsConfDTO();
     }
 
-    @RequestMapping(value = "/jobs")
+    @RequestMapping(value = "/jobs", method = RequestMethod.GET)
     public List<JenkinsJobsBean> getJobs() throws IOException {
         String userName = getLoginUserName();
         return jenkinsConfService.getByCreateUser(userName);

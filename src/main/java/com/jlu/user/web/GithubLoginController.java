@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class GithubLoginController {
     private IGithubOAuthService githubOAuthService;
 
     // 重定向到github的授权页面
-    @RequestMapping(value = "/authorization")
+    @RequestMapping(value = "/authorization", method = RequestMethod.GET)
     public ModelAndView authorization() {
         return new ModelAndView(new RedirectView(githubOAuthService.getAuthorizationUrl()));
     }
@@ -70,7 +71,7 @@ public class GithubLoginController {
         return ResponseBean.TRUE;
     }
 
-    @RequestMapping("/exit")
+    @RequestMapping(value = "/exit", method = RequestMethod.GET)
     @ResponseBody
     public String exitLogin(HttpServletResponse response, HttpServletRequest request) {
         request.getSession().removeAttribute(GithubUser.CURRENT_USER_NAME);

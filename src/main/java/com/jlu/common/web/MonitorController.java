@@ -1,6 +1,7 @@
 package com.jlu.common.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MonitorController {
 
     // TODO return String
-    @RequestMapping("/monitor")
+    @RequestMapping(value = "/monitor",method = RequestMethod.GET)
     public ResponseBean monitor() {
         return ResponseBean.TRUE;
     }

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.user.model.GithubUser;
@@ -16,7 +17,7 @@ import com.jlu.user.model.GithubUser;
 @RequestMapping("/pipeline/user")
 public class UserController {
 
-    @RequestMapping("/current")
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
     public GithubUser currentUser(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         return (GithubUser) session.getAttribute(GithubUser.CURRENT_USER_NAME);

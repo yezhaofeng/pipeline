@@ -39,7 +39,7 @@ public class JobBuildController extends AbstractController {
         return jobBuildService.getBuildInfo(jobBuildId);
     }
 
-    @RequestMapping(value = "/runtimeRequire/{jobBuildId}")
+    @RequestMapping(value = "/runtimeRequire/{jobBuildId}", method = RequestMethod.GET)
     public List<RunTimeBean> runtimeRequire(@PathVariable Long jobBuildId) {
         return jobBuildService.getRuntimeRequire(jobBuildId);
     }

@@ -37,6 +37,7 @@ public class GithubDataController {
 
     /**
      * 监听代码提交事件（push），触法流水线
+     *
      * @param request
      * @param response
      */
@@ -50,7 +51,7 @@ public class GithubDataController {
             byte[] buffer = new byte[1024];
             int iRead;
             while ((iRead = buf.read(buffer)) != -1) {
-                info.append(new String(buffer,0,iRead,"gbk"));
+                info.append(new String(buffer, 0, iRead, "gbk"));
             }
             if (info != null) {
                 final JSONObject hookMessage = JSONObject.fromObject(info.toString());
@@ -60,7 +61,7 @@ public class GithubDataController {
                     public void run() {
                         try {
                             ((IGitHubHookService) AopTargetUtils.getTarget(gitHubHookService)).dealHookMessage
-                                        (hookMessage);
+                                    (hookMessage);
                         } catch (Exception e) {
                             logger.error("deal hook-message failed,json:{},html.error:", hookMessage, e);
                         }
@@ -74,6 +75,7 @@ public class GithubDataController {
 
     /**
      * 配置新的模块
+     *
      * @param module
      * @param username
      * @return
