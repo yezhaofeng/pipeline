@@ -12,6 +12,8 @@ import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by xiaohui on 2016/1/14.
  */
@@ -25,16 +27,16 @@ public class SwaggerConfig {
     private SpringSwaggerConfig springSwaggerConfig;
 
     @Bean
-    public SwaggerSpringMvcPlugin customImplementation() {
+    public SwaggerSpringMvcPlugin customImplementation() throws UnsupportedEncodingException {
         return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
                 .apiInfo(apiInfo())
                 .includePatterns(".*?");
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo() throws UnsupportedEncodingException {
         ApiInfo apiInfo = new ApiInfo(
                 "Pipeline流水线API列表",
-                PipelineReadConfig.getConfigValueByKey("swagger.description"),
+                new String(PipelineReadConfig.getConfigValueByKey("swagger.description").getBytes("ISO-8859-1"), "UTF-8"),
                 PipelineReadConfig.getConfigValueByKey("pipeline.home"),
                 "576506402@qq.com",
                 "Apache2.0",

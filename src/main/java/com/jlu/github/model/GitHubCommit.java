@@ -8,10 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.jlu.branch.bean.BranchType;
+import com.jlu.common.utils.PipelineReadConfig;
 
 /**
  * Created by niuwanpeng on 17/4/25.
- *
+ * <p>
  * 代码提交信息
  */
 @Entity
@@ -48,7 +49,7 @@ public class GitHubCommit {
 
     private String owner;
 
-    public GitHubCommit( String committer, String committerEmail, String message, String commitTime,
+    public GitHubCommit(String committer, String committerEmail, String message, String commitTime,
                         String addedFiles, String removedFiles, String modifiedFiles, String commitId,
                         String commitUrl) {
         this.committer = committer;
@@ -177,6 +178,10 @@ public class GitHubCommit {
 
     public void setCommitUrl(String commitUrl) {
         this.commitUrl = commitUrl;
+    }
+
+    public String getTreeUrl() {
+        return PipelineReadConfig.getConfigValueByKey("github.user.hom") + owner + "/" + module + "/tree/" + commitId;
     }
 
     @Override
