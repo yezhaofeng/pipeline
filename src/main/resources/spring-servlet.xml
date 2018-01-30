@@ -37,6 +37,17 @@
             <mvc:mapping path="/**"/>
             <bean class="com.jlu.common.interceptor.LogInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <!-- 进行拦截：/**表示拦截所有controller -->
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/api/**"/>
+            <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/github/initUser"/>
+            <mvc:exclude-mapping path="/github/authorization"/>
+            <mvc:exclude-mapping path="/github/login/callback"/>
+            <mvc:exclude-mapping path="/github/webHooks"/>
+            <bean class="com.jlu.common.interceptor.PassportInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 
