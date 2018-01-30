@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.jlu.common.utils.PipelineReadConfig;
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
@@ -33,8 +34,8 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo(
                 "Pipeline流水线API列表",
-                "for fe",
-                "http://localhost:8081",
+                PipelineReadConfig.getConfigValueByKey("swagger.description"),
+                PipelineReadConfig.getConfigValueByKey("pipeline.home"),
                 "576506402@qq.com",
                 "Apache2.0",
                 "https://github.com/z521598/pipeline_v2");

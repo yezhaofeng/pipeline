@@ -4,6 +4,6 @@
     <title>404</title>
 </head>
 <body>
-    <img src="/images/404.jpg"/>
+<img src="/images/404.jpg"/>
 </body>
 </html>

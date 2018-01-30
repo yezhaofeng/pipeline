@@ -23,11 +23,11 @@
     </context:component-scan>
 
     <!--定义静态资源-->
+    <!--mapping为请求的路径,location为后台真正的路径-->
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/images/**" location="/images/"/>
-    <mvc:resources mapping="/html/**" location="/html/"/>
-    <mvc:resources mapping="/error/**" location="/html/error/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/resource/images/"/>
+    <mvc:resources mapping="/error/**" location="/WEB-INF/views/error/"/>
     <mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/"/>
     <!--Swagger-->
     <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
@@ -49,6 +49,12 @@
             <mvc:exclude-mapping path="/github/webHooks"/>
             <mvc:exclude-mapping path="/api-docs/**"/>
             <mvc:exclude-mapping path="/swagger/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/*.html"/>
+            <mvc:exclude-mapping path="/**/*.bmp"/>
+            <mvc:exclude-mapping path="/**/*.png"/>
             <bean class="com.jlu.common.interceptor.PassportInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
@@ -103,6 +109,7 @@
         </property>
         <property name="statusCodes">
             <map>
+                <!--403-->
                 <entry key="html/404.error/resourceNotFoundError" value="404"/>
                 <entry key="html/500.error/dataAccessError" value="500"/>
             </map>
