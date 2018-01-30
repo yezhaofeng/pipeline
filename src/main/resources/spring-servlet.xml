@@ -28,8 +28,9 @@
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/html/**" location="/html/"/>
     <mvc:resources mapping="/error/**" location="/html/error/"/>
-
-
+    <mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/"/>
+    <!--Swagger-->
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
     <!--拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -40,12 +41,14 @@
         <mvc:interceptor>
             <!-- 进行拦截：/**表示拦截所有controller -->
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/api/**"/>
             <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/api/**"/>
             <mvc:exclude-mapping path="/github/initUser"/>
             <mvc:exclude-mapping path="/github/authorization"/>
             <mvc:exclude-mapping path="/github/login/callback"/>
             <mvc:exclude-mapping path="/github/webHooks"/>
+            <mvc:exclude-mapping path="/api-docs/**"/>
+            <mvc:exclude-mapping path="/swagger/**"/>
             <bean class="com.jlu.common.interceptor.PassportInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
