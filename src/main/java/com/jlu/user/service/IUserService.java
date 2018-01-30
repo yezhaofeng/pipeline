@@ -15,4 +15,6 @@ public interface IUserService {
      * @return
      */
     GithubUser getUserByName(String username);
+
+    Boolean idAdmin(String username);
 }

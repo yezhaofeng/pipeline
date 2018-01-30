@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.utils.AopTargetUtils;
+import com.jlu.common.aop.utils.AopTargetUtils;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.job.bean.JobBuildBean;

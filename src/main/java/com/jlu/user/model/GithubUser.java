@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.common.utils.PipelineReadConfig;
+import com.jlu.user.bean.Role;
 
 /**
  * Created by niuwanpeng on 17/3/10.
@@ -36,6 +37,9 @@ public class GithubUser implements Serializable{
     private String gitHubToken;
     @JsonIgnore
     private Date createTime;
+
+    @GeneratedValue
+    private Role role = Role.USER;
 
     public int getId() {
         return id;

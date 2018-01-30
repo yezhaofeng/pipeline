@@ -13,12 +13,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 public class PassportInterceptor implements HandlerInterceptor {
 
     private static Logger logger = LoggerFactory.getLogger(PassportInterceptor.class);
-
     @Autowired
     private IUserService userService;
 
@@ -28,15 +28,25 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (isStaticResource(request)) {
             return true;
         }
+        // 检验是否登陆
+        GithubUser githubUser = UserLoginHelper.getLoginUser(request);
+        if (githubUser == null) {
+            // 重定向到登陆页面
+            return false;
+        }
+
+        // 检验是否是超级管理员
+        if (userService.idAdmin(githubUser.getUsername())) {
+            return true;
+        }
+
+        // TODO 校验权限
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             // REST传值
             Map attributes = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
             System.out.println(attributes);
         }
-        //        HttpSession session = request.getSession();
-        //        GithubUser user = (GithubUser) session.getAttribute(GithubUser.CURRENT_USER_NAME);
-        //        LoginHelper.register(user);
         return true;
     }
 
@@ -46,7 +56,7 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (isStaticResource(request)) {
             return;
         }
-        ThreadLocalLoginHelper.destory();
+        UserLoginHelper.destory();
     }
 
     @Override

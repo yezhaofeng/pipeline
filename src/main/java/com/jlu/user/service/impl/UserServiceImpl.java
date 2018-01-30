@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.user.bean.Role;
 import com.jlu.user.dao.IUserDao;
 import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
@@ -36,6 +37,16 @@ public class UserServiceImpl implements IUserService {
             return users.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Boolean idAdmin(String username) {
+        GithubUser githubUser = userDao.get(username, Role.ADMIN);
+        if (githubUser == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
