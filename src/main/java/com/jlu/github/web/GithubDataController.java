@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jlu.common.aop.utils.AopTargetUtils;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
-import com.wordnik.swagger.annotations.ApiOperation;
 
 import net.sf.json.JSONObject;
 
