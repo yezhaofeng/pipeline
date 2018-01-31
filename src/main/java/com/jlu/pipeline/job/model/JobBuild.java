@@ -192,7 +192,7 @@ public class JobBuild {
     }
 
     public Map<String, String> getOutParameterMap() {
-        if (StringUtils.isBlank(getInParams())) {
+        if (StringUtils.isBlank(getOutParams())) {
             return new HashMap<>();
         }
         return new HashMap<>((Map) JSON.parseObject(getOutParams()));

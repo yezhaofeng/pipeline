@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MonitorController {
 
-    // TODO return String
-    @RequestMapping(value = "/monitor",method = RequestMethod.GET)
-    public ResponseBean monitor() {
-        return ResponseBean.TRUE;
+    @RequestMapping(value = "/monitor", method = RequestMethod.GET)
+    public String monitor() {
+        return "ok";
     }
 }

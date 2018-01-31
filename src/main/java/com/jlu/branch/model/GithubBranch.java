@@ -23,8 +23,11 @@ public class GithubBranch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Deprecated
     @JsonIgnore
     private int moduleId;
+
+    private String module;
 
     private String branchName;
 

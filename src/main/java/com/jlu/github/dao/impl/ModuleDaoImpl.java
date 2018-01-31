@@ -22,7 +22,7 @@ public class ModuleDaoImpl extends AbstractBaseDao<Module> implements IModuleDao
     @Override
     @SuppressWarnings("unchecked")
     public List<Module> getSuggestProductModules(String query, String username, PageBean page) {
-        String hql = "from CiHomeModule cm where cm.username = :username AND cm.module like :module";
+        String hql = "from Module cm where cm.owner = :owner AND cm.module like :module";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("module", "%" + query + "%");
         params.put("owner", username);

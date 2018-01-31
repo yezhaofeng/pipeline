@@ -85,13 +85,12 @@ public class BranchServiceImpl implements IBranchService {
 
     /**
      * 获得分支名集合
-     * @param username
      * @param module
      * @return
      */
     @Override
-    public List<GithubBranch> getBranchesByModule(String username, String module) {
-        Module ciHomeModule = moduleService.getModuleByUserAndModule(username, module);
+    public List<GithubBranch> getBranchesByModule(String module) {
+        Module ciHomeModule = moduleService.get(module);
         List<GithubBranch> githubBranches = new ArrayList<>();
         if (ciHomeModule != null) {
             githubBranches = getBranches(ciHomeModule, 0, 50);

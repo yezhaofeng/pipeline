@@ -49,5 +49,8 @@ public interface IModuleService {
      * @param module
      * @return
      */
+    @Deprecated
     Module getModuleByUserAndModule(String username, String module);
+
+    Module get(String module);
 }

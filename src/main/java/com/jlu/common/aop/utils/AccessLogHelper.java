@@ -11,14 +11,16 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jlu.common.utils.DateUtils;
 import com.jlu.common.interceptor.UserLoginHelper;
+import com.jlu.common.utils.DateUtils;
 
 /**
  * Created by langshiquan on 18/1/29.
  */
 public class AccessLogHelper {
-    private static Logger LOG = LoggerFactory.getLogger("accseeLog");
+    private static Logger ACCESS_LOG = LoggerFactory.getLogger("accseeLog");
+    private static Logger LOG = LoggerFactory.getLogger(AccessLogHelper.class);
+
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String HTML = "text/html;charset=UTF-8";
@@ -34,9 +36,9 @@ public class AccessLogHelper {
         if (POST.equals(method)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream())); //请求体
             String body = IOUtils.toString(reader);
-            LOG.info("{} {} {} params:{} body:{} start", username, method, requestUrl, queryString, body);
+            ACCESS_LOG.info("{} {} {} params:{} body:{} start", username, method, requestUrl, queryString, body);
         } else {
-            LOG.info("{} {} {} params:{} start", username, method, requestUrl, queryString);
+            ACCESS_LOG.info("{} {} {} params:{} start", username, method, requestUrl, queryString);
         }
     }
 
@@ -51,13 +53,13 @@ public class AccessLogHelper {
                 BufferedReader reader = null; //请求体
                 reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
                 String body = IOUtils.toString(reader);
-                LOG.info("{} {} {} params:{} body:{} end,error:{}", username, method, requestUrl,
+                LOG.error("{} {} {} params:{} body:{} end,error:{}", username, method, requestUrl,
                         queryString, body, e);
             } else {
-                LOG.info("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
+                LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
             }
         } catch (IOException ioe) {
-            LOG.info("{} {} {} params:{} end,error:{},logError:{}", username, method, requestUrl, queryString, e, ioe);
+            LOG.error("{} {} {} params:{} end,error:{},logError:{}", username, method, requestUrl, queryString, e, ioe);
         }
     }
 
@@ -79,15 +81,16 @@ public class AccessLogHelper {
                 BufferedReader reader = null; //请求体
                 reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
                 String body = IOUtils.toString(reader);
-                LOG.info("{} {} {} params:{} body:{} end,duration:{}({})", username, method, requestUrl, queryString,
+                ACCESS_LOG.info("{} {} {} params:{} body:{} end,duration:{}({})", username, method, requestUrl,
+                        queryString,
                         body, executeTime, DateUtils.getRealableChineseTime(executeTime));
             } else {
-                LOG.info("{} {} {} params:{} end,duration:{}({})", username, method, requestUrl, queryString,
+                ACCESS_LOG.info("{} {} {} params:{} end,duration:{}({})", username, method, requestUrl, queryString,
                         executeTime, DateUtils.getRealableChineseTime(executeTime));
             }
         } catch (IOException ioe) {
-            LOG.info("{} {} {} params:{} end,duration:{}({}) logError:{}", username, method, requestUrl, queryString,
-                    executeTime, DateUtils.getRealableChineseTime(executeTime), ioe);
+            ACCESS_LOG.error("{} {} {} params:{} end,duration:{}({}) logError:{}", username, method, requestUrl,
+                    queryString, executeTime, DateUtils.getRealableChineseTime(executeTime), ioe);
         }
     }
 }

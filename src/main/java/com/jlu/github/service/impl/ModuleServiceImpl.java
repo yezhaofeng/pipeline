@@ -87,6 +87,7 @@ public class ModuleServiceImpl implements IModuleService{
      * @param module
      * @return
      */
+    @Deprecated
     @Override
     public Module getModuleByUserAndModule(String username, String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
@@ -96,6 +97,14 @@ public class ModuleServiceImpl implements IModuleService{
         if (modules != null && modules.size() != 0) {
             return modules.get(0);
         }
+        return null;
+    }
+
+    @Override
+    public Module get(String module) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("module", module);
+        moduleDao.findByProperties(conditionAndSet);
         return null;
     }
 }

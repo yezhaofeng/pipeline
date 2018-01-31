@@ -181,7 +181,7 @@ public class GitHubCommit {
     }
 
     public String getTreeUrl() {
-        return PipelineReadConfig.getConfigValueByKey("github.user.hom") + owner + "/" + module + "/tree/" + commitId;
+        return PipelineReadConfig.getConfigValueByKey("github.user.home") + owner + "/" + module + "/tree/" + commitId;
     }
 
     @Override
