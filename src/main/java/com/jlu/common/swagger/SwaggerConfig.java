@@ -1,5 +1,7 @@
 package com.jlu.common.swagger;
 
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,15 +14,13 @@ import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Created by xiaohui on 2016/1/14.
  */
 @Configuration
 @EnableWebMvc
 @EnableSwagger
-@ComponentScan(basePackages = {"com.jlu"})
+@ComponentScan(basePackages = {"com.jlu..*Controller"})
 public class SwaggerConfig {
 
     @Autowired
