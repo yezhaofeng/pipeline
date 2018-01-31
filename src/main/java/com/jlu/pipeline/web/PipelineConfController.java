@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.common.web.AbstractController;
@@ -34,7 +35,7 @@ public class PipelineConfController extends AbstractController {
     }
 
     @RequestMapping(value = "/initDefault", method = RequestMethod.POST)
-    public ResponseBean init(String owner, String module) {
+    public ResponseBean init(@RequestParam String owner, @RequestParam String module) {
         pipelineConfService.initDefaultConf(owner, module);
         return ResponseBean.TRUE;
     }

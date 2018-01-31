@@ -12,8 +12,6 @@ import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.pipeline.bean.PipelineBuildBean;
 import com.jlu.pipeline.service.IPipelineBuildService;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -26,7 +24,9 @@ public class PipelineBuildController extends AbstractController {
     private IPipelineBuildService pipelineBuildService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean build(Long pipelineConfId, @RequestParam(required = false, defaultValue = "0") Long triggerId) {
+    public ResponseBean build(@RequestParam Long pipelineConfId,
+                              @RequestParam(required = false, defaultValue = "0") Long
+                                      triggerId) {
         if (triggerId == 0L) {
             pipelineBuildService.build(pipelineConfId);
         } else {

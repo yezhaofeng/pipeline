@@ -28,7 +28,7 @@ public class JobPluginController {
         return pluginInfoService.getAllPluginConf();
     }
 
-    @RequestMapping(value = "/configs/reload", method = RequestMethod.GET)
+    @RequestMapping(value = "/configs/reload", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean reload() {
         pluginInfoService.initJobPluginConfigs();
