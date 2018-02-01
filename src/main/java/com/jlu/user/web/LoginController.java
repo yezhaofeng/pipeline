@@ -28,9 +28,9 @@ import com.jlu.user.service.IGithubOAuthService;
  */
 @Controller
 @RequestMapping("/github")
-public class GithubLoginController {
+public class LoginController {
 
-    private final Logger logger = LoggerFactory.getLogger(GithubLoginController.class);
+    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private IGithubDataService githubDataService;

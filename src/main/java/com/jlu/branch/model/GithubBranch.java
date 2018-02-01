@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.branch.bean.BranchType;
 
 /**
@@ -23,10 +22,6 @@ public class GithubBranch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Deprecated
-    @JsonIgnore
-    private int moduleId;
 
     private String module;
 
@@ -61,16 +56,6 @@ public class GithubBranch {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Deprecated
-    public int getModuleId() {
-        return moduleId;
-    }
-
-    @Deprecated
-    public void setModuleId(int moduleId) {
-        this.moduleId = moduleId;
     }
 
     public String getBranchName() {
