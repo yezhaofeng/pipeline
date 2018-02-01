@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.jlu.common.utils.PipelineReadConfig;
+import com.jlu.common.utils.PipelineConfig;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -36,8 +36,8 @@ public class ApiConfig {
                 .title("Pipeline流水线API列表")
                 .termsOfServiceUrl("https://github.com/z521598/pipeline_v2")
                 .description(
-                        new String(PipelineReadConfig.getConfigValueByKey("swagger.description").getBytes("ISO-8859-1"), "UTF-8"))
-                .contact(new Contact("langshiquan", PipelineReadConfig.getConfigValueByKey("pipeline.home"),
+                        new String(PipelineConfig.getConfigValueByKey("swagger.description").getBytes("ISO-8859-1"), "UTF-8"))
+                .contact(new Contact("langshiquan", PipelineConfig.getConfigValueByKey("pipeline.home"),
                         "576506402@qq.com"))
                 .build();
 

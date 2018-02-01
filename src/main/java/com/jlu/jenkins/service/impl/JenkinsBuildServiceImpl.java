@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlu.common.utils.BuildStatusUtils;
 import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
@@ -79,7 +78,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
         BuildResult buildResult = buildWithDetails.getResult();
         logger.info("jobBuildId-{} {} {} has finished,status:{}", jobBuild.getId(), jobName, buildNumber,
                 buildResult.name());
-        jobBuild.setJobStatus(BuildStatusUtils.toJobStatus(buildResult));
+        jobBuild.setJobStatus(PipelineJobStatus.fromJenkinsBuildStatus(buildResult));
         pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
     }
 

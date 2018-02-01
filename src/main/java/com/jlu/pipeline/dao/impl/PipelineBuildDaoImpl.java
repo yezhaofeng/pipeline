@@ -11,6 +11,7 @@ import com.jlu.common.db.dao.AbstractBaseDao;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.db.sqlcondition.DescOrder;
 import com.jlu.common.db.sqlcondition.OrderCondition;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.model.PipelineBuild;
 
@@ -28,7 +29,7 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("buildNumber"));
         List<PipelineBuild> pipelineBuilds = findHeadByProperties(conditionAndSet, orders, 0, 1);
-        return CollectionUtils.isEmpty(pipelineBuilds) ? 1L : pipelineBuilds.get(0).getBuildNumber() + 1L;
+        return CollUtils.isEmpty(pipelineBuilds) ? 1L : pipelineBuilds.get(0).getBuildNumber() + 1L;
     }
 
     @Override
@@ -36,6 +37,6 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
         List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
+        return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 }

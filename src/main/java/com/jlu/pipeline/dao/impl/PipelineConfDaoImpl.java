@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.common.db.dao.AbstractBaseDao;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.model.PipelineConf;
 
@@ -24,7 +25,7 @@ public class PipelineConfDaoImpl extends AbstractBaseDao<PipelineConf> implement
         conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         List<PipelineConf> pipelineConfs = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(pipelineConfs) ? new ArrayList<>() : pipelineConfs;
+        return CollUtils.isEmpty(pipelineConfs) ? new ArrayList<>() : pipelineConfs;
     }
 
     @Override
@@ -34,6 +35,6 @@ public class PipelineConfDaoImpl extends AbstractBaseDao<PipelineConf> implement
         conditionAndSet.put("module", module);
         conditionAndSet.put("branchType", branchType);
         List<PipelineConf> pipelineConfs = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(pipelineConfs) ? null : pipelineConfs.get(0);
+        return CollUtils.isEmpty(pipelineConfs) ? null : pipelineConfs.get(0);
     }
 }

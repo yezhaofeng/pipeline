@@ -85,17 +85,12 @@ public class BranchServiceImpl implements IBranchService {
 
     /**
      * 获得分支名集合
-     * @param module
+     * @param moduleName
      * @return
      */
     @Override
-    public List<GithubBranch> getBranchesByModule(String module) {
-        Module ciHomeModule = moduleService.get(module);
-        List<GithubBranch> githubBranches = new ArrayList<>();
-        if (ciHomeModule != null) {
-            githubBranches = getBranches(ciHomeModule, 0, 50);
-        }
-        return githubBranches;
+    public List<GithubBranch> getBranchesByModule(String moduleName) {
+        return branchDao.find(moduleName);
     }
 
     @Override

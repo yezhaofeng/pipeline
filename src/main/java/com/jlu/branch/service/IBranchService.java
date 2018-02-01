@@ -39,10 +39,10 @@ public interface IBranchService {
 
     /**
      * 获得分支名集合
-     * @param module
+     * @param moduleName
      * @return
      */
-    List<GithubBranch> getBranchesByModule(String module);
+    List<GithubBranch> getBranchesByModule(String moduleName);
 
     void updateRemark(Long branchId, String remark);
 }

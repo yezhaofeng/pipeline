@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.db.sqlcondition.DescOrder;
 import com.jlu.common.db.sqlcondition.OrderCondition;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.github.dao.IGitHubCommitDao;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
@@ -42,7 +43,7 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("id"));
         List<GitHubCommit> gitHubCommits = gitHubCommitDao.findHeadByProperties(conditionAndSet, orders, 0, 1);
-        return CollectionUtils.isEmpty(gitHubCommits) ? null : gitHubCommits.get(0);
+        return CollUtils.isEmpty(gitHubCommits) ? null : gitHubCommits.get(0);
     }
 
     @Override

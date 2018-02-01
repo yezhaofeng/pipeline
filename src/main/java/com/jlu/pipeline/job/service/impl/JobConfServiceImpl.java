@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.JsonUtils;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.dao.IJobConfDao;
@@ -68,7 +69,7 @@ public class JobConfServiceImpl implements IJobConfService {
     @Override
     public void processJobWithTransaction(List<JobConfBean> jobConfBeans, Long pipelineConfId) {
         List<JobConf> jobConfsInDb = jobConfDao.findByPipelineConfIdAndDeleteStatus(pipelineConfId, false);
-        if (CollectionUtils.isEmpty(jobConfBeans)) {
+        if (CollUtils.isEmpty(jobConfBeans)) {
             return;
         }
         Long upStreamJobConfId = topJobId;
@@ -139,7 +140,7 @@ public class JobConfServiceImpl implements IJobConfService {
     }
 
     private void deleteJobConf(List<JobConf> jobConfs) {
-        if (CollectionUtils.isEmpty(jobConfs)) {
+        if (CollUtils.isEmpty(jobConfs)) {
             return;
         }
         for (JobConf jobConf : jobConfs) {

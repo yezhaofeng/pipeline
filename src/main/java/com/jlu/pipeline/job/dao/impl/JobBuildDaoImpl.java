@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 import com.jlu.pipeline.job.model.JobBuild;
 
@@ -23,7 +24,7 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
         conditionAndSet.put("pipelineBuildId", pipelineBuildId);
         conditionAndSet.put("upStreamJobBuildId", 0L);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
+        return CollUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("upStreamJobBuildId", upStreamJobBuildId);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
+        return CollUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
     }
 
     @Override
@@ -39,6 +40,6 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineBuildId", pipelineBuildId);
         List<JobBuild> jobBuilds = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(jobBuilds) ? new ArrayList<>(0) : jobBuilds;
+        return CollUtils.isEmpty(jobBuilds) ? new ArrayList<>(0) : jobBuilds;
     }
 }

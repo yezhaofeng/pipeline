@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.jlu.common.db.dao.AbstractBaseDao;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.db.sqlcondition.DescOrder;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
@@ -27,7 +28,7 @@ public class ReleaseBuildDaoImpl extends AbstractBaseDao<ReleaseBuild> implement
         conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
         DescOrder descOrder = new DescOrder("id");
         List<ReleaseBuild> releaseBuilds = findByProperties(conditionAndSet, descOrder);
-        return CollectionUtils.isEmpty(releaseBuilds) ? new ArrayList<>(0) : releaseBuilds;
+        return CollUtils.isEmpty(releaseBuilds) ? new ArrayList<>(0) : releaseBuilds;
     }
 
     @Override
@@ -37,6 +38,6 @@ public class ReleaseBuildDaoImpl extends AbstractBaseDao<ReleaseBuild> implement
         conditionAndSet.put("module", module);
         conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
         List<ReleaseBuild> releaseBuilds = findHeadByProperties(conditionAndSet, null, 0, 1);
-        return CollectionUtils.isEmpty(releaseBuilds) ? null : releaseBuilds.get(0);
+        return CollUtils.isEmpty(releaseBuilds) ? null : releaseBuilds.get(0);
     }
 }

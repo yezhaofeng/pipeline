@@ -11,10 +11,10 @@ import junit.framework.Assert;
 /**
  * Created by langshiquan on 18/1/30.
  */
-public class PipelineReadConfigTest extends SpringBaseTest {
+public class PipelineConfigTest extends SpringBaseTest {
     @Test
     public void testGetConfigValueByKey() throws UnsupportedEncodingException {
-        Assert.assertEquals("api列表", new String(PipelineReadConfig.getConfigValueByKey("swagger.description")
+        Assert.assertEquals("api列表", new String(PipelineConfig.getConfigValueByKey("swagger.description")
                 .getBytes("ISO-8859-1"), "UTF-8"));
     }
 

@@ -23,6 +23,7 @@ public class GithubBranch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Deprecated
     @JsonIgnore
     private int moduleId;
@@ -55,10 +56,12 @@ public class GithubBranch {
         this.id = id;
     }
 
+    @Deprecated
     public int getModuleId() {
         return moduleId;
     }
 
+    @Deprecated
     public void setModuleId(int moduleId) {
         this.moduleId = moduleId;
     }

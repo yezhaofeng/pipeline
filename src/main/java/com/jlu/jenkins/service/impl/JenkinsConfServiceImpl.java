@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.utils.CollUtils;
 import com.jlu.jenkins.bean.JenkinsJobsBean;
 import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.model.JenkinsConf;
@@ -51,11 +52,11 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
         // 防止相同的jenkins配置重复出现，重写了JenkinsConf的hashcode和equals
         Set<JenkinsConf> jenkinsConfs = new HashSet<>();
         List<JenkinsConf> jenkinsConfList = jenkinsConfDao.find(createUser);
-        if (CollectionUtils.isEmpty(jenkinsConfList)) {
+        if (CollUtils.isEmpty(jenkinsConfList)) {
             return jenkinsJobs;
         }
 
-        CollectionUtils.addAll(jenkinsConfs, jenkinsConfList.iterator());
+        CollUtils.addAll(jenkinsConfs, jenkinsConfList.iterator());
         for (JenkinsConf jenkinsConf : jenkinsConfs) {
             JenkinsJobsBean jenkinsJobsBean = new JenkinsJobsBean();
             jenkinsJobsBean.setServerUrl(jenkinsConf.getServerUrl());

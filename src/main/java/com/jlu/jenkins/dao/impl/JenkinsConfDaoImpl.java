@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
 import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.model.JenkinsConf;
 
@@ -24,7 +25,7 @@ public class JenkinsConfDaoImpl extends AbstractBaseDao<JenkinsConf> implements 
         conditionAndSet.put("masterPassword", password);
         conditionAndSet.put("deleteStatus", false);
         List<JenkinsConf> jenkinsConfList = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(jenkinsConfList) ? null : jenkinsConfList.get(0);
+        return CollUtils.isEmpty(jenkinsConfList) ? null : jenkinsConfList.get(0);
     }
 
     @Override
@@ -33,6 +34,6 @@ public class JenkinsConfDaoImpl extends AbstractBaseDao<JenkinsConf> implements 
         conditionAndSet.put("createUser", createUser);
         conditionAndSet.put("deleteStatus", false);
         List<JenkinsConf> jenkinsConfList = findByProperties(conditionAndSet);
-        return CollectionUtils.isEmpty(jenkinsConfList) ? new ArrayList<>(0) : jenkinsConfList;
+        return CollUtils.isEmpty(jenkinsConfList) ? new ArrayList<>(0) : jenkinsConfList;
     }
 }

@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jlu.common.utils.PipelineReadConfig;
+import com.jlu.common.utils.PipelineConfig;
 import com.jlu.user.bean.Role;
 
 /**
@@ -111,6 +111,6 @@ public class GithubUser implements Serializable{
     }
 
     public String getGithubHome() {
-        return PipelineReadConfig.getConfigValueByKey("github.user.home");
+        return PipelineConfig.getConfigValueByKey("github.user.home");
     }
 }

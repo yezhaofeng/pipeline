@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.common.utils.JsonUtils;
-import com.jlu.common.utils.PipelineReadConfig;
+import com.jlu.common.utils.PipelineConfig;
 import com.jlu.github.bean.GithubRepoBean;
 import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IGithubOAuthService;
@@ -40,8 +40,8 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
         String state = UUID.randomUUID().toString();
         stateList.add(state);
         logger.info("state:{} add in cache,current cache size:{}", state, stateList.size());
-        String authorizationUrl = String.format(PipelineReadConfig.getConfigValueByKey("github.authorize.url"),
-                PipelineReadConfig.getConfigValueByKey("github.client.id"), state);
+        String authorizationUrl = String.format(PipelineConfig.getConfigValueByKey("github.authorize.url"),
+                PipelineConfig.getConfigValueByKey("github.client.id"), state);
         return authorizationUrl;
     }
 
@@ -59,11 +59,11 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
     public Boolean handleCallback(String code, Model model, HttpSession session) {
         Map<String, String> params = new HashMap();
         params.put("code", code);
-        params.put("client_id", PipelineReadConfig.getConfigValueByKey("github.client.id"));
-        params.put("client_secret", PipelineReadConfig.getConfigValueByKey("github.client.secret"));
-        String token = HttpClientUtil.post(PipelineReadConfig.getConfigValueByKey("github.access.token.url"), params);
+        params.put("client_id", PipelineConfig.getConfigValueByKey("github.client.id"));
+        params.put("client_secret", PipelineConfig.getConfigValueByKey("github.client.secret"));
+        String token = HttpClientUtil.post(PipelineConfig.getConfigValueByKey("github.access.token.url"), params);
         String userInfo = HttpClientUtil
-                .get(PipelineReadConfig.getConfigValueByKey("github.user.info.url") + "?" + token, null);
+                .get(PipelineConfig.getConfigValueByKey("github.user.info.url") + "?" + token, null);
         Map<String, String> userInfoMap = JsonUtils.getObjectByJsonString(userInfo, Map.class);
         String username = userInfoMap.get("login");
         GithubUser githubUser = userService.getUserByName(username);

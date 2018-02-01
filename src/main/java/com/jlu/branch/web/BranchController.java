@@ -28,11 +28,10 @@ public class BranchController {
     @RequestMapping(value = "/{owner}/{repository}/branches", method = RequestMethod.GET)
     @ResponseBody
     public List<GithubBranch> getBranchesByModule(@PathVariable String owner, @PathVariable String repository) {
-        String module = ModuleUtils.getFullModule(owner, repository);
-        return branchService.getBranchesByModule(module);
+        return branchService.getBranchesByModule(ModuleUtils.getFullModule(owner, repository));
     }
 
-    @RequestMapping(value = "/{branchId}/remark", method = RequestMethod.POST)
+    @RequestMapping(value = "/branch/{branchId}/remark", method = RequestMethod.POST)
     public ResponseBean updateRemark(@PathVariable Long branchId, @RequestBody String remark) {
         branchService.updateRemark(branchId, remark);
         return ResponseBean.TRUE;

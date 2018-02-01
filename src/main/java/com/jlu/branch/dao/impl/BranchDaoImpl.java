@@ -1,10 +1,15 @@
 package com.jlu.branch.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.jlu.branch.dao.IBranchDao;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.common.db.dao.AbstractBaseDao;
+import com.jlu.common.db.sqlcondition.ConditionAndSet;
+import com.jlu.common.utils.CollUtils;
 
 /**
  * Created by niuwanpeng on 17/3/10.
@@ -13,4 +18,12 @@ import com.jlu.common.db.dao.AbstractBaseDao;
  */
 @Repository
 public class BranchDaoImpl extends AbstractBaseDao<GithubBranch> implements IBranchDao {
+
+    @Override
+    public List<GithubBranch> find(String moduleName) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("module", moduleName);
+        List<GithubBranch> branches = findByProperties(conditionAndSet);
+        return CollUtils.isEmpty(branches) ? new ArrayList<>(0) : branches;
+    }
 }
