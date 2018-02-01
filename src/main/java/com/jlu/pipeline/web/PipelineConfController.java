@@ -35,8 +35,8 @@ public class PipelineConfController extends AbstractController {
     }
 
     @RequestMapping(value = "/initDefault", method = RequestMethod.POST)
-    public ResponseBean init(@RequestParam String owner, @RequestParam String module) {
-        pipelineConfService.initDefaultConf(owner, module);
+    public ResponseBean init(@RequestParam String module) {
+        pipelineConfService.initDefaultConf(module);
         return ResponseBean.TRUE;
     }
 

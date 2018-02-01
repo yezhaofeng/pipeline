@@ -8,7 +8,7 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
  * Created by langshiquan on 18/1/22.
  */
 public interface IReleaseService {
-    String getMaxVersion(String owner, String module);
+    String getMaxVersion(String module);
 
     void saveOrUpdate(ReleaseBuild releaseBuild);
 
@@ -20,6 +20,6 @@ public interface IReleaseService {
 
     Boolean check(String version);
 
-    List<ReleaseBuild> getReleaseInfo(String owner, String module);
+    List<ReleaseBuild> getReleaseInfo(String module);
 
 }

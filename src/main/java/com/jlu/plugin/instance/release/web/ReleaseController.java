@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.common.utils.ModuleUtils;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import com.jlu.plugin.instance.release.service.IReleaseService;
 
@@ -21,8 +22,8 @@ public class ReleaseController {
     @Autowired
     private IReleaseService releaseService;
 
-    @RequestMapping(value = "/{owner}/{module}", method = RequestMethod.GET)
-    public List<ReleaseBuild> releaseInfo(@PathVariable String owner, @PathVariable String module) {
-        return releaseService.getReleaseInfo(owner, module);
+    @RequestMapping(value = "/{owner}/{repository}", method = RequestMethod.GET)
+    public List<ReleaseBuild> releaseInfo(@PathVariable String owner, @PathVariable String repository) {
+        return releaseService.getReleaseInfo(ModuleUtils.getFullModule(owner, repository));
     }
 }

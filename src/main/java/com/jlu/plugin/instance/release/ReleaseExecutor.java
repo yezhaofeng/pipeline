@@ -57,10 +57,9 @@ public class ReleaseExecutor extends AbstractExecutor {
             return;
         }
         try {
-            String owner = pipelineBuild.getOwner();
             String module = pipelineBuild.getModule();
             String compileProductLocation = getCompileLocation(compileProductFtpPath);
-            String maxVersion = releaseService.getMaxVersion(owner, module);
+            String maxVersion = releaseService.getMaxVersion(module);
             String version = releaseBuild.getVersion();
 
             if (!releaseService.check(version)) {
@@ -82,7 +81,6 @@ public class ReleaseExecutor extends AbstractExecutor {
             }
             StringBuilder releaseTargetLocation = new StringBuilder();
             releaseTargetLocation.append("release").append(SEPARATOR)
-                    .append(owner).append(SEPARATOR)
                     .append(module).append(SEPARATOR)
                     .append(version.replace(".", "_"));
             HashMap<String, String> releaseParams = new HashMap<>();
@@ -93,8 +91,7 @@ public class ReleaseExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, RELEASE_JENKINS_JOB_NAME, releaseParams, jobBuild);
 
             StringBuilder releasePath = new StringBuilder();
-            releasePath.append(FTP_SERVER_URL).append(owner)
-                    .append(SEPARATOR).append(module)
+            releasePath.append(FTP_SERVER_URL).append(module)
                     .append(SEPARATOR).append(version.replace(".", "_"));
             StringBuilder logUrl = new StringBuilder();
             logUrl.append(DefaultJenkinsServer.SERVER_URL).append(SEPARATOR)
@@ -103,7 +100,6 @@ public class ReleaseExecutor extends AbstractExecutor {
                     .append(SEPARATOR).append("console");
             releaseBuild.setReleasePath(releasePath.toString());
             releaseBuild.setLogUrl(logUrl.toString());
-            releaseBuild.setOwner(owner);
             releaseBuild.setModule(module);
             releaseBuild.setVersion(version);
             releaseBuild.setBranch(pipelineBuild.getBranch());

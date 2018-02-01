@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.branch.bean.BranchType;
+import com.jlu.common.cookies.LoginHelper;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
@@ -90,15 +91,15 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
 
     // TODO 锁
     @Override
-    public void initDefaultConf(String owner, String module) {
+    public void initDefaultConf(String module) {
         // 主干流水线
         PipelineConfBean masterPipelineConf = initDefaultPipelineConf(module, DEFAULT_MASTER_PIPELINE_NAME,
                 BranchType.TRUNK, DEFAULT_MASTER_PIPELINE_REMARK);
-        processPipelineWithTransaction(masterPipelineConf, owner);
+        processPipelineWithTransaction(masterPipelineConf, LoginHelper.getLoginerUserName());
         // 分支流水线
         PipelineConfBean branchPipelineConf = initDefaultPipelineConf(module, DEFAULT_BRANCH_PIPELINE_NAME,
                 BranchType.BRANCH, DEFAULT_BRANCH_PIPELINE_REMARK);
-        processPipelineWithTransaction(branchPipelineConf, owner);
+        processPipelineWithTransaction(branchPipelineConf, LoginHelper.getLoginerUserName());
 
     }
 

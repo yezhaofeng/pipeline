@@ -22,7 +22,7 @@ public class VersionValueGenerator implements PluginValueGenerator {
     public String generator(JobBuild jobBuild) {
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PipelineBuild pipelineBuild = pipelineBuildService.get(pipelineBuildId);
-        String maxVersion = releaseService.getMaxVersion(pipelineBuild.getOwner(), pipelineBuild.getModule());
+        String maxVersion = releaseService.getMaxVersion(pipelineBuild.getModule());
         String version = releaseService.increaseVersion(maxVersion);
         return version;
     }

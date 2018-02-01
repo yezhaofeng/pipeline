@@ -3,7 +3,6 @@ package com.jlu.plugin.instance.release.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
@@ -21,9 +20,8 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
 public class ReleaseBuildDaoImpl extends AbstractBaseDao<ReleaseBuild> implements IReleaseBuildDao {
 
     @Override
-    public List<ReleaseBuild> get(String owner, String module) {
+    public List<ReleaseBuild> get(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
         DescOrder descOrder = new DescOrder("id");
@@ -32,9 +30,8 @@ public class ReleaseBuildDaoImpl extends AbstractBaseDao<ReleaseBuild> implement
     }
 
     @Override
-    public ReleaseBuild getLastest(String owner, String module) {
+    public ReleaseBuild getLastest(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         conditionAndSet.put("status", PipelineJobStatus.SUCCESS);
         List<ReleaseBuild> releaseBuilds = findHeadByProperties(conditionAndSet, null, 0, 1);

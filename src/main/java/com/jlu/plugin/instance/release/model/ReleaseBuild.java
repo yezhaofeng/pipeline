@@ -35,8 +35,6 @@ public class ReleaseBuild {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String owner;
-
     private String module;
 
     private String branch;
@@ -101,14 +99,6 @@ public class ReleaseBuild {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getModule() {

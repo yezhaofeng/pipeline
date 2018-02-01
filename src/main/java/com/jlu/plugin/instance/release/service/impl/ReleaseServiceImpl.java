@@ -23,8 +23,8 @@ public class ReleaseServiceImpl implements IReleaseService {
     private IReleaseBuildDao releaseBuildDao;
 
     @Override
-    public String getMaxVersion(String owner, String module) {
-        ReleaseBuild releaseBuild = releaseBuildDao.getLastest(owner, module);
+    public String getMaxVersion(String module) {
+        ReleaseBuild releaseBuild = releaseBuildDao.getLastest(module);
         if (releaseBuild == null) {
             return FIRST_VERSION;
         }
@@ -42,8 +42,8 @@ public class ReleaseServiceImpl implements IReleaseService {
     }
 
     @Override
-    public List<ReleaseBuild> getReleaseInfo(String owner, String module) {
-        return releaseBuildDao.get(owner, module);
+    public List<ReleaseBuild> getReleaseInfo(String module) {
+        return releaseBuildDao.get(module);
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
  * Created by langshiquan on 18/1/20.
  */
 public interface IReleaseBuildDao extends IBaseDao<ReleaseBuild>{
-    List<ReleaseBuild> get(String owner, String module);
+    List<ReleaseBuild> get(String module);
 
-    ReleaseBuild getLastest(String owner, String module);
+    ReleaseBuild getLastest(String module);
 }

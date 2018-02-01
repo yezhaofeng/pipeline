@@ -23,7 +23,6 @@ public class PipelineBuild {
     protected Long id;
     protected Long pipelineConfId;
     protected String name;
-    protected String owner;
     protected String module;
     protected String branch;
     protected String commitId;
@@ -44,14 +43,6 @@ public class PipelineBuild {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public Long getId() {
@@ -164,7 +155,6 @@ public class PipelineBuild {
         sb.append("id=").append(id);
         sb.append(", pipelineConfId=").append(pipelineConfId);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", owner='").append(owner).append('\'');
         sb.append(", module='").append(module).append('\'');
         sb.append(", branch='").append(branch).append('\'');
         sb.append(", commitId='").append(commitId).append('\'');

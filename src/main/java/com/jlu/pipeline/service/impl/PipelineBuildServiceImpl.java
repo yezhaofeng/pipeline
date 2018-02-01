@@ -17,6 +17,7 @@ import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.DateUtils;
+import com.jlu.common.utils.ModuleUtils;
 import com.jlu.common.utils.PipelineConfig;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
@@ -193,14 +194,12 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
      */
     private PipelineBuild initPipelineBuildByCommit(GitHubCommit gitHubCommit, PipelineConf pipelineConf,
                                                     TriggerMode triggerMode,
-                                                    String
-                                                            triggerUser) {
+                                                    String triggerUser) {
         PipelineBuild pipelineBuild = new PipelineBuild();
-        pipelineBuild.setOwner(gitHubCommit.getOwner());
         pipelineBuild.setBranch(gitHubCommit.getBranch());
         Long buildNumber = IPipelineBuildDao.getNextBuildNumber(gitHubCommit.getOwner(), gitHubCommit.getModule());
         pipelineBuild.setBuildNumber(buildNumber);
-        pipelineBuild.setModule(gitHubCommit.getModule());
+        pipelineBuild.setModule(ModuleUtils.getFullModule(gitHubCommit.getModule(), gitHubCommit.getOwner()));
         pipelineBuild.setBranch(gitHubCommit.getBranch());
         pipelineBuild.setCheckinAuthor(gitHubCommit.getCommitter());
         pipelineBuild.setStartTime(new Date());

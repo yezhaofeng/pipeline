@@ -1,6 +1,5 @@
 package com.jlu.plugin.instance.compile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
@@ -51,14 +50,12 @@ public class CompileExecutor extends AbstractExecutor {
         compileParam.put(JOB_BUILD_ID, String.valueOf(jobBuild.getId()));
         compileParam.put(RANDOM_UUID, UUID.randomUUID().toString());
         compileParam.put(CURRENT_DATA, DateUtils.getNowDateFormat());
-        compileParam.put(OWNER, context.getPipelineBuild().getOwner());
         try {
             Integer buildNumber = jenkinsBuildService
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
                             jobBuild);
             StringBuilder buildPath = new StringBuilder();
-            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(context.getPipelineBuild().getOwner())
-                    .append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_MODULE))
+            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_MODULE))
                     .append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_COMMIT_ID))
                     .append(SEPARATOR).append(compileParam.get(CURRENT_DATA))
                     .append(SEPARATOR).append(compileParam.get(JOB_BUILD_ID))
