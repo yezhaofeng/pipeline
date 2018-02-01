@@ -20,7 +20,7 @@ import com.jlu.github.service.IModuleService;
  * Created by niuwanpeng on 17/3/21.
  */
 @Controller
-@RequestMapping("/ajax/module")
+@RequestMapping("/pipeline/module")
 public class ModuleController {
 
     @Autowired

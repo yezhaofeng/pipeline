@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.common.aop.utils.AopTargetUtils;
+import com.jlu.common.web.ResponseBean;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
 
@@ -75,16 +76,16 @@ public class GithubDataController {
     /**
      * 配置新的模块
      *
-     * @param module
+     * @param repository
      * @param username
      * @return
      */
-    // TODO
     @RequestMapping(value = "/addModule", method = RequestMethod.GET)
     @ResponseBody
-    public String addModule(@RequestParam(value = "module") String module,
-                            @RequestParam(value = "username") String username) {
-        return githubDataService.addModule(username, module);
+    public ResponseBean addModule(@RequestParam(value = "repository") String repository,
+                                  @RequestParam(value = "username") String username) {
+        githubDataService.addModule(username, repository);
+        return ResponseBean.TRUE;
     }
 
 }

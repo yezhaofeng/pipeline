@@ -36,10 +36,9 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
     }
 
     @Override
-    public GitHubCommit getLastestCommit(String module, String userName) {
+    public GitHubCommit getLastestCommit(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("module", module);
-        conditionAndSet.put("owner", userName);
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("id"));
         List<GitHubCommit> gitHubCommits = gitHubCommitDao.findHeadByProperties(conditionAndSet, orders, 0, 1);

@@ -1,8 +1,5 @@
 package com.jlu.common.utils.bean;
 
-/**
- * Created by niuwanpeng on 17/3/24.
- */
 public class TwoResultBean<S,M> {
 
     private S status;

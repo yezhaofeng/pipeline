@@ -13,7 +13,7 @@ public interface IGitHubCommitService {
      */
     void save(GitHubCommit gitHubCommit);
 
-    GitHubCommit getLastestCommit(String module, String userName);
+    GitHubCommit getLastestCommit(String module);
 
     GitHubCommit get(Long triggerId);
 }

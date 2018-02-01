@@ -1,13 +1,9 @@
 package com.jlu.github.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +14,10 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
+import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
+import com.jlu.common.utils.ModuleUtils;
 import com.jlu.common.utils.PipelineConfig;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
@@ -53,8 +51,6 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GithubDataServiceImpl.class);
     private static final Gson GSON = new Gson();
-    private final static String MESSAGE = "MESSAGE";
-    private final static String ADD_MODULE_STATUS = "ADD_MODULE_STATUS";
 
     /**
      * 根据用户注册信息初始化用户
@@ -67,7 +63,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         syncReposByUser(userBean);
         List<Module> modules = moduleService.getModulesByUsername(userBean.getUsername());
         for (Module module : modules) {
-            this.creatHooks(userBean.getUsername(), module.getModule(), userBean.getGitHubToken());
+            this.creatHooks(userBean.getUsername(), module.getRepository(), userBean.getGitHubToken());
         }
         GithubUser githubUser = userBean.toUser();
         githubUser.setPipelineToken(UUID.randomUUID().toString());
@@ -104,53 +100,41 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @return
      */
     @Override
-    public Map<String, Object> creatHooks(String username, String repo, String githubToken) {
-        Map<String, Object> result = new HashMap<>();
-        String repoUrl
-                = String.format(PipelineConfig.getConfigValueByKey("github.all.hooks"), username, repo);
-        String resultHook = HttpClientAuth.postForCreateHook(repoUrl, githubToken);
-        return result;
+    public void creatHooks(String username, String repo, String githubToken) {
+        String repoUrl = String.format(PipelineConfig.getConfigValueByKey("github.all.hooks"), username, repo);
+        HttpClientAuth.postForCreateHook(repoUrl, githubToken);
     }
 
     /**
      * 增加新的模块
      *
      * @param username
-     * @param module
+     * @param repository
      * @return
      */
     @Override
-    public String addModule(String username, String module) {
-        module = StringUtils.substringBeforeLast(module, ".git");
-        Map<String, String> result = new HashMap<>();
-        result.put(ADD_MODULE_STATUS, "NO");
+    public void addModule(String username, String repository) {
         GithubUser githubUser = userService.getUserByName(username);
         if (githubUser == null) {
-            result.put(MESSAGE, "该用户不存在！请联系管理员！");
-        } else {
-            Module module1 = moduleService.getModuleByUserAndModule(username, module);
-            if (module1 != null) {
-                result.put(MESSAGE, "该模块已存在，不需要再次配置！");
-            } else {
-                LOGGER.info("Start initBuild module:{} on user:{}", module, username);
-                Module ciHomeModule = new Module(module, username, new Date());
-                moduleService.saveModule(ciHomeModule);
-                try {
-                    LOGGER.info("Start initBuild branch on module:{}, user:{}", module, username);
-                    this.initBranch(ciHomeModule, username);
-                    LOGGER.info("Start create hook on module:{}, user:{}", module, username);
-                    this.creatHooks(username, module, githubUser.getGitHubToken());
-                    LOGGER.info("Add module is successful! module:{}, user:{}", module, username);
-                    result.put(ADD_MODULE_STATUS, "OK");
-                    result.put(MESSAGE, "仓库" + module + "配置成功!");
-                    result.put("MODULE", module);
-                } catch (Exception e) {
-                    moduleService.delete(ciHomeModule);
-                    result.put(MESSAGE, "该仓库不存在!请检查是否配置正确。");
-                }
-            }
+            throw new PipelineRuntimeException("该用户不存在！请联系管理员。");
         }
-        return GSON.toJson(result);
+        Module moduleInDB = moduleService.get(ModuleUtils.getFullModule(username, repository));
+        if (moduleInDB != null) {
+            throw new PipelineRuntimeException("该模块已存在，不需要再次配置。");
+        }
+        LOGGER.info("Start initBuild module:{} on user:{}", moduleInDB, username);
+        Module module = new Module(ModuleUtils.getFullModule(username, repository), username, repository);
+        moduleService.saveModule(module);
+        try {
+            LOGGER.info("Start initBuild branch on module:{}, user:{}", moduleInDB, username);
+            this.initBranch(module, username);
+            LOGGER.info("Start create hook on module:{}, user:{}", moduleInDB, username);
+            this.creatHooks(username, repository, githubUser.getGitHubToken());
+            LOGGER.info("Add module is successful! module:{}, user:{}", moduleInDB, username);
+        } catch (Exception e) {
+            moduleService.delete(module);
+            throw new PipelineRuntimeException("该仓库不存在，请检查是否配置正确。");
+        }
     }
 
     /**
@@ -169,7 +153,8 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 logger.info("ignore repository {}", name);
                 continue;
             }
-            Module module = new Module(repoList.get(i).getName(), username, new Date());
+            String repoName = repoList.get(i).getName();
+            Module module = new Module(ModuleUtils.getFullModule(repoName, username), username, repoName);
             modules.add(module);
         }
 
@@ -189,7 +174,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         String result = HttpClientUtil.get(requestBranchUrl, null);
         List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>() {
         }.getType());
-        saveBranchs(branchBeans, module, username);
+        saveBranchs(branchBeans, module);
     }
 
     /**
@@ -198,7 +183,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @param branchBeans
      * @param module
      */
-    private void saveBranchs(List<GithubBranchBean> branchBeans, Module module, String username) {
+    private void saveBranchs(List<GithubBranchBean> branchBeans, Module module) {
         List<GithubBranch> githubBranches = new ArrayList<>();
         if (githubBranches == null) {
             return;
@@ -206,8 +191,9 @@ public class GithubDataServiceImpl implements IGithubDataService {
         for (int i = 0; branchBeans != null && i < branchBeans.size(); i++) {
             GithubBranchBean branchBean = branchBeans.get(i);
             BranchType branchType = branchBean.getName().equals(BranchType.MASTER) ? BranchType.TRUNK : BranchType.BRANCH;
+            String branchName = branchBean.getName();
             GithubBranch githubBranch
-                    = new GithubBranch(module.getId(), branchBean.getName(), branchType, new Date());
+                    = new GithubBranch(module.getModule(), branchName, branchType);
             githubBranches.add(githubBranch);
         }
         branchService.saveBranches(githubBranches);

@@ -47,7 +47,7 @@ public class ModuleServiceImpl implements IModuleService{
             return;
         }
         for (Module module : list) {
-            Module moduleInDb = getModuleByUserAndModule(module.getOwner(), module.getModule());
+            Module moduleInDb = get(module.getModule());
             if (moduleInDb != null) {
                 continue;
             }
@@ -104,7 +104,10 @@ public class ModuleServiceImpl implements IModuleService{
     public Module get(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("module", module);
-        moduleDao.findByProperties(conditionAndSet);
+        List<Module> modules = moduleDao.findByProperties(conditionAndSet);
+        if (modules != null && modules.size() != 0) {
+            return modules.get(0);
+        }
         return null;
     }
 }

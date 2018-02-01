@@ -2,9 +2,6 @@ package com.jlu.github.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * Created by niuwanpeng on 17/4/19.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HookRepositoryBean {
 

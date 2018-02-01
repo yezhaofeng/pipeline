@@ -23,20 +23,30 @@ public class Module {
 
     private String module;
 
+    private String repository;
+
     private String owner;
 
-    private Date createTime;
+    private Date createTime = new Date();
 
-
-    public Module(String module, String owner, Date createTime) {
+    public Module(String module, String owner, String repository) {
         this.module = module;
         this.owner = owner;
-        this.createTime = createTime;
+        this.repository = repository;
     }
 
     public Module() {
 
     }
+
+    public String getRepository() {
+        return repository;
+    }
+
+    public void setRepository(String repository) {
+        this.repository = repository;
+    }
+
     public int getId() {
         return id;
     }

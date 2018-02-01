@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.github.model.GitHubCommit;
 
-/**
- * Created by niuwanpeng on 17/4/19.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubCommitBean {
 

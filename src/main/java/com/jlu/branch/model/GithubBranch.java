@@ -39,11 +39,18 @@ public class GithubBranch {
 
     private String remarks;
 
-    public GithubBranch(int moduleId, String branchName, BranchType branchType, Date createTime) {
-        this.moduleId = moduleId;
+    public GithubBranch(String module, String branchName, BranchType branchType) {
+        this.module = module;
         this.branchName = branchName;
         this.branchType = branchType;
-        this.createTime = createTime;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
     }
 
     public GithubBranch() {}

@@ -3,9 +3,6 @@ package com.jlu.github.bean;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jlu.common.utils.bean.AbstractPropertyGetter;
 
-/**
- * Created by niuwanpeng on 17/3/24.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GithubRepoBean {
 

@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
+import com.jlu.common.utils.ModuleUtils;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
 import com.jlu.github.model.GitHubCommit;
@@ -81,11 +82,12 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         HookRepositoryBean repositoryBean = GSON.fromJson(hookMessage.getString("repository"),
                 new TypeToken<HookRepositoryBean>() {
                 }.getType());
-        String moduleName = repositoryBean.getName();
-        String moduleOwner = repositoryBean.getOwner().getName();
-        Module module = moduleService.getModuleByUserAndModule(moduleOwner, moduleName);
+        String repositoryName = repositoryBean.getName();
+        String repositoryOwner = repositoryBean.getOwner().getName();
+        String moduleName = ModuleUtils.getFullModule(repositoryOwner, repositoryName);
+        Module module = moduleService.get(moduleName);
         if (module == null) {
-            logger.info("This module is not exist and ignore message,user:{}, module:{}",
+            logger.info("This module is not exist and ignore message,user:{},repository:{}",
                     repositoryBean.getOwner().getName(), repositoryBean.getName());
             return null;
         }
@@ -100,7 +102,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         gitHubCommit.setModule(moduleName);
         gitHubCommit.setCommitter(commitBean.getCommitter().getName());
         gitHubCommit.setCommitterEmail(commitBean.getCommitter().getEmail());
-        gitHubCommit.setOwner(moduleOwner);
+        gitHubCommit.setOwner(repositoryOwner);
         gitHubCommit.setCommitTime(commitBean.getTimestamp());
         gitHubCommit.setAddedFiles(Arrays.asList(commitBean.getAdded()).toString());
         gitHubCommit.setCommitUrl(commitBean.getUrl());
@@ -123,10 +125,10 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
             String status = hookMessage.getString("created");
             if (status.equals("true")) {
                 GithubBranch githubBranch = new GithubBranch();
-                githubBranch.setBranchType(BranchType.BRANCH);
+                githubBranch.setBranchType(BranchType.parseType(branchName));
                 githubBranch.setBranchName(branchName);
                 githubBranch.setCreateTime(new Date());
-                githubBranch.setModuleId(module.getId());
+                githubBranch.setModule(module.getModule());
                 branchService.saveBranch(githubBranch);
                 logger.info("Create branch:{} is successful!", branchName);
                 result = true;

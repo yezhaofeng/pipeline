@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.cookies.LoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.utils.PipelineConfig;
 import com.jlu.common.utils.DateUtils;
+import com.jlu.common.utils.PipelineConfig;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -118,8 +118,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         }
         Long pipelineConfId = pipelineConf.getId();
         String module = pipelineConf.getModule();
-        String userName = pipelineConf.getCreateUser();
-        GitHubCommit gitHubCommit = gitHubCommitService.getLastestCommit(module, userName);
+        GitHubCommit gitHubCommit = gitHubCommitService.getLastestCommit(module);
         if (gitHubCommit == null) {
             throw new PipelineRuntimeException("无提交信息");
         }

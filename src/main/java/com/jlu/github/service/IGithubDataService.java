@@ -1,7 +1,5 @@
 package com.jlu.github.service;
 
-import java.util.Map;
-
 import com.jlu.user.bean.UserBean;
 import com.jlu.user.model.GithubUser;
 
@@ -33,13 +31,13 @@ public interface IGithubDataService {
      * @param githubPassword
      * @return
      */
-    Map<String, Object> creatHooks(String username, String repo, String githubPassword);
+    void creatHooks(String username, String repo, String githubPassword);
 
     /**
      * 增加新的模块
      * @param username
-     * @param module
+     * @param repository
      * @return
      */
-    String addModule(String username, String module);
+    void addModule(String username, String repository);
 }

@@ -10,7 +10,7 @@ public interface IUserService {
     void saveUser(GithubUser githubUser);
 
     /**
-     * 通过用户名获得密码
+     * 通过用户名获得用户
      * @param username
      * @return
      */

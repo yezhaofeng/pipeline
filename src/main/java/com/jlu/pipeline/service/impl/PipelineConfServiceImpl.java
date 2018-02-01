@@ -77,8 +77,8 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     }
 
     @Override
-    public PipelineConf getPipelineConf(String name, String module, String branchName) {
-        return pipelineConfDao.get(name, module, BranchType.parseType(branchName));
+    public PipelineConf getPipelineConf(String owner, String module, String branchName) {
+        return pipelineConfDao.get(owner, module, BranchType.parseType(branchName));
     }
 
     private final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
