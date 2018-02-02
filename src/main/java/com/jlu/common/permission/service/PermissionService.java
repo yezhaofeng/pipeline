@@ -17,5 +17,5 @@ public interface PermissionService {
     /**
      * @return URL白名单
      */
-    public Set<String> getWhiteListUrl();
+    public Set<String> getWhiteUrlList();
 }

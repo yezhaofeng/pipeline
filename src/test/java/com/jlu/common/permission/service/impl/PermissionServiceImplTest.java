@@ -15,7 +15,7 @@ public class PermissionServiceImplTest extends SpringBaseTest {
 
     @Test
     public void testInitWhiteListUrl() {
-        permissionService.getWhiteListUrl();
+        permissionService.getWhiteUrlList();
     }
 
 }

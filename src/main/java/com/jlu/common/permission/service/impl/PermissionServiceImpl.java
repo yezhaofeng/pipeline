@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class PermissionServiceImpl implements PermissionService {
     private final Logger logger = LoggerFactory.getLogger(PermissionServiceImpl.class);
     private static final String PERMISSION_PASS_CLASS_PATTERN = "com.jlu";
 
-    private Set<String> whiteListUrl = new HashSet<>();
+    private Set<String> whiteUrlList = new HashSet<>();
 
     /**
      * @param paramType
@@ -37,13 +38,19 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @Override
     public String getModuleByParamType(String paramType, Object paramValue) {
-
-        return null;
+        switch (paramType) {
+            case "branchId":
+                break;
+            case "":
+                break;
+            default:
+                return "";
+        }
+        return StringUtils.EMPTY;
     }
 
-    @Override
-    public Set<String> getWhiteListUrl() {
-        return whiteListUrl;
+    public Set<String> getWhiteUrlList() {
+        return whiteUrlList;
     }
 
     @PostConstruct
@@ -95,6 +102,7 @@ public class PermissionServiceImpl implements PermissionService {
             } catch (Exception e) {
                 logger.info("Scan {} Class error:", classPath, e);
             }
+            logger.info("white ulr list:{}", whiteListUrls);
         }
     }
 
