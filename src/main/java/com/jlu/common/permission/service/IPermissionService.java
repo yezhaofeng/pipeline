@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by langshiquan on 18/2/2.
  */
-public interface PermissionService {
+public interface IPermissionService {
     /**
      * @param paramType  参数类型，例如：pipelineConfId
      * @param paramValue 参数值，例如：178
@@ -18,4 +18,9 @@ public interface PermissionService {
      * @return URL白名单
      */
     public Set<String> getWhiteUrlList();
+
+    /**
+     * @return 管理员权限URL
+     */
+    public Set<String> getAdminUrlList();
 }

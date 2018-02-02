@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.plugin.bean.PluginConfig;
 import com.jlu.plugin.service.IPluginInfoService;
@@ -28,6 +29,7 @@ public class JobPluginController {
         return pluginInfoService.getAllPluginConf();
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "/configs/reload", method = RequestMethod.POST)
     @ResponseBody
     public ResponseBean reload() {

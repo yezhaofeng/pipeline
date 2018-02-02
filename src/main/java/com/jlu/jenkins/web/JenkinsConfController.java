@@ -1,19 +1,19 @@
 package com.jlu.jenkins.web;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
-import com.jlu.jenkins.bean.JenkinsJobsBean;
-import com.sun.org.apache.regexp.internal.RE;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.jlu.common.web.ResponseBean;
 import com.jlu.common.web.AbstractController;
+import com.jlu.common.web.ResponseBean;
 import com.jlu.jenkins.bean.JenkinsConfDTO;
+import com.jlu.jenkins.bean.JenkinsJobsBean;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsConfService;
 
@@ -33,9 +33,9 @@ public class JenkinsConfController extends AbstractController {
         return ResponseBean.TRUE;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public JenkinsConfDTO get(@PathVariable Long id) {
-        JenkinsConf jenkinsConf = jenkinsConfService.get(id);
+    @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.GET)
+    public JenkinsConfDTO get(@PathVariable Long jenkinsServerId) {
+        JenkinsConf jenkinsConf = jenkinsConfService.get(jenkinsServerId);
         if (jenkinsConf == null) {
             return null;
         }
