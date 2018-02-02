@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by langshiquan on 18/2/2.
  */
-public interface ModuleFinderService {
+public interface PermissionService {
     /**
      * @param paramType  参数类型，例如：pipelineConfId
      * @param paramValue 参数值，例如：178

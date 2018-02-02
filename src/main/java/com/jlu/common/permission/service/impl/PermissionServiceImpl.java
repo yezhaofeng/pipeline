@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.common.permission.annotations.PermissionPass;
-import com.jlu.common.permission.service.ModuleFinderService;
+import com.jlu.common.permission.service.PermissionService;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.PackageScanUtils;
 
@@ -22,15 +22,22 @@ import com.jlu.common.utils.PackageScanUtils;
  * Created by langshiquan on 18/2/2.
  */
 @Service
-public class ModuleFinderServiceImpl implements ModuleFinderService {
+public class PermissionServiceImpl implements PermissionService {
 
-    private final Logger logger = LoggerFactory.getLogger(ModuleFinderServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(PermissionServiceImpl.class);
     private static final String PERMISSION_PASS_CLASS_PATTERN = "com.jlu";
 
     private Set<String> whiteListUrl = new HashSet<>();
 
+    /**
+     * @param paramType
+     * @param paramValue
+     *
+     * @return 模块名字
+     */
     @Override
     public String getModuleByParamType(String paramType, Object paramValue) {
+
         return null;
     }
 

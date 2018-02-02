@@ -4,18 +4,18 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jlu.SpringBaseTest;
-import com.jlu.common.permission.service.ModuleFinderService;
+import com.jlu.common.permission.service.PermissionService;
 
 /**
  * Created by langshiquan on 18/2/2.
  */
-public class ModuleFinderServiceImplTest extends SpringBaseTest {
+public class PermissionServiceImplTest extends SpringBaseTest {
     @Autowired
-    private ModuleFinderService moduleFinderService;
+    private PermissionService permissionService;
 
     @Test
     public void testInitWhiteListUrl() {
-        moduleFinderService.getWhiteListUrl();
+        permissionService.getWhiteListUrl();
     }
 
 }
