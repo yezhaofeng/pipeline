@@ -51,10 +51,10 @@ public class UserLoginHelper {
     }
 
     public static String getLoginUserName() {
-        return null;
+        return getUser().getUsername();
     }
 
     public static GithubUser getLoginUser() {
-        return null;
+        return getUser();
     }
 }
