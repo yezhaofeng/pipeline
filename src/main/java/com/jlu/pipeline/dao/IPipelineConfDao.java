@@ -11,7 +11,7 @@ import com.jlu.pipeline.model.PipelineConf;
  */
 
 public interface IPipelineConfDao extends IBaseDao<PipelineConf> {
-    List<PipelineConf> get(String owner, String module);
+    List<PipelineConf> get(String module);
 
-    PipelineConf get(String owner, String module, BranchType branchType);
+    PipelineConf get(String module, BranchType branchType);
 }

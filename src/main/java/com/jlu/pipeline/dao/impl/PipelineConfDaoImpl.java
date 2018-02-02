@@ -3,7 +3,6 @@ package com.jlu.pipeline.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.branch.bean.BranchType;
@@ -20,18 +19,16 @@ import com.jlu.pipeline.model.PipelineConf;
 public class PipelineConfDaoImpl extends AbstractBaseDao<PipelineConf> implements IPipelineConfDao {
 
     @Override
-    public List<PipelineConf> get(String owner, String module) {
+    public List<PipelineConf> get(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         List<PipelineConf> pipelineConfs = findByProperties(conditionAndSet);
         return CollUtils.isEmpty(pipelineConfs) ? new ArrayList<>() : pipelineConfs;
     }
 
     @Override
-    public PipelineConf get(String owner, String module, BranchType branchType) {
+    public PipelineConf get(String module, BranchType branchType) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         conditionAndSet.put("branchType", branchType);
         List<PipelineConf> pipelineConfs = findByProperties(conditionAndSet);

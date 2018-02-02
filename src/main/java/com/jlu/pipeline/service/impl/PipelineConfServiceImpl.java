@@ -4,12 +4,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.branch.bean.BranchType;
 import com.jlu.common.cookies.LoginHelper;
+import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.permission.exception.ForbiddenException;
+import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.bean.JobConfBean;
@@ -32,7 +36,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     private IJobConfService jobConfService;
 
     @Override
-    public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String userName) {
+    public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean) {
         PipelineConf pipelineConf = null;
         Long pipelineConfId = pipelineConfBean.getId();
         if (pipelineConfId != null) {
@@ -46,10 +50,28 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
             pipelineConf = new PipelineConf();
             BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
             pipelineConf.setCreateTime(new Date());
-            pipelineConf.setCreateUser(userName);
+            pipelineConf.setCreateUser(LoginHelper.getLoginerUserName());
         }
 
-        pipelineConf.setLastModifiedUser(userName);
+        pipelineConf.setLastModifiedUser(LoginHelper.getLoginerUserName());
+        pipelineConf.setLastModifiedTime(new Date());
+        pipelineConfDao.saveOrUpdate(pipelineConf);
+        List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
+        jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
+    }
+
+    @Override
+    public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String module,
+                                               BranchType branchType) {
+        PipelineConf pipelineConf = pipelineConfDao.get(module, branchType);
+        if (pipelineConf == null) {
+            throw new PipelineRuntimeException("未找到流水线配置");
+        }
+        if (!pipelineConfBean.getModule().equals(module)) {
+            throw new ForbiddenException("无权限");
+        }
+        BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
+        pipelineConf.setLastModifiedUser(LoginHelper.getLoginerUserName());
         pipelineConf.setLastModifiedTime(new Date());
         pipelineConfDao.saveOrUpdate(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
@@ -78,8 +100,8 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     }
 
     @Override
-    public PipelineConf getPipelineConf(String owner, String module, String branchName) {
-        return pipelineConfDao.get(owner, module, BranchType.parseType(branchName));
+    public PipelineConf getPipelineConf(String module, String branchName) {
+        return pipelineConfDao.get(module, BranchType.parseType(branchName));
     }
 
     private final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
@@ -92,15 +114,29 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     // TODO 锁
     @Override
     public void initDefaultConf(String module) {
+        List<PipelineConf> pipelineConfs = pipelineConfDao.get(module);
+        if (!CollUtils.isEmpty(pipelineConfs)) {
+            return;
+        }
         // 主干流水线
         PipelineConfBean masterPipelineConf = initDefaultPipelineConf(module, DEFAULT_MASTER_PIPELINE_NAME,
                 BranchType.TRUNK, DEFAULT_MASTER_PIPELINE_REMARK);
-        processPipelineWithTransaction(masterPipelineConf, LoginHelper.getLoginerUserName());
+        processPipelineWithTransaction(masterPipelineConf);
         // 分支流水线
         PipelineConfBean branchPipelineConf = initDefaultPipelineConf(module, DEFAULT_BRANCH_PIPELINE_NAME,
                 BranchType.BRANCH, DEFAULT_BRANCH_PIPELINE_REMARK);
-        processPipelineWithTransaction(branchPipelineConf, LoginHelper.getLoginerUserName());
+        processPipelineWithTransaction(branchPipelineConf);
 
+    }
+
+    @Override
+    public PipelineConfBean getPipelineConfBean(String module, BranchType branchType) {
+        PipelineConf pipelineConf = pipelineConfDao.get(module, branchType);
+        if (pipelineConf == null) {
+            return null;
+        }
+        Long pipelineConfId = pipelineConf.getId();
+        return getPipelineConfBean(pipelineConfId);
     }
 
     private PipelineConfBean initDefaultPipelineConf(String module, String pipelineName,
@@ -120,6 +156,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         compileJobConf.setPluginType(PluginType.COMPILE);
         compileJobConf.setName(DEFAULT_COMPILE_JOB_NAME);
         compileJobConf.setTriggerMode(TriggerMode.AUTO);
+        compileJobConf.setPluginConf(new JSONObject());
         jobConfBeanList.add(compileJobConf);
 
         // 发版Job
@@ -127,6 +164,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         releaseJobConf.setPluginType(PluginType.RELEASE);
         releaseJobConf.setName(DEFAULT_RELEASE_JOB_NAME);
         releaseJobConf.setTriggerMode(TriggerMode.MANUAL);
+        releaseJobConf.setPluginConf(new JSONObject());
         jobConfBeanList.add(releaseJobConf);
         defaultPipelineConf.setJobConfs(jobConfBeanList);
         return defaultPipelineConf;

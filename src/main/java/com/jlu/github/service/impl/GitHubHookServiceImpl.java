@@ -62,7 +62,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
         }
         gitHubCommitService.save(gitHubCommit);
         PipelineConf pipelineConf = pipelineConfService
-                .getPipelineConf(gitHubCommit.getOwner(), gitHubCommit.getModule(), gitHubCommit.getBranch());
+                .getPipelineConf(gitHubCommit.getModule(), gitHubCommit.getBranch());
         if (pipelineConf == null) {
             logger.info("{} github commit not found pipeline conf", gitHubCommit);
             return;

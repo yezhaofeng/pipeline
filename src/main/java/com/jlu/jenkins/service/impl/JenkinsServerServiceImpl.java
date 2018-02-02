@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.jenkins.exception.JenkinsRuntimeException;
 import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
@@ -122,6 +123,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         return build;
     }
 
+    @LogExecTime
     private JenkinsServer initJenkinsServer(String serverUrl, String username, String password) {
         URI uri;
         try {

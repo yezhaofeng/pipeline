@@ -10,7 +10,7 @@ import com.jlu.pipeline.model.PipelineBuild;
  */
 public interface IPipelineBuildDao extends IBaseDao<PipelineBuild> {
 
-    Long getNextBuildNumber(String owner, String module);
+    Long getNextBuildNumber(String module);
 
     List<PipelineBuild> get(Long pipelineConfId);
 }

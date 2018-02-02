@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
@@ -22,9 +21,8 @@ import com.jlu.pipeline.model.PipelineBuild;
 public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> implements IPipelineBuildDao {
 
     @Override
-    public Long getNextBuildNumber(String owner, String module) {
+    public Long getNextBuildNumber(String module) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", owner);
         conditionAndSet.put("module", module);
         List<OrderCondition> orders = new ArrayList<OrderCondition>();
         orders.add(new DescOrder("buildNumber"));

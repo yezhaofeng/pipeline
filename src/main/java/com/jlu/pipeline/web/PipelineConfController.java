@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.branch.bean.BranchType;
+import com.jlu.common.utils.ModuleUtils;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.service.IPipelineConfService;
+
+import io.swagger.annotations.ApiOperation;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -23,22 +26,41 @@ public class PipelineConfController extends AbstractController {
     @Autowired
     private IPipelineConfService pipelineConfService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean) {
-        pipelineConfService.processPipelineWithTransaction(pipelineConfBean, getLoginUserName());
+    @ApiOperation(value = "修改流水线配置")
+    @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.PUT)
+    public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean, @PathVariable String owner,
+                                 @PathVariable String repository, @PathVariable BranchType branchType) {
+        pipelineConfService.processPipelineWithTransaction(pipelineConfBean, ModuleUtils.getFullModule(owner,
+                repository), branchType);
         return ResponseBean.TRUE;
     }
 
+    @ApiOperation(value = "获取流水线配置")
+    @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.GET)
+    public PipelineConfBean getConf(@PathVariable String owner,
+                                    @PathVariable String repository, @PathVariable BranchType branchType) {
+        return pipelineConfService.getPipelineConfBean(ModuleUtils.getFullModule(owner, repository), branchType);
+    }
+
+    @ApiOperation(value = "初始化流水线配置")
+    @RequestMapping(value = "/{owner}/{repository}", method = RequestMethod.POST)
+    public ResponseBean initDefault(@PathVariable String owner,
+                                    @PathVariable String repository) {
+        pipelineConfService.initDefaultConf(ModuleUtils.getFullModule(owner, repository));
+        return ResponseBean.TRUE;
+    }
+
+    @Deprecated
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean) {
+        pipelineConfService.processPipelineWithTransaction(pipelineConfBean);
+        return ResponseBean.TRUE;
+    }
+
+    @Deprecated
     @RequestMapping(value = "/{pipelineConfId}", method = RequestMethod.GET)
     public PipelineConfBean getConf(@PathVariable Long pipelineConfId) {
         return pipelineConfService.getPipelineConfBean(pipelineConfId);
     }
-
-    @RequestMapping(value = "/initDefault", method = RequestMethod.POST)
-    public ResponseBean init(@RequestParam String module) {
-        pipelineConfService.initDefaultConf(module);
-        return ResponseBean.TRUE;
-    }
-
 
 }

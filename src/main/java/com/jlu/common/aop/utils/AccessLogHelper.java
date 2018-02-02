@@ -23,6 +23,7 @@ public class AccessLogHelper {
 
     private static final String POST = "POST";
     private static final String GET = "GET";
+    private static final String PUT = "PUT";
     private static final String HTML = "text/html;charset=UTF-8";
     private static final String JSON = "application/json;charset=UTF-8";
 
@@ -49,7 +50,7 @@ public class AccessLogHelper {
         String queryString = request.getQueryString(); // 问号传值
         request.setAttribute("error", true);
         try {
-            if (POST.equals(method)) {
+            if (POST.equals(method) || PUT.equals(method)) {
                 BufferedReader reader = null; //请求体
                 reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
                 String body = IOUtils.toString(reader);
@@ -77,7 +78,7 @@ public class AccessLogHelper {
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
         try {
-            if (POST.equals(method)) {
+            if (POST.equals(method) || PUT.equals(method)) {
                 BufferedReader reader = null; //请求体
                 reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
                 String body = IOUtils.toString(reader);
