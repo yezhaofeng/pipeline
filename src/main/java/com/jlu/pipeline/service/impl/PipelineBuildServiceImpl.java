@@ -1,5 +1,6 @@
 package com.jlu.pipeline.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +14,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.branch.bean.BranchType;
 import com.jlu.common.aop.annotations.LogExecTime;
-import com.jlu.common.cookies.LoginHelper;
+import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.common.utils.ModuleUtils;
@@ -69,7 +71,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public void build(Long pipelineConfId) {
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
         Long pipelineBuildId = initPipelineBuild(pipelineConf);
-        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, LoginHelper.getLoginerUserName());
+        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, UserLoginHelper.getLoginUserName());
     }
 
     /**
@@ -124,7 +126,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
             throw new PipelineRuntimeException("无提交信息");
         }
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf, TriggerMode.MANUAL,
-                LoginHelper.getLoginerUserName());
+                UserLoginHelper.getLoginUserName());
         Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         IPipelineBuildDao.saveOrUpdate(pipelineBuild);
         Long pipelineBuildId = pipelineBuild.getId();
@@ -171,6 +173,15 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     }
 
     @Override
+    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType) {
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
+        if (pipelineConf == null) {
+            return new ArrayList<>(0);
+        }
+        return getPipelineBuildBean(pipelineConf.getId());
+    }
+
+    @Override
     public PipelineBuild get(Long pipelineBuildId) {
         return pipelineBuildDao.findById(pipelineBuildId);
     }
@@ -197,7 +208,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
                                                     String triggerUser) {
         PipelineBuild pipelineBuild = new PipelineBuild();
         pipelineBuild.setBranch(gitHubCommit.getBranch());
-        Long buildNumber = IPipelineBuildDao.getNextBuildNumber(gitHubCommit.getOwner(), gitHubCommit.getModule());
+        Long buildNumber = IPipelineBuildDao.getNextBuildNumber(gitHubCommit.getModule());
         pipelineBuild.setBuildNumber(buildNumber);
         pipelineBuild.setModule(ModuleUtils.getFullModule(gitHubCommit.getModule(), gitHubCommit.getOwner()));
         pipelineBuild.setBranch(gitHubCommit.getBranch());

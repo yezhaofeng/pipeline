@@ -2,6 +2,7 @@ package com.jlu.pipeline.service;
 
 import java.util.List;
 
+import com.jlu.branch.bean.BranchType;
 import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -27,4 +28,6 @@ public interface IPipelineBuildService {
     List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId);
 
     PipelineBuild get(Long pipelineBuildId);
+
+    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType);
 }

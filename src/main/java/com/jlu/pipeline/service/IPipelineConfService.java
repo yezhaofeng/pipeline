@@ -17,6 +17,8 @@ public interface IPipelineConfService {
 
     PipelineConf getPipelineConf(String module, String branchName);
 
+    PipelineConf getPipelineConf(String module, BranchType branchType);
+
     void initDefaultConf(String module);
 
     PipelineConfBean getPipelineConfBean(String module, BranchType branchType);

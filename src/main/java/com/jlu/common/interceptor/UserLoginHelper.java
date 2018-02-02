@@ -50,4 +50,11 @@ public class UserLoginHelper {
         return githubUser == null ? StringUtils.EMPTY : githubUser.getUsername();
     }
 
+    public static String getLoginUserName() {
+        return null;
+    }
+
+    public static GithubUser getLoginUser() {
+        return null;
+    }
 }

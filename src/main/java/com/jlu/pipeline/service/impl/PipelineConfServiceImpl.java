@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.branch.bean.BranchType;
-import com.jlu.common.cookies.LoginHelper;
+import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.utils.CollUtils;
@@ -50,10 +50,10 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
             pipelineConf = new PipelineConf();
             BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
             pipelineConf.setCreateTime(new Date());
-            pipelineConf.setCreateUser(LoginHelper.getLoginerUserName());
+            pipelineConf.setCreateUser(UserLoginHelper.getLoginUserName());
         }
 
-        pipelineConf.setLastModifiedUser(LoginHelper.getLoginerUserName());
+        pipelineConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
         pipelineConf.setLastModifiedTime(new Date());
         pipelineConfDao.saveOrUpdate(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
@@ -71,7 +71,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
             throw new ForbiddenException("无权限");
         }
         BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
-        pipelineConf.setLastModifiedUser(LoginHelper.getLoginerUserName());
+        pipelineConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
         pipelineConf.setLastModifiedTime(new Date());
         pipelineConfDao.saveOrUpdate(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
@@ -102,6 +102,11 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     @Override
     public PipelineConf getPipelineConf(String module, String branchName) {
         return pipelineConfDao.get(module, BranchType.parseType(branchName));
+    }
+
+    @Override
+    public PipelineConf getPipelineConf(String module, BranchType branchType) {
+        return pipelineConfDao.get(module, branchType);
     }
 
     private final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
