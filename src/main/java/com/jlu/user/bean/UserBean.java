@@ -3,32 +3,32 @@ package com.jlu.user.bean;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.BeanUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jlu.user.model.GithubUser;
 
 /**
  * Created by niuwanpeng on 17/3/29.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBean {
 
-    @NotNull
+    //    @NotNull
     private String username;
 
-    @NotNull
+    //    @NotNull
     private String gitHubToken;
 
-    @NotNull
+    //    @NotNull
     private String email;
 
     // 头像地址
     private String avatarUrl;
 
     private List<String> syncRepos;
+
+    public UserBean() {
+    }
 
     public String getUsername() {
         return username;

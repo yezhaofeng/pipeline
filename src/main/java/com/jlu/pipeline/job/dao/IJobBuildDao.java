@@ -16,5 +16,5 @@ public interface IJobBuildDao extends IBaseDao<JobBuild> {
 
     List<JobBuild> getByPipelineBuildId(Long pipelineBuildId);
 
-
+    String getModuleById(Long id);
 }

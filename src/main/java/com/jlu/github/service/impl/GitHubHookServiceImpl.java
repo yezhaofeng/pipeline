@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
-import com.jlu.common.utils.ModuleUtils;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.github.bean.GitHubCommitBean;
 import com.jlu.github.bean.HookRepositoryBean;
 import com.jlu.github.model.GitHubCommit;
@@ -84,7 +84,7 @@ public class GitHubHookServiceImpl implements IGitHubHookService {
                 }.getType());
         String repositoryName = repositoryBean.getName();
         String repositoryOwner = repositoryBean.getOwner().getName();
-        String moduleName = ModuleUtils.getFullModule(repositoryOwner, repositoryName);
+        String moduleName = PipelineUtils.getFullModule(repositoryOwner, repositoryName);
         Module module = moduleService.get(moduleName);
         if (module == null) {
             logger.info("This module is not exist and ignore message,user:{},repository:{}",

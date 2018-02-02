@@ -22,6 +22,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2Config {
 
+    public static final String JSON_URL = "/v2/api-docs";
+    public static final String UI_URL = "/swagger-resources";
     @Bean
     public Docket buildDocket() throws UnsupportedEncodingException {
         return new Docket(DocumentationType.SWAGGER_2)

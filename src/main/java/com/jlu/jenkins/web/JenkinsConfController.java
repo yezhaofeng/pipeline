@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.jenkins.bean.JenkinsConfDTO;
@@ -33,6 +34,7 @@ public class JenkinsConfController extends AbstractController {
         return ResponseBean.TRUE;
     }
 
+    @PermissionAdmin
     @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.GET)
     public JenkinsConfDTO get(@PathVariable Long jenkinsServerId) {
         JenkinsConf jenkinsConf = jenkinsConfService.get(jenkinsServerId);

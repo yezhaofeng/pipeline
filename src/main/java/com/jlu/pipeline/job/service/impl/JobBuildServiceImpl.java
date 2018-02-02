@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.jlu.common.aop.utils.AopTargetUtils;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.dao.IPipelineBuildDao;
 import com.jlu.pipeline.job.bean.JobBuildBean;
@@ -109,7 +108,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     @Override
-    public void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode) {
+    public void buildTopJob(Long pipelineBuildId, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.getTopJob(pipelineBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("未找到job");
@@ -120,7 +119,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
             return;
         }
         updatePipelineBuildStart(pipelineBuildId, PipelineJobStatus.RUNNING);
-        jobBuild.setTriggerUser(UserLoginHelper.getLoginUserName());
+        jobBuild.setTriggerUser(triggerUser);
         jobBuild.setTriggerMode(triggerMode);
         jobBuild.setTriggerTime(new Date());
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);

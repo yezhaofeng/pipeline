@@ -8,18 +8,27 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.branch.dao.IBranchDao;
 import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.permission.annotations.PermissionPass;
+import com.jlu.common.permission.bean.EnvType;
 import com.jlu.common.permission.service.IPermissionService;
+import com.jlu.common.swagger2.Swagger2Config;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.PackageScanUtils;
+import com.jlu.common.utils.PipelineConfigReader;
+import com.jlu.github.dao.IGitHubCommitDao;
+import com.jlu.pipeline.dao.IPipelineConfDao;
+import com.jlu.pipeline.job.dao.IJobBuildDao;
 
 /**
  * Created by langshiquan on 18/2/2.
@@ -32,6 +41,18 @@ public class PermissionServiceImpl implements IPermissionService {
 
     private Set<String> whiteUrlList = new HashSet<>();
     private Set<String> adminUrlList = new HashSet<>();
+
+    @Autowired
+    private IBranchDao branchDao;
+
+    @Autowired
+    private IJobBuildDao jobBuildDao;
+
+    @Autowired
+    private IPipelineConfDao pipelineConfDao;
+
+    @Autowired
+    private IGitHubCommitDao gitHubCommitDao;
     /**
      * @param paramType
      * @param paramValue
@@ -39,18 +60,27 @@ public class PermissionServiceImpl implements IPermissionService {
      * @return 模块名字
      */
     @Override
-    public String getModuleByParamType(String paramType, Object paramValue) {
-        // TODO
+    public String getModuleByParamType(String paramType, String paramValue) {
         switch (paramType) {
             case "branchId":
-                break;
+                if (!NumberUtils.isNumber(paramValue)) {
+                    return StringUtils.EMPTY;
+                }
+                return branchDao.getModuleById(Long.parseLong(paramValue));
             case "jobBuildId":
-                break;
+                if (!NumberUtils.isNumber(paramType)) {
+                    return StringUtils.EMPTY;
+                }
+                return jobBuildDao.getModuleById(Long.parseLong(paramValue));
             case "pipelineConfId":
-                break;
+                if (!NumberUtils.isNumber(paramType)) {
+                    return StringUtils.EMPTY;
+                }
+                return pipelineConfDao.getModuleById(Long.parseLong(paramValue));
             case "triggerId":
-                break;
-            case "jenkinsServerId":
+                if (!NumberUtils.isNumber(paramType)) {
+                    return gitHubCommitDao.getModuleById(Long.parseLong(paramValue));
+                }
                 break;
             default:
                 break;
@@ -58,6 +88,22 @@ public class PermissionServiceImpl implements IPermissionService {
         return StringUtils.EMPTY;
     }
 
+    @Override
+    public Boolean checkPermission(String module, String username) {
+        if (StringUtils.isBlank(module)) {
+            return false;
+        }
+        String[] element = module.split("/");
+        if (element.length != 2) {
+            return false;
+        }
+        if (username.equals(element[0])) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Set<String> getWhiteUrlList() {
         return whiteUrlList;
     }
@@ -70,6 +116,12 @@ public class PermissionServiceImpl implements IPermissionService {
     @PostConstruct
     public void initWhiteListUrl() {
         initSetBySpringMvcAnnotation(PERMISSION_PASS_CLASS_PATTERN, PermissionPass.class, whiteUrlList);
+        // 线下环境
+        if (EnvType.LOCAL.toString().equals(PipelineConfigReader.getConfigValueByKey("env.type"))) {
+            whiteUrlList.add(Swagger2Config.JSON_URL);
+            whiteUrlList.add(Swagger2Config.UI_URL);
+            whiteUrlList.add("/mock/userLogin");
+        }
         logger.info("admin ulr list:{}", whiteUrlList);
 
     }
@@ -77,6 +129,11 @@ public class PermissionServiceImpl implements IPermissionService {
     @PostConstruct
     public void initAdminListUrl() {
         initSetBySpringMvcAnnotation(PERMISSION_PASS_CLASS_PATTERN, PermissionAdmin.class, adminUrlList);
+        // 线上环境
+        if (EnvType.ONLINE.toString().equals(PipelineConfigReader.getConfigValueByKey("env.type"))) {
+            adminUrlList.add(Swagger2Config.JSON_URL);
+        }
+
         logger.info("white ulr list:{}", adminUrlList);
 
     }

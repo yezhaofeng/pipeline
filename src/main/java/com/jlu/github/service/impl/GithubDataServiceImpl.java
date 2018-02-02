@@ -17,7 +17,7 @@ import com.jlu.branch.service.IBranchService;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
-import com.jlu.common.utils.ModuleUtils;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
@@ -117,12 +117,12 @@ public class GithubDataServiceImpl implements IGithubDataService {
         if (githubUser == null) {
             throw new PipelineRuntimeException("该用户不存在！请联系管理员。");
         }
-        Module moduleInDB = moduleService.get(ModuleUtils.getFullModule(username, repository));
+        Module moduleInDB = moduleService.get(PipelineUtils.getFullModule(username, repository));
         if (moduleInDB != null) {
             throw new PipelineRuntimeException("该模块已存在，不需要再次配置。");
         }
         LOGGER.info("Start initBuild module:{} on user:{}", moduleInDB, username);
-        Module module = new Module(ModuleUtils.getFullModule(username, repository), username, repository);
+        Module module = new Module(PipelineUtils.getFullModule(username, repository), username, repository);
         moduleService.saveModule(module);
         try {
             LOGGER.info("Start initBuild branch on module:{}, user:{}", moduleInDB, username);
@@ -153,7 +153,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 continue;
             }
             String repoName = repoList.get(i).getName();
-            Module module = new Module(ModuleUtils.getFullModule(repoName, username), username, repoName);
+            Module module = new Module(PipelineUtils.getFullModule(repoName, username), username, repoName);
             modules.add(module);
         }
 

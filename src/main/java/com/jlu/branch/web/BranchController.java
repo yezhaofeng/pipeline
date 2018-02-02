@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
-import com.jlu.common.utils.ModuleUtils;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.common.web.ResponseBean;
 
 /**
@@ -28,7 +28,7 @@ public class BranchController {
     @RequestMapping(value = "/{owner}/{repository}/branches", method = RequestMethod.GET)
     @ResponseBody
     public List<GithubBranch> getBranchesByModule(@PathVariable String owner, @PathVariable String repository) {
-        return branchService.getBranchesByModule(ModuleUtils.getFullModule(owner, repository));
+        return branchService.getBranchesByModule(PipelineUtils.getFullModule(owner, repository));
     }
 
     @RequestMapping(value = "/branch/{branchId}/remark", method = RequestMethod.POST)

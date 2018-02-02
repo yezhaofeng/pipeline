@@ -65,15 +65,14 @@ public class LoginController {
     // 根据用户注册信息初始化用户
     @RequestMapping(value = "/initUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean initUser(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestBody UserBean userBean) {
+    public ResponseBean initUser(@RequestBody UserBean userBean, HttpServletRequest request,
+                                 HttpServletResponse response) {
         GithubUser githubUser = githubDataService.initUser(userBean);
         request.getSession().setAttribute(GithubUser.CURRENT_USER_NAME, githubUser);
         return ResponseBean.TRUE;
     }
 
     @RequestMapping(value = "/exit", method = RequestMethod.GET)
-    @ResponseBody
     public String exitLogin(HttpServletResponse response, HttpServletRequest request) {
         request.getSession().removeAttribute(GithubUser.CURRENT_USER_NAME);
         return "login";

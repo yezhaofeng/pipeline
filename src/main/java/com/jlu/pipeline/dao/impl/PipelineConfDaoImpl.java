@@ -3,6 +3,7 @@ package com.jlu.pipeline.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.branch.bean.BranchType;
@@ -33,5 +34,11 @@ public class PipelineConfDaoImpl extends AbstractBaseDao<PipelineConf> implement
         conditionAndSet.put("branchType", branchType);
         List<PipelineConf> pipelineConfs = findByProperties(conditionAndSet);
         return CollUtils.isEmpty(pipelineConfs) ? null : pipelineConfs.get(0);
+    }
+
+    @Override
+    public String getModuleById(Long id) {
+        PipelineConf pipelineConf = findById(id);
+        return pipelineConf == null ? StringUtils.EMPTY : pipelineConf.getModule();
     }
 }

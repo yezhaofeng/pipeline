@@ -10,4 +10,6 @@ import com.jlu.common.db.dao.IBaseDao;
  */
 public interface IBranchDao extends IBaseDao<GithubBranch> {
     List<GithubBranch> find(String moduleName);
+
+    String getModuleById(Long id);
 }

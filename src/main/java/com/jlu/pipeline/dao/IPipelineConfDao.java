@@ -14,4 +14,6 @@ public interface IPipelineConfDao extends IBaseDao<PipelineConf> {
     List<PipelineConf> get(String module);
 
     PipelineConf get(String module, BranchType branchType);
+
+    String getModuleById(Long id);
 }

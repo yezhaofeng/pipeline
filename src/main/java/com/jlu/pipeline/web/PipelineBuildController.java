@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.branch.bean.BranchType;
-import com.jlu.common.utils.ModuleUtils;
+import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.common.web.AbstractController;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -30,21 +31,19 @@ public class PipelineBuildController extends AbstractController {
     public List<PipelineBuildBean> getPipelineBuildBeans(@PathVariable String owner,
                                                          @PathVariable String repository,
                                                          @PathVariable BranchType branchType) {
-        return pipelineBuildService.getPipelineBuildBean(ModuleUtils.getFullModule(owner, repository), branchType);
+        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean rebuild(@RequestParam Long triggerId) {
-        pipelineBuildService.rebuild(triggerId);
-        return ResponseBean.TRUE;
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean build(@RequestParam Long pipelineConfId,
-                              @RequestParam(required = false, defaultValue = "0") Long
-                                      triggerId) {
+    public ResponseBean build(@RequestParam(required = false, defaultValue = "0") Long pipelineConfId,
+                              @RequestParam(required = false, defaultValue = "0") Long triggerId) {
+        if (pipelineConfId == 0L || triggerId == null) {
+            throw new PipelineRuntimeException("缺少参数");
+        }
         if (triggerId == 0L) {
             pipelineBuildService.build(pipelineConfId);
+        } else if (pipelineConfId == 0L) {
+            pipelineBuildService.rebuild(triggerId);
         } else {
             pipelineBuildService.build(pipelineConfId, triggerId);
         }

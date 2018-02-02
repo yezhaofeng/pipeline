@@ -41,6 +41,10 @@ public class GithubUser implements Serializable{
     @GeneratedValue
     private Role role = Role.USER;
 
+    public GithubUser() {
+    }
+
+
     public int getId() {
         return id;
     }
@@ -91,6 +95,14 @@ public class GithubUser implements Serializable{
 
     public String getPipelineToken() {
         return pipelineToken;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setPipelineToken(String pipelineToken) {
