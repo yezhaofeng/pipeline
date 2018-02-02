@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jlu.common.permission.annotations.PermissionPass;
 import com.jlu.user.model.GithubUser;
 
 /**
@@ -17,6 +18,7 @@ import com.jlu.user.model.GithubUser;
 @RequestMapping("/pipeline/user")
 public class UserController {
 
+    @PermissionPass
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public GithubUser currentUser(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();

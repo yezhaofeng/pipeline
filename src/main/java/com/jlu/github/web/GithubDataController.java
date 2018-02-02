@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.common.aop.utils.AopTargetUtils;
+import com.jlu.common.permission.annotations.PermissionPass;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
@@ -41,6 +42,7 @@ public class GithubDataController {
      * @param request
      * @param response
      */
+    @PermissionPass
     @RequestMapping(value = "/webHooks", method = RequestMethod.POST)
     @ResponseBody
     public void monitorWebHooks(HttpServletRequest request, HttpServletResponse response) {

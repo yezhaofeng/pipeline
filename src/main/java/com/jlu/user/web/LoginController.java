@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.jlu.common.exception.ForbiddenException;
+import com.jlu.common.permission.annotations.PermissionPass;
+import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.github.service.IGithubDataService;
 import com.jlu.user.bean.UserBean;
@@ -26,6 +27,7 @@ import com.jlu.user.service.IGithubOAuthService;
 /**
  * Created by langshiquan on 18/1/28.
  */
+@PermissionPass
 @Controller
 @RequestMapping("/github")
 public class LoginController {

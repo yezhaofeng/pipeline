@@ -1,6 +1,7 @@
 package com.jlu.common.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -109,5 +110,34 @@ public class CollUtils extends CollectionUtils {
             to.put(key, from.get(key));
         }
         return to;
+    }
+
+    /**
+     * 排列组合
+     *
+     * @param beginArray
+     * @param endArray
+     *
+     * @return
+     */
+    public static Set<String> combination(String[] beginArray, String[] endArray) {
+        Set<String> combinationSet = new HashSet<>();
+        if ((beginArray == null || beginArray.length == 0) && (endArray == null || endArray.length == 0)) {
+            return combinationSet;
+        }
+        if (beginArray == null || beginArray.length == 0) {
+            return new HashSet<>(Arrays.asList(endArray));
+        }
+        if (endArray == null || endArray.length == 0) {
+            return new HashSet<>(Arrays.asList(beginArray));
+        }
+
+        for (String begin : beginArray) {
+            for (String end : endArray) {
+                combinationSet.add(begin + end);
+            }
+        }
+
+        return combinationSet;
     }
 }
