@@ -71,46 +71,14 @@ public class PassportInterceptor implements HandlerInterceptor {
                     (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
             System.out.println("restParam(REST):" + restParam);
             if (restParam != null && restParam.size() != 0) {
-                String owner = restParam.get("owner");
-                if (owner != null) {
-                    if (owner.equals(username)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    Set<String> keySet = restParam.keySet();
-                    Boolean result = true;
-                    for (String key : keySet) {
-                        String module = permissionService.getModuleByParamType(key, restParam.get(key));
-                        Boolean sourcePermission = permissionService.checkPermission(module, username);
-                        result = result && sourcePermission;
-                    }
-                    return result;
+                return checkSourcePermission(restParam, username);
+            } else {
+                // 问号传值鉴权
+                String queryString = request.getQueryString();
+                Map<String, String> queryParam = PipelineUtils.parseQueryString(queryString);
+                if (queryParam != null && queryParam.size() != 0) {
+                    return checkSourcePermission(queryParam, username);
                 }
-            }
-
-            // 问号传值鉴权
-            String queryString = request.getQueryString();
-            Map<String, String> queryParam = PipelineUtils.parseQueryString(queryString);
-            if (queryParam != null && queryParam.size() != 0) {
-                Set<String> keySet = queryParam.keySet();
-                String requestUrl = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-                System.out.println("requestUrl:" + requestUrl);
-                //            HandlerMethod handlerMethod = (HandlerMethod) handler;
-                //            MethodParameter[] parameters = handlerMethod.getMethodParameters();
-                //            for (int i = 0; parameters != null && parameters.length < i; i++) {
-                //                if (!keySet.contains(parameters[i].getParameterName())) {
-                //                    return false;
-                //                }
-                //            }
-                Boolean result = true;
-                for (String key : keySet) {
-                    String module = permissionService.getModuleByParamType(key, restParam.get(key));
-                    Boolean sourcePermission = permissionService.checkPermission(module, username);
-                    result = result && sourcePermission;
-                }
-                return result;
             }
         }
         return true;
@@ -128,7 +96,6 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
-
     }
 
     // TODO
@@ -141,4 +108,24 @@ public class PassportInterceptor implements HandlerInterceptor {
                 || request.getRequestURL().indexOf("html/") > 0;
     }
 
+    private Boolean checkSourcePermission(Map<String, String> resourceParam, String username) {
+        String owner = resourceParam.get("owner");
+        if (owner != null) {
+            if (owner.equals(username)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Set<String> keySet = resourceParam.keySet();
+            Boolean result = true;
+            for (String key : keySet) {
+                String module = permissionService.getModuleByParamType(key, resourceParam.get(key));
+                Boolean sourcePermission = permissionService.checkPermission(module, username);
+                result = result && sourcePermission;
+            }
+            return result;
+        }
+
+    }
 }

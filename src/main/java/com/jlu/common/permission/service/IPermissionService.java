@@ -14,6 +14,7 @@ public interface IPermissionService {
      */
     public String getModuleByParamType(String paramType, String paramValue);
 
+
     public Boolean checkPermission(String module, String username);
     /**
      * @return URL白名单

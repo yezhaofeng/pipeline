@@ -30,7 +30,21 @@ public class JenkinsConfController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean add(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
-        jenkinsConfService.saveOrUpdate(jenkinsConfDTO.toJenkinsConf(getLoginUserName()));
+        jenkinsConfService.save(jenkinsConfDTO.toJenkinsConf(getLoginUserName()));
+        return ResponseBean.TRUE;
+    }
+
+    @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.PUT)
+    public ResponseBean update(@PathVariable Long jenkinsServerId, @RequestBody JenkinsConfDTO jenkinsConfDTO) {
+        JenkinsConf jenkinsConf = jenkinsConfDTO.toJenkinsConf(getLoginUserName());
+        jenkinsConf.setId(jenkinsServerId);
+        jenkinsConfService.saveOrUpdate(jenkinsConf);
+        return ResponseBean.TRUE;
+    }
+
+    @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.DELETE)
+    public ResponseBean delete(@PathVariable Long jenkinsServerId) {
+        jenkinsConfService.delete(jenkinsServerId);
         return ResponseBean.TRUE;
     }
 
@@ -44,9 +58,14 @@ public class JenkinsConfController extends AbstractController {
         return jenkinsConf.toJenkinsConfDTO();
     }
 
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public List<JenkinsConf> getAllJenkinsServer() throws IOException {
+        return jenkinsConfService.getConfByCreateUser(getLoginUserName());
+    }
+
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)
     public List<JenkinsJobsBean> getJobs() throws IOException {
         String userName = getLoginUserName();
-        return jenkinsConfService.getByCreateUser(userName);
+        return jenkinsConfService.getJobsByCreateUser(userName);
     }
 }

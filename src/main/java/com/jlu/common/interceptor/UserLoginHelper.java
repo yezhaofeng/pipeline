@@ -3,8 +3,6 @@ package com.jlu.common.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.jlu.user.model.GithubUser;
 
 /**
@@ -47,10 +45,13 @@ public class UserLoginHelper {
 
     public static String getLoginUserName(HttpServletRequest request) {
         GithubUser githubUser = getLoginUser(request);
-        return githubUser == null ? StringUtils.EMPTY : githubUser.getUsername();
+        return githubUser == null ? "未知用户" : githubUser.getUsername();
     }
 
     public static String getLoginUserName() {
+        if (getUser() == null) {
+            return "未知用户";
+        }
         return getUser().getUsername();
     }
 

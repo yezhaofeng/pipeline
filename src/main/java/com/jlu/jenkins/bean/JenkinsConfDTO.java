@@ -1,9 +1,10 @@
 package com.jlu.jenkins.bean;
 
-import com.jlu.jenkins.model.JenkinsConf;
+import java.util.Date;
+
 import org.springframework.beans.BeanUtils;
 
-import java.util.Date;
+import com.jlu.jenkins.model.JenkinsConf;
 
 /**
  * Created by langshiquan on 18/1/10.

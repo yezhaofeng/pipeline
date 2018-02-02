@@ -3,7 +3,7 @@ package com.jlu.jenkins.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
@@ -35,5 +35,11 @@ public class JenkinsConfDaoImpl extends AbstractBaseDao<JenkinsConf> implements 
         conditionAndSet.put("deleteStatus", false);
         List<JenkinsConf> jenkinsConfList = findByProperties(conditionAndSet);
         return CollUtils.isEmpty(jenkinsConfList) ? new ArrayList<>(0) : jenkinsConfList;
+    }
+
+    @Override
+    public String findCreateUserById(Long id) {
+        JenkinsConf jenkinsConf = findById(id);
+        return jenkinsConf == null ? StringUtils.EMPTY : jenkinsConf.getCreateUser();
     }
 }

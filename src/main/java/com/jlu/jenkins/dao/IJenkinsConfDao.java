@@ -13,4 +13,6 @@ public interface IJenkinsConfDao extends IBaseDao<JenkinsConf> {
     JenkinsConf find(String serverUrl, String username, String password);
 
     List<JenkinsConf> find(String createUser);
+
+    String findCreateUserById(Long id);
 }

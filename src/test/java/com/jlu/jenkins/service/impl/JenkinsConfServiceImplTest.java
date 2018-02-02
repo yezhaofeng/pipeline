@@ -57,7 +57,7 @@ public class JenkinsConfServiceImplTest {
         jobSet.add("job1");
         jobSet.add("job2");
         when(jenkinsServerService.getJobs(Mockito.any(JenkinsServer.class))).thenReturn(jobSet);
-        List<JenkinsJobsBean> jenkinsJobsBeanList = jenkinsConfService.getByCreateUser(createUser);
+        List<JenkinsJobsBean> jenkinsJobsBeanList = jenkinsConfService.getJobsByCreateUser(createUser);
         Assert.assertEquals(1, jenkinsJobsBeanList.size());
     }
 

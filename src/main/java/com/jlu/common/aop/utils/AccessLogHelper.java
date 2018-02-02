@@ -1,13 +1,10 @@
 package com.jlu.common.aop.utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,19 +41,8 @@ public class AccessLogHelper {
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
         request.setAttribute("error", true);
-        try {
-            if (POST.equals(method) || PUT.equals(method)) {
-                BufferedReader reader = null; //请求体
-                reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                String body = IOUtils.toString(reader);
-                LOG.error("{} {} {} params:{} body:{} end,error:{}", username, method, requestUrl,
-                        queryString, body, e);
-            } else {
-                LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
-            }
-        } catch (IOException ioe) {
-            LOG.error("{} {} {} params:{} end,error:{},logError:{}", username, method, requestUrl, queryString, e, ioe);
-        }
+        LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
+
     }
 
     public static void logAccessOut(HttpServletRequest request, HttpServletResponse response) {
@@ -72,21 +58,8 @@ public class AccessLogHelper {
         String method = request.getMethod();
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
-        try {
-            if (POST.equals(method) || PUT.equals(method)) {
-                BufferedReader reader = null; //请求体
-                reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                String body = IOUtils.toString(reader);
-                ACCESS_LOG.info("{} {} {} params:{} body:{} end,duration:{}({})", username, method, requestUrl,
-                        queryString,
-                        body, executeTime, DateUtils.getRealableChineseTime(executeTime));
-            } else {
-                ACCESS_LOG.info("{} {} {} params:{} end,duration:{}({})", username, method, requestUrl, queryString,
-                        executeTime, DateUtils.getRealableChineseTime(executeTime));
-            }
-        } catch (IOException ioe) {
-            ACCESS_LOG.error("{} {} {} params:{} end,duration:{}({}) logError:{}", username, method, requestUrl,
-                    queryString, executeTime, DateUtils.getRealableChineseTime(executeTime), ioe);
-        }
+        ACCESS_LOG.info("{} {} {} params:{} end,duration:{}({})", username, method, requestUrl, queryString,
+                executeTime, DateUtils.getRealableChineseTime(executeTime));
+
     }
 }

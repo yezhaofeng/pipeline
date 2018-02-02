@@ -27,6 +27,7 @@ import com.jlu.common.utils.CollUtils;
 import com.jlu.common.utils.PackageScanUtils;
 import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.github.dao.IGitHubCommitDao;
+import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 
@@ -53,6 +54,9 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Autowired
     private IGitHubCommitDao gitHubCommitDao;
+
+    @Autowired
+    private IJenkinsConfDao jenkinsConfDao;
     /**
      * @param paramType
      * @param paramValue
@@ -68,20 +72,26 @@ public class PermissionServiceImpl implements IPermissionService {
                 }
                 return branchDao.getModuleById(Long.parseLong(paramValue));
             case "jobBuildId":
-                if (!NumberUtils.isNumber(paramType)) {
+                if (!NumberUtils.isNumber(paramValue)) {
                     return StringUtils.EMPTY;
                 }
                 return jobBuildDao.getModuleById(Long.parseLong(paramValue));
             case "pipelineConfId":
-                if (!NumberUtils.isNumber(paramType)) {
+                if (!NumberUtils.isNumber(paramValue)) {
                     return StringUtils.EMPTY;
                 }
                 return pipelineConfDao.getModuleById(Long.parseLong(paramValue));
             case "triggerId":
-                if (!NumberUtils.isNumber(paramType)) {
-                    return gitHubCommitDao.getModuleById(Long.parseLong(paramValue));
+                if (!NumberUtils.isNumber(paramValue)) {
+                    return StringUtils.EMPTY;
                 }
-                break;
+                return gitHubCommitDao.getModuleById(Long.parseLong(paramValue));
+            case "jenkinsServerId":
+                if (!NumberUtils.isNumber(paramValue)) {
+                    return StringUtils.EMPTY;
+                }
+                // jenkinsServer属于跨模块的资源，此处做一下适配，方便鉴权
+                return jenkinsConfDao.findCreateUserById(Long.parseLong(paramValue)) + "/all-module";
             default:
                 break;
         }

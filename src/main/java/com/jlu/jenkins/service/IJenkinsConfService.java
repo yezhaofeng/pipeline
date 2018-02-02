@@ -1,10 +1,10 @@
 package com.jlu.jenkins.service;
 
-import com.jlu.jenkins.bean.JenkinsJobsBean;
-import com.jlu.jenkins.model.JenkinsConf;
-
 import java.io.IOException;
 import java.util.List;
+
+import com.jlu.jenkins.bean.JenkinsJobsBean;
+import com.jlu.jenkins.model.JenkinsConf;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -16,5 +16,11 @@ public interface IJenkinsConfService {
 
     JenkinsConf get(Long id);
 
-    List<JenkinsJobsBean> getByCreateUser(String createUser) throws IOException;
+    List<JenkinsConf> getConfByCreateUser(String createUser) throws IOException;
+
+    List<JenkinsJobsBean> getJobsByCreateUser(String createUser) throws IOException;
+
+    void save(JenkinsConf jenkinsConf);
+
+    void delete(Long jenkinsServerId);
 }

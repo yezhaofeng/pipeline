@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +45,12 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
     }
 
     @Override
-    public List<JenkinsJobsBean> getByCreateUser(String createUser) throws IOException {
+    public List<JenkinsConf> getConfByCreateUser(String createUser) throws IOException {
+        return jenkinsConfDao.find(createUser);
+    }
+
+    @Override
+    public List<JenkinsJobsBean> getJobsByCreateUser(String createUser) throws IOException {
         List<JenkinsJobsBean> jenkinsJobs = new ArrayList<>();
 
         // 防止相同的jenkins配置重复出现，重写了JenkinsConf的hashcode和equals
@@ -67,5 +71,20 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
             jenkinsJobs.add(jenkinsJobsBean);
         }
         return jenkinsJobs;
+    }
+
+    @Override
+    public void save(JenkinsConf jenkinsConf) {
+        jenkinsConfDao.save(jenkinsConf);
+    }
+
+    @Override
+    public void delete(Long jenkinsServerId) {
+        JenkinsConf jenkinsConf = jenkinsConfDao.findById(jenkinsServerId);
+        if (jenkinsConf == null) {
+            return;
+        }
+        jenkinsConf.setDeleteStatus(true);
+        jenkinsConfDao.update(jenkinsConf);
     }
 }
