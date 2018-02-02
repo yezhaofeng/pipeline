@@ -21,6 +21,7 @@
         <!--排除Service,Repository注解-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:exclude-filter type="annotation" expression="javax.annotation.PostConstruct"/>
     </context:component-scan>
 
     <!--定义静态资源-->
