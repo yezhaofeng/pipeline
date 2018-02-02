@@ -34,13 +34,8 @@ public class AccessLogHelper {
         String method = request.getMethod();
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
-        if (POST.equals(method)) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream())); //请求体
-            String body = IOUtils.toString(reader);
-            ACCESS_LOG.info("{} {} {} params:{} body:{} start", username, method, requestUrl, queryString, body);
-        } else {
-            ACCESS_LOG.info("{} {} {} params:{} start", username, method, requestUrl, queryString);
-        }
+        ACCESS_LOG.info("{} {} {} params:{} start", username, method, requestUrl, queryString);
+
     }
 
     public static void logAccessErrorOut(HttpServletRequest request, HttpServletResponse response, Exception e) {
