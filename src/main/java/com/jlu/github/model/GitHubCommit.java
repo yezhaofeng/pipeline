@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.jlu.branch.bean.BranchType;
-import com.jlu.common.utils.PipelineConfig;
+import com.jlu.common.utils.PipelineConfigReader;
 
 /**
  * Created by niuwanpeng on 17/4/25.
@@ -181,7 +181,7 @@ public class GitHubCommit {
     }
 
     public String getTreeUrl() {
-        return PipelineConfig.getConfigValueByKey("github.user.home") + owner + "/" + module + "/tree/" + commitId;
+        return PipelineConfigReader.getConfigValueByKey("github.user.home") + owner + "/" + module + "/tree/" + commitId;
     }
 
     @Override

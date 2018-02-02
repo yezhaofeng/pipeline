@@ -15,6 +15,8 @@ import com.jlu.pipeline.model.PipelineConf;
 public interface IPipelineBuildService {
     void build(Long pipelineConfId);
 
+    void rebuild(Long triggerId);
+
     void build(Long pipelineConfId, Long triggerId);
 
     void build(Long pipelineConfId, GitHubCommit gitHubCommit);

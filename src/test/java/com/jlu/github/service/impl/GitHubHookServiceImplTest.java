@@ -217,7 +217,7 @@ public class GitHubHookServiceImplTest {
     @Test
     public void testDealHookMessage()
             throws JSONException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Mockito.when(moduleService.getModuleByUserAndModule(Mockito.anyString(), Mockito.anyString()))
+        Mockito.when(moduleService.get(Mockito.anyString()))
                 .thenReturn(new Module());
         Method getCommitByHookMethod = gitHubHookService.getClass().getDeclaredMethod("getCommitByHook", JSONObject
                 .class);

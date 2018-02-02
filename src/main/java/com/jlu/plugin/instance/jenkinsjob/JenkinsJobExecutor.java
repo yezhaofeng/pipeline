@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlu.jenkins.exception.JenkinsRuntimeException;
+import com.jlu.jenkins.exception.JenkinsException;
 import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.pipeline.job.model.JobBuild;
@@ -52,7 +52,7 @@ public class JenkinsJobExecutor extends AbstractExecutor {
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "通讯异常");
             return;
-        } catch (JenkinsRuntimeException jre) {
+        } catch (JenkinsException jre) {
             notifyJobStartFailed(jobBuild, jre.getMessage());
             return;
         } catch (Exception e) {

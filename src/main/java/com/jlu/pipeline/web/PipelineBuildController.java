@@ -33,7 +33,12 @@ public class PipelineBuildController extends AbstractController {
         return pipelineBuildService.getPipelineBuildBean(ModuleUtils.getFullModule(owner, repository), branchType);
     }
 
-    @Deprecated
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseBean rebuild(@RequestParam Long triggerId) {
+        pipelineBuildService.rebuild(triggerId);
+        return ResponseBean.TRUE;
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean build(@RequestParam Long pipelineConfId,
                               @RequestParam(required = false, defaultValue = "0") Long

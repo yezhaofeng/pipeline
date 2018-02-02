@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.jlu.common.utils.PipelineConfig;
+import com.jlu.common.utils.PipelineConfigReader;
 
 /**
  * Created by niuwanpeng on 17/3/10.
@@ -80,6 +80,6 @@ public class Module {
     }
 
     public String getGithubHome() {
-        return String.format(PipelineConfig.getConfigValueByKey("github.module.home"), this.owner, this.module);
+        return String.format(PipelineConfigReader.getConfigValueByKey("github.module.home"), this.owner, this.module);
     }
 }

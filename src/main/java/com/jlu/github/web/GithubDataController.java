@@ -79,14 +79,14 @@ public class GithubDataController {
      * 配置新的模块
      *
      * @param repository
-     * @param username
+     * @param owner
      * @return
      */
     @RequestMapping(value = "/addModule", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBean addModule(@RequestParam(value = "repository") String repository,
-                                  @RequestParam(value = "username") String username) {
-        githubDataService.addModule(username, repository);
+                                  @RequestParam(value = "owner") String owner) {
+        githubDataService.addModule(owner, repository);
         return ResponseBean.TRUE;
     }
 

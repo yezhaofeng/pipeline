@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.common.utils.DateUtils;
-import com.jlu.jenkins.exception.JenkinsRuntimeException;
+import com.jlu.jenkins.exception.JenkinsException;
 import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.pipeline.job.bean.JobParameter;
@@ -73,7 +73,7 @@ public class CompileExecutor extends AbstractExecutor {
             jobBuild.setMessage("网络异常");
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             return;
-        } catch (JenkinsRuntimeException jre) {
+        } catch (JenkinsException jre) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage(jre.getMessage());
             return;

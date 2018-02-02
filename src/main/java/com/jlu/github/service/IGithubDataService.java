@@ -11,13 +11,6 @@ import com.jlu.user.model.GithubUser;
 public interface IGithubDataService {
 
     /**
-     * 根据用户名获得GitHub代码仓库信息并保存
-     * @param userBean
-     * @return
-     */
-    void syncReposByUser(UserBean userBean);
-
-    /**
      * 根据用户注册信息初始化用户
      * @param userBean
      * @return

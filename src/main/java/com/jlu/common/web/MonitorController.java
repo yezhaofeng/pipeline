@@ -9,10 +9,10 @@ import com.jlu.common.permission.annotations.PermissionPass;
 /**
  * Created by langshiquan on 18/1/28.
  */
+@PermissionPass
 @RestController
 public class MonitorController {
 
-    @PermissionPass
     @RequestMapping(value = "/monitor", method = RequestMethod.GET)
     public String monitor() {
         return "ok";

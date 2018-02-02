@@ -100,7 +100,7 @@ public class PermissionServiceImpl implements IPermissionService {
                 } else {
                     parentUrls = requestMappingAnno.value();
                 }
-                // 如果类上面加了PermissionAdmin注解，则类下面所有url全部都不需要鉴权。
+                // 如果类上面加了PermissionAdmin注解，则类下面所有url全部都不需要鉴权
                 Boolean isClassPermissionPass = controllerClass.isAnnotationPresent(annotationClass);
                 if (isClassPermissionPass) {
                     Method[] methods = controllerClass.getDeclaredMethods();

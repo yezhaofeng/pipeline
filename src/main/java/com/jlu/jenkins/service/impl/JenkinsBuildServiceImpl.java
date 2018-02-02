@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.jenkins.dao.IJenkinsConfDao;
-import com.jlu.jenkins.exception.JenkinsRuntimeException;
-import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
+import com.jlu.jenkins.exception.JenkinsException;
+import com.jlu.jenkins.exception.JenkinsExceptionEnum;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
@@ -52,7 +52,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
                 jenkinsConf.getMasterUser(), jenkinsConf.getMasterPassword());
         Boolean isExists = jenkinsServerService.isExists(jenkinsServer, jobName);
         if (!isExists) {
-            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.NOT_FOUND_JOB);
+            throw new JenkinsException(JenkinsExceptionEnum.NOT_FOUND_JOB);
         }
         Long lastSuccessfulBuildDuration = jenkinsServerService.getLastSuccessfulBuildDuration(jenkinsServer, jobName);
         Long delay = lastSuccessfulBuildDuration / 2;
@@ -71,7 +71,7 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
                                        BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException {
         if (buildWithDetails == null) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            jobBuild.setMessage(JenkinsRuntimeExceptionEnum.NETWORK_UNREACHABLE.name());
+            jobBuild.setMessage(JenkinsExceptionEnum.NETWORK_UNREACHABLE.name());
             pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
             return;
         }

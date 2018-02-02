@@ -18,7 +18,7 @@ import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
 import com.jlu.common.utils.ModuleUtils;
-import com.jlu.common.utils.PipelineConfig;
+import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
 import com.jlu.github.bean.GithubRepoBean;
@@ -77,11 +77,10 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @param userBean
      * @return
      */
-    @Override
-    public void syncReposByUser(UserBean userBean) {
+    private void syncReposByUser(UserBean userBean) {
         String username = userBean.getUsername();
         List<String> reposName = userBean.getSyncRepos();
-        String requestRepoUrl = String.format(PipelineConfig.getConfigValueByKey("github.repos"), username);
+        String requestRepoUrl = String.format(PipelineConfigReader.getConfigValueByKey("github.repos"), username);
         String result = HttpClientUtil.get(requestRepoUrl, null);
         List<GithubRepoBean> repoList = GSON.fromJson(result, new TypeToken<List<GithubRepoBean>>() {
         }.getType());
@@ -101,7 +100,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      */
     @Override
     public void creatHooks(String username, String repo, String githubToken) {
-        String repoUrl = String.format(PipelineConfig.getConfigValueByKey("github.all.hooks"), username, repo);
+        String repoUrl = String.format(PipelineConfigReader.getConfigValueByKey("github.all.hooks"), username, repo);
         HttpClientAuth.postForCreateHook(repoUrl, githubToken);
     }
 
@@ -169,7 +168,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      * @param username
      */
     private void initBranch(Module module, String username) {
-        String requestBranchUrl = String.format(PipelineConfig.getConfigValueByKey("github.repo.branches"),
+        String requestBranchUrl = String.format(PipelineConfigReader.getConfigValueByKey("github.repo.branches"),
                 username, module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
         List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>() {
@@ -209,7 +208,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
     @Deprecated
     private void initOneCommit(String userName, Module module, String branchName) {
         String requestBranchUrl
-                = String.format(PipelineConfig.getConfigValueByKey("github.repo.commits"),
+                = String.format(PipelineConfigReader.getConfigValueByKey("github.repo.commits"),
                 userName, module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
         List<GithubFirstCommitBean> commits = GSON.fromJson(result, new TypeToken<List<GithubFirstCommitBean>>() {

@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jlu.jenkins.exception.JenkinsRuntimeException;
+import com.jlu.jenkins.exception.JenkinsException;
 import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.pipeline.job.bean.JobParameter;
@@ -112,7 +112,7 @@ public class ReleaseExecutor extends AbstractExecutor {
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "网络异常");
             return;
-        } catch (JenkinsRuntimeException jre) {
+        } catch (JenkinsException jre) {
             notifyJobStartFailed(jobBuild, jre.getMessage());
             return;
         } catch (Exception e) {

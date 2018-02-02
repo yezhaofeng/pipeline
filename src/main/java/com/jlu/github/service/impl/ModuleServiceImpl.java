@@ -39,14 +39,14 @@ public class ModuleServiceImpl implements IModuleService{
 
     /**
      * 批量保存模块信息
-     * @param list
+     * @param modules
      */
     @Override
-    public void saveModules(List<Module> list) {
-        if (list == null) {
+    public void saveModules(List<Module> modules) {
+        if (modules == null) {
             return;
         }
-        for (Module module : list) {
+        for (Module module : modules) {
             Module moduleInDb = get(module.getModule());
             if (moduleInDb != null) {
                 continue;
@@ -79,25 +79,6 @@ public class ModuleServiceImpl implements IModuleService{
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("owner", username);
         return moduleDao.findByProperties(conditionAndSet);
-    }
-
-    /**
-     * 通过用户名和模块名获得模块信息
-     * @param username
-     * @param module
-     * @return
-     */
-    @Deprecated
-    @Override
-    public Module getModuleByUserAndModule(String username, String module) {
-        ConditionAndSet conditionAndSet = new ConditionAndSet();
-        conditionAndSet.put("owner", username);
-        conditionAndSet.put("module", module);
-        List<Module> modules = moduleDao.findByProperties(conditionAndSet);
-        if (modules != null && modules.size() != 0) {
-            return modules.get(0);
-        }
-        return null;
     }
 
     @Override

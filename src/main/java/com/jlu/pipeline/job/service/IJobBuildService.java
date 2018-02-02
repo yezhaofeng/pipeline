@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.JobConfBean;
-import com.jlu.pipeline.job.bean.JobRuntimeDTO;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.plugin.runtime.bean.RunTimeBean;

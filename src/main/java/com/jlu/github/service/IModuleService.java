@@ -23,9 +23,9 @@ public interface IModuleService {
 
     /**
      * 批量保存模块信息
-     * @param list
+     * @param modules
      */
-    void saveModules(List<Module> list);
+    void saveModules(List<Module> modules);
 
     /**
      * 搜索模块
@@ -42,15 +42,6 @@ public interface IModuleService {
      * @return
      */
     List<Module> getModulesByUsername(String username);
-
-    /**
-     * 通过用户名和模块名获得模块信息
-     * @param username
-     * @param module
-     * @return
-     */
-    @Deprecated
-    Module getModuleByUserAndModule(String username, String module);
 
     Module get(String module);
 }

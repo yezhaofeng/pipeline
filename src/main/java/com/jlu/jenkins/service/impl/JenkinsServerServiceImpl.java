@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.utils.DateUtils;
-import com.jlu.jenkins.exception.JenkinsRuntimeException;
-import com.jlu.jenkins.exception.JenkinsRuntimeExceptionEnum;
+import com.jlu.jenkins.exception.JenkinsException;
+import com.jlu.jenkins.exception.JenkinsExceptionEnum;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
@@ -89,20 +89,20 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         String why = queueItem.getWhy();
         logger.info("job-{} build info :{}", job.getUrl(), why);
         if (why != null) {
-            throw new JenkinsRuntimeException(formatWhy(why));
+            throw new JenkinsException(formatWhy(why));
         }
         Build build = jenkinsServer.getBuild(queueItem);
         return build.getNumber();
     }
 
-    private JenkinsRuntimeExceptionEnum formatWhy(String why) {
+    private JenkinsExceptionEnum formatWhy(String why) {
 
         if (why.contains("offline")) {
-            return JenkinsRuntimeExceptionEnum.SLAVE_OFFLINE;
+            return JenkinsExceptionEnum.SLAVE_OFFLINE;
         } else if (why.contains("no nodes")) {
-            return JenkinsRuntimeExceptionEnum.SLAVE_NOT_FOUND;
+            return JenkinsExceptionEnum.SLAVE_NOT_FOUND;
         } else {
-            return JenkinsRuntimeExceptionEnum.UNKOWN;
+            return JenkinsExceptionEnum.UNKOWN;
         }
     }
 
@@ -129,13 +129,13 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         try {
             uri = new URI(serverUrl);
         } catch (URISyntaxException e) {
-            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.WRONG_URL);
+            throw new JenkinsException(JenkinsExceptionEnum.WRONG_URL);
 
         }
         JenkinsServer jenkinsServer = new JenkinsServer(uri, username, password);
         Boolean isRunning = jenkinsServer.isRunning();
         if (!isRunning) {
-            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.SERVER_INIT_FAILED);
+            throw new JenkinsException(JenkinsExceptionEnum.SERVER_INIT_FAILED);
         }
         return jenkinsServer;
     }
@@ -146,7 +146,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         Job job = jenkinsServer.getJob(jobName);
         QueueReference queueReference = job.build();
         if (queueReference == null) {
-            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.SLAVE_OFFLINE);
+            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_OFFLINE);
         }
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         Build build = jenkinsServer.getBuild(queueItem);
@@ -162,7 +162,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         String why = queueItem.getWhy();
         if (why != null && why.contains("offline")) {
-            throw new JenkinsRuntimeException(JenkinsRuntimeExceptionEnum.SLAVE_OFFLINE);
+            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_OFFLINE);
         }
         Build build = jenkinsServer.getBuild(queueItem);
         return build.getNumber();

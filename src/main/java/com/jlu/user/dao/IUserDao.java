@@ -9,6 +9,6 @@ import com.jlu.user.model.GithubUser;
  */
 public interface IUserDao extends IBaseDao<GithubUser> {
 
-    GithubUser get(String username, Role admin);
+    GithubUser get(String username, Role role);
 
 }

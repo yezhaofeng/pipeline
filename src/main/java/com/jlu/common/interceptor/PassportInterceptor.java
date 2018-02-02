@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jlu.common.utils.PipelineConfig;
+import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
@@ -26,7 +26,7 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        if (Switch.OFF.toString().equals(PipelineConfig.getConfigValueByKey("authorization.switch"))) {
+        if (Switch.OFF.toString().equals(PipelineConfigReader.getConfigValueByKey("authorization.switch"))) {
             return true;
         }
         if (isStaticResource(request)) {

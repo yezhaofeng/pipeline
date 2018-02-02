@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 
 import com.jlu.branch.bean.BranchType;
 import com.jlu.common.aop.annotations.LogExecTime;
-import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.utils.DateUtils;
 import com.jlu.common.utils.ModuleUtils;
-import com.jlu.common.utils.PipelineConfig;
+import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -70,6 +70,16 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     @Override
     public void build(Long pipelineConfId) {
         PipelineConf pipelineConf = pipelineConfService.getPipelineConf(pipelineConfId);
+        Long pipelineBuildId = initPipelineBuild(pipelineConf);
+        jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, UserLoginHelper.getLoginUserName());
+    }
+
+    @Override
+    public void rebuild(Long triggerId) {
+        GitHubCommit gitHubCommit = gitHubCommitService.get(triggerId);
+        String module = gitHubCommit.getModule();
+        BranchType branchType = gitHubCommit.getBranchType();
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
         Long pipelineBuildId = initPipelineBuild(pipelineConf);
         jobBuildService.buildTopJob(pipelineBuildId, TriggerMode.AUTO, UserLoginHelper.getLoginUserName());
     }
@@ -236,7 +246,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         params.put(JobParameter.PIPELINE_BUILD_NUMBER, String.valueOf(pipelineBuild.getBuildNumber()));
         params.put(JobParameter.PIPELINE_COMMIT_COMMENTS, gitHubCommit.getCommits());
         params.put(JobParameter.PIPELINE_MODULE, pipelineBuild.getModule());
-        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(PipelineConfig.getConfigValueByKey
+        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(PipelineConfigReader.getConfigValueByKey
                 ("github.base.repo"), gitHubCommit.getOwner(), gitHubCommit.getModule()));
         params.put(JobParameter.PIPELINE_START_TIME, DateUtils.format(pipelineBuild.getStartTime()));
         params.put(JobParameter.PIPELINE_TRIGGER_USER, pipelineBuild.getTriggerUser());

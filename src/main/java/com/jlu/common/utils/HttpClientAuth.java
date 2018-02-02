@@ -43,7 +43,7 @@ public class HttpClientAuth {
         httpPost.addHeader("Authorization", "token " + token);
         String result = "";
         try {
-            String params = "{\"name\": \"web\",\"active\": true,\"events\": [\"push\"],\"config\": {\"url\": \"" + PipelineConfig
+            String params = "{\"name\": \"web\",\"active\": true,\"events\": [\"push\"],\"config\": {\"url\": \"" + PipelineConfigReader
 
                     .getConfigValueByKey("cihome.receive.hook") + "\", \"content_type\": \"json\"}}";
             StringEntity entityParams = new StringEntity(params,"utf-8");
@@ -117,7 +117,7 @@ public class HttpClientAuth {
      * @return
      */
     public static String curlCreatHook(String username, String password, String url) {
-        String params = "{\"name\": \"web\",\"active\": true,\"events\": [\"push\"],\"config\": {\"url\": \"" + PipelineConfig
+        String params = "{\"name\": \"web\",\"active\": true,\"events\": [\"push\"],\"config\": {\"url\": \"" + PipelineConfigReader
                 .getConfigValueByKey("cihome.receive.hook") + "\", \"content_type\": \"json\"}}";
         String []cmds = {"curl", "-s", "-u", username + ":" + password, "-X", "POST", "--data", params, url};
         return curlByCMD(cmds);

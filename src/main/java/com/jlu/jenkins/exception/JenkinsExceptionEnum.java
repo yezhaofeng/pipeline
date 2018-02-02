@@ -3,14 +3,14 @@ package com.jlu.jenkins.exception;
 /**
  * Created by langshiquan on 18/1/10.
  */
-public enum JenkinsRuntimeExceptionEnum {
+public enum JenkinsExceptionEnum {
     WRONG_URL("Jenkins URL不合法"), SERVER_INIT_FAILED("Jenkins服务不在线或者帐号密码错误"),
     NETWORK_UNREACHABLE("通讯异常"), NOT_FOUND_JOB("未找到Job"), SLAVE_OFFLINE("slave节点已下线"), UNKOWN("调起Job失败"),
     SLAVE_NOT_FOUND("未找到slave节点");
 
     String message;
 
-    JenkinsRuntimeExceptionEnum(String message) {
+    JenkinsExceptionEnum(String message) {
         this.message = message;
     }
 }
