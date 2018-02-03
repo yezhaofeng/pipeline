@@ -29,12 +29,12 @@ public class ModuleController {
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     @ResponseBody
     public List<Module> getSuggetsModules(@RequestParam(value = "q", required = false) String query,
-                                          @RequestParam(value = "username") String username,
+                                          @RequestParam String owner,
                                           @RequestParam Integer limit) {
         List<Module> modules = new ArrayList<Module>();
         if (StringUtils.isNotBlank(query)) {
             String pathStr = new String(query);
-            modules = moduleService.getSuggestProductModules(pathStr, username, limit);
+            modules = moduleService.getSuggestProductModules(pathStr, owner, limit);
         }
         if (null == modules) {
             modules = new ArrayList<>();

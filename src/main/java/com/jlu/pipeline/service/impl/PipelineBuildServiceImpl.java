@@ -19,8 +19,8 @@ import com.jlu.common.aop.annotations.LogExecTime;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.utils.DateUtils;
-import com.jlu.common.utils.PipelineUtils;
 import com.jlu.common.utils.PipelineConfigReader;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 import com.jlu.pipeline.bean.PipelineBuildBean;
@@ -220,7 +220,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         pipelineBuild.setBranch(gitHubCommit.getBranch());
         Long buildNumber = IPipelineBuildDao.getNextBuildNumber(gitHubCommit.getModule());
         pipelineBuild.setBuildNumber(buildNumber);
-        pipelineBuild.setModule(PipelineUtils.getFullModule(gitHubCommit.getModule(), gitHubCommit.getOwner()));
+        pipelineBuild.setModule(gitHubCommit.getModule());
         pipelineBuild.setBranch(gitHubCommit.getBranch());
         pipelineBuild.setCheckinAuthor(gitHubCommit.getCommitter());
         pipelineBuild.setStartTime(new Date());
@@ -246,8 +246,9 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         params.put(JobParameter.PIPELINE_BUILD_NUMBER, String.valueOf(pipelineBuild.getBuildNumber()));
         params.put(JobParameter.PIPELINE_COMMIT_COMMENTS, gitHubCommit.getCommits());
         params.put(JobParameter.PIPELINE_MODULE, pipelineBuild.getModule());
-        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL, String.format(PipelineConfigReader.getConfigValueByKey
-                ("github.base.repo"), gitHubCommit.getOwner(), gitHubCommit.getModule()));
+        params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL,
+                String.format(PipelineConfigReader.getConfigValueByKey("github.base.repo"), gitHubCommit.getOwner(),
+                        PipelineUtils.getRepoNameByModule(gitHubCommit.getModule())));
         params.put(JobParameter.PIPELINE_START_TIME, DateUtils.format(pipelineBuild.getStartTime()));
         params.put(JobParameter.PIPELINE_TRIGGER_USER, pipelineBuild.getTriggerUser());
         params.put(JobParameter.PIPELINE_CHECKIN_AUTHOR, pipelineBuild.getCheckinAuthor());

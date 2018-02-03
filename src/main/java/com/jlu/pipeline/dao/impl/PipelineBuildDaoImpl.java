@@ -34,7 +34,8 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
     public List<PipelineBuild> get(Long pipelineConfId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
-        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet);
+        DescOrder descOrder = new DescOrder("id");
+        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet,descOrder);
         return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 }

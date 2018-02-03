@@ -1,5 +1,7 @@
 package com.jlu.user.web;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -9,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,10 +66,15 @@ public class LoginController {
     // 根据用户注册信息初始化用户
     @RequestMapping(value = "/initUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean initUser(@RequestBody UserBean userBean, HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ResponseBean initUser(UserBean userBean, HttpServletRequest request,
+                                 HttpServletResponse response) throws IOException {
+        if (!githubOAuthService.checkRegisterToken(userBean.getRegisterToken())) {
+            throw new ForbiddenException("鉴权失败");
+        }
+
         GithubUser githubUser = githubDataService.initUser(userBean);
         request.getSession().setAttribute(GithubUser.CURRENT_USER_NAME, githubUser);
+        response.sendRedirect("/");
         return ResponseBean.TRUE;
     }
 

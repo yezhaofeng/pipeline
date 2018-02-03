@@ -13,6 +13,7 @@ import com.jlu.user.model.GithubUser;
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBean {
 
+    private String token;
     //    @NotNull
     private String username;
 
@@ -27,7 +28,25 @@ public class UserBean {
 
     private List<String> syncRepos;
 
+    private String registerToken;
+
     public UserBean() {
+    }
+
+    public String getRegisterToken() {
+        return registerToken;
+    }
+
+    public void setRegisterToken(String registerToken) {
+        this.registerToken = registerToken;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getUsername() {

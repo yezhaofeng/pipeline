@@ -17,8 +17,8 @@ import com.jlu.branch.service.IBranchService;
 import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.utils.HttpClientAuth;
 import com.jlu.common.utils.HttpClientUtil;
-import com.jlu.common.utils.PipelineUtils;
 import com.jlu.common.utils.PipelineConfigReader;
+import com.jlu.common.utils.PipelineUtils;
 import com.jlu.github.bean.GithubBranchBean;
 import com.jlu.github.bean.GithubFirstCommitBean;
 import com.jlu.github.bean.GithubRepoBean;
@@ -153,7 +153,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
                 continue;
             }
             String repoName = repoList.get(i).getName();
-            Module module = new Module(PipelineUtils.getFullModule(repoName, username), username, repoName);
+            Module module = new Module(PipelineUtils.getFullModule(username, repoName), username, repoName);
             modules.add(module);
         }
 

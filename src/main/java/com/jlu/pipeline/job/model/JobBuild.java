@@ -16,6 +16,7 @@ import javax.persistence.Lob;
 import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.plugin.bean.PluginType;
@@ -40,10 +41,12 @@ public class JobBuild {
     @Enumerated(EnumType.STRING)
     protected PipelineJobStatus jobStatus;
 
+    @JsonIgnore
     @Lob
     @Column(columnDefinition = "TEXT")
     protected String inParams;
 
+    @JsonIgnore
     @Lob
     @Column(columnDefinition = "TEXT")
     protected String outParams;

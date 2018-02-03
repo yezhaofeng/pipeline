@@ -3,7 +3,6 @@ package com.jlu.common.utils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 
 import com.jlu.common.exception.PipelineRuntimeException;
@@ -18,6 +17,18 @@ public class PipelineUtils {
         }
         return owner + "/" + repository;
     }
+
+    public static String getRepoNameByModule(String module) {
+        if (StringUtils.isBlank(module)) {
+            throw new PipelineRuntimeException("模块名字不合法");
+        }
+        String[] elements = module.split("/");
+        if (elements.length != 2) {
+            throw new PipelineRuntimeException("模块名字不合法");
+        }
+        return elements[1];
+    }
+
 
     public static Map<String, String> parseQueryString(String queryString) {
         Map<String, String> queryParam = new LinkedHashMap<>();

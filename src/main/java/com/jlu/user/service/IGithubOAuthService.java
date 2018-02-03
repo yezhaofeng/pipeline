@@ -20,4 +20,6 @@ public interface IGithubOAuthService {
      * @return 该用户是否存在
      */
     Boolean handleCallback(String code, Model model, HttpSession session);
+
+    Boolean checkRegisterToken(String registerToken);
 }

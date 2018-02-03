@@ -1,6 +1,5 @@
 package com.jlu.common.utils;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,6 +13,11 @@ import org.junit.runners.BlockJUnit4ClassRunner;
  */
 @RunWith(BlockJUnit4ClassRunner.class)
 public class PipelineUtilsTest {
+    @Test
+    public void testGetRepoNameByModule() {
+        Assert.assertEquals("devops", PipelineUtils.getRepoNameByModule("z521598/devops"));
+    }
+
     @Test
     public void testGetFullModule() {
         Assert.assertEquals("z521598/devops", PipelineUtils.getFullModule("z521598", "devops"));

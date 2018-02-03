@@ -19,9 +19,9 @@ import com.jlu.plugin.runtime.RuntimeRequire;
 @Entity
 public class ReleaseBuild {
 
-    private static final String WGET_COMMAND_PREFIX = "wget -r -nH --level=0 --cut-dirs=6 ";
+    private static final String WGET_COMMAND_PREFIX = "wget -r -nH --level=0 --cut-dirs=3 ";
     private static final String WGET_COMMAND_SUFFIX =
-            "/output --user release --password release@123 --preserve-permissions";
+            " --user release --password release@123 --preserve-permissions";
 
     public static final AbstractPropertyGetter<String, ReleaseBuild> VERSION_GETTER =
             new AbstractPropertyGetter<String, ReleaseBuild>() {

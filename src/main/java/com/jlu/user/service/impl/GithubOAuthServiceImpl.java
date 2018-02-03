@@ -32,6 +32,7 @@ import com.jlu.user.service.IUserService;
 public class GithubOAuthServiceImpl implements IGithubOAuthService {
     private Logger logger = LoggerFactory.getLogger(IGithubOAuthService.class);
     private final Vector<String> stateList = new Vector<>();
+    private final Vector<String> registerTokenList = new Vector<>();
     @Autowired
     private IUserService userService;
 
@@ -73,6 +74,7 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
             String avatarUrl = userInfoMap.get("avatar_url");
             String githubHome = userInfoMap.get("html_url");
             String email = userInfoMap.get("email");
+            String registerToken = UUID.randomUUID().toString();
             String result = HttpClientUtil.get(reposUrl, null);
             List<GithubRepoBean> repoList = new Gson().fromJson(result, new TypeToken<List<GithubRepoBean>>() {
             }.getType());
@@ -82,10 +84,22 @@ public class GithubOAuthServiceImpl implements IGithubOAuthService {
             model.addAttribute("avatarUrl", avatarUrl);
             model.addAttribute("githubHome", githubHome);
             model.addAttribute("email", email);
+            model.addAttribute("registerToken", registerToken);
+            registerTokenList.add(registerToken);
             return false;
         } else {
             session.setAttribute(GithubUser.CURRENT_USER_NAME, githubUser);
             return true;
         }
+    }
+
+    @Override
+    public Boolean checkRegisterToken(String registerToken) {
+        if (registerTokenList.contains(registerToken)) {
+            registerTokenList.remove(registerToken);
+            logger.info("state:{} has callback,current cache size:{}", registerToken, registerTokenList.size());
+            return true;
+        }
+        return false;
     }
 }

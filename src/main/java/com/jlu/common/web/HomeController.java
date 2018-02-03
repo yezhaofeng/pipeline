@@ -9,7 +9,7 @@ import com.jlu.common.permission.annotations.PermissionPass;
 /**
  * Created by Administrator on 2017/8/4.
  */
-@PermissionPass
+
 @Controller
 public class HomeController {
 
@@ -18,6 +18,7 @@ public class HomeController {
         return "home";
     }
 
+    @PermissionPass
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login() {
         return "login";
