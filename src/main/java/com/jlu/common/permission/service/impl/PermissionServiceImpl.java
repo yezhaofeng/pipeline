@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -123,6 +124,22 @@ public class PermissionServiceImpl implements IPermissionService {
         return adminUrlList;
     }
 
+    @Override
+    public Boolean isStaticResource(HttpServletRequest request) {
+
+        return request.getRequestURL().indexOf("resources/") > 0
+                || request.getRequestURL().indexOf("static/") > 0
+                || request.getRequestURL().indexOf("css/") > 0
+                || request.getRequestURL().indexOf("js/") > 0
+                || request.getRequestURL().indexOf("images/") > 0
+                || request.getRequestURL().indexOf("html/") > 0
+                || request.getRequestURL().indexOf("error/") > 0
+                || request.getRequestURL().indexOf("resource/") > 0
+                || request.getRequestURL().indexOf("favicon.ico") > 0
+                || request.getRequestURL().indexOf("webjars") > 0;
+
+    }
+
     @PostConstruct
     public void initWhiteListUrl() {
         initSetBySpringMvcAnnotation(PERMISSION_PASS_CLASS_PATTERN, PermissionPass.class, whiteUrlList);
@@ -131,6 +148,7 @@ public class PermissionServiceImpl implements IPermissionService {
             whiteUrlList.add(Swagger2Config.JSON_URL);
             whiteUrlList.add(Swagger2Config.UI_URL);
             whiteUrlList.add("/mock/userLogin");
+            whiteUrlList.add("/swagger-ui.html");
         }
         logger.info("admin ulr list:{}", whiteUrlList);
 
@@ -142,6 +160,7 @@ public class PermissionServiceImpl implements IPermissionService {
         // 线上环境
         if (EnvType.ONLINE.toString().equals(PipelineConfigReader.getConfigValueByKey("env.type"))) {
             adminUrlList.add(Swagger2Config.JSON_URL);
+            adminUrlList.add("/swagger-ui.html");
         }
 
         logger.info("white ulr list:{}", adminUrlList);

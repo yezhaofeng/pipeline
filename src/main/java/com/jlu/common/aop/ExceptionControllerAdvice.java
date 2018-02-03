@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.jlu.common.permission.exception.ForbiddenException;
-import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.aop.utils.AccessLogHelper;
+import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.web.ResponseBean;
 
 /**
@@ -25,10 +24,9 @@ public class ExceptionControllerAdvice {
     // 403
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView forbiddenExceptionHandler(ForbiddenException fbex) {
-        ModelAndView mv = new ModelAndView("403");
-        mv.addObject("message", fbex.getMessage());
-        return mv;
+    @ResponseBody
+    public ResponseBean forbiddenExceptionHandler(ForbiddenException fbex) {
+        return ResponseBean.fail(fbex.getMessage());
     }
 
     // 400

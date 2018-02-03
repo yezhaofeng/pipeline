@@ -14,21 +14,21 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jlu.common.aop.annotations.LogExecTime;
+import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.permission.service.IPermissionService;
 import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.common.utils.PipelineUtils;
 import com.jlu.user.bean.Role;
 import com.jlu.user.model.GithubUser;
-import com.jlu.user.service.IUserService;
 
 public class PassportInterceptor implements HandlerInterceptor {
 
     private static Logger logger = LoggerFactory.getLogger(PassportInterceptor.class);
     @Autowired
-    private IUserService userService;
-    @Autowired
     private IPermissionService permissionService;
 
+    @LogExecTime
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -37,7 +37,7 @@ public class PassportInterceptor implements HandlerInterceptor {
             return true;
         }
         // 静态资源,放行
-        if (isStaticResource(request)) {
+        if (permissionService.isStaticResource(request)) {
             return true;
         }
         String uri = request.getRequestURI();
@@ -61,7 +61,7 @@ public class PassportInterceptor implements HandlerInterceptor {
 
         // 普通用户不允许访问管理员url
         if (permissionService.getAdminUrlList().contains(uri)) {
-            return false;
+            throw new ForbiddenException("这根香蕉你没权限吃，请联系管理员");
         }
 
         // 校验具体的资源权限
@@ -69,15 +69,22 @@ public class PassportInterceptor implements HandlerInterceptor {
             // REST传值鉴权
             Map<String, String> restParam =
                     (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-            System.out.println("restParam(REST):" + restParam);
             if (restParam != null && restParam.size() != 0) {
-                return checkSourcePermission(restParam, username);
+                Boolean res = checkSourcePermission(restParam, username);
+                if (res == false) {
+                    throw new ForbiddenException("你没权限吃其他人的香蕉");
+                }
+                return true;
             } else {
                 // 问号传值鉴权
                 String queryString = request.getQueryString();
                 Map<String, String> queryParam = PipelineUtils.parseQueryString(queryString);
                 if (queryParam != null && queryParam.size() != 0) {
-                    return checkSourcePermission(queryParam, username);
+                    Boolean res = checkSourcePermission(queryParam, username);
+                    if (res == false) {
+                        throw new ForbiddenException("你没权限吃其他人的香蕉");
+                    }
+                    return true;
                 }
             }
         }
@@ -87,25 +94,11 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
-        if (isStaticResource(request)) {
-            return;
-        }
-        UserLoginHelper.destory();
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
-    }
-
-    // TODO
-    protected boolean isStaticResource(HttpServletRequest request) {
-        return request.getRequestURL().indexOf("resources/") > 0
-                || request.getRequestURL().indexOf("static/") > 0
-                || request.getRequestURL().indexOf("css/") > 0
-                || request.getRequestURL().indexOf("js/") > 0
-                || request.getRequestURL().indexOf("images/") > 0
-                || request.getRequestURL().indexOf("html/") > 0;
     }
 
     private Boolean checkSourcePermission(Map<String, String> resourceParam, String username) {

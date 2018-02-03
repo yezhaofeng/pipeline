@@ -2,6 +2,8 @@ package com.jlu.common.permission.service;
 
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by langshiquan on 18/2/2.
  */
@@ -12,17 +14,23 @@ public interface IPermissionService {
      *
      * @return
      */
-    public String getModuleByParamType(String paramType, String paramValue);
+    String getModuleByParamType(String paramType, String paramValue);
 
-
-    public Boolean checkPermission(String module, String username);
+    Boolean checkPermission(String module, String username);
     /**
      * @return URL白名单
      */
-    public Set<String> getWhiteUrlList();
+    Set<String> getWhiteUrlList();
 
     /**
      * @return 管理员权限URL
      */
-    public Set<String> getAdminUrlList();
+    Set<String> getAdminUrlList();
+
+    /**
+     *
+     * @param request
+     * @return 是否为静态资源
+     */
+    Boolean isStaticResource(HttpServletRequest request);
 }
