@@ -69,7 +69,7 @@ public class PassportInterceptor implements HandlerInterceptor {
             Map<String, String> restParam =
                     (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
             if (restParam != null && restParam.size() != 0) {
-                Boolean res = checkSourcePermission(restParam, username);
+                Boolean res = permissionService.checkSourcePermission(restParam, username);
                 if (res == false) {
                     throw new ForbiddenException("你没权限吃其他人的香蕉");
                 }
@@ -79,7 +79,7 @@ public class PassportInterceptor implements HandlerInterceptor {
                 String queryString = request.getQueryString();
                 Map<String, String> queryParam = PipelineUtils.parseQueryString(queryString);
                 if (queryParam != null && queryParam.size() != 0) {
-                    Boolean res = checkSourcePermission(queryParam, username);
+                    Boolean res = permissionService.checkSourcePermission(queryParam, username);
                     if (res == false) {
                         throw new ForbiddenException("你没权限吃其他人的香蕉");
                     }
@@ -100,24 +100,4 @@ public class PassportInterceptor implements HandlerInterceptor {
                                 Object handler, Exception ex) throws Exception {
     }
 
-    private Boolean checkSourcePermission(Map<String, String> resourceParam, String username) {
-        String owner = resourceParam.get("owner");
-        if (owner != null) {
-            if (owner.equals(username)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            Set<String> keySet = resourceParam.keySet();
-            Boolean result = true;
-            for (String key : keySet) {
-                String module = permissionService.getModuleByParamType(key, resourceParam.get(key));
-                Boolean sourcePermission = permissionService.checkPermission(module, username);
-                result = result && sourcePermission;
-            }
-            return result;
-        }
-
-    }
 }

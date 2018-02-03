@@ -3,6 +3,7 @@ package com.jlu.common.permission.service.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -65,42 +66,38 @@ public class PermissionServiceImpl implements IPermissionService {
      * @return 模块名字
      */
     @Override
-    public String getModuleByParamType(String paramType, String paramValue) {
+    public Boolean checkPermissionByParamType(String paramType, String paramValue, String owner) {
+        // 暂时还没有不是资源的id走到这里
+        if (!NumberUtils.isNumber(paramValue)) {
+            return false;
+        }
+        Long id = Long.parseLong(paramValue);
+        if (id == 0L) {
+            return true;
+        }
         switch (paramType) {
             case "branchId":
-                if (!NumberUtils.isNumber(paramValue)) {
-                    return StringUtils.EMPTY;
-                }
-                return branchDao.getModuleById(Long.parseLong(paramValue));
+                return checkUsernameByModule(branchDao.getModuleById(id), owner);
             case "jobBuildId":
-                if (!NumberUtils.isNumber(paramValue)) {
-                    return StringUtils.EMPTY;
-                }
-                return jobBuildDao.getModuleById(Long.parseLong(paramValue));
+                return checkUsernameByModule(jobBuildDao.getModuleById(id), owner);
             case "pipelineConfId":
-                if (!NumberUtils.isNumber(paramValue)) {
-                    return StringUtils.EMPTY;
-                }
-                return pipelineConfDao.getModuleById(Long.parseLong(paramValue));
+                return checkUsernameByModule(pipelineConfDao.getModuleById(id), owner);
             case "triggerId":
-                if (!NumberUtils.isNumber(paramValue)) {
-                    return StringUtils.EMPTY;
-                }
-                return gitHubCommitDao.getModuleById(Long.parseLong(paramValue));
+                return checkUsernameByModule(gitHubCommitDao.getModuleById(id), owner);
             case "jenkinsServerId":
-                if (!NumberUtils.isNumber(paramValue)) {
-                    return StringUtils.EMPTY;
+                // jenkinsServer属于跨模块的资源
+                String createUser = jenkinsConfDao.findCreateUserById(id);
+                if (owner.equals(createUser)) {
+                    return true;
                 }
-                // jenkinsServer属于跨模块的资源，此处做一下适配，方便鉴权
-                return jenkinsConfDao.findCreateUserById(Long.parseLong(paramValue)) + "/all-module";
+                return false;
             default:
                 break;
         }
-        return StringUtils.EMPTY;
+        return true;
     }
 
-    @Override
-    public Boolean checkPermission(String module, String username) {
+    public Boolean checkUsernameByModule(String module, String username) {
         if (StringUtils.isBlank(module)) {
             return false;
         }
@@ -137,6 +134,27 @@ public class PermissionServiceImpl implements IPermissionService {
                 || request.getRequestURL().indexOf("resource/") > 0
                 || request.getRequestURL().indexOf("favicon.ico") > 0
                 || request.getRequestURL().indexOf("webjars") > 0;
+
+    }
+
+    @Override
+    public Boolean checkSourcePermission(Map<String, String> resourceParam, String username) {
+        String owner = resourceParam.get("owner");
+        if (owner != null) {
+            if (owner.equals(username)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Set<String> keySet = resourceParam.keySet();
+            Boolean result = true;
+            for (String key : keySet) {
+                Boolean sourcePermission = checkPermissionByParamType(key, resourceParam.get(key), username);
+                result = result && sourcePermission;
+            }
+            return result;
+        }
 
     }
 

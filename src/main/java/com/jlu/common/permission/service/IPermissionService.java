@@ -1,5 +1,6 @@
 package com.jlu.common.permission.service;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,11 +13,10 @@ public interface IPermissionService {
      * @param paramType  参数类型，例如：pipelineConfId
      * @param paramValue 参数值，例如：178
      *
-     * @return
+     * @return 是否有权限
      */
-    String getModuleByParamType(String paramType, String paramValue);
+    Boolean checkPermissionByParamType(String paramType, String paramValue, String owner);
 
-    Boolean checkPermission(String module, String username);
     /**
      * @return URL白名单
      */
@@ -33,4 +33,6 @@ public interface IPermissionService {
      * @return 是否为静态资源
      */
     Boolean isStaticResource(HttpServletRequest request);
+
+    Boolean checkSourcePermission(Map<String, String> queryParam, String username);
 }
