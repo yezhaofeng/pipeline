@@ -59,13 +59,12 @@ public class PassportInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 普通用户不允许访问管理员url
-        if (permissionService.getAdminUrlList().contains(uri)) {
-            throw new ForbiddenException("这根香蕉你没权限吃，请联系管理员");
-        }
-
         // 校验具体的资源权限
         if (handler instanceof HandlerMethod) {
+            // 普通用户不允许访问管理员url
+            if (permissionService.getAdminUrlList().contains(uri)) {
+                throw new ForbiddenException("这根香蕉你没权限吃，请联系管理员");
+            }
             // REST传值鉴权
             Map<String, String> restParam =
                     (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
