@@ -40,6 +40,9 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <!--getCurrentSession配置：thread（jdbc本地事务）|jta（jta事务） -->
                 <prop key="current_session_context_class">thread</prop>
+                <prop key="connection.autoReconnect">true</prop>
+                <prop key="connection.autoReconnectForPools">true</prop>
+                <prop key="connection.is-connection-validation-required">true</prop>
                 <!--与spring结合-->
                 <prop key="hibernate.current_session_context_class">
                     org.springframework.orm.hibernate4.SpringSessionContext
