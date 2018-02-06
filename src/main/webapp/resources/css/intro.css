@@ -1,0 +1,83 @@
+#module-search {
+    margin-left: -180px;
+    float: left;
+    width: 350px;
+    height: 35px;
+    font-size: large;
+    background-size: 20px;
+    padding-right: 40px;
+}
+#search-btn {
+    float: left;
+    height: 25px;
+    margin-top: 5px;
+    margin-left: -30px;
+    cursor: pointer;
+    background: url(/resources/images/intro_search_icon.png) center no-repeat;
+}
+.search-wrapper-top {
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    z-index: 1;
+}
+.search-wrapper-mid {
+    position: absolute;
+    top: 34%;
+    left: 50%;
+    z-index: 1;
+}
+.search-wrapper-top-left {
+    position: absolute;
+    top: 4%;
+    left: 15%;
+    z-index: 1;
+}
+.search-wrapper-top-right {
+    position: absolute;
+    top: 4%;
+    left: 85%;
+    z-index: 1;
+}
+.search-wrapper-bottom {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    z-index: 1;
+}
+
+#fp-nav ul li a span {
+    border: 1px solid #fff !important;
+}
+#fp-nav ul li a.active span {
+    background: #fff !important;
+}
+
+#fp-nav ul li .fp-tooltip {
+    font-family:"Microsoft YaHei", 微软雅黑, sans-serif !important;
+}
+
+.upgrade-img {
+    margin: 20px 10px 0 17px;
+}
+
+.upgrade-btn {
+    float: left;
+    cursor: pointer;
+    margin: 50px 10px 10px 20px;
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    line-height: 2;
+    font-size: medium;
+    color: #FFF;
+    font-family: "Microsoft YaHei", 微软雅黑, "Helvetica", "Arial", sans-serif;
+}
+
+.upgrade-btn.new {
+    background-color: #69a4ee;
+}
+
+.upgrade-btn.old {
+    background: #bbb;
+}

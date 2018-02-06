@@ -126,9 +126,9 @@ public class PermissionServiceImpl implements IPermissionService {
 
         return request.getRequestURL().indexOf("resources/") > 0
                 || request.getRequestURL().indexOf("static/") > 0
-                || request.getRequestURL().indexOf("css/") > 0
-                || request.getRequestURL().indexOf("js/") > 0
-                || request.getRequestURL().indexOf("images/") > 0
+                || request.getRequestURL().indexOf("resources/css/") > 0
+                || request.getRequestURL().indexOf("resources/js/") > 0
+                || request.getRequestURL().indexOf("resources/images/") > 0
                 || request.getRequestURL().indexOf("html/") > 0
                 || request.getRequestURL().indexOf("error/") > 0
                 || request.getRequestURL().indexOf("resource/") > 0
