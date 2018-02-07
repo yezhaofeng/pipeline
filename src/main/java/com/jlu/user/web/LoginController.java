@@ -33,8 +33,6 @@ import com.jlu.user.service.IGithubOAuthService;
 @RequestMapping("/github")
 public class LoginController {
 
-    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
     @Autowired
     private IGithubDataService githubDataService;
 

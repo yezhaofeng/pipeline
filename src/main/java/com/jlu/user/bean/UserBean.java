@@ -3,6 +3,8 @@ package com.jlu.user.bean;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.BeanUtils;
 
 import com.jlu.user.model.GithubUser;
@@ -14,13 +16,13 @@ import com.jlu.user.model.GithubUser;
 public class UserBean {
 
     private String token;
-    //    @NotNull
+    @NotNull
     private String username;
 
-    //    @NotNull
+    @NotNull
     private String gitHubToken;
 
-    //    @NotNull
+    @NotNull
     private String email;
 
     // 头像地址
