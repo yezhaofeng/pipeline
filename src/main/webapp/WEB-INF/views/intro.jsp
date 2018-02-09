@@ -4,6 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <title>持续交付平台</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/intro.css">
     <link rel="stylesheet" type="text/css" href="/resources/base/jquery.fullPage.css">
