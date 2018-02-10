@@ -6,9 +6,9 @@
     <packaging>war</packaging>
 
 
-    <name>pipeline_v2</name>
+    <name>pipeline</name>
     <groupId>com.jlu</groupId>
-    <artifactId>pipeline_v2</artifactId>
+    <artifactId>pipeline</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
