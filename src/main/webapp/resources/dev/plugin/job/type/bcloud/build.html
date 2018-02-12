@@ -1,0 +1,29 @@
+<bcloud-plugin-tool>
+    <div class="ng-hide" ng-show="build.productPath">
+        <div class="job-detail-head" ng-if="build.productPath != null">
+            <div class="job-build-title">产出信息</div>
+        </div>
+        <div ng-if="build.productPath != null">
+            <span ng-bind="tool.generateWgetProductPath(build.wgetProductPath)" class="gray-color"></span>
+            <span>
+                <agile-copy app-clipboard="tool.generateWgetProductPath(build.wgetProductPath)"></agile-copy>
+            </span>
+        </div>
+    </div>
+    <div class="job-detail-head">
+        <div class="job-build-title">编译日志</div>
+        <span ng-if="build.buildStatus == 'FAIL'" class="bcloud-fail-wiki">
+            <a target="_blank" href="http://wiki.baidu.com/pages/viewpage.action?pageId=190731844">编译失败如何解决<i class="fa fa-question-circle"></i></a>
+        </span>
+    </span>
+    </div>
+    <div ng-controller="BCloudPluginController as bcloudCtrl" class="bcloud">
+        <div ng-if="!bcloudCtrl.isLogCompleted"><a ng-href="{{bcloudCtrl.logUrl}}" target="_blank">显示完整日志</a></div>
+        <textarea agile-codemirror="bcloudCtrl.codemirrorOpts" ng-model="bcloudCtrl.logData"></textarea>
+
+        <!--
+        <div class="log-loading" agile-loading="{promise:bcloudCtrl.loadingLogDataPromise,
+        backdrop:false, message:'日志加载中...', minDuration:500, showMessage:true}"></div>
+    -->
+    </div>
+</bcloud-plugin-tool>

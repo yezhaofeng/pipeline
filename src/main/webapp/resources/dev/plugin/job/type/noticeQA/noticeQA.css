@@ -1,0 +1,52 @@
+/*
+ * Copyright (C) 2015 Baidu, Inc. All Rights Reserved.
+ */
+
+.notice-qa-contents {
+    width: 100%;
+    height: 200px;
+    resize: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.table {
+    font-size: 12px;
+}
+
+.release-card-table {
+    margin-top: 1px;
+    margin-left: -1px;
+    border: 1px #dcddde solid;
+}
+
+.more-cards,
+.no-more-cards {
+    text-align: center;
+}
+.more-cards {
+    cursor: pointer;
+}
+
+.fa-question-circle {
+    font-size: 20px;
+    color: #66f;
+}
+
+.more-cards-icon {
+    background-image: url(../../../../pipeline/img/load-more.png);
+    background-size: 100% 100%;
+}
+
+.more-cards .fa {
+    width: 30px;
+    height: 20px;
+    font-size: 20px;
+}
+
+.form-group .notice-qa {
+    overflow: visible;
+}
+
+.form-group .notice-qa-content {
+    clear: left;
+}

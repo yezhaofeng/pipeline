@@ -1,0 +1,75 @@
+<div class="notice-qa-modal confirm-notice-qa-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$parent.noticeQACtrl.cancel()"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">确认送测结果</h4>
+    </div>
+    <div class="modal-body">
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">送测人</label>
+
+                <div class="col-sm-10">
+                    <span ng-bind="::$parent.noticeQACtrl.noticeQAInfo.startTestUserName" class="form-control"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">送测时间</label>
+
+                <div class="col-sm-10">
+                    <span ng-bind="::$parent.noticeQACtrl.noticeQAInfo.startTestTime | date: 'yyyy-MM-dd HH:mm:ss'"
+                          class="form-control"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">送测内容</label>
+
+                <div class="col-sm-10">
+                    <textarea ng-model="noticeQACtrl.noticeQAContents" class="notice-qa-contents form-control"
+                              disabled="disabled">
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认结果</label>
+
+                <div class="col-sm-10">
+                    <div class="radio radio-success radio-inline">
+                        <input type="radio" name="noticeQAConfirmRadio" id="noticeQAConfirmRadio1"
+                               ng-model="noticeQACtrl.confirmTestsPass" value="PASS"
+                               ng-checked="noticeQACtrl.confirmTestsPass==='PASS'">
+                        <label for="noticeQAConfirmRadio1">
+                            通过
+                        </label>
+                    </div>
+                    <div class="radio radio-danger radio-inline">
+                        <input type="radio" name="noticeQAConfirmRadio" id="noticeQAConfirmRadio2"
+                               ng-model="noticeQACtrl.confirmTestsPass" value="CANT_PASS">
+                        <label for="noticeQAConfirmRadio2">
+                            不通过
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">确认说明</label>
+
+                <div class="col-sm-10">
+                    <textarea ng-model="$parent.noticeQACtrl.noticeQAInfo.confirmReason"
+                              class="notice-qa-contents">
+                    </textarea>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="agile blue large button ok-button"
+                ng-click="$parent.noticeQACtrl.confirmPassOrNot()"
+                type="button">
+            确定
+        </button>
+        <button class="agile large button cancel-button" type="button" ng-click="$parent.noticeQACtrl.cancel()">关闭
+        </button>
+    </div>
+</div>

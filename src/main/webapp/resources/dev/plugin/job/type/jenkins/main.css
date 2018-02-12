@@ -1,0 +1,29 @@
+.agile-plugin-job .jenkins {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: url(img/jenkins.png);
+    background-size: 100%;
+}
+
+.agile-plugin-job .jenkins-mini {
+    width: 12px;
+    height: 12px;
+}
+
+.plugin-job-jenkins .jenkins-job-info {
+    padding-left: 12px;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.plugin-job-jenkins .jenkins-job-info a {
+    margin-right: 24px;
+}
+.plugin-job-jenkins .table > tbody > tr > td {
+    border-bottom: none;
+}
+
+.plugin-job-jenkins .table > tbody > tr:first-child > td {
+    width: 100px;
+}

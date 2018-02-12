@@ -1,1 +1,138 @@
-Pipeline config
+<div>
+    <!-- 顶部提示信息以及展示模块和配置按钮行-->
+    <div class="page-header" style="margin-top: 0px;margin-bottom: 0px;">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <span class="current-module">
+                    <i class="fa fa-home"></i>
+                    <a ui-sref="builds.trunk({module: configCtrl.currentModule})">
+                        <span>
+                            {{::configCtrl.currentModule}}&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                        </span>
+                    </a>
+                    <a>
+                        流水线配置
+                    </a>
+                </span>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+            </div>
+        </div>
+    </div>
+    <div class="config-content-container">
+        <div class="row pipeline-level-container">
+            <div class="apply-config-to">
+                <label class="apply-config-label" for="branchType-select">流水线</label>
+                <div class="apply-config-select">
+                    <div class="btn-group pipeline-config-branch config-branch-suggest" uib-dropdown="">
+                        <select id="branchType-select" class="form-control" ng-model="branchType">
+                            <option value="TRUNK">
+                                <li><a ng-click="tool.branchKey='#TRUNK';tool.branchName='主干'">主干</a></li>
+                            </option>
+                            <option value="BRANCH">
+                                <li><a ng-click="tool.branchKey='#ALL_BRANCHES';tool.branchName='所有分支'">所有分支</a></li>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    <label>是否自动触发</label>
+                    <input type="checkbox" class="checkbox" ng-model="configCtrl.config.auto"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- jobs 展示行-->
+        <div class="row stages-container">
+            <ul ui-sortable="sortableStagesOptions" ng-model="configCtrl.config.jobConfs"
+                class="list-group stages-list">
+                <li class="stage-wrapper list-group-item not-sortable" ng-repeat="job in configCtrl.config.jobConfs">
+                    <div class="stage-overview"
+                         ng-class="{auto: job.triggerMode=='AUTO', manual:job.triggerMode == 'MANUAL'}"
+                         ng-click="configCtrl.toggleActiveJob(job)">
+                        <span class="stage-name" ng-bind="job.name" ng-model="job.name">{{::job.name}}</span>
+                        <span class="fa fa-trash" style="position: absolute;top: 35%;right: 10%"
+                              ng-click="configCtrl.deleteJob($index)">
+                        </span>
+                    </div>
+                </li>
+                <li class="stage-wrapper list-group-item not-sortable add-stage-wrapper"
+                    ng-click="configCtrl.addJob()">
+                    <div class="stage-overview auto">
+                        <span></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--End  jobs 展示行-->
+
+        <!-- job 具体配置 -->
+    </div>
+    <div class="form-group task-config-group">
+        <div class="task-header">
+            任务名称：<input type="text" ng-model="configCtrl.activeJob.name"/> <br/>
+            触发方式：
+            <input type="radio" ng-model="configCtrl.activeJob.triggerMode" value="AUTO"/>自动
+            <input type="radio" ng-model="configCtrl.activeJob.triggerMode" value="MANUAL"/>手动
+        </div>
+
+        <div id="taskConfigDiv" class="stage-tasks-config">
+            <app-real-job-config
+                                 app-context="configCtrl.context"
+                                 app-job="configCtrl.activeJob.pluginType"
+                                 app-form="configCtrl.activeJob.realJob"
+                                 app-config="configCtrl.activeJob.pluginConf"
+                                 app-page="configCtrl.activeJob.configPage">
+            </app-real-job-config>
+        </div>
+
+        <div class="form-group params-group">
+            <label>构建参数</label>
+            <a href="http://wiki.baidu.com/pages/viewpage.action?pageId=158562481" target="_blank"
+               class="tooltip-top" tooltip-data="传入 Job 的自定义参数">
+                <i class="fa fa-question-circle"></i>
+            </a>
+            <ul class="list-unstyled">
+                <li ng-repeat="param in configCtrl.currenJob.parameterMap track by $index"
+                    class="params-list-item">
+                    <div class="input-group key col-xs-5">
+                        <span class="input-group-addon">参数名</span>
+                        <input type="text" class="form-control" placeholder="输入参数名" ng-model="param.key"
+                               required>
+                    </div>
+                    <div class="input-group value col-xs-5">
+                        <span class="input-group-addon">参数值</span>
+                        <input type="text" class="form-control" placeholder="输入参数值" ng-model="param.value">
+                    </div>
+                    <div class="delete-parameter">
+                                <span class="delete-parameter-span "
+                                      ng-click="configCtrl.delStageInParamByIndex($index)">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                    </div>
+                </li>
+                <li class="params-list-item">
+                    <button type="button" class="agile middle blue icon button add-button"
+                            ng-click="configCtrl.addJobInParam()">
+                        <i class="fa fa-plus"></i>&nbsp;添加参数
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group operation-button-group">
+        <button type="button" class="agile button ok-button" ng-click="save.submit()"
+                ng-disabled="detailConfigForm.$invalid && configCtrl.currentStage">
+            保存
+        </button>
+        <button type="button" ng-click="cancel()" class="agile button cancel-button">取消</button>
+                    <span class="agile left pointing blue basic label save-done-label"
+                          ng-if="save.showConfigSaveLabel">配置已保存,
+                    重新构建或者提交代码将应用最新配置!
+                    </span>
+    </div>
+    </form>
+</div>
+</div>

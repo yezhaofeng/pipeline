@@ -1,0 +1,59 @@
+<div class="job-detail-head">
+    <div class="job-build-title">送测信息</div>
+</div>
+<div class="notice-qa-detail-container">
+    <form role="form" class="form-horizontal" ng-if="agileJobBuild.realJobBuild.noticeQaStatus !== 'INIT'">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">送测人</label>
+
+            <div class="col-sm-10">
+                <span ng-bind="::agileJobBuild.realJobBuild.startTestUserName" class="form-control"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">送测时间</label>
+
+            <div class="col-sm-10">
+                    <span ng-bind="::agileJobBuild.realJobBuild.startTestTime | date: 'yyyy-MM-dd HH:mm:ss'"
+                          class="form-control"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">送测内容</label>
+
+            <div class="col-sm-10">
+                    <textarea ng-model="agileJobBuild.realJobBuild.operSteps" class="notice-qa-contents form-control"
+                              disabled="disabled">
+                    </textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">送测结果</label>
+            <span class="notice-qa-confirm-result">
+                <i class="fa" ng-class="{'success fa-check':agileJobBuild.realJobBuild.noticeQaStatus === 'SUCC',
+                        'fail fa-close':agileJobBuild.realJobBuild.noticeQaStatus === 'FAIL',
+                        'running fa-refresh fa-spin':agileJobBuild.realJobBuild.noticeQaStatus === 'INPROGRESS',
+                        'waiting fa-circle-o':agileJobBuild.realJobBuild.noticeQaStatus === 'INIT'}">
+                </i>
+                &nbsp;
+                <span ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'INPROGRESS'">测试中</span>
+                <span ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'SUCC'">测试通过</span>
+                <span ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'FAIL'">测试不通过</span>
+                <span ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'INIT'">未送测</span>
+            </span>
+        </div>
+        <div class="form-group"
+             ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'SUCC' || agileJobBuild.realJobBuild.noticeQaStatus === 'FAIL'">
+            <label class="col-sm-2 control-label">结果说明</label>
+
+            <div class="col-sm-10">
+                    <textarea ng-model="agileJobBuild.realJobBuild.confirmReason"
+                              class="notice-qa-contents form-control"
+                              disabled>
+                    </textarea>
+            </div>
+        </div>
+
+    </form>
+    <span ng-if="agileJobBuild.realJobBuild.noticeQaStatus === 'INIT'">未发起送测</span>
+</div>

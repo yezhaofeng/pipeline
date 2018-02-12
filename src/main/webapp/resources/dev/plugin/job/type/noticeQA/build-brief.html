@@ -1,0 +1,20 @@
+<div class="notice-qa-brief-container" ng-controller="NoticeQAController as noticeQACtrl">
+    <!-- <button type="button" class="agile large blue button"
+             ng-show="noticeQACtrl.noticeQAStatus === 'INIT'"
+             ng-click="noticeQACtrl.openNoticeQAModal(0, $parent.build)">
+         送测
+     </button>-->
+    <!-- <span ng-show="noticeQACtrl.noticeQAStatus === 'INIT'">
+        未发起送测
+    </span>-->
+    <button type="button" class="agile large blue icon button" ng-show="noticeQACtrl.noticeQAStatus === 'INPROGRESS'"
+            ng-click="noticeQACtrl.openNoticeQAModal()">
+        <i class="fa fa-check icon"></i>&nbsp;确认送测结果
+    </button>
+    <span ng-show="noticeQACtrl.noticeQAStatus === 'SUCC'">
+        测试成功&nbsp;&nbsp;{{noticeQACtrl.noticeQAResultReason}}
+    </span>
+    <span ng-show="noticeQACtrl.noticeQAStatus === 'FAIL'" class="fail">
+        测试不通过&nbsp;&nbsp;{{noticeQACtrl.noticeQAResultReason}}
+    </span>
+</div>

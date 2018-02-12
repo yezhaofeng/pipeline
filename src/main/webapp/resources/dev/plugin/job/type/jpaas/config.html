@@ -1,0 +1,39 @@
+<div class="plugin-jpaas-online">
+    <div class="form-group">
+        <label class="col-xs-2 control-label">
+            <span class="tooltip-right" tooltip-data="JPaaS-Test为部署测试；JPaaS线上为部署线上。注：JPaaS_APP_ID应为对应的测试或线上APP_ID。">部署环境</span>
+        </label>
+        <div class="col-xs-8" app-plugin-job-jpaas-job-selector>
+            <select class="form-control" ng-model="job.jpaasType" ng-form="name"
+                    ng-options="job.jpaasType as job.name for job in jobs" required>
+                <option value="">请选择部署环境</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-2 control-label">JPaaS_APP_ID</label>
+        <div class="col-xs-8">
+            <input class="form-control" ng-pattern="/^\d+$/" type="text" ng-model="job.jpaasAppId" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-2 control-label">imageSpecId</label>
+        <div class="col-xs-8">
+            <input class="form-control" ng-pattern="/^\d+$/" type="text" ng-model="job.emcImageSpecId" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-2 control-label">registryId</label>
+        <div class="col-xs-8">
+            <input class="form-control" ng-pattern="/^\d+$/" type="text" ng-model="job.emcRegistryId" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-2 control-label">说明</label>
+        <div class="col-xs-8">
+            JPaaS 上线部署，需要依赖镜像转存任务。其中JPaaS_APP_ID为用户在JPaaS的APP ID，需要与部署环境对应；imageSpecId为用户在EMC创建的镜像描述的ID；
+            registryId为用户在EMC注册的转存仓库ID。
+            <a ng-href="http://wiki.baidu.com/pages/viewpage.action?pageId=255067923" target="_blank">&nbsp;详细介绍</a>
+        </div>
+    </div>
+</div>

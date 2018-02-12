@@ -14,10 +14,10 @@ define(['app', 'constants'], function (app, constants) {
         '$timeout',
         '$uibModal',
         '$window',
-        ConfigController
+        JenkinsController
     ]);
 
-    function ConfigController(pipelineDataService, pipelineContextService, $scope, $state, $timeout, $uibModal, $window) {
+    function JenkinsController(pipelineDataService, pipelineContextService, $scope, $state, $timeout, $uibModal, $window) {
         var self = this;
         self.currentModule = pipelineContextService.context.module;
         self.username = pipelineContextService.context.username;

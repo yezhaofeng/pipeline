@@ -1,0 +1,35 @@
+<div ng-controller="NoticeQAController as noticeQACtrl" class="real-job-conf-container">
+    <div class="form-group notice-qa">
+        <label class="col-xs-2 control-label">测试人员</label>
+        <div class="col-xs-10">
+            <tags-input
+                    ng-model="noticeQACtrl.noticeQATesters"
+                    display-property="name"
+                    on-tag-added="noticeQACtrl.testersChanged()"
+                    on-tag-removed="noticeQACtrl.testersChanged()"
+                    ng-required="noticeQACtrl.isManual()"
+                    placeholder="添加测试人或邮件组全称">
+                <auto-complete source="noticeQACtrl.getBaiduUsers($query)"
+                               display-property="displayText"
+                               template="noticeQA-users-template"
+                               highlight-matched-text="true"
+                               max-results-to-show="50"
+                ></auto-complete>
+            </tags-input>
+
+            <script type="text/ng-template" id="noticeQA-users-template">
+                <div>
+                    <span ng-bind-html="$highlight($getDisplayText())"></span>
+                </div>
+            </script>
+        </div>
+    </div>
+
+    <div class="form-group notice-qa-content">
+        <label class="col-xs-2 control-label">送测内容</label>
+        <div class="col-xs-10">
+            <textarea ng-model="job.operSteps" class="notice-qa-contents">
+            </textarea>
+        </div>
+    </div>
+</div>

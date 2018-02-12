@@ -1,0 +1,9 @@
+<div>
+    <select class="form-control" ng-model="job.jobUuid" ng-form="jobUuid"
+            ng-options="job.jobId as job.jobName for job in jobs"
+            required>
+    </select>
+    <i class="control-alert"
+       ng-show="form.jobUuid.$invalid">必须选择一个关联Job
+    </i>
+</div>

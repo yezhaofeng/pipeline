@@ -1,0 +1,69 @@
+<table class="table package-table">
+    <tbody>
+    <tr ng-repeat="packageSeed in bfCtrl.packageSeeds track by $index">
+        <td>
+            <span ng-if="packageSeed.packageStatus === 'SUCC'">
+                <span href="" agile-popover
+                      agile-popover-template="package-product"
+                      agile-popover-trigger="mouseenter"
+                      agile-popover-placement="right"
+                      agile-popover-theme="agile-popover-tooltip-theme"
+                      agile-popover-timeout="0.3"
+                >{{packageSeed.scene}}场景包</span>
+                <span>
+                    <agile-copy app-clipboard="packageSeed.packageUrl"></agile-copy>
+                </span>
+            </span>
+            <span ng-if="packageSeed.packageStatus === 'RUNNING'">
+                场景{{packageSeed.scene}}打包进行中...
+            </span>
+            <span ng-if="packageSeed.packageStatus === 'FAIL'">
+                场景{{packageSeed.scene}}打包失败
+            </span>
+            <span ng-if="packageSeed.packageStatus === 'WAITTING'">
+                场景{{packageSeed.scene}}打包即将开始...
+            </span>
+        </td>
+        <td>
+            <span ng-if="packageSeed.packageStatus === 'SUCC'">
+                <span href="" agile-popover
+                      agile-popover-template="pkg-protocal-product"
+                      agile-popover-trigger="mouseenter"
+                      agile-popover-placement="right"
+                      agile-popover-theme="agile-popover-tooltip-theme"
+                      agile-popover-timeout="0.3"
+                >{{packageSeed.scene}}场景协议地址</span>
+                <span>
+                    <agile-copy app-clipboard="packageSeed.pkgProtocalUrl"></agile-copy>
+                </span>
+            </span>
+        </td>
+        <td>
+            <span ng-if="packageSeed.seedStatus === 'SUCC'">
+                <span href="" agile-popover
+                      agile-popover-template="seed-product"
+                      agile-popover-trigger="mouseenter"
+                      agile-popover-placement="right"
+                      agile-popover-theme="agile-popover-tooltip-theme"
+                      agile-popover-timeout="0.3"
+                >{{packageSeed.scene}}场景种子</span>
+                <span>
+                    <agile-copy app-clipboard="packageSeed.seedUrl"></agile-copy>
+                </span>
+            </span>
+            <span ng-if="packageSeed.seedStatus === 'RUNNING'">
+                场景{{packageSeed.scene}}做种进行中...
+            </span>
+            <span ng-if="packageSeed.seedStatus === 'FAIL'">
+                场景{{packageSeed.scene}}做种失败
+            </span>
+            <span ng-if="packageSeed.seedStatus === 'WAITTING'">
+                场景{{packageSeed.scene}}做种即将开始...
+            </span>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+

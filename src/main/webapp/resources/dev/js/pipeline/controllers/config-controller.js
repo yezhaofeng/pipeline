@@ -1,9 +1,8 @@
 /**
- * Created by niuwanpeng on 17/5/5.
+ * @file 流水线配置
  *
- * jenkins管理 Controller
+ * @author langshiquan
  */
-
 define(['app', 'constants'], function (app, constants) {
     'use strict';
     app.controller('ConfigController', [
@@ -13,59 +12,83 @@ define(['app', 'constants'], function (app, constants) {
         '$state',
         '$timeout',
         '$uibModal',
+        '$window',
         ConfigController
     ]);
 
-    function ConfigController(pipelineDataService, pipelineContextService, $scope, $state, $timeout, $uibModal) {
+    function ConfigController(pipelineDataService, pipelineContextService, $scope, $state, $timeout, $uibModal, $window) {
         var self = this;
         self.currentModule = pipelineContextService.context.module;
-        self.isSyncGithub = false;
-        self.configModule = '';
         self.username = pipelineContextService.context.username;
         self.context = pipelineContextService;
-        self.showLoading = false;
+        self.config = {};
 
-        self.addModule = function () {
-            self.showLoading = true;
-            pipelineDataService.addModule(self.username, self.configModule)
-                .then(function (data) {
-                    $scope.result = data;
-                    return $scope.uibModalInstance = $uibModal.open({
-                        templateUrl: constants.resource('config/config.result.html'),
-                        scope: $scope,
-                        size: 'sm',
-                        windowClass: 'zoom'
-                    });
-                });
+        // 默认是主干
+        $scope.branchType = "TRUNK";
+        pipelineDataService.getPipelineConf(self.currentModule, 'TRUNK').then(function (data) {
+            self.config = data;
+            self.activeJob = data.jobConfs[0];
+        });
+
+        self.addJob = function () {
+            self.initPluginInfo();
+            $scope.uibModalInstance = $uibModal.open({
+                scope: $scope,
+                templateUrl: constants.resource('config/plugin.select.html'),
+                size: 'lg',
+                windowClass: 'zoom'
+            });
+        };
+        $scope.selectPlugin = function (index) {
+            var plugin = $scope.pluginInfo[index];
+            var newJobConf = {
+                name: plugin.name,
+                triggerMode: 'AUTO'
+            };
+            self.config.jobConfs.push(newJobConf);
+            self.toggleActiveJob(newJobConf);
+            $scope.cancelWindow();
         };
 
-        self.cancel = function () {
-            $state.go(
-                'builds.trunk',
-                {
-                    module: self.currentModule
-                }
-            );
+        self.toggleActiveJob = function (job) {
+            self.activeJob = job;
         };
+
+        self.initPluginInfo = function () {
+            if ($scope.pluginInfo != undefined) {
+                return;
+            }
+            pipelineDataService.getPluginInfo().then(function (data) {
+                $scope.pluginInfo = data;
+            });
+        };
+        self.addJobInParam = function () {
+            // TODO
+            var params = [];
+            console.log(self.activeJob);
+            console.log(self.activeJob.parameterMap);
+            self.activeJob.parameterMap = params;
+            params.push({});
+        };
+        self.deleteJob = function (index) {
+            self.config.jobConfs.splice(index, 1);
+        };
+        self.delJobInParamByIndex = function () {
+            // TODO
+        };
+
 
         $scope.cancelWindow = function () {
-            self.showLoading = false;
             return $scope.uibModalInstance && $scope.uibModalInstance.dismiss();
         };
 
-        $scope.goNewModule = function (newModule) {
-            $state.go(
-                'builds.trunk',
-                {
-                    module:newModule
-                }
-            );
-        }
-
         $scope.$watch(function () {
-            self.canGoOn = self.isSyncGithub && self.configModule !== '';
+            return $scope.branchType;
+        }, function (branchType) {
+            pipelineDataService.getPipelineConf(self.currentModule, branchType).then(function (data) {
+                self.config = data;
+                self.activeJob = data.jobConfs[0];
+            });
         });
-
     }
 });
-

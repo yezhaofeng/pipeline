@@ -1,0 +1,48 @@
+<div class="plugin-job">
+    <div class="form-group">
+        <label for="jobName" class="col-xs-2 control-label">任务名</label>
+        <div class="col-xs-8">
+            <input type="text" class="form-control" ng-model="job.jobName" name="jobName" required>
+        </div>
+        <span style="color:red" class="control-alert col-xs-2"
+              ng-show="form.jobName.$invalid && !form.jobName.$error.showJobRepeatLabel">
+            *任务名必填
+        </span>
+        <span style="color:red" class="control-alert col-xs-2" ng-show="form.jobName.$error.showJobRepeatLabel">
+            *任务名已经存在
+        </span>
+    </div>
+
+    <div class="form-group job-type-select-form-group" ng-if="context.pipelineType==='PRODUCT'">
+        <label class="col-xs-2 control-label">类型</label>
+        <div class="col-xs-8 job-type-selector">
+            <button type="button" class="text-left form-control"
+                    ng-bind="config.name || job.jobType || '请选择任务类型'"
+                    ng-click="status.showPluginConfigList = !status.showPluginConfigList">
+            </button>
+            <input type="hidden" ng-model="job.jobType" name="jobType" required>
+            <ul class="dropdown-menu col-xs-11" ng-show="status.showPluginConfigList">
+                <li ng-hide="config.jobType && config.jobType==='BCLOUD'"
+                        ng-repeat="config in configs"
+                        ng-class="[op.isSelectable(config) ? 'select-able' : 'un-select-able', job.jobType && job.jobType === config.jobType ? 'active' : '']">
+                    <a href="javascript:;"
+                       ng-bind="config.name || config.jobType"
+                       ng-click="op.selectJobType(config)">
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <span class="control-alert col-xs-2" ng-show="form.jobType.$invalid">
+            任务类型未选
+        </span>
+    </div>
+
+    <app-real-job-config
+            app-context="context"
+            app-job="job.realJob"
+            app-form="form.realJob"
+            app-config="config"
+            app-page="config.configPage">
+    </app-real-job-config>
+</div>

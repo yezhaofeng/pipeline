@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.1 (15681) - http://www.bohemiancoding.com/sketch -->
+    <title>添加</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="agile-通知配置" sketch:type="MSArtboardGroup" transform="translate(-653.000000, -188.000000)">
+            <g id="添加" sketch:type="MSLayerGroup" transform="translate(655.000000, 190.000000)">
+                <circle id="Oval-142" stroke="#FFFFFF" stroke-width="2" fill="#3B71DF" sketch:type="MSShapeGroup" cx="8" cy="8" r="8"></circle>
+                <path d="M7.33333333,7.33333333 L5.33026505,7.33333333 C4.97044293,7.33333333 4.66666667,7.63181017 4.66666667,8 C4.66666667,8.37075679 4.96376978,8.66666667 5.33026505,8.66666667 L7.33333333,8.66666667 L7.33333333,10.669735 C7.33333333,11.0295571 7.63181017,11.3333333 8,11.3333333 C8.37075679,11.3333333 8.66666667,11.0362302 8.66666667,10.669735 L8.66666667,8.66666667 L10.669735,8.66666667 C11.0295571,8.66666667 11.3333333,8.36818983 11.3333333,8 C11.3333333,7.62924321 11.0362302,7.33333333 10.669735,7.33333333 L8.66666667,7.33333333 L8.66666667,5.33026505 C8.66666667,4.97044293 8.36818983,4.66666667 8,4.66666667 C7.62924321,4.66666667 7.33333333,4.96376978 7.33333333,5.33026505 L7.33333333,7.33333333 Z" id="Rectangle-445" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

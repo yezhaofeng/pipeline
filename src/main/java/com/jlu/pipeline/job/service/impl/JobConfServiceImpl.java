@@ -1,9 +1,6 @@
 package com.jlu.pipeline.job.service.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -105,7 +102,11 @@ public class JobConfServiceImpl implements IJobConfService {
             JobConfBean jobConfBean = new JobConfBean();
             BeanUtils.copyProperties(jobConf, jobConfBean);
             String params = jobConf.getParams();
-            jobConfBean.setParameterMap((Map<String, String>) JSON.parse(params));
+            Map<String, String> parameterMap = (Map<String, String>) JSON.parse(params);
+            if (parameterMap == null) {
+                parameterMap = new HashMap<>(0);
+            }
+            jobConfBean.setParameterMap(parameterMap);
             jobConfBean.setPluginConf((JSONObject) JsonUtils
                     .getJsonObject(pluginInfoService.getRealJobPlugin(jobConf.getPluginType()).getDataOperator()
                             .getConf(jobConf.getPluginConfId())));

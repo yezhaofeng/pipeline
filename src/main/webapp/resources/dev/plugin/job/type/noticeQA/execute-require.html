@@ -1,0 +1,70 @@
+<div class="notice-qa-execute-form" ng-controller="NoticeQAExecuteController as ctrl">
+    <form role="form" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">测试人员</label>
+
+            <div class="col-sm-10">
+                <tags-input
+                        ng-model="ctrl.noticeQATesters"
+                        ng-required="true"
+                        display-property="name"
+                        placeholder="添加测试人或邮件组全称">
+                    <auto-complete source="ctrl.getBaiduUsers($query)"
+                                   display-property="displayText"
+                                   template="noticeQA-users-template"
+                                   highlight-matched-text="true"
+                                   max-results-to-show="50">
+                    </auto-complete>
+                </tags-input>
+                <script type="text/ng-template" id="noticeQA-users-template">
+                    <div>
+                        <span ng-bind-html="$highlight($getDisplayText())"></span>
+                    </div>
+                </script>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">送测内容</label>
+
+            <div class="col-sm-10">
+                <textarea ng-model="job.realJobBuild.operSteps" class="notice-qa-contents">
+                </textarea>
+                <span>Velocity模板；支持${构建参数名}；</span>
+            </div>
+        </div>
+        <div class="form-group" ng-if="!isOutside">
+            <label class="col-sm-2 control-label">关联卡片
+                <span class="tooltip-top control-label" tooltip-data="选取代码提交评论中填写的ICAFE卡片关联到本次送测">
+                    <i class="fa fa-question-circle"></i>
+                </span>
+            </label>
+            <div class="col-xs-10">
+                <table class="table table-hover release-card-table">
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox" ng-model="ctrl.checkAll" ng-click="ctrl.toggleCheckAll()"></td>
+                        <td> 标识 </td>
+                        <td> 名称 </td>
+                    </tr>
+                    <tr ng-repeat="issue in ctrl.issueCards">
+                        <td><input type="checkbox" ng-model="issue.isChecked"></td>
+                        <td><a ng-href="{{ctrl.getStoryUrl(issue)}}" target="_blank">{{issue.prefixCode}}-{{issue.sequence}}</a></td>
+                        <td>{{issue.title}}</td>
+                    </tr>
+                    <tr class="more-cards" ng-show="ctrl.hasMoreCards" ng-click="ctrl.moreIssueCards()">
+                        <td colspan="3">
+                            <i class="fa" ng-class="ctrl.loadingCards ? 'fa-spinner' : 'more-cards-icon'"></i>
+                        </td>
+                    </tr>
+                    <tr class="no-more-cards" ng-show="!ctrl.hasMoreCards">
+                        <td colspan="3">
+                            没有卡片了...
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

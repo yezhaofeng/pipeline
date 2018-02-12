@@ -69,7 +69,6 @@ define(
                 .state('github', {
                     url: '/github/{module:path}',
                     templateUrl: constants.resource('config/config.github.html'),
-                    // todo rename
                     controller: 'GithubController',
                     controllerAs: 'githubCtrl'
                 })
@@ -84,8 +83,7 @@ define(
                     templateUrl: constants.resource('config/config.pipeline.html'),
                     controller: 'ConfigController',
                     controllerAs: 'configCtrl'
-                })
-            ;
+                });
 
         }
 

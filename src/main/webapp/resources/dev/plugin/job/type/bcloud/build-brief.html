@@ -1,0 +1,99 @@
+<bcloud-plugin-tool>
+    <div ng-controller="BcloudBriefController as bfCtrl">
+        <div app-init-after-show="bfCtrl.getPackageSeeds(context.jobBuildId)"></div>
+
+        <!--配置包管理方式：OLD/ALL，编译成功-->
+        <span ng-if="build.buildStatus == 'SUCC' && !context.isOutside && packageBuildType != 'NEW'">
+            <span href="" agile-popover
+                  agile-popover-template="compile-product"
+                  agile-popover-trigger="mouseenter"
+                  agile-popover-placement="right"
+                  agile-popover-theme="agile-popover-tooltip-theme"
+                  agile-popover-timeout="0.3"
+            >编译产出</span>
+            <span>
+                <agile-copy app-clipboard="build.wgetProductPath"></agile-copy>
+            </span>
+        </span>
+
+        <!--配置包管理方式：New，编译成功，打包成功，配置后流水线-->
+        <span ng-if="build.buildStatus == 'SUCC' && !context.isOutside && packageBuildType == 'NEW' && bfCtrl.packageSeeds != null">
+            <show-bcloud-brief></show-bcloud-brief>
+        </span>
+
+        <!--配置包管理方式：New，编译成功，打包失败，配置后流水线-->
+        <span ng-if="build.buildStatus == 'SUCC' && !context.isOutside && packageBuildType == 'NEW' && bfCtrl.packageStatus == 'FAIL'" class="package-fail-wiki">
+            <a target="_blank" href="http://wiki.baidu.com/pages/viewpage.action?pageId=200961305">打包失败<i class="fa fa-question-circle"></i></a>
+        </span>
+        </span>
+
+        <!--无论任何配置包管理方式：编译失败-->
+        <span ng-if="build.buildStatus == 'FAIL'" class="bcloud-fail-wiki">
+            <a target="_blank" href="http://wiki.baidu.com/pages/viewpage.action?pageId=190731844">编译失败如何解决<i class="fa fa-question-circle"></i></a>
+        </span>
+
+        <!--对外版本-->
+        <span ng-if="build.productPath !== null && context.isOutside">
+            <a href="{{tool.generateWgetProductPath(build.wgetProductPath)}}">下载编译产出</a>
+        </span>
+    </div>
+</bcloud-plugin-tool>
+
+<!--<span ng-if="build.productPath !== null">-->
+    <!--<a href="{{build.wgetProductPath}}">下载编译产出</a>-->
+<!--</span>-->
+
+
+<script type="text/ng-template" id="compile-product">
+    <div class="triangle"></div>
+    <div class="agile-popover-tooltip">
+        <div class="popover-header">编译产出</div>
+        <div class="popover-content">
+            <span>{{build.wgetProductPath}}</span>
+            <span>
+               <agile-copy app-clipboard="build.wgetProductPath"></agile-copy>
+            </span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="package-product">
+    <div class="triangle"></div>
+    <div class="agile-popover-tooltip">
+        <div class="popover-header">打包产出</div>
+        <div class="popover-content">
+            <span>{{packageSeed.packageUrl}}</span>
+            <span>
+               <agile-copy app-clipboard="packageSeed.packageUrl"></agile-copy>
+            </span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="seed-product">
+    <div class="triangle"></div>
+    <div class="agile-popover-tooltip">
+        <div class="popover-header">做种产出</div>
+        <div class="popover-content">
+            <span>{{packageSeed.seedUrl}}</span>
+            <span>
+               <agile-copy app-clipboard="packageSeed.seedUrl"></agile-copy>
+            </span>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="pkg-protocal-product">
+    <div class="triangle"></div>
+    <div class="agile-popover-tooltip">
+        <div class="popover-header">协议地址</div>
+        <div class="popover-content">
+            <span>{{packageSeed.pkgProtocalUrl}}</span>
+            <span>
+               <agile-copy app-clipboard="packageSeed.pkgProtocalUrl"></agile-copy>
+            </span>
+        </div>
+    </div>
+</script>
+
+

@@ -1,0 +1,13 @@
+.plugin-job .dropdown-menu {
+    display: block;
+    top: 28px;
+    left: 15px;
+}
+
+.agile-plugin-job .plugin-introduce {
+    padding-top: 8px;
+}
+
+.plugin-job .un-select-able {
+    display: none;
+}

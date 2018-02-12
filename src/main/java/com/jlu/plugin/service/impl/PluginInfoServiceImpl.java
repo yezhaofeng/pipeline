@@ -61,7 +61,7 @@ public class PluginInfoServiceImpl implements IPluginInfoService {
         pluginConfig.setIcon(pluginInfo.getIcon());
         pluginConfig.setLink(pluginInfo.getWiki());
         pluginConfig.setPriority(pluginInfo.getPriority());
-        pluginConfig.setDescription(pluginConfig.getDescription());
+        pluginConfig.setDescription(pluginInfo.getDescription());
     }
 
     @Override

@@ -39,102 +39,17 @@ define(['app', 'constants'], function (app, constants) {
                     return data.data;
                 });
         };
-
         /**
-         * 获得单个分支流水线记录
-         * @param username
+         * 获取流水线配置信息
          * @param module
-         * @param branchName
-         * @param pipelineBuildId
-         * @returns {*}
+         * @param branchType
          */
-        self.getBranchPipelines = function (username, module, branchName, pipelineBuildId) {
-            return $http.get(constants.api('pipeline/v1/branch/pipelineBuilds?username=' + username + '&module=' + module
-                    + '&branchName=' + branchName + '&pipelineBuildId=' + pipelineBuildId))
+        self.getPipelineConf = function (module, branchType) {
+            return $http.get(constants.api('pipeline/conf/' + module + '/' + branchType))
                 .then(function (data) {
                     return data.data;
-                });
+                })
         };
-
-        /**
-         * 获得总体分支流水线记录
-         * @param username
-         * @param module
-         * @param branchId
-         * @returns {*}
-         */
-        self.getBranchesPipelines = function (username, module, branchId) {
-            return $http.get(constants.api('pipeline/v1/branches/pipelineBuilds?username=' + username + '&module=' + module
-                    + '&branchId=' + branchId))
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
-        /**
-         * 获得编译详细信息
-         * @param pipelineBuildId
-         * @returns {*}
-         */
-        self.getCompileBuildDetail = function (pipelineBuildId) {
-            return $http.get(constants.api('compileBuild/v1/detail?pipelineBuildId=' + pipelineBuildId))
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
-        /**
-         * 获得发布详细信息
-         * @param pipelineBuildId
-         * @returns {*}
-         */
-        self.getReleaseDetail = function (pipelineBuildId) {
-            return $http.get(constants.api('release/v1/detail?pipelineBuildId=' + pipelineBuildId))
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
-        /**
-         * 重新编译，不产生新的流水线
-         * @param username
-         * @param module
-         * @param compileBuildId
-         * @returns {*}
-         */
-        self.doRebuild = function (username, module, compileBuildId) {
-            return $http.get(constants.api('compileBuild/v1/rebuild?compileBuildId=' + compileBuildId
-                    + '&username=' + username + '&module=' + module))
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
-        /**
-         * 发布操作
-         * @param releaseParams
-         * @returns {*}
-         */
-        self.doRelease = function (releaseParams) {
-            return $http.post(constants.api('release/doRelease'), releaseParams)
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
-        /**
-         * 获取推荐的三位版本
-         * @param moduleId
-         * @param branchName
-         * @returns {*}
-         */
-        self.getThreeVersion = function (moduleId, branchName) {
-            return $http.get(constants.api('release/v1/threeVersion?moduleId=' + moduleId + '&branchName=' + branchName))
-                .then(function (data) {
-                    return data.data;
-                });
-        };
-
         /**
          * 添加Jenkins配置
          * @param jenkinsConf
@@ -147,6 +62,7 @@ define(['app', 'constants'], function (app, constants) {
                 });
         };
         /**
+         *
          * 获取发布记录
          * @param module
          * @param releaseId
@@ -163,18 +79,18 @@ define(['app', 'constants'], function (app, constants) {
          * 获取Jenkins配置信息
          * @returns {*}
          */
-        self.getJenkinsConfs = function(){
+        self.getJenkinsConfs = function () {
             return $http.get(constants.api('pipeline/jenkins/server/all'))
                 .then(function (data) {
                     return data.data;
                 });
         };
 
-        self.deleteJenkinsConf = function(id){
-            return $http.delete(constants.api("pipeline/jenkins/server/"+id))
+        self.deleteJenkinsConf = function (id) {
+            return $http.delete(constants.api("pipeline/jenkins/server/" + id))
                 .then(function (data) {
                     return data.data;
-            })
+                })
         };
 
         /**
@@ -189,23 +105,24 @@ define(['app', 'constants'], function (app, constants) {
                     return data.data;
                 });
         };
-
+        /**
+         * 当前登录用户信息
+         * @returns {*}
+         */
         self.getLoginUserInfo = function () {
             return $http.get(constants.api("pipeline/user/current")).then(function (data) {
                 return data.data;
             })
         };
         /**
-         * 分支页面检索用，获得前50个常用分支
-         * @param username
-         * @param module
+         * 获取插件信息
          * @returns {*}
          */
-        self.getBranches = function (username, module) {
-            return $http.get(constants.api('branch/getBranches?username=' + username + '&module=' + module))
-                .then(function (data) {
-                    return data.data;
-                });
-        }
+        self.getPluginInfo = function () {
+            return $http.get(constants.api("plugin/job/configs")).then(function (data) {
+                return data.data;
+            })
+        };
+
     }
 });
