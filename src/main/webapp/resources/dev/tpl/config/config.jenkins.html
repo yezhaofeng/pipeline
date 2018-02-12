@@ -1,0 +1,56 @@
+<div>
+    <!-- 顶部提示信息以及展示模块和配置按钮行-->
+    <div class="page-header" style="margin-top: 0px;margin-bottom: 0px;">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <span class="current-module">
+                    <i class="fa fa-home"></i>
+                    <a ui-sref="builds.trunk({module: githubCtrl.currentModule})">
+                        <span>
+                            {{::jenkinsCtrl.username}}&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+                        </span>
+                    </a>
+                    <a>
+                        Jenkins管理
+                    </a>
+                </span>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+            </div>
+        </div>
+    </div>
+
+    <!--显示已有的Jenkins-->
+
+    <table class="table">
+        <caption>已配置的Jenkins</caption>
+        <thead>
+        <tr>
+            <th>URL</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="jenkins in jenkinsCtrl.jenkinsConfs track by $index">
+            <td>{{::jenkins.serverUrl}}</td>
+            <td>{{::jenkins.createTime |date}}</td>
+            <td><span class="fa fa-trash" ng-click="jenkinsCtrl.delete(jenkins.id)"></span></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- 添加Jenkins -->
+    <div>
+        <div class="input-group">
+            <input class="form-control"  type="text" placeholder="Jenkins URL" ng-model="jenkinsConf.serverUrl"/>
+        </div>
+        <div class="input-group">
+            <input class="form-control"  type="text" placeholder="Jenkins master的用户名" ng-model="jenkinsConf.masterUser"/>
+        </div>
+        <div class="input-group">
+            <input class="form-control"  type="password" placeholder="Jenkins master的密码" ng-model="jenkinsConf.masterPassword"/>
+        </div>
+        <button class="btn btn-default" ng-click="jenkinsCtrl.addJenkinsConf()">添加</button>
+    </div>
+</div>

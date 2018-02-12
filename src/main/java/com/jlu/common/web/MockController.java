@@ -37,6 +37,8 @@ public class MockController {
         user.setRole(role);
         user.setEmail("576506402@qq.com");
         user.setUsername(username);
+        user.setPipelineToken(UUID.randomUUID().toString());
+        user.setAvatarUrl("https://avatars1.githubusercontent.com/u/20750824?v=4");
         request.getSession().setAttribute(GithubUser.CURRENT_USER_NAME, user);
         return ResponseBean.TRUE;
     }

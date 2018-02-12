@@ -1,0 +1,394 @@
+.pipl-tab {
+    /*line-height: 47px;*/
+    border-bottom: 1px solid #E9E9E9;
+    padding-left: 15px;
+    height: 32px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.pipl-tab .nav-tabs {
+    height: 32px;
+    border-bottom: 0 !important;
+}
+
+.pipl-tab .nav-tabs li {
+    width: 110px;
+    text-align: center;
+    height: 100%;
+}
+
+.pipl-tab .nav-tabs > li > a:hover,
+.pipl-tab .nav-tabs li:hover {
+    background-color: #FFF !important;
+}
+
+.pipl-tab .nav-tabs .active {
+    border-left: solid 1px #E9E9E9;
+    border-right: solid 1px #E9E9E9;
+    border-top: 1px solid #3b71df;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background-color: #FFF;
+}
+
+.pipl-tab .nav-tabs .trunk-tab-icon {
+    display: inline-block;
+    width: 6px;
+    height: 13px;
+    position: relative;
+    top: 2px;
+    background: url(../img/pipeline/trunk-icon.png) no-repeat;
+    background-size: 6px 13px;
+}
+
+
+.pipl-tab .nav-tabs a:hover .trunk-tab-icon,
+.pipl-tab .nav-tabs .active .trunk-tab-icon {
+    display: inline-block;
+    width: 6px;
+    height: 13px;
+    position: relative;
+    top: 2px;
+    background: url(../img/pipeline/trunk-icon-hover.png) no-repeat;
+    background-size: 6px 13px;
+}
+
+.pipl-tab .nav-tabs a {
+    color: #4a4a4a;
+    padding-top: 7px;
+}
+
+.pipl-tab .nav-tabs .active a {
+    padding-top: 6px;
+    color: #3b71df !important;
+}
+
+.page-header a {
+    color: #4a4a4a;
+}
+
+.page-header .active a {
+    color: #3b71df !important;
+}
+
+.pipl-tab .nav-tabs .active a,
+.pipl-tab .nav-tabs .active a:hover {
+    background-color: #FFF;
+    border: 1px solid transparent !important;
+}
+
+.pipl-tab .navbar-nav li a {
+    background-color: #F8F8F8;
+}
+
+.pipl-tab .nav-tabs a {
+    height: 100%;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.pipl-tab .nav-tabs li a:hover {
+    color: #3b71df;
+}
+
+.pipl-tab .nav-tabs .tab-tips i {
+    margin-right: 5px;
+}
+
+.pipl-tab .nav-tabs.tab-tips li {
+    width: auto;;
+    margin-right: 15px;
+    line-height: 35px;
+    font-size: 12px;
+    padding: 0;
+}
+
+/* 顶部右侧流水线标示 start*/
+.status-description-tips {
+    margin-top: -25px !important;
+    padding-right: 10px !important;
+    color: #929292 !important;
+    font-size: 12px !important;
+}
+
+.pipl-tab-status-icon {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.pipl-tab-status-icon.success {
+    background: url(../img/pipeline/success-desc.svg) no-repeat 0 0;
+}
+
+.pipl-tab-status-icon.fail {
+    background: url(../img/pipeline/fail-desc.svg) no-repeat 0 0;
+}
+
+.pipl-tab-status-icon.running {
+    background: url(../img/pipeline/running-desc.svg) no-repeat 0 0;
+}
+
+.pipl-tab-status-icon.waiting {
+    background: url(../img/pipeline/waiting-desc.svg) no-repeat 0 0;
+}
+/* 顶部右侧流水线标示 end*/
+
+.release-list-link {
+    padding-right: 20px;
+}
+
+.pipl-tab .nav-tabs .trunk-tab-icon {
+    display: inline-block;
+    width: 6px;
+    height: 13px;
+    position: relative;
+    top: 2px;
+    background: url(../img/pipeline/trunk-icon.png) no-repeat;
+    background-size: 6px 13px;
+}
+
+.pipl-tab .nav-tabs a:hover .trunk-tab-icon,
+.pipl-tab .nav-tabs .active .trunk-tab-icon {
+    display: inline-block;
+    width: 6px;
+    height: 13px;
+    position: relative;
+    top: 2px;
+    background: url(../img/pipeline/trunk-icon-hover.png) no-repeat;
+    background-size: 6px 13px;
+}
+
+/* 发布记录图标 */
+.release-history-icon {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    position: relative;
+    top: 3px;
+    background: url(../img/pipeline/release-history-icon.svg) no-repeat;
+}
+
+/* 配置 */
+.module-settings-link {
+    margin-left: 20px;
+}
+
+.page-header-plus {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    border-bottom-width: 0px !important;
+}
+
+.pipeline-builds-top {
+    margin-top: 15px;
+}
+
+/*加载更多*/
+.load-more-row {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.load-more-row > div {
+    text-align: center;
+}
+.load-more-row .load-more-loader {
+    margin-bottom: 10px;
+}
+
+.load-more-button > button {
+    width: 120px;
+    height: 36px;
+    font-size: 14px;
+}
+
+.pipeline-row {
+    height: 80px;
+}
+
+/*主体内容*/
+
+.pipeline-overview  {
+    width: 100%;
+}
+
+.pipeline-overview .pipeline-content > a {
+    color: #929292 !important;
+}
+
+.pipeline-overview .pipeline-content {
+    height: 60px;
+    margin-top: 25px;
+}
+
+.pipeline-overview > div {
+    display: block;
+}
+
+.pipeline-overview .pipeline-content {
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: transparent;
+}
+
+/*撑开区域*/
+.pipeline-overview .expand-area {
+    width: calc(100% - 50px);
+    margin-left: 25px;
+    margin-top: -6px;
+    background-color: #F6F6F6;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -webkit-box-shadow: 0 10px 10px -7px #CCC;
+    -moz-box-shadow: 0 10px 10px -7px #CCC;
+    box-shadow: 0 10px 10px -7px #CCC;
+    position: relative;
+    z-index: 99;
+}
+
+.pipeline-overview .expand-area button,
+.pipeline-overview .expand-area input[type="button"] {
+    background-color: #638EE6 !important;
+}
+
+.pipeline-overview .expand-area button:hover,
+.pipeline-overview .expand-area input[type="button"]:hover {
+    background-color: #3b71df !important;
+}
+
+.expand-area .expand-container .expand-contents table,
+.expand-area .expand-container .expand-contents > div .table,
+.expand-area .expand-container .operation,
+.expand-area .expand-container .expand-contents {
+    font-size: 12px !important;
+}
+.expand-area .expand-container {
+    padding: 20px 70px;
+}
+.expand-area .expand-container .operation {
+    height: 25px;
+    padding-left: 10px;
+}
+
+.expand-area .expand-container .operation .pull-right {
+    margin-right: 70px;
+}
+.expand-area .expand-container .operation .pull-right > span {
+    padding-right: 30px;
+}
+
+.expand-area .expand-container .operation .pull-right > span > label {
+    display: inline-block;
+    color: #929292;
+    font-weight: 100;
+    margin-right: 5px;
+}
+.expand-area .expand-container .expand-contents input[type="button"],
+.expand-area .expand-container .operation > button {
+    height: 24px;
+    padding-top: 3px;
+    font-size: 13px;
+}
+
+.expand-contents  .list-unstyled > li {
+    padding-bottom: 5px;
+}
+.expand-contents  .list-unstyled > li {
+    line-height: 24px;
+    min-height: 24px;
+    border-bottom: 1px dotted #DCDDDE;
+    padding-left: 10px;
+    position: relative;
+}
+
+.expand-contents .commit-info-ul .code-url {
+    margin-right: 5px;
+    padding: 2px;
+    background-color: #EBF0FB;
+}
+
+.expand-contents .commit-info-ul .commit-changes-file-link > a {
+    padding: 2px 20px 5px 20px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.expand-contents .commit-info-ul .commit-changes-file-link > .without-links {
+    padding-left: 0;
+}
+.expand-contents .commit-info-ul .commit-changes-file-link.expand {
+    position: relative;
+    top: 1px;
+}
+.expand-contents .commit-info-ul .commit-changes-file-link.expand .without-links {
+    padding-left: 20px;
+}
+
+.expand-contents .commit-info-ul .commit-changes-file-link.expand > a {
+    border-color: #DDD !important;
+    background-color: #FFF;
+}
+.expand-contents .commit-info-ul .changes-file-expand-container {
+    border: 1px solid #DDD;
+    background-color: #FFF;
+    border-radius: 3px;
+}
+.expand-contents .commit-info-ul .changes-file-expand-container > ul > li > span {
+    padding-right: 20px;
+    margin-left: -20px;
+}
+.expand-contents .commit-info-ul .changes-file-expand-container > .table > tbody > tr:first-child > td {
+    border-top: none;
+}
+.expand-contents .commit-info-ul .changes-file-expand-container > .table {
+    margin-bottom: 0;
+}
+
+
+.expand-contents  .table-list-unstyled {
+    font-size: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.expand-contents  .table-list-unstyled tr {
+    border-bottom: 1px dotted #DCDDDE;
+}
+.expand-contents  .table-list-unstyled tr td:first-child {
+    padding-left: 10px;
+}
+.expand-contents  .table-list-unstyled tr td {
+    padding-bottom: 3px;
+    white-space: nowrap;
+}
+.expand-contents  .table-list-unstyled .running {
+    font-size: 16px;
+}
+
+.expand-contents  .table-list-unstyled .col-pl-20 {
+    padding-left: 20px;
+}
+
+.expand-contents  .table-list-unstyled .col-pl-60 {
+    padding-left: 60px;
+}
+.expand-contents  .table-list-unstyled tr {
+    line-height: 24px;
+}
+
+.expand-contents  .table-list-unstyled .col-pl-80 {
+    padding-left: 80px;
+}
+.expand-contents  .table-list-unstyled tr td:last-child {
+    width: 100%;
+}
+
+.expand-contents  .table-list-unstyled .cost-time-val {
+    color: #929292 !important;
+}
+
+

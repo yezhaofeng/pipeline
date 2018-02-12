@@ -15,6 +15,6 @@
     </style>
 </head>
 <body bgcolor="black">
-<a href="/github/authorization"><img class="github" src="/resources/images/github-login.bmp"/></a>
+<a href="/github/authorization"><img class="github" src="/resources/intro/images/github-login.bmp"/></a>
 </body>
 </html>

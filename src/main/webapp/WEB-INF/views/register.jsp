@@ -3,9 +3,9 @@
 <html>
 <head>
     <title>就差一步,就注册完了!</title>
-    <link href="/resources/base/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/resources/intro/base/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="/resources/base/jquery.js"></script>
-    <script src="/resources/base/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/resources/intro/base/bootstrap/js/bootstrap.min.js"></script>
     <style>
         label {
             font-size: 20px;
@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body style="background-image: url('/resources/images/page1.bmp');background-repeat: no-repeat;
+<body style="background-image: url('/resources/intro/images/page1.bmp');background-repeat: no-repeat;
 background-size: 100%; font-size:20px;color: #bbbbbb;">
 <br/><br/><br/>
 <div class="container">
