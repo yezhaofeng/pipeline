@@ -25,6 +25,7 @@ define(['../common/app-injector', 'constants', 'angular'], function appPluginJob
                 };
                 var pages = ['configPage', 'buildBriefPage', 'buildPage', 'executeRequirePage'];
                 return $http.get(constants.api('plugin/job/configs'), {cache: true}).then(function (data) {
+                    alert(123);
                     var deps = [];
                     var configs = data.data;
                     if (configs instanceof Array) {
@@ -35,7 +36,7 @@ define(['../common/app-injector', 'constants', 'angular'], function appPluginJob
                                 if (pageConfig) {
                                     var js = pageConfig.js;
                                     if (js && !contains(array, js)) {
-                                        deps.push(constants.resource('/plugin/job/type/' + js));
+                                        deps.push('resources/dev/plugin/job/type/'+config.pluginType+"main.js");
                                         array.push(js);
                                     }
                                 }

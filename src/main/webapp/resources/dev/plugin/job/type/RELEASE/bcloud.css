@@ -1,0 +1,42 @@
+.CodeMirror {
+    height: auto !important;
+}
+
+.CodeMirror-scroll {
+    height: auto !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+}
+
+.cm-s-ambiance .cm-info {
+    color: #FFF;
+}
+
+.cm-s-ambiance .cm-warning {
+    color: #fca934;
+}
+
+.cm-s-ambiance .cm-error {
+    color: #ff0b0c;
+}
+
+/*加载效果样式*/
+.bcloud .log-loading {
+    margin: auto !important;
+}
+
+.bcloud .agile-loading-default-spinner div {
+    background-color: #FFF !important;
+}
+
+.bcloud .agile-loading-default-text {
+    color: #FFF;
+}
+
+.bcloud-fail-wiki .fa {
+    font-size: inherit;
+}
+
+.package-table > tbody > tr > td {
+    width: 1000px !important;
+}

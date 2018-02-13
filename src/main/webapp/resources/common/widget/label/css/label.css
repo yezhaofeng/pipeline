@@ -1,0 +1,1272 @@
+
+/*******************************
+              Label
+*******************************/
+
+.agile.label {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: baseline;
+    margin: 0 .14285714em;
+    background: #E8E8E8 none;
+    padding: .5833em .833em;
+    color: rgba(0, 0, 0, .6);
+    text-transform: none;
+    border: 0 solid transparent;
+    border-radius: .28571429rem;
+    -webkit-transition: background .1s ease;
+            transition: background .1s ease;
+}
+.agile.label:first-child {
+    margin-left: 0;
+}
+.agile.label:last-child {
+    margin-right: 0;
+}
+
+
+/* Inside Link */
+.agile.label > a {
+    cursor: pointer;
+    color: inherit;
+    opacity: .5;
+    -webkit-transition: .1s opacity ease;
+            transition: .1s opacity ease;
+}
+.agile.label > a:hover {
+    opacity: 1;
+}
+
+/* Image */
+.agile.label > img {
+    width: auto !important;
+    vertical-align: middle;
+    height: 2.1666em !important;
+}
+
+/* Icon */
+.agile.label > .icon {
+    width: auto;
+    margin: 0 .75em 0 0;
+}
+
+/* Detail */
+.agile.label > .detail {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1em;
+    opacity: .8;
+}
+.agile.label > .detail .icon {
+    margin: 0 .25em 0 0;
+}
+
+/* Removable label */
+.agile.label > .close.icon,
+.agile.label > .delete.icon {
+    cursor: pointer;
+    margin-right: 0;
+    margin-left: .5em;
+    font-size: .92857143em;
+    opacity: .5;
+    -webkit-transition: background .1s ease;
+            transition: background .1s ease;
+}
+.agile.label > .delete.icon:hover {
+    opacity: 1;
+}
+
+/*-------------------
+         Group
+--------------------*/
+
+.agile.labels > .label {
+    margin: 0 .5em .5em 0;
+}
+
+/*-------------------
+         Coupling
+--------------------*/
+
+.agile.header > .agile.label {
+    margin-top: -0.29165em;
+}
+
+/* Remove border radius on attached segment */
+.agile.attached.segment > .agile.top.left.attached.label,
+.agile.bottom.attached.segment > .agile.top.left.attached.label {
+    border-top-left-radius: 0;
+}
+.agile.attached.segment > .agile.top.right.attached.label,
+.agile.bottom.attached.segment > .agile.top.right.attached.label {
+    border-top-right-radius: 0;
+}
+.agile.top.attached.segment > .agile.bottom.left.attached.label {
+    border-bottom-left-radius: 0;
+}
+.agile.top.attached.segment > .agile.bottom.right.attached.label {
+    border-bottom-right-radius: 0;
+}
+
+
+/*******************************
+               Types
+*******************************/
+
+.agile.image.label {
+    width: auto !important;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: 9999px;
+    vertical-align: baseline;
+    text-transform: none;
+    background: #E8E8E8;
+    padding: .5833em .833em .5833em .5em;
+    border-radius: .28571429rem;
+    box-shadow: none;
+}
+.agile.image.label img {
+    display: inline-block;
+    vertical-align: top;
+    height: 2.1666em;
+    margin: -0.5833em .5em -0.5833em -0.5em;
+    border-radius: .28571429rem 0 0 .28571429rem;
+}
+.agile.image.label .detail {
+    background: rgba(0, 0, 0, .1);
+    margin: -0.5833em -0.833em -0.5833em .5em;
+    padding: .5833em .833em;
+    border-radius: 0 .28571429rem .28571429rem 0;
+}
+
+/*-------------------
+           Tag
+--------------------*/
+
+.agile.tag.labels .label,
+.agile.tag.label {
+    margin-left: 1em;
+    position: relative;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    border-radius: 0 .28571429rem .28571429rem 0;
+    -webkit-transition: none;
+            transition: none;
+}
+.agile.tag.labels .label:before,
+.agile.tag.label:before {
+    position: absolute;
+    -webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+        -ms-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+            transform: translateY(-50%) translateX(50%) rotate(-45deg);
+    top: 50%;
+    right: 100%;
+    content: " ";
+    background-color: inherit;
+    background-image: none;
+    width: 1.56em;
+    height: 1.56em;
+    -webkit-transition: none;
+            transition: none;
+}
+.agile.tag.labels .label:after,
+.agile.tag.label:after {
+    position: absolute;
+    content: " ";
+    top: 50%;
+    left: -0.25em;
+    margin-top: -0.25em;
+    background-color: #FFF !important;
+    width: .5em;
+    height: .5em;
+    box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, .3);
+    border-radius: 500rem;
+}
+
+/*-------------------
+      Corner Label
+--------------------*/
+
+.agile.corner.label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border-color: #E8E8E8;
+    width: 4em;
+    height: 4em;
+    z-index: 1;
+    -webkit-transition: border-color .1s ease;
+            transition: border-color .1s ease;
+}
+
+/* Icon Label */
+.agile.corner.label {
+    background-color: transparent !important;
+}
+.agile.corner.label:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+    z-index: -1;
+    width: 0;
+    height: 0;
+    background-color: transparent !important;
+    border: 0 solid transparent;
+    border-right: 4em inherit;
+    border-bottom-width: 4em;
+    -webkit-transition: border-color .1s ease;
+            transition: border-color .1s ease;
+}
+.agile.corner.label .icon {
+    cursor: default;
+    position: relative;
+    top: .64285714em;
+    left: .78571429em;
+    font-size: 1.14285714em;
+    margin: 0;
+}
+
+/* Left Corner */
+.agile.left.corner.label,
+.agile.left.corner.label:after {
+    right: auto;
+    left: 0;
+}
+.agile.left.corner.label:after {
+    border: 4em solid transparent;
+    border-top-color: inherit;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+.agile.left.corner.label .icon {
+    left: -0.78571429em;
+}
+
+/* Segment */
+.agile.segment > .agile.corner.label {
+    top: -1px;
+    right: -1px;
+}
+.agile.segment > .agile.left.corner.label {
+    right: auto;
+    left: -1px;
+}
+
+/*-------------------
+         Ribbon
+--------------------*/
+
+.agile.ribbon.label {
+    position: relative;
+    margin: 0;
+    min-width: -webkit-max-content;
+    min-width: -moz-max-content;
+    min-width: max-content;
+    border-radius: 0 .28571429rem .28571429rem 0;
+    border-color: rgba(0, 0, 0, .15);
+}
+.agile.ribbon.label:after {
+    position: absolute;
+    content: " ";
+    top: 100%;
+    left: 0%;
+    background-color: transparent !important;
+    border: 0 solid transparent;
+    border-right: 1.2em inherit;
+    border-bottom-width: 1.2em;
+    width: 0;
+    height: 0;
+}
+
+/* Positioning */
+.agile.ribbon.label {
+    left: calc( -1rem  -  1.2em );
+    margin-right: -1.2em;
+    padding-left: calc( 1rem  +  1.2em );
+    padding-right: 1.2em;
+}
+.agile .right .ribbon.label {
+    left: calc(100% +  1rem  +  1.2em );
+    padding-left: 1.2em;
+    padding-right: calc( 1rem  +  1.2em );
+}
+
+/* Right Ribbon */
+.agile .right .ribbon .label {
+    text-align: left;
+    -webkit-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+            transform: translateX(-100%);
+    border-radius: .28571429rem 0 0 .28571429rem;
+}
+.agile .right .ribbon .label:after {
+    left: auto;
+    right: 0%;
+    border-style: solid;
+    border-width: 1.2em 1.2em 0 0;
+    border-color: transparent;
+    border-top-color: inherit;
+}
+
+/* Inside Table */
+.agile.image > .ribbon.label,
+.agile.card .image > .ribbon.label {
+    position: absolute;
+    top: 1rem;
+}
+.agile.card .image > .agile.ribbon.label,
+.agile.image > .agile.ribbon.label {
+    left: calc( .05rem  -  1.2em );
+}
+.agile.card .image > .agile .right .ribbon .label,
+.agile.image > .agile .right .ribbon .label {
+    left: calc(100% +  -0.05rem  +  1.2em );
+    padding-left: .833em;
+}
+
+/* Inside Table */
+.agile.table td > .agile.ribbon.label {
+    left: calc( -0.71428571em  -  1.2em );
+}
+.agile.table td > .agile .right .ribbon .label {
+    left: calc(100% +  .71428571em  +  1.2em );
+    padding-left: .833em;
+}
+
+/*-------------------
+        Attached
+--------------------*/
+
+.agile .top .attached.label,
+.agile.attached.label {
+    width: 100%;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    left: 0;
+    padding: .75em 1em;
+    border-radius: .21428571rem .21428571rem 0 0;
+}
+
+.agile[class*="bottom attached"].label {
+    top: auto;
+    bottom: 0;
+    border-radius: 0 0 .21428571rem .21428571rem;
+}
+
+.agile.top .left .attached .label {
+    width: auto;
+    margin-top: 0 !important;
+    border-radius: .21428571rem 0 .28571429rem 0;
+}
+
+.agile.top .right .attached.label {
+    width: auto;
+    left: auto;
+    right: 0;
+    border-radius: 0 .21428571rem 0 .28571429rem;
+}
+
+.agile.bottom .left .attached.label {
+    width: auto;
+    top: auto;
+    bottom: 0;
+    border-radius: 0 .28571429rem 0 .21428571rem;
+}
+
+.agile.bottom .right .attached.label {
+    top: auto;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    width: auto;
+    border-radius: .28571429rem 0 .21428571rem 0;
+}
+
+
+/*******************************
+               States
+*******************************/
+
+
+/*-------------------
+        Disabled
+--------------------*/
+
+.agile.label.disabled {
+    opacity: .5;
+}
+
+/*-------------------
+          Hover
+--------------------*/
+
+a.agile.labels .label:hover,
+a.agile.label:hover {
+    border-color: #E0E0E0;
+    background: #E0E0E0 none;
+    color: rgba(0, 0, 0, .8);
+}
+.agile.labels a.label:hover:before,
+a.agile.label:hover:before {
+    color: rgba(0, 0, 0, .8);
+}
+
+/*-------------------
+          Active
+--------------------*/
+
+.agile.active.label {
+    border-color: #D0D0D0;
+    background: #D0D0D0 none;
+    color: rgba(0, 0, 0, .95);
+}
+.agile.active.label:before {
+    background: #D0D0D0 none;
+    color: rgba(0, 0, 0, .95);
+}
+
+/*-------------------
+       Active Hover
+--------------------*/
+
+a.agile.labels .active.label:hover,
+a.agile.active.label:hover {
+    border-color: #C8C8C8;
+    background: #C8C8C8 none;
+    color: rgba(0, 0, 0, .95);
+}
+.agile.labels a.active.label:ActiveHover:before,
+a.agile.active.label:ActiveHover:before {
+    background: #C8C8C8 none;
+    color: rgba(0, 0, 0, .95);
+}
+
+/*-------------------
+        Visible
+--------------------*/
+
+.agile.labels.visible .label,
+.agile.label.visible {
+    display: inline-block !important;
+}
+
+/*-------------------
+        Hidden
+--------------------*/
+
+.agile.labels.hidden .label,
+.agile.label.hidden {
+    display: none !important;
+}
+
+
+/*******************************
+             Variations
+*******************************/
+
+
+/*-------------------
+         Colors
+--------------------*/
+
+
+/*--- Red ---*/
+
+.agile.red.labels .label,
+.agile.red.label {
+    background-color: #DB2828 !important;
+    border-color: #DB2828 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.red.labels .label:hover,
+a.agile.red.label:hover {
+    background-color: #d01919 !important;
+    border-color: #d01919 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.red.corner.label,
+.agile.red.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.red.ribbon.label {
+    border-color: #b21e1e !important;
+}
+
+/* Basic */
+.agile.basic.red.label {
+    background-color: #FFF !important;
+    color: #DB2828 !important;
+    border-color: #DB2828 !important;
+}
+.agile.basic.red.labels a.label:hover,
+a.agile.basic.red.label:hover {
+    background-color: #FFF !important;
+    color: #d01919 !important;
+    border-color: #d01919 !important;
+}
+
+/*--- Orange ---*/
+
+.agile.orange.labels .label,
+.agile.orange.label {
+    background-color: #F2711C !important;
+    border-color: #F2711C !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.orange.labels .label:hover,
+a.agile.orange.label:hover {
+    background-color: #f26202 !important;
+    border-color: #f26202 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.orange.corner.label,
+.agile.orange.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.orange.ribbon.label {
+    border-color: #cf590c !important;
+}
+
+/* Basic */
+.agile.basic.orange.label {
+    background-color: #FFF !important;
+    color: #F2711C !important;
+    border-color: #F2711C !important;
+}
+.agile.basic.orange.labels a.label:hover,
+a.agile.basic.orange.label:hover {
+    background-color: #FFF !important;
+    color: #f26202 !important;
+    border-color: #f26202 !important;
+}
+
+/*--- Yellow ---*/
+
+.agile.yellow.labels .label,
+.agile.yellow.label {
+    background-color: #FBBD08 !important;
+    border-color: #FBBD08 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.yellow.labels .label:hover,
+a.agile.yellow.label:hover {
+    background-color: #eaae00 !important;
+    border-color: #eaae00 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.yellow.corner.label,
+.agile.yellow.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.yellow.ribbon.label {
+    border-color: #cd9903 !important;
+}
+
+/* Basic */
+.agile.basic.yellow.label {
+    background-color: #FFF !important;
+    color: #FBBD08 !important;
+    border-color: #FBBD08 !important;
+}
+.agile.basic.yellow.labels a.label:hover,
+a.agile.basic.yellow.label:hover {
+    background-color: #FFF !important;
+    color: #eaae00 !important;
+    border-color: #eaae00 !important;
+}
+
+/*--- Olive ---*/
+
+.agile.olive.labels .label,
+.agile.olive.label {
+    background-color: #B5CC18 !important;
+    border-color: #B5CC18 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.olive.labels .label:hover,
+a.agile.olive.label:hover {
+    background-color: #a7bd0d !important;
+    border-color: #a7bd0d !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.olive.corner.label,
+.agile.olive.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.olive.ribbon.label {
+    border-color: #51a51e !important;
+}
+
+/* Basic */
+.agile.basic.olive.label {
+    background-color: #FFF !important;
+    color: #B5CC18 !important;
+    border-color: #B5CC18 !important;
+}
+.agile.basic.olive.labels a.label:hover,
+a.agile.basic.olive.label:hover {
+    background-color: #FFF !important;
+    color: #a7bd0d !important;
+    border-color: #a7bd0d !important;
+}
+
+/*--- Green ---*/
+
+.agile.green.labels .label,
+.agile.green.label {
+    background-color: #66D026 !important;
+    border-color: #66D026 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.green.labels .label:hover,
+a.agile.green.label:hover {
+    background-color: #5ac21a !important;
+    border-color: #5ac21a !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.green.corner.label,
+.agile.green.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.green.ribbon.label {
+    border-color: #51a51e !important;
+}
+
+/* Basic */
+.agile.basic.green.label {
+    background-color: #FFF !important;
+    color: #66D026 !important;
+    border-color: #66D026 !important;
+}
+.agile.basic.green.labels a.label:hover,
+a.agile.basic.green.label:hover {
+    background-color: #FFF !important;
+    color: #5ac21a !important;
+    border-color: #5ac21a !important;
+}
+
+/*--- Teal ---*/
+
+.agile.teal.labels .label,
+.agile.teal.label {
+    background-color: #00B5AD !important;
+    border-color: #00B5AD !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.teal.labels .label:hover,
+a.agile.teal.label:hover {
+    background-color: #009c95 !important;
+    border-color: #009c95 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.teal.corner.label,
+.agile.teal.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.teal.ribbon.label {
+    border-color: #00827c !important;
+}
+
+/* Basic */
+.agile.basic.teal.label {
+    background-color: #FFF !important;
+    color: #00B5AD !important;
+    border-color: #00B5AD !important;
+}
+.agile.basic.teal.labels a.label:hover,
+a.agile.basic.teal.label:hover {
+    background-color: #FFF !important;
+    color: #009c95 !important;
+    border-color: #009c95 !important;
+}
+
+/*--- Blue ---*/
+
+.agile.blue.labels .label,
+.agile.blue.label {
+    background-color: #3B71DF !important;
+    border-color: #3B71DF !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.blue.labels .label:hover,
+a.agile.blue.label:hover {
+    background-color: #1c5ee5 !important;
+    border-color: #1c5ee5 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.blue.corner.label,
+.agile.blue.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.blue.ribbon.label {
+    border-color: #2057c7 !important;
+}
+
+/* Basic */
+.agile.basic.blue.label {
+    background-color: #FFF !important;
+    color: #3B71DF !important;
+    border-color: #3B71DF !important;
+}
+.agile.basic.blue.labels a.label:hover,
+a.agile.basic.blue.label:hover {
+    background-color: #FFF !important;
+    color: #1c5ee5 !important;
+    border-color: #1c5ee5 !important;
+}
+
+/*--- Violet ---*/
+
+.agile.violet.labels .label,
+.agile.violet.label {
+    background-color: #6435C9 !important;
+    border-color: #6435C9 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.violet.labels .label:hover,
+a.agile.violet.label:hover {
+    background-color: #5829bb !important;
+    border-color: #5829bb !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.violet.corner.label,
+.agile.violet.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.violet.ribbon.label {
+    border-color: #502aa1 !important;
+}
+
+/* Basic */
+.agile.basic.violet.label {
+    background-color: #FFF !important;
+    color: #6435C9 !important;
+    border-color: #6435C9 !important;
+}
+.agile.basic.violet.labels a.label:hover,
+a.agile.basic.violet.label:hover {
+    background-color: #FFF !important;
+    color: #5829bb !important;
+    border-color: #5829bb !important;
+}
+
+/*--- Purple ---*/
+
+.agile.purple.labels .label,
+.agile.purple.label {
+    background-color: #312C66 !important;
+    border-color: #312C66 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.purple.labels .label:hover,
+a.agile.purple.label:hover {
+    background-color: #262257 !important;
+    border-color: #262257 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.purple.corner.label,
+.agile.purple.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.purple.ribbon.label {
+    border-color: #201d42 !important;
+}
+
+/* Basic */
+.agile.basic.purple.label {
+    background-color: #FFF !important;
+    color: #312C66 !important;
+    border-color: #312C66 !important;
+}
+.agile.basic.purple.labels a.label:hover,
+a.agile.basic.purple.label:hover {
+    background-color: #FFF !important;
+    color: #262257 !important;
+    border-color: #262257 !important;
+}
+
+/*--- Pink ---*/
+
+.agile.pink.labels .label,
+.agile.pink.label {
+    background-color: #E03997 !important;
+    border-color: #E03997 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.pink.labels .label:hover,
+a.agile.pink.label:hover {
+    background-color: #e61a8d !important;
+    border-color: #e61a8d !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.pink.corner.label,
+.agile.pink.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.pink.ribbon.label {
+    border-color: #c71f7e !important;
+}
+
+/* Basic */
+.agile.basic.pink.label {
+    background-color: #FFF !important;
+    color: #E03997 !important;
+    border-color: #E03997 !important;
+}
+.agile.basic.pink.labels a.label:hover,
+a.agile.basic.pink.label:hover {
+    background-color: #FFF !important;
+    color: #e61a8d !important;
+    border-color: #e61a8d !important;
+}
+
+/*--- Brown ---*/
+
+.agile.brown.labels .label,
+.agile.brown.label {
+    background-color: #A5673F !important;
+    border-color: #A5673F !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.brown.labels .label:hover,
+a.agile.brown.label:hover {
+    background-color: #975b33 !important;
+    border-color: #975b33 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.brown.corner.label,
+.agile.brown.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.brown.ribbon.label {
+    border-color: #805031 !important;
+}
+
+/* Basic */
+.agile.basic.brown.label {
+    background-color: #FFF !important;
+    color: #A5673F !important;
+    border-color: #A5673F !important;
+}
+.agile.basic.brown.labels a.label:hover,
+a.agile.basic.brown.label:hover {
+    background-color: #FFF !important;
+    color: #975b33 !important;
+    border-color: #975b33 !important;
+}
+
+/*--- Grey ---*/
+
+.agile.grey.labels .label,
+.agile.grey.label {
+    background-color: #D5D5D5 !important;
+    border-color: #D5D5D5 !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.grey.labels .label:hover,
+a.agile.grey.label:hover {
+    background-color: #e2e2e2 !important;
+    border-color: #e2e2e2 !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.grey.corner.label,
+.agile.grey.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.grey.ribbon.label {
+    border-color: #805031 !important;
+}
+
+/* Basic */
+.agile.basic.grey.label {
+    background-color: #FFF !important;
+    color: #D5D5D5 !important;
+    border-color: #D5D5D5 !important;
+}
+.agile.basic.grey.labels a.label:hover,
+a.agile.basic.grey.label:hover {
+    background-color: #FFF !important;
+    color: #e2e2e2 !important;
+    border-color: #e2e2e2 !important;
+}
+
+/*--- Black ---*/
+
+.agile.black.labels .label,
+.agile.black.label {
+    background-color: #1B1C1D !important;
+    border-color: #1B1C1D !important;
+    color: #FFF !important;
+}
+
+/* Link */
+.agile.black.labels .label:hover,
+a.agile.black.label:hover {
+    background-color: #27292a !important;
+    border-color: #27292a !important;
+    color: #FFF !important;
+}
+
+/* Corner */
+.agile.black.corner.label,
+.agile.black.corner.label:hover {
+    background-color: transparent !important;
+}
+
+/* Ribbon */
+.agile.black.ribbon.label {
+    border-color: #805031 !important;
+}
+
+/* Basic */
+.agile.basic.black.label {
+    background-color: #FFF !important;
+    color: #1B1C1D !important;
+    border-color: #1B1C1D !important;
+}
+.agile.basic.black.labels a.label:hover,
+a.agile.basic.black.label:hover {
+    background-color: #FFF !important;
+    color: #27292a !important;
+    border-color: #27292a !important;
+}
+
+/*-------------------
+          Basic
+--------------------*/
+
+.agile.basic.label {
+    background: none #FFF;
+    border: 1px solid rgba(34, 36, 38, .15);
+    color: rgba(0, 0, 0, .87);
+    box-shadow: none;
+}
+
+/* Link */
+a.agile.basic.label:hover {
+    text-decoration: none;
+    background: none #FFF;
+    color: #195cab;
+    box-shadow: 1px solid rgba(34, 36, 38, .15);
+    box-shadow: none;
+}
+
+/* Pointing */
+.agile.basic.pointing.label:before {
+    border-color: inherit;
+}
+
+/*-------------------
+         Flagiled
+--------------------*/
+
+.agile.label.fluid,
+.agile.fluid.labels > .label {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*-------------------
+         Inverted
+--------------------*/
+
+.agile.inverted.labels .label,
+.agile.inverted.label {
+    color: rgba(255, 255, 255, .9) !important;
+}
+
+/*-------------------
+       Horizontal
+--------------------*/
+
+.agile.horizontal.labels .label,
+.agile.horizontal.label {
+    margin: 0 .5em 0 0;
+    padding: .4em .833em;
+    min-width: 3em;
+    text-align: center;
+}
+
+/*-------------------
+         Circular
+--------------------*/
+
+.agile.circular.labels .label,
+.agile.circular.label {
+    min-width: 2em;
+    min-height: 2em;
+    padding: .5em !important;
+    line-height: 1em;
+    text-align: center;
+    border-radius: 500rem;
+}
+.agile.empty.circular.labels .label,
+.agile.empty.circular.label {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    width: .5em;
+    height: .5em;
+    vertical-align: baseline;
+}
+
+/*-------------------
+         Pointing
+--------------------*/
+
+.agile.pointing.label {
+    position: relative;
+}
+.agile.attached.pointing.label {
+    position: absolute;
+}
+.agile.pointing.label:before {
+    background-color: inherit;
+    background-image: inherit;
+    border-width: none;
+    border-style: solid;
+    border-color: inherit;
+}
+
+/* Arrow */
+.agile.pointing.label:before {
+    position: absolute;
+    content: " ";
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+    background-image: none;
+    z-index: 2;
+    width: .6666em;
+    height: .6666em;
+    -webkit-transition: background .1s ease;
+            transition: background .1s ease;
+}
+
+/*--- Above ---*/
+
+.agile.pointing.label,
+.agile[class*="pointing above"].label {
+    margin-top: 1em;
+}
+.agile.pointing.label:before,
+.agile[class*="pointing above"].label:before {
+    border-width: 1px 0 0 1px;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    top: 0%;
+    left: 50%;
+}
+
+/*--- Below ---*/
+
+.agile[class*="bottom pointing"].label,
+.agile[class*="pointing below"].label {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+.agile[class*="bottom pointing"].label:before,
+.agile[class*="pointing below"].label:before {
+    border-width: 0 1px 1px 0;
+    top: auto;
+    right: auto;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    top: 100%;
+    left: 50%;
+}
+
+/*--- Left ---*/
+
+.agile.left .pointing .label {
+    margin-top: 0;
+    margin-left: .6666em;
+}
+.agile[class*="left pointing"].label:before {
+    border-width: 0 0 1px 1px;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    bottom: auto;
+    right: auto;
+    top: 50%;
+    left: 0;
+}
+
+/*--- Right ---*/
+
+.agile[class*="right pointing"].label {
+    margin-top: 0;
+    margin-right: .6666em;
+}
+.agile[class*="right pointing"].label:before {
+    border-width: 1px 1px 0 0;
+    -webkit-transform: translateX(50%) translateY(-50%) rotate(45deg);
+        -ms-transform: translateX(50%) translateY(-50%) rotate(45deg);
+            transform: translateX(50%) translateY(-50%) rotate(45deg);
+    top: 50%;
+    right: 0%;
+    bottom: auto;
+    left: auto;
+}
+
+/* Basic Pointing */
+
+/*--- Above ---*/
+
+.agile.basic.pointing.label:before,
+.agile.basic[class*="pointing above"].label:before {
+    margin-top: -1px;
+}
+
+/*--- Below ---*/
+
+.agile.basic[class*="bottom pointing"].label:before,
+.agile.basic[class*="pointing below"].label:before {
+    bottom: auto;
+    top: 100%;
+    margin-top: 1px;
+}
+
+/*--- Left ---*/
+
+.agile.basic[class*="left pointing"].label:before {
+    top: 50%;
+    left: -1px;
+}
+
+/*--- Right ---*/
+
+.agile.basic[class*="right pointing"].label:before {
+    top: 50%;
+    right: -1px;
+}
+
+/*------------------
+     Floating Label
+-------------------*/
+
+.agile.floating.label {
+    position: absolute;
+    z-index: 100;
+    top: -1em;
+    left: 100%;
+    margin: 0 0 0 -1.5em !important;
+}
+
+/*-------------------
+          Sizes
+--------------------*/
+
+.agile.mini.labels .label,
+.agile.mini.label {
+    font-size: .40285714rem;
+}
+.agile.tiny.labels .label,
+.agile.tiny.label {
+    font-size: .71428571rem;
+}
+.agile.small.labels .label,
+.agile.small.label {
+    font-size: .78571429rem;
+}
+.agile.labels .label,
+.agile.label {
+    font-size: .85714286rem;
+}
+.agile.large.labels .label,
+.agile.large.label {
+    font-size: 1rem;
+}
+.agile.big.labels .label,
+.agile.big.label {
+    font-size: 1.28571429rem;
+}
+.agile.huge.labels .label,
+.agile.huge.label {
+    font-size: 1.42857143rem;
+}
+.agile.massive.labels .label,
+.agile.massive.label {
+    font-size: 1.71428571rem;
+}
+

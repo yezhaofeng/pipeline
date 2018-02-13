@@ -9,8 +9,7 @@
             <li class="list-group-item job-item" ng-repeat="plugin in pluginInfo track by $index"
                 ng-dblclick="selectPlugin($index)">
                 <div class="job-img-div">
-                    <!--<img class="j-img" ng-src="{{job.imageUrl}}">-->
-                    <img class="j-img" src="/resources/dev/img/plugin/{{plugin.pluginType}}.png">
+                    <img class="j-img" ng-src="/resources/dev/img/plugin/{{plugin.pluginType}}.png">
                 </div>
                 <div class="description-div">
                     <h5>&nbsp;&nbsp;{{plugin.name}}</h5>

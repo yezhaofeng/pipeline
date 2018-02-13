@@ -43,7 +43,8 @@ define(['app', 'constants'], function (app, constants) {
             var plugin = $scope.pluginInfo[index];
             var newJobConf = {
                 name: plugin.name,
-                triggerMode: 'AUTO'
+                triggerMode: 'AUTO',
+                pluginType: plugin.pluginType
             };
             self.config.jobConfs.push(newJobConf);
             self.toggleActiveJob(newJobConf);

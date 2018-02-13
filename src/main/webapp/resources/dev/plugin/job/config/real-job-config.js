@@ -19,22 +19,23 @@ define(['app', 'constants'], function appRealJobConfig(app, constants) {
                         config: '=appConfig',
                         context: '=appContext'
                     },
-                    templateUrl: 'resources/dev/plugin/job/type/bcloud/config.html',
+                    controller:'',
+                    template: '<div class="agile-plugin-job" ng-include="templateHtml" ng-show="show"></div>',
                     replace: true,
                     link: function (scope, el, attr) {
                         scope.$watch(function () {
-                            return scope.page;
-                        }, function (page) {
+                            return scope.job;
+                        }, function (job) {
                             console.log(scope);
-                            var html = '';
-                            if (page) {
-                                html = page.html;
-                            }
-                            alert(1);
+                            // var html = '';
+                            //if (page) {
+                            //    html = page.html;
+                            //}
                             // plugin job config html
-                            scope.templateHtml = constants.resource(html ? '/plugin/job/type/' + html
-                                : '/plugin/common/blank.html');
-
+                            //scope.templateHtml = constants.resource(html ? '/plugin/job/type/' + scope.job
+                            //    : '/plugin/common/blank.html');
+                            scope.templateHtml = '/resources/dev/plugin/job/type/' + job + "/config.html";
+                            //scope.js =  'ReleaseHistoryController';
                             scope.show = true;
                         });
                     }

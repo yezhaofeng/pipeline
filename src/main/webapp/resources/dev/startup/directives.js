@@ -6,7 +6,7 @@ define (
     [
         'js/pipeline/directives/pipeline-build',
         'js/pipeline/directives/pipeline-builds',
-        'plugin/job/config/real-job-config'
+         'plugin/job/config/real-job-config'
     ], function () {
         
     }

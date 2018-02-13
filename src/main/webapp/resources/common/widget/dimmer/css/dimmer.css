@@ -1,0 +1,174 @@
+/*******************************
+           遮罩层
+*******************************/
+
+.dimmable {
+    position: relative;
+}
+
+.agile.dimmer {
+    display: none;
+    position: absolute;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgba(0, 0, 0, .85);
+    opacity: 0;
+    line-height: 1;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+    -webkit-animation-duration: .5s;
+            animation-duration: .5s;
+    -webkit-transition: background-color .5s linear;
+            transition: background-color .5s linear;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    will-change: opacity;
+    z-index: 1000;
+}
+
+.agile.dimmer > .header {
+    position: relative;
+    width: 100%;
+    height: 50px;
+}
+
+.agile.dimmer > .header .close-dimmer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Dimmer Content */
+.agile.dimmer > .content {
+    width: 100%;
+    height: 100%;
+    display: table;
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
+}
+
+.agile.dimmer > .content > * {
+    display: table-cell;
+    vertical-align: middle;
+    color: #FFF;
+}
+
+/* Loose Coupling */
+.agile.segment > .agile.dimmer {
+    border-radius: inherit !important;
+}
+
+/*******************************
+            States
+*******************************/
+
+.animating.dimmable:not(body),
+.dimmed.dimmable:not(body) {
+    overflow: hidden;
+}
+
+.dimmed.dimmable > .agile.animating.dimmer,
+.dimmed.dimmable > .agile.visible.dimmer,
+.agile.active.dimmer {
+    display: block;
+    opacity: 1;
+}
+
+.agile.disabled.dimmer {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/*******************************
+           Variations
+*******************************/
+
+/*--------------
+      Page
+---------------*/
+
+.agile.page.dimmer {
+    position: fixed;
+    transform-style: " ";
+    perspective: 2000px;
+    -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+            transform-origin: center center;
+}
+
+.animating.in.dimmable,
+.dimmed.dimmable {
+    overflow: hidden;
+}
+
+.dimmable > .dimmer {
+    position: fixed;
+}
+
+
+/*--------------
+    Aligned
+---------------*/
+
+.agile.dimmer > .top.aligned.content > * {
+    vertical-align: top;
+}
+
+.agile.dimmer > .bottom.aligned.content > * {
+    vertical-align: bottom;
+}
+
+/*--------------
+    Inverted
+---------------*/
+
+.agile.inverted.dimmer {
+    background-color: rgba(255, 255, 255, .85);
+}
+
+.agile.inverted.dimmer > .content > * {
+    color: #FFF;
+}
+
+/*--------------
+     Simple
+---------------*/
+
+/* Displays without javascript */
+.agile.simple.dimmer {
+    display: block;
+    overflow: hidden;
+    opacity: 1;
+    width: 0;
+    height: 0;
+    z-index: -100;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.dimmed.dimmable > .agile.simple.dimmer {
+    overflow: visible;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .85);
+    z-index: 1;
+}
+
+.agile.simple.inverted.dimmer {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.dimmed.dimmable > .agile.simple.inverted.dimmer {
+    background-color: rgba(255, 255, 255, .85);
+}
+
+

@@ -1,0 +1,271 @@
+/*******************************
+               Image
+*******************************/
+
+.agile.image {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    background-color: transparent;
+}
+.agile.image svg,
+.agile.image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/*******************************
+              States
+*******************************/
+
+.agile.hidden.images,
+.agile.hidden.image {
+    display: none;
+}
+.agile.disabled.images,
+.agile.disabled.image {
+    cursor: default;
+    opacity: .45;
+}
+
+
+/*******************************
+            Variations
+*******************************/
+
+
+/*--------------
+       Inline
+---------------*/
+
+.agile.inline.image,
+.agile.inline.image svg,
+.agile.inline.image img {
+    display: inline-block;
+}
+
+/*------------------
+    Vertical Aligned
+-------------------*/
+
+.agile.top.aligned.images .image,
+.agile.top.aligned.image,
+.agile.top.aligned.image svg,
+.agile.top.aligned.image img {
+    display: inline-block;
+    vertical-align: top;
+}
+.agile.middle.aligned.images .image,
+.agile.middle.aligned.image,
+.agile.middle.aligned.image svg,
+.agile.middle.aligned.image img {
+    display: inline-block;
+    vertical-align: middle;
+}
+.agile.bottom.aligned.images .image,
+.agile.bottom.aligned.image,
+.agile.bottom.aligned.image svg,
+.agile.bottom.aligned.image img {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+/*--------------
+       Rounded
+---------------*/
+
+.agile.rounded.images .image,
+.agile.rounded.image,
+.agile.rounded.images .image > *,
+.agile.rounded.image > * {
+    border-radius: .3125em;
+}
+
+/*--------------
+      Bordered
+---------------*/
+
+.agile.bordered.images .image,
+.agile.bordered.images img,
+.agile.bordered.images svg,
+.agile.bordered.image img,
+.agile.bordered.image svg {
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+/*--------------
+      Circular
+---------------*/
+
+.agile.circular.images,
+.agile.circular.image {
+    overflow: hidden;
+}
+.agile.circular.images .image,
+.agile.circular.image,
+.agile.circular.images .image > *,
+.agile.circular.image > * {
+    border-radius: 500rem;
+}
+
+/*--------------
+       Fluid
+---------------*/
+
+.agile.fluid.images,
+.agile.fluid.image,
+.agile.fluid.images img,
+.agile.fluid.images svg,
+.agile.fluid.image svg,
+.agile.fluid.image img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/*--------------
+       Avatar
+---------------*/
+
+.agile.avatar.images .image,
+.agile.avatar.images img,
+.agile.avatar.images svg,
+.agile.avatar.image img,
+.agile.avatar.image svg,
+.agile.avatar.image {
+    margin-right: .25em;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border-radius: 500rem;
+}
+
+/*-------------------
+         Spaced
+--------------------*/
+
+.agile.spaced.image {
+    display: inline-block !important;
+    margin-left: .5em;
+    margin-right: .5em;
+}
+
+.agile.left .spaced.image {
+    margin-left: .5em;
+    margin-right: 0;
+}
+
+.agile.right .spaced.image {
+    margin-left: 0;
+    margin-right: .5em;
+}
+
+/*-------------------
+         Floated
+--------------------*/
+
+.agile.floated.image,
+.agile.floated.images {
+    float: left;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+.agile.right.floated.images,
+.agile.right.floated.image {
+    float: right;
+    margin-right: 0;
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+.agile.floated.images:last-child,
+.agile.floated.image:last-child {
+    margin-bottom: 0;
+}
+.agile.centered.images,
+.agile.centered.image {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*--------------
+       Sizes
+---------------*/
+
+.agile.mini.images .image,
+.agile.mini.images img,
+.agile.mini.images svg,
+.agile.mini.image {
+    width: 35px;
+    height: auto;
+    font-size: .71428571rem;
+}
+.agile.tiny.images .image,
+.agile.tiny.images img,
+.agile.tiny.images svg,
+.agile.tiny.image {
+    width: 80px;
+    height: auto;
+    font-size: .85714286rem;
+}
+.agile.small.images .image,
+.agile.small.images img,
+.agile.small.images svg,
+.agile.small.image {
+    width: 150px;
+    height: auto;
+    font-size: .92857143rem;
+}
+.agile.medium.images .image,
+.agile.medium.images img,
+.agile.medium.images svg,
+.agile.medium.image {
+    width: 300px;
+    height: auto;
+    font-size: 1rem;
+}
+.agile.large.images .image,
+.agile.large.images img,
+.agile.large.images svg,
+.agile.large.image {
+    width: 450px;
+    height: auto;
+    font-size: 1.14285714rem;
+}
+.agile.big.images .image,
+.agile.big.images img,
+.agile.big.images svg,
+.agile.big.image {
+    width: 600px;
+    height: auto;
+    font-size: 1.28571429rem;
+}
+.agile.huge.images .image,
+.agile.huge.images img,
+.agile.huge.images svg,
+.agile.huge.image {
+    width: 800px;
+    height: auto;
+    font-size: 1.42857143rem;
+}
+.agile.massive.images .image,
+.agile.massive.images img,
+.agile.massive.images svg,
+.agile.massive.image {
+    width: 960px;
+    height: auto;
+    font-size: 1.71428571rem;
+}
+
+.agile.images {
+    margin: 0 -0.25rem 0;
+}
+.agile.images .image,
+.agile.images img,
+.agile.images svg {
+    display: inline-block;
+    margin: 0 .25rem .5rem;
+}
+

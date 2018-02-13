@@ -21,7 +21,20 @@ require.config ({
         'angular-sanitize': '../common/lib/angular-sanitize/js/angular-sanitize.min',
         'angular-bootstrap': '../common/lib/angular-bootstrap/js/ui-bootstrap-tpls',
         'ng-tags-input': '../common/lib/ng-tags-input/js/ng-tags-input',
-        'constants': '../common/widget/constants/constants'
+        'constants': '../common/widget/constants/constants',
+
+        'codemirror': '../common/lib/codemirror/js/codemirror',
+        'clipboard': '../common/lib/clipboard/js/clipboard.min',
+        'agile-sidebar': '../common/widget/sidebar/js/agile-sidebar',
+        'agile-navbar': '../common/widget/navbar/js/agile-navbar',
+        'agile-clipboard': '../common/widget/clipboard/js/agile-clipboard',
+        'agile-popover': '../common/widget/popover/js/agile-popover',
+        'agile-codemirror': '../common/widget/realtimelog/js/agile-codemirror',
+        'bcloud-mode': '../common/widget/realtimelog/mode/bcloud-mode',
+        'agile-loading': '../common/widget/loader/js/agile-loading',
+        'agile-dimmer': '../common/widget/dimmer/js/agile-dimmer',
+        'app-plugin-job': '../plugin/job/app',
+        'init-plugin-job': '../plugin/job/app-init'
     },
     map: {
         '*': {
