@@ -3,7 +3,7 @@
  *
  * @author langshiquan
  */
-define(['app', 'constants'], function (app, constants) {
+define(['app','angular', 'constants'], function (app,angular, constants) {
     'use strict';
     app.controller('ConfigController', [
         'pipelineDataService',
@@ -22,12 +22,15 @@ define(['app', 'constants'], function (app, constants) {
         self.username = pipelineContextService.context.username;
         self.context = pipelineContextService;
         self.config = {};
-
         // 默认是主干
         $scope.branchType = "TRUNK";
         pipelineDataService.getPipelineConf(self.currentModule, 'TRUNK').then(function (data) {
+            self.paramMap2Entries(data);
             self.config = data;
-            self.activeJob = data.jobConfs[0];
+            self.toggleActiveJob(0);
+            console.log(self.config);
+            console.log(self.activeJob);
+            $scope.$applyAsync();
         });
 
         self.addJob = function () {
@@ -39,20 +42,26 @@ define(['app', 'constants'], function (app, constants) {
                 windowClass: 'zoom'
             });
         };
+
         $scope.selectPlugin = function (index) {
             var plugin = $scope.pluginInfo[index];
             var newJobConf = {
                 name: plugin.name,
                 triggerMode: 'AUTO',
-                pluginType: plugin.pluginType
+                pluginType: plugin.pluginType,
+                pluginConf:{},
+                parameterMap:{},
+                inParamsEntries:[]
             };
-            self.config.jobConfs.push(newJobConf);
-            self.toggleActiveJob(newJobConf);
+            var length = self.config.jobConfs.push(newJobConf);
+            self.toggleActiveJob(length - 1);
             $scope.cancelWindow();
         };
 
-        self.toggleActiveJob = function (job) {
-            self.activeJob = job;
+        self.toggleActiveJob = function (index) {
+            self.activeJob = self.config.jobConfs[index];
+            console.log(self.activeJob.inParamsEntries);
+
         };
 
         self.initPluginInfo = function () {
@@ -63,26 +72,39 @@ define(['app', 'constants'], function (app, constants) {
                 $scope.pluginInfo = data;
             });
         };
-        self.addJobInParam = function () {
-            // TODO
-            var params = [];
-            console.log(self.activeJob);
-            console.log(self.activeJob.parameterMap);
-            self.activeJob.parameterMap = params;
-            params.push({});
-        };
         self.deleteJob = function (index) {
             self.config.jobConfs.splice(index, 1);
         };
-        self.delJobInParamByIndex = function () {
-            // TODO
-        };
 
+
+        self.addJobInParam = function () {
+            self.activeJob.inParamsEntries.push({});
+        };
+        self.delJobInParamByIndex = function (index) {
+            self.activeJob.inParamsEntries.splice(index, 1);
+        };
+        self.submit = function () {
+            console.log(self.config);
+        };
 
         $scope.cancelWindow = function () {
             return $scope.uibModalInstance && $scope.uibModalInstance.dismiss();
         };
 
+        self.paramMap2Entries = function (data) {
+            angular.forEach(data.jobConfs, function (jobConf, index) {
+                jobConf.inParamsEntries = self.map2Entries(jobConf.parameterMap);
+                console.log("paramMap2Entries");
+            });
+        };
+
+        self.map2Entries = function (map) {
+            var entries = [];
+            map && angular.forEach(map, function (value, key) {
+                entries.push({key: key, value: value});
+            });
+            return entries;
+        };
         $scope.$watch(function () {
             return $scope.branchType;
         }, function (branchType) {
@@ -91,5 +113,6 @@ define(['app', 'constants'], function (app, constants) {
                 self.activeJob = data.jobConfs[0];
             });
         });
+
     }
 });

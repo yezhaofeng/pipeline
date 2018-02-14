@@ -45,12 +45,12 @@
 
         <!-- jobs 展示行-->
         <div class="row stages-container">
-            <ul ui-sortable="sortableStagesOptions" ng-model="configCtrl.config.jobConfs"
+            <ul ui-sortable="sortableStagesOptions"
                 class="list-group stages-list">
-                <li class="stage-wrapper list-group-item not-sortable" ng-repeat="job in configCtrl.config.jobConfs">
+                <li class="stage-wrapper list-group-item not-sortable" ng-repeat="job in configCtrl.config.jobConfs" ng-class="{active: job === configCtrl.activeJob}">
                     <div class="stage-overview"
                          ng-class="{auto: job.triggerMode=='AUTO', manual:job.triggerMode == 'MANUAL'}"
-                         ng-click="configCtrl.toggleActiveJob(job)">
+                         ng-click="configCtrl.toggleActiveJob($index)">
                         <span class="stage-name" ng-bind="job.name" ng-model="job.name">{{::job.name}}</span>
                         <span class="fa fa-trash" style="position: absolute;top: 35%;right: 10%"
                               ng-click="configCtrl.deleteJob($index)">
@@ -63,6 +63,7 @@
                         <span></span>
                     </div>
                 </li>
+
             </ul>
         </div>
         <!--End  jobs 展示行-->
@@ -86,7 +87,7 @@
                                  app-page="configCtrl.activeJob.configPage">
             </app-real-job-config>
         </div>
-
+        <fieldset>
         <div class="form-group params-group">
             <label>构建参数</label>
             <a href="http://wiki.baidu.com/pages/viewpage.action?pageId=158562481" target="_blank"
@@ -94,20 +95,21 @@
                 <i class="fa fa-question-circle"></i>
             </a>
             <ul class="list-unstyled">
-                <li ng-repeat="param in configCtrl.currenJob.parameterMap track by $index"
+                <li ng-repeat="entryParam in configCtrl.activeJob.inParamsEntries track by $index"
                     class="params-list-item">
                     <div class="input-group key col-xs-5">
                         <span class="input-group-addon">参数名</span>
-                        <input type="text" class="form-control" placeholder="输入参数名" ng-model="param.key"
-                               required>
+                        <input type="text" class="form-control" placeholder="输入参数名"
+                               ng-bind="entryParam.key" ng-model="entryParam.key" required>
                     </div>
                     <div class="input-group value col-xs-5">
                         <span class="input-group-addon">参数值</span>
-                        <input type="text" class="form-control" placeholder="输入参数值" ng-model="param.value">
+                        <input type="text" class="form-control" placeholder="输入参数值"
+                               ng-bind="entryParam.value" ng-model="entryParam.value">
                     </div>
                     <div class="delete-parameter">
                                 <span class="delete-parameter-span "
-                                      ng-click="configCtrl.delStageInParamByIndex($index)">
+                                      ng-click="configCtrl.delJobInParamByIndex(index)">
                                     <i class="fa fa-trash-o"></i>
                                 </span>
                     </div>
@@ -120,10 +122,10 @@
                 </li>
             </ul>
         </div>
+        </fieldset>
     </div>
-
     <div class="form-group operation-button-group">
-        <button type="button" class="agile button ok-button" ng-click="save.submit()"
+        <button type="button" class="agile button ok-button" ng-click="configCtrl.submit()"
                 ng-disabled="detailConfigForm.$invalid && configCtrl.currentStage">
             保存
         </button>

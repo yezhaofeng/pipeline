@@ -12,7 +12,14 @@ define(['app', 'constants'], function (app, constants) {
     app.controller('BCloudPluginController', ['$http', '$scope', '$interval', BCloudPluginController]);
 
     function BCloudPluginController($http, $scope, $interval) {
-        alert(1);
+        //alert(1);
+        console.log("编译");
+        //console.log($scope.$parent.config);
+        $scope.config = $scope.$parent.config;
+
+        $scope.update = function(){
+            $scope.config.id = 2333;
+        };
         //    var self = this;
         //    self.mode = 'bcloud';
         //    self.codemirrorOpts = {

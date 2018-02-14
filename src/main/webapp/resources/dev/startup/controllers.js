@@ -17,6 +17,9 @@ define(
         'js/pipeline/controllers/release-history-controller',
         'js/pipeline/controllers/github-controller',
         'js/pipeline/controllers/jenkins-controller',
-        'js/pipeline/controllers/config-controller'
+        'js/pipeline/controllers/config-controller',
+
+        'resources/dev/plugin/job/type/COMPILE/main.js',
+        'resources/dev/plugin/job/type/RELEASE/main.js'
     ], function () {
     });

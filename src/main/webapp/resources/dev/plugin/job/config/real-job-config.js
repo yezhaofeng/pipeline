@@ -26,7 +26,7 @@ define(['app', 'constants'], function appRealJobConfig(app, constants) {
                         scope.$watch(function () {
                             return scope.job;
                         }, function (job) {
-                            console.log(scope);
+                            //console.log(scope);
                             // var html = '';
                             //if (page) {
                             //    html = page.html;

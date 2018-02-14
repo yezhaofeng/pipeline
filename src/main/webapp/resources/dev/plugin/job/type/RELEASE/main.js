@@ -8,10 +8,13 @@
  */
 define(['app', 'constants'], function (app, constants) {
     'use strict';
-    app.controller('ReleasePluginController', ['$http', '$scope', '$interval', BCloudPluginController]);
+    app.controller('ReleasePluginController', ['$http', '$scope', '$interval', ReleasePluginController]);
 
     function ReleasePluginController($http, $scope, $interval) {
-        alert("release");
+        console.log("发版");
+        $scope.al = function(){
+          alert("asd");
+        };
         //    var self = this;
         //    self.mode = 'bcloud';
         //    self.codemirrorOpts = {

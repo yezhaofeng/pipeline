@@ -1,9 +1,12 @@
 /**
  * Created by Wonpang New on 2016/9/10.
  */
-
+// requirejs的配置文件
 require.config ({
-    paths: {
+    // baseUrl:'', // 模块查找的根目录，默认情况与data-main所赋值处于同一目录
+    // 指定配置模块的加载路径
+    urlArgs:'v='+new Date().getTime(),  // 加载的时候带的参数
+    paths: {    // 模块名字：模块路径
         'app': 'startup/app',
         'router': 'startup/router',
         'start': 'startup/start',
@@ -33,18 +36,18 @@ require.config ({
         'bcloud-mode': '../common/widget/realtimelog/mode/bcloud-mode',
         'agile-loading': '../common/widget/loader/js/agile-loading',
         'agile-dimmer': '../common/widget/dimmer/js/agile-dimmer',
-        'app-plugin-job': '../plugin/job/app',
-        'init-plugin-job': '../plugin/job/app-init'
+        'app-plugin-job': 'plugin/job/app',
+        'init-plugin-job': 'plugin/job/app-init'
     },
-    map: {
+    map: {  //
         '*': {
             css: 'require-css'
         }
     },
-    shim: {
+    shim: { // 定义不支持AMD的模块和插件
         'angular': {
-            deps: ['jquery'],
-            exports: 'angular'
+            deps: ['jquery'],   // 依赖的模块
+            exports: 'angular'  // 全局变量作为模块名字
         },
         'angular-route': {
             deps: ['angular'],
