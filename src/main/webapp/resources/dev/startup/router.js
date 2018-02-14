@@ -89,4 +89,4 @@ define(
 
         app.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider', config]);
     }
-)
+);

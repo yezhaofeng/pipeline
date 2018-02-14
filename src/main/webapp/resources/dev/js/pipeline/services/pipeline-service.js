@@ -4,7 +4,7 @@
  * app service
  */
 
-define(['app', 'constants'], function (app, constants) {
+define(['app', 'angular', 'constants'], function (app, angular, constants) {
     app.service(
         'pipelineDataService',
         [
@@ -118,11 +118,34 @@ define(['app', 'constants'], function (app, constants) {
          * 获取插件信息
          * @returns {*}
          */
-        self.getPluginInfo = function () {
+        self.getPluginInfos = function () {
             return $http.get(constants.api("plugin/job/configs")).then(function (data) {
                 return data.data;
             })
         };
 
+        /**
+         * 根据插件类型获取插件信息
+         * @returns {*}
+         */
+        self.getPluginInfoByType = function (pluginType) {
+            return $http.get(constants.api("plugin/job/configs")).then(function (data) {
+                var plugins = data.data;
+                for (var x in plugins) {
+                    if (plugins[x].pluginType == pluginType) {
+                        return plugins[x];
+                        break;
+                    }
+                    return null;
+                }
+            })
+        };
+
+        self.getJenkinsJobs = function (username) {
+            return $http.get(constants.api("pipeline/jenkins/server/jobs?owner=" + username)).then(function (data) {
+                return data.data;
+            })
+        };
     }
 });
+

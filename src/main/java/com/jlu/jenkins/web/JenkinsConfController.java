@@ -59,13 +59,12 @@ public class JenkinsConfController extends AbstractController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<JenkinsConf> getAllJenkinsServer() throws IOException {
-        return jenkinsConfService.getConfByCreateUser(getLoginUserName());
+    public List<JenkinsConf> getAllJenkinsServer(String owner) throws IOException {
+        return jenkinsConfService.getConfByCreateUser(owner);
     }
 
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)
-    public List<JenkinsJobsBean> getJobs() throws IOException {
-        String userName = getLoginUserName();
-        return jenkinsConfService.getJobsByCreateUser(userName);
+    public List<JenkinsJobsBean> getJobs(String owner) throws IOException {
+        return jenkinsConfService.getJobsByCreateUser(owner);
     }
 }

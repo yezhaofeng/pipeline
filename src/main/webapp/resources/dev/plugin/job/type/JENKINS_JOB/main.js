@@ -1,85 +1,40 @@
-/*
- * Copyright (C) 2015 Baidu, Inc. All Rights Reserved.
- */
+define(['app', 'angular', 'constants'], function (app, angular, constants) {
+    'use strict';
 
-/**
- * @file 发布项目视图
- */
-define(['app', 'constants'], function appPluginJobJenkinsJobSelector(app, constants) {
-    alert("jenkins");
-    //var tool = {
-    //    containsJob: function (jobs, job) {
-    //        for (var i in jobs) {
-    //            if (jobs[i].jobId === job.jobId) {
-    //                return true;
-    //            }
-    //        }
-    //        return false;
-    //    },
-    //    addNoRepeatJobs: function (jobs, jobs2Add) {
-    //        for (var i = 0; i < jobs2Add.length; i++) {
-    //            var job = jobs2Add[i];
-    //            if (!tool.containsJob(jobs, job)) {
-    //                jobs.push(job);
-    //            }
-    //        }
-    //    }
-    //};
-    //app.directive(
-    //    'appPluginJobJenkinsJobSelector',
-    //    [
-    //        '$http',
-    //        function ($http) {
-    //            return {
-    //                restrict: 'E',
-    //                templateUrl: constants.resource('/plugin/job/type/jenkins/job-selector.html'),
-    //                replace: true,
-    //                link: function (scope, el, attr) {
-    //                    scope.jobs = [];
-    //                    var context = scope.context;
-    //                    if (context && context.pipelineType === 'MODULE') {
-    //                        $http
-    //                            .get('/plugin/job/jenkins/jobs?module='
-    //                            + context.module + '&svnType=' + context.svnType, {cache: true})
-    //                            .success(function (data) {
-    //                                scope.jobs = data instanceof Array ? data : [];
-    //                            })
-    //                            .error(function () {
-    //                                scope.jobs = [];
-    //                            });
-    //                    } else {
-    //                        scope.jobs = [];
-    //                        angular.forEach(context.modulesConf, function (moduleConf) {
-    //                            var svnType = moduleConf.branch && angular.uppercase(moduleConf.branch) !== 'TRUNK'
-    //                                ? 'BRANCHES' : 'TRUNK';
-    //                            $http
-    //                                .get('/plugin/job/jenkins/jobs?module='
-    //                                + moduleConf.module + '&svnType=' + svnType, {cache: true})
-    //                                .success(function (data) {
-    //                                    data instanceof Array && tool.addNoRepeatJobs(scope.jobs, data);
-    //                                });
-    //                        });
-    //                    }
-    //                }
-    //            };
-    //        }
-    //    ]
-    //);
-    //app.controller('JenkinsJobController', ['$http', JenkinsJobController]);
-    //function JenkinsJobController($http) {
-    //    var self = this;
-    //    self.jenkinsJob = null;
-    //    self.loaded = false;
-    //
-    //    self.getInfo = function (build) {
-    //        if (build != null) {
-    //            $http.get('/plugin/job/jenkins/' + build.id).then(function (data) {
-    //                self.jenkinsJob = data.data;
-    //                self.loaded = true;
-    //            });
-    //        } else {
-    //            self.loaded = true;
-    //        }
-    //    };
-    //}
+    app.controller('JenkinsJobController', ['$http', '$scope', '$interval', 'pipelineDataService', 'pipelineContextService', JenkinsJobController]);
+
+    function JenkinsJobController($http, $scope, $interval, pipelineDataService, pipelineContextService) {
+        $scope.config = $scope.$parent.config;
+        var username = pipelineContextService.context.username;
+        // 获取JenkinsJob列表
+        pipelineDataService.getJenkinsJobs(username).then(function (data) {
+            // 处理数据
+            var jenkinsJobConfs = [];
+            angular.forEach(data, function (jenkinsServer, index) {
+                var jenkinsServerId = jenkinsServer.jenkinsServerId;
+                var serverUrl = jenkinsServer.serverUrl;
+                angular.forEach(jenkinsServer.jobs, function (jobName, index) {
+                    var jenkinsJob = {};
+                    jenkinsJob.jenkinsServerId = jenkinsServerId;
+                    jenkinsJob.jobName = jobName;
+                    jenkinsJob.serverUrl = serverUrl;
+                    jenkinsJob.fullname = serverUrl + 'job/' + jobName;
+                    jenkinsJobConfs.push(jenkinsJob);
+                });
+            });
+            $scope.jenkinsJobs = jenkinsJobConfs;
+        });
+        $scope.jenkinsJobOnChange = function () {
+            alert(1);
+            $scope.config.id = null;
+            $scope.config.jenkinsServerId = $scope.jenkinsJob.jenkinsServerId;
+            $scope.config.jobName = $scope.jenkinsJob.jobName;
+
+        };
+
+        $scope.$watch($scope.selected, function (newValue) {
+            console.log(newValue);
+            //console.log($scope.config);
+        });
+    }
 });

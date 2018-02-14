@@ -3,7 +3,7 @@
  *
  * @author langshiquan
  */
-define(['app','angular', 'constants'], function (app,angular, constants) {
+define(['app', 'angular', 'constants'], function (app, angular, constants) {
     'use strict';
     app.controller('ConfigController', [
         'pipelineDataService',
@@ -24,17 +24,20 @@ define(['app','angular', 'constants'], function (app,angular, constants) {
         self.config = {};
         // 默认是主干
         $scope.branchType = "TRUNK";
-        pipelineDataService.getPipelineConf(self.currentModule, 'TRUNK').then(function (data) {
-            self.paramMap2Entries(data);
-            self.config = data;
-            self.toggleActiveJob(0);
-            console.log(self.config);
-            console.log(self.activeJob);
-            $scope.$applyAsync();
-        });
+
+        self.initConf = function (branchType) {
+            pipelineDataService.getPluginInfos().then(function (data) {
+                $scope.pluginInfo = data;
+                pipelineDataService.getPipelineConf(self.currentModule, branchType).then(function (data) {
+                    self.paramMap2Entries(data);
+                    self.config = data;
+                    self.toggleActiveJob(0);
+                    $scope.$applyAsync();
+                });
+            });
+        };
 
         self.addJob = function () {
-            self.initPluginInfo();
             $scope.uibModalInstance = $uibModal.open({
                 scope: $scope,
                 templateUrl: constants.resource('config/plugin.select.html'),
@@ -49,9 +52,9 @@ define(['app','angular', 'constants'], function (app,angular, constants) {
                 name: plugin.name,
                 triggerMode: 'AUTO',
                 pluginType: plugin.pluginType,
-                pluginConf:{},
-                parameterMap:{},
-                inParamsEntries:[]
+                pluginConf: {},
+                parameterMap: {},
+                inParamsEntries: []
             };
             var length = self.config.jobConfs.push(newJobConf);
             self.toggleActiveJob(length - 1);
@@ -60,20 +63,29 @@ define(['app','angular', 'constants'], function (app,angular, constants) {
 
         self.toggleActiveJob = function (index) {
             self.activeJob = self.config.jobConfs[index];
-            console.log(self.activeJob.inParamsEntries);
-
+            var pluginType = self.activeJob.pluginType;
+            console.log(pluginType);
+            for (var x in $scope.pluginInfo) {
+                if ($scope.pluginInfo[x].pluginType == pluginType) {
+                    $scope.activeJobPluginInfo = $scope.pluginInfo[x];
+                    break;
+                }
+            }
         };
 
         self.initPluginInfo = function () {
             if ($scope.pluginInfo != undefined) {
                 return;
             }
-            pipelineDataService.getPluginInfo().then(function (data) {
+            pipelineDataService.getPluginInfos().then(function (data) {
                 $scope.pluginInfo = data;
             });
         };
+
+
         self.deleteJob = function (index) {
             self.config.jobConfs.splice(index, 1);
+            self.toggleActiveJob(index - 1);
         };
 
 
@@ -108,10 +120,7 @@ define(['app','angular', 'constants'], function (app,angular, constants) {
         $scope.$watch(function () {
             return $scope.branchType;
         }, function (branchType) {
-            pipelineDataService.getPipelineConf(self.currentModule, branchType).then(function (data) {
-                self.config = data;
-                self.activeJob = data.jobConfs[0];
-            });
+            self.initConf(branchType);
         });
 
     }

@@ -2,6 +2,7 @@
 @import "release-history.css";
 @import "branch.css";
 @import "config.css";
+@import "../plugin/common/plugin-job.css";
 .background-index {
     width: 100%;
     height: 100%;

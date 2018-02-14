@@ -47,7 +47,8 @@
         <div class="row stages-container">
             <ul ui-sortable="sortableStagesOptions"
                 class="list-group stages-list">
-                <li class="stage-wrapper list-group-item not-sortable" ng-repeat="job in configCtrl.config.jobConfs" ng-class="{active: job === configCtrl.activeJob}">
+                <li class="stage-wrapper list-group-item not-sortable" ng-repeat="job in configCtrl.config.jobConfs"
+                    ng-class="{active: job === configCtrl.activeJob}">
                     <div class="stage-overview"
                          ng-class="{auto: job.triggerMode=='AUTO', manual:job.triggerMode == 'MANUAL'}"
                          ng-click="configCtrl.toggleActiveJob($index)">
@@ -76,18 +77,24 @@
             触发方式：
             <input type="radio" ng-model="configCtrl.activeJob.triggerMode" value="AUTO"/>自动
             <input type="radio" ng-model="configCtrl.activeJob.triggerMode" value="MANUAL"/>手动
+            <div class="clear"></div>
+            <br/>
+            <img  ng-src="/resources/dev/img/plugin/{{activeJobPluginInfo.pluginType}}.png"><br/><br/>
+            <label>任务类型：</label>{{activeJobPluginInfo.name}}<br/>
+            <label>说明：</label> {{::activeJobPluginInfo.description}}
+            <br/>
+            <label>参考文档：</label><a ng-href="link" target="_blank" ng-show="loaded">点击查看</a> {{::activeJobPluginInfo.link}}
         </div>
-
-        <div id="taskConfigDiv" class="stage-tasks-config">
+        <div id="taskConfigDiv" class="form-group">
             <app-real-job-config
-                                 app-context="configCtrl.context"
-                                 app-job="configCtrl.activeJob.pluginType"
-                                 app-form="configCtrl.activeJob.realJob"
-                                 app-config="configCtrl.activeJob.pluginConf"
-                                 app-page="configCtrl.activeJob.configPage">
+                    app-context="configCtrl.context"
+                    app-job="configCtrl.activeJob.pluginType"
+                    app-form="configCtrl.activeJob.realJob"
+                    app-config="configCtrl.activeJob.pluginConf"
+                    app-page="configCtrl.activeJob.configPage">
             </app-real-job-config>
-        </div>
-        <fieldset>
+        <div class="clear"></div>
+        <br/>
         <div class="form-group params-group">
             <label>构建参数</label>
             <a href="http://wiki.baidu.com/pages/viewpage.action?pageId=158562481" target="_blank"
@@ -100,7 +107,7 @@
                     <div class="input-group key col-xs-5">
                         <span class="input-group-addon">参数名</span>
                         <input type="text" class="form-control" placeholder="输入参数名"
-                               ng-bind="entryParam.key" ng-model="entryParam.key" required>
+                               ng-model="entryParam.key" required>
                     </div>
                     <div class="input-group value col-xs-5">
                         <span class="input-group-addon">参数值</span>
@@ -122,7 +129,6 @@
                 </li>
             </ul>
         </div>
-        </fieldset>
     </div>
     <div class="form-group operation-button-group">
         <button type="button" class="agile button ok-button" ng-click="configCtrl.submit()"

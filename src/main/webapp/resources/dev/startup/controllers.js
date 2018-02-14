@@ -20,6 +20,8 @@ define(
         'js/pipeline/controllers/config-controller',
 
         'resources/dev/plugin/job/type/COMPILE/main.js',
-        'resources/dev/plugin/job/type/RELEASE/main.js'
+        'resources/dev/plugin/job/type/RELEASE/main.js',
+        'resources/dev/plugin/job/type/JENKINS_JOB/main.js'
+
     ], function () {
     });
