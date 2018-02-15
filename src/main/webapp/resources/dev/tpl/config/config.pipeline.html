@@ -132,14 +132,13 @@
     </div>
     <div class="form-group operation-button-group">
         <button type="button" class="agile button ok-button" ng-click="configCtrl.submit()"
-                ng-disabled="detailConfigForm.$invalid && configCtrl.currentStage">
+                ng-disabled="saving">
             保存
         </button>
         <button type="button" ng-click="cancel()" class="agile button cancel-button">取消</button>
-                    <span class="agile left pointing blue basic label save-done-label"
-                          ng-if="save.showConfigSaveLabel">配置已保存,
-                    重新构建或者提交代码将应用最新配置!
-                    </span>
+        <span class="agile left pointing blue basic label save-done-label" style="color:darkred" ng-if="saved">
+            配置已保存,重新构建或者提交代码将应用最新配置!
+        </span>
     </div>
     </form>
 </div>

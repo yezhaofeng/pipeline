@@ -96,9 +96,23 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
             self.activeJob.inParamsEntries.splice(index, 1);
         };
         self.submit = function () {
+            $scope.saving = true;
+            self.paramEntries2Map(self.config);
             console.log(self.config);
+            pipelineDataService.savePipelineConf(self.currentModule, $scope.branchType, self.config).then(function (response) {
+                if (response.success == true) {
+                    $scope.saved = true;
+                    $scope.cancel();
+                } else {
+                    $scope.saving = false;
+                }
+            });
         };
+        self.sleep = function (n) {
+            var start = new Date().getTime();
+            while (true)  if (new Date().getTime() - start > n) break;
 
+        };
         $scope.cancelWindow = function () {
             return $scope.uibModalInstance && $scope.uibModalInstance.dismiss();
         };
@@ -117,6 +131,28 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
             });
             return entries;
         };
+
+        self.paramEntries2Map = function (data) {
+            angular.forEach(data.jobConfs, function (jobConf, index) {
+                jobConf.parameterMap = self.entries2Map(jobConf.inParamsEntries);
+            });
+        };
+        self.entries2Map = function (entries) {
+            var map = {};
+            entries && angular.forEach(entries, function (entry, index) {
+                map[entry.key] = entry.value || '';
+            });
+            return map;
+        };
+        $scope.cancel = function () {
+            $state.go(
+                'builds.trunk',
+                {
+                    module: self.currentModule
+                }
+            );
+        };
+
         $scope.$watch(function () {
             return $scope.branchType;
         }, function (branchType) {

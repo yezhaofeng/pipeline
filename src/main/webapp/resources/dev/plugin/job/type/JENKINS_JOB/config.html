@@ -2,28 +2,11 @@
     <label class="col-xs-1.5 control-label">请选择Jenkins Job：</label>
     <div class="form-group">
         <div class="col-xs-4">
-            <!-- https://www.cnblogs.com/yaojinfeng/p/5909585.html -->
-            <select id="branchType-select" class="form-control" ng-model="selected"
-                  ng-options="jenkinsJob.fullname for jenkinsJob in jenkinsJobs">
-                <!--<option ng-repeat="jenkinsJob in jenkinsJobs track by $index" ng-value="{{jenkinsJob.fullname}}"-->
-                            <!--ng-selected="jenkinsJob.jenkinsServerId === config.jenkinsServerId && jenkinsJob.jobName === config.jobName">-->
-                        <!--{{::jenkinsJob.fullname}}-->
-                    <!--</option>-->
+            <select id="branchType-select" class="form-control" ng-model="selectedFullName">
+                <option ng-repeat="jenkinsJobFullName in jenkinsJobFullNameList" ng-value="jenkinsJobFullName"
+                            ng-selected="jenkinsJobFullName == $parent.config.jobFullName" ng-bind="jenkinsJobFullName">
+                </option>
             </select>
-            slected:{{::selected}} <br/>
-            {{::config}}
         </div>
     </div>
-    <!--<ul class="uib-dropdown-menu" role="menu">-->
-    <!--<li>-->
-    <!--<div class="menu-search-input" ng-click="$event.stopPropagation()">-->
-    <!--<input class="input-box form-control" type="text"-->
-    <!--ng-model="config.jobName | jenkinsJobFilter"-->
-    <!--placeholder="搜索">-->
-    <!--</div>-->
-    <!--</li>-->
-    <!--<li role="menuitem" ng-repeat="job in jenkinsJobs track by $index">-->
-    <!--<a ui-sref="" ng-bind="config.jobName"></a>-->
-    <!--</li>-->
-    <!--</ul>-->
 </div>

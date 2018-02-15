@@ -8,11 +8,11 @@
 define(['app', 'angular', 'constants'], function appPlContextService(app, angular, constants) {
     app.service('pipelineContextService',
         [
-            '$q', '$http', '$state', '$window', '$timeout', 'localStorageService','pipelineDataService', ContextService
+            '$q', '$http', '$state', '$window', '$timeout', 'localStorageService', 'pipelineDataService', ContextService
         ]
     );
 
-    function ContextService($q, $http, $state, $window, $timeout, localStorageService,pipelineDataService) {
+    function ContextService($q, $http, $state, $window, $timeout, localStorageService, pipelineDataService) {
         var self = this;
 
         self.context = {
@@ -47,12 +47,14 @@ define(['app', 'angular', 'constants'], function appPlContextService(app, angula
 
         self.initContext = function () {
             var lastVisitModule = localStorageService.getRecentModule();
-            if(lastVisitModule === ''){
-                // TODO 重定向
-                console.log("无最近模块");
+            if (lastVisitModule === '') {
+                window.location.href='/intro';
             }
             self.context.module = lastVisitModule;
-            pipelineDataService.getLoginUserInfo().then(function(data){
+            pipelineDataService.getLoginUserInfo().then(function (data) {
+                if (data == null || data == '' || data == undefined) {
+                    window.location.href='/login';
+                }
                 self.context.username = data.username;
             });
         };

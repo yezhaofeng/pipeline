@@ -51,6 +51,18 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 })
         };
         /**
+         * 保存修改的流水线配置信息
+         * @param module
+         * @param branchType
+         * @param config
+         */
+        self.savePipelineConf = function (module, branchType, config) {
+            return $http.put(constants.api('pipeline/conf/' + module + '/' + branchType), config)
+                .then(function (data) {
+                    return data.data;
+                })
+        };
+        /**
          * 添加Jenkins配置
          * @param jenkinsConf
          * @returns {*}
@@ -79,8 +91,8 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * 获取Jenkins配置信息
          * @returns {*}
          */
-        self.getJenkinsConfs = function () {
-            return $http.get(constants.api('pipeline/jenkins/server/all'))
+        self.getJenkinsConfs = function (username) {
+            return $http.get(constants.api('pipeline/jenkins/server/all?owner='+username))
                 .then(function (data) {
                     return data.data;
                 });

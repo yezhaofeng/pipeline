@@ -14,6 +14,7 @@ public class JenkinsJobConf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long jenkinsServerId;
+    private String jobFullName;
     private String jobName;
 
     public Long getId() {
@@ -40,13 +41,21 @@ public class JenkinsJobConf {
         this.jobName = jobName;
     }
 
+    public String getJobFullName() {
+        return jobFullName;
+    }
+
+    public void setJobFullName(String jobFullName) {
+        this.jobFullName = jobFullName;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JenkinsJobConf{");
-        sb.append("id=").append(id);
-        sb.append(", jenkinsServerId=").append(jenkinsServerId);
-        sb.append(", jobName='").append(jobName).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "JenkinsJobConf{" +
+                "id=" + id +
+                ", jenkinsServerId=" + jenkinsServerId +
+                ", jobFullName='" + jobFullName + '\'' +
+                ", jobName='" + jobName + '\'' +
+                '}';
     }
 }

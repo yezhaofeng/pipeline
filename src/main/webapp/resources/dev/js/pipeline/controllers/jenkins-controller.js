@@ -24,7 +24,7 @@ define(['app', 'constants'], function (app, constants) {
         self.context = pipelineContextService;
         self.showLoading = false;
 
-        pipelineDataService.getJenkinsConfs().then(function (data) {
+        pipelineDataService.getJenkinsConfs(self.username).then(function (data) {
             self.jenkinsConfs = data;
         });
         self.addJenkinsConf = function () {

@@ -19,23 +19,16 @@ define(['app', 'constants'], function appRealJobConfig(app, constants) {
                         config: '=appConfig',
                         context: '=appContext'
                     },
-                    controller:'',
+                    controller: '',
                     template: '<div class="agile-plugin-job" ng-include="templateHtml" ng-show="show"></div>',
                     replace: true,
                     link: function (scope, el, attr) {
+                        scope.templateHtml = "/resources/dev/plugin/common/blank.html";
+                        scope.show = false;
                         scope.$watch(function () {
                             return scope.job;
                         }, function (job) {
-                            //console.log(scope);
-                            // var html = '';
-                            //if (page) {
-                            //    html = page.html;
-                            //}
-                            // plugin job config html
-                            //scope.templateHtml = constants.resource(html ? '/plugin/job/type/' + scope.job
-                            //    : '/plugin/common/blank.html');
                             scope.templateHtml = '/resources/dev/plugin/job/type/' + job + "/config.html";
-                            //scope.js =  'ReleaseHistoryController';
                             scope.show = true;
                         });
                     }

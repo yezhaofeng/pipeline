@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    if (request.getSession().getAttribute("currentUser") == null) {
+        response.sendRedirect("/login");
+    }
+%>
 <header>
     <nav class="navbar navbar-default navbar-default-plus">
         <div class="container-fluid">
@@ -29,7 +34,8 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://blog.csdn.net/z521598/article/details/79307482" target="_blank" style="color: white !important;">用户手册</a></li>
+                    <li><a href="http://blog.csdn.net/z521598/article/details/79307482" target="_blank"
+                           style="color: white !important;">用户手册</a></li>
                     <li><a href="mailto:576506402@qq.com" style="color: white !important;">联系我们</a></li>
                     <li><a href="#" style="color: white !important;">${currentUser.username}</a></li>
                     <li class="btn-group" uib-dropdown="">
