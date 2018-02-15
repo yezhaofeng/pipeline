@@ -14,6 +14,10 @@ $(function () {
 
 Agileplus.introPage = {
     moduleSearch: function () {
+        console.log("123");
+        var module = $("#module-search").val();
+        var url =  '/#/builds/' + module;
+        window.location.href = url;
         // var moduleCompleted = CITool.suggest.productModuleSuggest($('#module-search'), null, {smartMatch: true});
         // var submitProxy = CITool.util.getSubmitProxy([moduleCompleted]);
         // submitProxy(function () {
