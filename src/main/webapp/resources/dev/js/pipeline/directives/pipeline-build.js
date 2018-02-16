@@ -12,7 +12,7 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
             '$compile',
             '$q',
             function (pipelineDataService, $templateCache, $compile, $q) {
-                return{
+                return {
                     restrict: 'E',
                     scope: {
                         currentBuild: '=',
@@ -22,11 +22,12 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                     templateUrl: constants.resource('directive/pipeline-build.html'),
                     replace: true,
                     link: function (scope, el) {
-
-                        scope.compileBriefInfo = scope.currentBuild.compileBuildBean;
-                        scope.releaseBriefInfo = scope.currentBuild.releaseBean;
-
                         scope.tool = {
+
+                            buildManual: function (buildId) {
+                                alert(buildId);
+                            },
+
                             isSuccBuildStatus: function (status) {
                                 return 'SUCCESS' === status;
                             },
@@ -41,6 +42,7 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 var promises = [];
                                 return $q.all(promises);
                             }
+
                         };
 
                         changePipelineStatus(scope.currentBuild.pipelineStatus);

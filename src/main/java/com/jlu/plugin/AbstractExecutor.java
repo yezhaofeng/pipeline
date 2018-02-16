@@ -75,7 +75,7 @@ public abstract class AbstractExecutor {
 
     protected void notifyJobStartFailed(JobBuild jobBuild, String message) {
         jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-        jobBuild.setStartTime(new Date());
+        jobBuild.setEndTime(new Date());
         jobBuild.setMessage(message);
         jobBuildService.saveOrUpdate(jobBuild);
     }

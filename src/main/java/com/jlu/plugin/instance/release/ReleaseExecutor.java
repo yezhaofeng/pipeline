@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,8 @@ import com.jlu.plugin.instance.release.service.IReleaseService;
  */
 @Service
 public class ReleaseExecutor extends AbstractExecutor {
+
+    private Logger logger = LoggerFactory.getLogger(ReleaseExecutor.class);
 
     private final static String SEPARATOR = "/";
     private final static String RELEASE_JENKINS_JOB_NAME = "release";
@@ -61,7 +65,9 @@ public class ReleaseExecutor extends AbstractExecutor {
             String compileProductLocation = getCompileLocation(compileProductFtpPath);
             String maxVersion = releaseService.getMaxVersion(module);
             String version = releaseBuild.getVersion();
-
+            if (StringUtils.isBlank(version)) {
+                version = releaseService.increaseVersion(maxVersion);
+            }
             if (!releaseService.check(version)) {
                 releaseBuild.setStatus(PipelineJobStatus.FAILED);
                 releaseBuild.setMessage(VERSION_FORMAT_ERROR_MESSAGE);
@@ -76,9 +82,7 @@ public class ReleaseExecutor extends AbstractExecutor {
                 notifyJobStartFailed(jobBuild, VERSION_LESS_MESSAGE);
                 return;
             }
-            if (StringUtils.isBlank(version)) {
-                version = releaseService.increaseVersion(maxVersion);
-            }
+
             StringBuilder releaseTargetLocation = new StringBuilder();
             releaseTargetLocation.append("release").append(SEPARATOR)
                     .append(module).append(SEPARATOR)
@@ -116,6 +120,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             notifyJobStartFailed(jobBuild, jre.getMessage());
             return;
         } catch (Exception e) {
+            logger.error("release occur unkown error,",e);
             notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
             return;
         }

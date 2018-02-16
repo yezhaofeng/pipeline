@@ -27,7 +27,7 @@ define(['app', 'angular'], function (app, angular) {
         self.noMoreBuildsToLoad = false;
         self.initBuildsDone = false;
 
-        self.initBuilds = pipelineDataService.getTrunkPipelines(self.context.username, self.module, 0)
+        self.initBuilds = pipelineDataService.getPipelineBuilds(self.module, "TRUNK")
             .then(function (data) {
                 self.pipelineBuilds = data instanceof Array ? data : [];
                 self.initBuildsDone = true;
@@ -39,7 +39,7 @@ define(['app', 'angular'], function (app, angular) {
                 self.showLoadMoreBuildsLoader = true;
                 pipelineDataService.getTrunkPipelines(self.context.username, self.module, lastPipelineId)
                     .then(function (data) {
-                        if (data instanceof  Array && data.length > 0) {
+                        if (data instanceof Array && data.length > 0) {
                             angular.forEach(data, function (data) {
                                 self.pipelineBuilds.push(data);
                             });

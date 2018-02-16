@@ -403,7 +403,8 @@
     z-index: 101;
 }
 .pipeline-stage .pipeline-process-bar .auto-trigger-waiting {
-    background: url(../img/pipeline/waiting-auto-trigger-icon.svg) no-repeat;
+    position: absolute;
+    background: url(../img/pipeline/manually-execute-hover.png) no-repeat;
 }
 
 .pipeline-stage .pipeline-process-bar .auto-trigger-success {

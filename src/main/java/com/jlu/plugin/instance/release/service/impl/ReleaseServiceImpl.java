@@ -3,6 +3,7 @@ package com.jlu.plugin.instance.release.service.impl;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -87,6 +88,9 @@ public class ReleaseServiceImpl implements IReleaseService {
 
     @Override
     public Boolean check(String version) {
+        if (StringUtils.isBlank(version)) {
+            return false;
+        }
         return Pattern.matches(VERSION_REGEX, version);
     }
 

@@ -54,8 +54,11 @@ public class JobBuild {
 
     @Enumerated(EnumType.STRING)
     protected TriggerMode triggerMode;
+    // 任务发起时间
     protected Date triggerTime;
+    // 插件开始执行的时间
     protected Date startTime;
+    // 结束时间
     protected Date endTime;
     protected String message;
 

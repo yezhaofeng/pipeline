@@ -26,15 +26,13 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         };
 
         /**
-         * 获得主干流水线
-         * @param username
+         * 获得流水线构建信息
          * @param module
-         * @param pipelineBuildId
+         * @param branchType
          * @returns {*}
          */
-        self.getTrunkPipelines = function (username, module, pipelineBuildId) {
-            return $http.get(constants.api('pipeline/v1/pipelineBuilds?username=' + username + '&module=' + module
-                    + '&pipelineBuildId=' + pipelineBuildId))
+        self.getPipelineBuilds = function (module, branchType) {
+            return $http.get(constants.api('pipeline/build/' + module + '/' + branchType))
                 .then(function (data) {
                     return data.data;
                 });
