@@ -76,7 +76,7 @@
                                   'auto-trigger-success': jobBuild.jobStatus === 'SUCCESS',
                                   'auto-trigger-fail': jobBuild.jobStatus === 'FAILED' ,
                                    'auto-trigger-running': jobBuild.jobStatus === 'RUNNING'}"
-                              ng-click="tool.buildManual(jobBuild.id)">
+                              ng-click="tool.buildManual(jobBuild)">
                         </span>
                         <span class="expand-pointer" ng-class="{'waiting-stage-expand': jobBuild.jobStatus === 'INIT',
                                         'success-stage-expand': jobBuild.jobStatus === 'SUCCESS',

@@ -1,0 +1,31 @@
+<div class="plugin-job-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">请填写参数</h4>
+    </div>
+    <div class="modal-body">
+        <ul class="list-group real-job-type-list">
+            <li class="form-group" ng-repeat="(key,value) in runtimeParam.runtimePluginParam track by $index">
+                {{::runtimeRequireList[$index].description}}：
+                <input  ng-value="value" ng-model="runtimeParam.runtimePluginParam[key]"
+                        class="form-control"/>
+                <!--TODO 正则校验-->
+                <!--ng-blur="runtimeRequireList[$index].checkRegex"-->
+            </li>
+        </ul>
+        <ul class="list-group real-job-type-list">
+            <li class="form-group" ng-repeat="(key,value) in runtimeParam.execParam">
+                {{::key}}：
+                <input  ng-value="value" ng-model="runtimeParam.execParam[key]" class="form-control"/>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="agile large button cancel-button" type="button" ng-click="tool.doBuild(jobBuild.id)">开始构建
+        </button>
+        <button class="agile large button cancel-button" type="button" ng-click="tool.cancelWindow()">取消
+        </button>
+    </div>
+</div>

@@ -86,16 +86,37 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         };
 
         /**
-         * 获取Jenkins配置信息
-         * @returns {*}
+         * 获取Job的运行时依赖
+         * @param id
          */
-        self.getJenkinsConfs = function (username) {
-            return $http.get(constants.api('pipeline/jenkins/server/all?owner='+username))
+        self.getJobRuntimeRequire = function (id) {
+            return $http.get(constants.api('pipeline/job/runtimeRequire/' + id))
                 .then(function (data) {
                     return data.data;
                 });
         };
 
+        self.doJobBuild = function (id, param) {
+           return  $http.post(constants.api('/pipeline/job/' + id), param)
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
+         * 获取Jenkins配置信息
+         * @returns {*}
+         */
+        self.getJenkinsConfs = function (username) {
+            return $http.get(constants.api('pipeline/jenkins/server/all?owner=' + username))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
+         * 删除Jenkins配置
+         * @param id
+         * @returns {*}
+         */
         self.deleteJenkinsConf = function (id) {
             return $http.delete(constants.api("pipeline/jenkins/server/" + id))
                 .then(function (data) {
@@ -150,7 +171,11 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 }
             })
         };
-
+        /**
+         * 获取用户下所有的JenkinsJob信息
+         * @param username
+         * @returns {*}
+         */
         self.getJenkinsJobs = function (username) {
             return $http.get(constants.api("pipeline/jenkins/server/jobs?owner=" + username)).then(function (data) {
                 return data.data;

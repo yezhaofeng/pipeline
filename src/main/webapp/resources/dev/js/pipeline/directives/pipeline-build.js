@@ -10,8 +10,9 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
             'pipelineDataService',
             '$templateCache',
             '$compile',
+            '$uibModal',
             '$q',
-            function (pipelineDataService, $templateCache, $compile, $q) {
+            function (pipelineDataService, $templateCache, $compile, $uibModal, $q) {
                 return {
                     restrict: 'E',
                     scope: {
@@ -23,11 +24,47 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                     replace: true,
                     link: function (scope, el) {
                         scope.tool = {
-
-                            buildManual: function (buildId) {
-                                alert(buildId);
+                            buildManual: function (jobBuild) {
+                                scope.jobBuild = jobBuild;
+                                scope.runtimeParam = {};
+                                scope.runtimeParam.execParam = {};
+                                scope.runtimeParam.runtimePluginParam = {};
+                                for (var key in jobBuild.inParameterMap) {
+                                    if (key.indexOf("PIPELINE_") !== 0) {
+                                        scope.runtimeParam.execParam[key] = jobBuild.inParameterMap[key];
+                                    }
+                                }
+                                pipelineDataService.getJobRuntimeRequire(jobBuild.id).then(function (runtimeRequireList) {
+                                    console.log(runtimeRequireList);
+                                    scope.runtimeRequireList = runtimeRequireList;
+                                    angular.forEach(runtimeRequireList, function (runtimeRequire, index) {
+                                        scope.runtimeParam.runtimePluginParam[runtimeRequire.name] = runtimeRequire.defaultValue;
+                                    });
+                                    // 如果无运行时依赖参数和用户自定义参数则直接执行，不弹窗
+                                    if (JSON.stringify(scope.runtimeParam.runtimePluginParam) == "{}" && JSON.stringify(scope.runtimeParam.execParam) == "{}") {
+                                        scope.tool.doBuild(jobBuild.id);
+                                    } else {
+                                        scope.uibModalInstance = $uibModal.open({
+                                            scope: scope,
+                                            templateUrl: constants.resource('config/job.build.runtime.html'),
+                                            size: 'lg',
+                                            windowClass: 'zoom'
+                                        });
+                                    }
+                                });
                             },
-
+                            doBuild: function (id) {
+                                pipelineDataService.doJobBuild(id, scope.runtimeParam).then(function (response) {
+                                    if (response.success == true) {
+                                        scope.tool.cancelWindow();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                });
+                            },
+                            cancelWindow: function () {
+                                return scope.uibModalInstance && scope.uibModalInstance.dismiss();
+                            },
                             isSuccBuildStatus: function (status) {
                                 return 'SUCCESS' === status;
                             },
