@@ -1,6 +1,9 @@
 package com.jlu.github.service;
 
+import com.jlu.branch.bean.BranchType;
 import com.jlu.github.model.GitHubCommit;
+
+import java.util.List;
 
 /**
  * Created by niuwanpeng on 17/4/25.
@@ -9,6 +12,7 @@ public interface IGitHubCommitService {
 
     /**
      * save
+     *
      * @param gitHubCommit
      */
     void save(GitHubCommit gitHubCommit);
@@ -16,4 +20,6 @@ public interface IGitHubCommitService {
     GitHubCommit getLastestCommit(String module);
 
     GitHubCommit get(Long triggerId);
+
+    List<GitHubCommit> get(String module, BranchType branchType);
 }

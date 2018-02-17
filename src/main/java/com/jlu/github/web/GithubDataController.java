@@ -3,18 +3,21 @@ package com.jlu.github.web;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jlu.branch.bean.BranchType;
+import com.jlu.branch.model.GithubBranch;
+import com.jlu.common.utils.PipelineUtils;
+import com.jlu.github.model.GitHubCommit;
+import com.jlu.github.service.IGitHubCommitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.jlu.common.aop.utils.AopTargetUtils;
 import com.jlu.common.permission.annotations.PermissionPass;
@@ -35,6 +38,8 @@ public class GithubDataController {
     private IGithubDataService githubDataService;
     @Autowired
     private IGitHubHookService gitHubHookService;
+    @Autowired
+    private IGitHubCommitService gitHubCommitService;
 
     /**
      * 监听代码提交事件（push），触法流水线
@@ -90,4 +95,11 @@ public class GithubDataController {
         return ResponseBean.TRUE;
     }
 
+
+    @RequestMapping(value = "/{owner}/{repository}/{branchType}/commits", method = RequestMethod.GET)
+    @ResponseBody
+    public List<GitHubCommit> getBranchesByModule(@PathVariable String owner, @PathVariable String repository,
+                                                  @PathVariable BranchType branchType) {
+        return gitHubCommitService.get(PipelineUtils.getFullModule(owner, repository), branchType);
+    }
 }

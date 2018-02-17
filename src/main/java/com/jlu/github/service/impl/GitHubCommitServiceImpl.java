@@ -3,6 +3,7 @@ package com.jlu.github.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jlu.branch.bean.BranchType;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,11 @@ public class GitHubCommitServiceImpl implements IGitHubCommitService {
     @Override
     public GitHubCommit get(Long triggerId) {
         return gitHubCommitDao.findById(triggerId);
+    }
+
+    @Override
+    public List<GitHubCommit> get(String module, BranchType branchType) {
+        return gitHubCommitDao.get(module, branchType);
     }
 
 }
