@@ -97,7 +97,6 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         };
 
 
-
         /**
          * Job构建信息
          * @param id
@@ -106,6 +105,17 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          */
         self.getJobBuild = function (id) {
             return  $http.get(constants.api('/pipeline/job/' + id))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
+         * 获取模块下所有的分支（不含master）
+         * @param module
+         * @returns {*}
+         */
+        self.getBranches = function (module) {
+            return  $http.get(constants.api('pipeline/' + module + '/branches'))
                 .then(function (data) {
                     return data.data;
                 });
@@ -119,6 +129,18 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          */
         self.doJobBuild = function (id, param) {
            return  $http.post(constants.api('/pipeline/job/' + id), param)
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
+         * 手动构建流水线
+         * @param pipelineConfId 流水线id
+         * @param triggerId 若为0，则拿最新的commit进行构建
+         * @returns {*}
+         */
+        self.buildPipeline = function (pipelineConfId, triggerId) {
+            return  $http.post(constants.api('pipeline/build?pipelineConfId='+pipelineConfId+'&triggerId='+triggerId))
                 .then(function (data) {
                     return data.data;
                 });

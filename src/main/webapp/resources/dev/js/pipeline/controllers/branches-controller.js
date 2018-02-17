@@ -26,17 +26,17 @@ define(['app', 'angular'], function (app, angular) {
         self.noMoreBuildsToLoad = false;
         self.initBuildsDone = false;
 
-        //self.initBuilds = pipelineDataService.getBranchesPipelines(self.context.username, self.module, 0)
-        //    .then(function (data) {
-        //        self.branchPipelines = data;
-        //        self.initBuildsDone = true;
-        //    })
-        //    .then(function () {
-        //        pipelineDataService.getBranches(self.context.username, self.module)
-        //            .then(function (data) {
-        //                self.branches = data instanceof Array ? data : [];
-        //            });
-        //    });
+        self.initBuilds = pipelineDataService.getBranches(self.module,"BRANCH")
+            .then(function (data) {
+                self.branchPipelines = data;
+                self.initBuildsDone = true;
+            })
+            .then(function () {
+                pipelineDataService.getBranches(self.module)
+                    .then(function (data) {
+                        self.branches = data instanceof Array ? data : [];
+                    });
+            });
 
         self.loadSingleBranchPipelines = function (fold, branch, builds) {
             if (!fold) {

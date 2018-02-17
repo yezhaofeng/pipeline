@@ -24,6 +24,15 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                     replace: true,
                     link: function (scope, el) {
                         scope.tool = {
+                            buildPipeline:function(pipelineConfId,triggerId){
+                                pipelineDataService.buildPipeline(pipelineConfId,triggerId).then(function(response){
+                                    if (response.success == true) {
+                                        alert("任务提交成功");
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                });
+                            },
                             buildManual: function (jobBuild) {
                                 scope.jobBuild = jobBuild;
                                 scope.runtimeParam = {};

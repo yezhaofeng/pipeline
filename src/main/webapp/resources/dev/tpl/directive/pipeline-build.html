@@ -118,6 +118,11 @@
                     </ul>
                 </span>
                 <div class="operation">
+                    <button type="button" class="btn"
+                                ng-click="tool.buildPipeline(currentBuild.pipelineConfId,currentBuild.gitHubCommit.id)">
+                        <i class="fa fa-caret-right icon"></i>&nbsp;
+                            重新构建流水线
+                    </button>
                     <div class="pull-right">
                         <span><label>代码提交人:</label> {{::currentBuild.gitHubCommit.committer}}</span>
                         <span><label>提交时间:</label> {{::currentBuild.gitHubCommit.commitTime}}</span>
@@ -162,20 +167,11 @@
                     </table>
                 </div>
                 <div class="operation">
-                    <button type="button" class="agile large blue icon button"
-                            ng-if="stageBuild.type === 'PLUGIN' && stageBuild.status !== 'WAITTING'"
-                            app-build-stage="stageBuild"
-                            app-context="context"
-                            is-rebuild="{{true}}"
-                            app-can-build="{{true}}">
+                    <button type="button" class="btn"
+                            ng-if="jobBuildInfo.jobStatus == 'FAILED'"
+                            ng-click="tool.buildManual(jobBuildInfo)">
                         <i class="fa fa-caret-right icon"></i>&nbsp;
                         重新执行
-                    </button>
-                    <button type="button" class="agile large blue icon button"
-                            ng-if="stageBuild.type === 'BCLOUD' && stageBuild.status !== 'WAITTING'"
-                            app-re-compile="currentBuild">
-                        <i class="fa fa-caret-right icon"></i>&nbsp;
-                        重新编译
                     </button>
                     <div class="pull-right">
                         <a href="javascript:void(0)"

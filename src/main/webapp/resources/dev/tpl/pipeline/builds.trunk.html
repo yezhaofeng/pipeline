@@ -9,7 +9,9 @@
             该模块下还没有构建记录，请先提交代码!
         </div>
     </div>
-
+    <a class="module-settings-link" ng-click="trunkCtrl.doPipelineBuildByTriggerId(0)">
+        <span class="fa fa-hand-rock-o"></span> 执行构建
+    </a>
     <pipeline-builds app-pipeline-builds="trunkCtrl.pipelineBuilds" app-fold="false" context="trunkCtrl.context"></pipeline-builds>
 
     <div class="load-more-row" ng-show="trunkCtrl.initBuildsDone && trunkCtrl.pipelineBuilds.length >= 10">

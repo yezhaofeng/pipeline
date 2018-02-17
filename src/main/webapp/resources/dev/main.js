@@ -5,6 +5,7 @@
 require.config ({
     // baseUrl:'', // 模块查找的根目录，默认情况与data-main所赋值处于同一目录
     // 指定配置模块的加载路径
+    // TODO online环境下，要去掉，太慢了
     urlArgs:'v='+new Date().getTime(),  // 加载的时候带的参数
     paths: {    // 模块名字：模块路径
         'app': 'startup/app',
