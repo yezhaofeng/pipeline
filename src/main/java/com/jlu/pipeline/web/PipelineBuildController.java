@@ -38,6 +38,13 @@ public class PipelineBuildController extends AbstractController {
                                                          @PathVariable BranchType branchType) {
         return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType);
     }
+    @RequestMapping(value = "/{owner}/{repository}/{branchType}/{branchName}", method = RequestMethod.GET)
+    public List<PipelineBuildBean> getPipelineBuildBeans(@PathVariable String owner,
+                                                         @PathVariable String repository,
+                                                         @PathVariable BranchType branchType,
+                                                         @PathVariable String branchName) {
+        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType,branchName);
+    }
 
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.POST)
     public ResponseBean build(@PathVariable String owner, @PathVariable String repository,

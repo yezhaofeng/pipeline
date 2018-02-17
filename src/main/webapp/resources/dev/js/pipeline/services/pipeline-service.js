@@ -38,6 +38,19 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
         /**
+         * 获得流水线构建信息
+         * @param module
+         * @param branchType
+         * @param branch
+         * @returns {*}
+         */
+        self.getPipelineBuildsByBranch = function (module, branchType, branch) {
+            return $http.get(constants.api('pipeline/build/' + module + '/' + branchType + "/" + branch))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
          * 获取流水线配置信息
          * @param module
          * @param branchType
@@ -104,7 +117,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @returns {*}
          */
         self.getJobBuild = function (id) {
-            return  $http.get(constants.api('/pipeline/job/' + id))
+            return $http.get(constants.api('/pipeline/job/' + id))
                 .then(function (data) {
                     return data.data;
                 });
@@ -115,7 +128,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @returns {*}
          */
         self.getBranches = function (module) {
-            return  $http.get(constants.api('pipeline/' + module + '/branches'))
+            return $http.get(constants.api('pipeline/' + module + '/branches'))
                 .then(function (data) {
                     return data.data;
                 });
@@ -128,7 +141,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @returns {*}
          */
         self.doJobBuild = function (id, param) {
-           return  $http.post(constants.api('/pipeline/job/' + id), param)
+            return $http.post(constants.api('/pipeline/job/' + id), param)
                 .then(function (data) {
                     return data.data;
                 });
@@ -140,7 +153,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @returns {*}
          */
         self.buildPipeline = function (pipelineConfId, triggerId) {
-            return  $http.post(constants.api('pipeline/build?pipelineConfId='+pipelineConfId+'&triggerId='+triggerId))
+            return $http.post(constants.api('pipeline/build?pipelineConfId=' + pipelineConfId + '&triggerId=' + triggerId))
                 .then(function (data) {
                     return data.data;
                 });
@@ -152,8 +165,8 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @param triggerId 若为0，则拿最新的commit进行构建
          * @returns {*}
          */
-        self.buildPipeline = function (module,branchType, triggerId) {
-            return  $http.post(constants.api('pipeline/build/'+module+'/'+branchType+'?triggerId='+triggerId))
+        self.buildPipeline = function (module, branchType, triggerId) {
+            return $http.post(constants.api('pipeline/build/' + module + '/' + branchType + '?triggerId=' + triggerId))
                 .then(function (data) {
                     return data.data;
                 });

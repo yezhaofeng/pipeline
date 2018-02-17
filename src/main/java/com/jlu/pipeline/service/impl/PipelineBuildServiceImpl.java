@@ -194,6 +194,31 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     }
 
     @Override
+    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName) {
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
+        if (pipelineConf == null) {
+            return new ArrayList<>(0);
+        }
+        return getPipelineBuildBean(pipelineConf.getId(),branchName);
+    }
+
+    private List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName) {
+        List<PipelineBuildBean> pipelineBuildBeans = new LinkedList<>();
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId,branchName);
+        for (PipelineBuild pipelineBuild : pipelineBuilds) {
+            PipelineBuildBean pipelineBuildBean = new PipelineBuildBean();
+            BeanUtils.copyProperties(pipelineBuild, pipelineBuildBean);
+            Long triggerId = pipelineBuild.getTriggerId();
+            GitHubCommit githubCommit = gitHubCommitService.get(triggerId);
+            pipelineBuildBean.setGitHubCommit(githubCommit);
+            List<JobBuildBean> jobBuildBeans = jobBuildService.getJobBuildBeans(pipelineBuild.getId());
+            pipelineBuildBean.setJobBuildBeanList(jobBuildBeans);
+            pipelineBuildBeans.add(pipelineBuildBean);
+        }
+        return pipelineBuildBeans;
+    }
+
+    @Override
     public PipelineBuild get(Long pipelineBuildId) {
         return pipelineBuildDao.findById(pipelineBuildId);
     }

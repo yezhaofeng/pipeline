@@ -26,21 +26,36 @@ define(['app', 'angular'], function (app, angular) {
         self.noMoreBuildsToLoad = false;
         self.initBuildsDone = false;
 
-        self.initBuilds = pipelineDataService.getBranches(self.module,"BRANCH")
+        self.initBuilds = pipelineDataService.getPipelineBuilds(self.module, "BRANCH")
             .then(function (data) {
-                self.branchPipelines = data;
+                var branchPipelines = {};
+                angular.forEach(data,function(pipelineBuild,index){
+                    var branch = pipelineBuild.branch;
+                    console.log(pipelineBuild);
+                    if(branchPipelines[branch] == undefined){
+                        branchPipelines[branch] = [];
+                        branchPipelines[branch].push(pipelineBuild);
+                    }else{
+                        branchPipelines[branch].push(pipelineBuild);
+                    }
+                });
+                self.branchPipelines = branchPipelines;
                 self.initBuildsDone = true;
             })
             .then(function () {
                 pipelineDataService.getBranches(self.module)
                     .then(function (data) {
-                        self.branches = data instanceof Array ? data : [];
+                        var branches = [];
+                        angular.forEach(data, function (branchObj, index) {
+                            branches.push(branchObj.branchName);
+                        });
+                        self.branches = branches;
                     });
             });
 
-        self.loadSingleBranchPipelines = function (fold, branch, builds) {
+        self.loadSingleBranchPipelines = function (fold, branch) {
             if (!fold) {
-                pipelineDataService.getBranchPipelines(self.context.username, self.module, branch, 0)
+                pipelineDataService.getPipelineBuildsByBranch(self.module, "BRANCH", branch)
                     .then(function (data) {
                         self.branchPipelines[branch] = data;
                     });
@@ -53,7 +68,7 @@ define(['app', 'angular'], function (app, angular) {
                 self.showLoadMoreBuildsLoader = true;
                 pipelineDataService.getTrunkPipelines(self.context.username, self.module, lastBranchId)
                     .then(function (data) {
-                        if (data instanceof  Array && data.length > 0) {
+                        if (data instanceof Array && data.length > 0) {
                             angular.forEach(data, function (data) {
                                 self.pipelineBuilds.push(data);
                             });

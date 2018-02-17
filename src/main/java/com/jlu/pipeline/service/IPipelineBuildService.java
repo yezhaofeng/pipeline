@@ -32,4 +32,6 @@ public interface IPipelineBuildService {
     PipelineBuild get(Long pipelineBuildId);
 
     List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType);
+
+    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName);
 }

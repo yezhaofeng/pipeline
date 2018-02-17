@@ -21,16 +21,6 @@ define(['app', 'constants'], function (app, constants) {
                     templateUrl: constants.resource('directive/pipeline-builds.html'),
                     replace: true,
                     link: function (scope) {
-                        //var pipelineConfId = scope.appPipelineBuilds[0].pipelineConfId;
-                        scope.doPipelineBuildByTriggerId = function(triggerId){
-                            pipelineDataService.buildPipeline(pipelineConfId, triggerId).then(function(response){
-                                if (response.success == true) {
-                                    alert("任务提交成功");
-                                } else {
-                                    alert(response.message);
-                                }
-                            });
-                        }
                     }
                 };
             }
