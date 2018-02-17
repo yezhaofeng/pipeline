@@ -85,7 +85,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
 
         self.deleteJob = function (index) {
             self.config.jobConfs.splice(index, 1);
-            self.toggleActiveJob(index - 1);
+            self.toggleActiveJob(index - 1 >= 0 ? index - 1 : 0);
         };
 
 

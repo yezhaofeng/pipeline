@@ -80,10 +80,11 @@
             <div class="clear"></div>
             <br/>
             <img  ng-src="/resources/dev/img/plugin/{{activeJobPluginInfo.pluginType}}.png"><br/><br/>
-            <label>任务类型：</label>{{activeJobPluginInfo.name}}<br/>
-            <label>说明：</label> {{::activeJobPluginInfo.description}}
+            任务类型：<label ng-bind="activeJobPluginInfo.name"></label><br/>
+            说明：<label ng-bind="activeJobPluginInfo.description"></label>
             <br/>
-            <label>参考文档：</label><a ng-href="link" target="_blank" ng-show="loaded">点击查看</a> {{::activeJobPluginInfo.link}}
+            参考文档：<label ng-bind="activeJobPluginInfo.link"></label>
+            <a ng-href="link" target="_blank" ng-show="loaded">点击查看</a>
         </div>
         <div id="taskConfigDiv" class="form-group">
             <app-real-job-config
