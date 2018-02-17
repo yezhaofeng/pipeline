@@ -2,6 +2,8 @@ package com.jlu.pipeline.web;
 
 import java.util.List;
 
+import com.jlu.pipeline.model.PipelineConf;
+import com.jlu.pipeline.service.IPipelineConfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +29,30 @@ public class PipelineBuildController extends AbstractController {
     @Autowired
     private IPipelineBuildService pipelineBuildService;
 
+    @Autowired
+    private IPipelineConfService pipelineConfService;
+
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.GET)
     public List<PipelineBuildBean> getPipelineBuildBeans(@PathVariable String owner,
                                                          @PathVariable String repository,
                                                          @PathVariable BranchType branchType) {
         return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType);
+    }
+
+    @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.POST)
+    public ResponseBean build(@PathVariable String owner, @PathVariable String repository,
+                              @PathVariable BranchType branchType, @RequestParam(required = false, defaultValue = "0") Long triggerId) {
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(PipelineUtils.getFullModule(owner,repository),branchType);
+        if(pipelineConf == null){
+            throw new PipelineRuntimeException("无流水线配置");
+        }
+        Long pipelineConfId = pipelineConf.getId();
+        if (triggerId == 0L) {
+            pipelineBuildService.build(pipelineConfId);
+        } else {
+            pipelineBuildService.build(pipelineConfId, triggerId);
+        }
+        return ResponseBean.TRUE;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

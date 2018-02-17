@@ -37,8 +37,6 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         };
 
         $scope.$watch('selectedFullName', function (selectedFullName) {
-            console.log( $scope.$parent.config);
-            console.log(selectedFullName);
             // 从jenkinsJobs找到对应的id，赋值给config
             for (var i in $scope.jenkinsJobs) {
                 if ($scope.jenkinsJobs[i].jobFullName == selectedFullName) {

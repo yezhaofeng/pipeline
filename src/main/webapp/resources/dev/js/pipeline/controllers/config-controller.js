@@ -64,7 +64,6 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         self.toggleActiveJob = function (index) {
             self.activeJob = self.config.jobConfs[index];
             var pluginType = self.activeJob.pluginType;
-            console.log(pluginType);
             for (var x in $scope.pluginInfo) {
                 if ($scope.pluginInfo[x].pluginType == pluginType) {
                     $scope.activeJobPluginInfo = $scope.pluginInfo[x];
@@ -98,7 +97,6 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         self.submit = function () {
             $scope.saving = true;
             self.paramEntries2Map(self.config);
-            console.log(self.config);
             pipelineDataService.savePipelineConf(self.currentModule, $scope.branchType, self.config).then(function (response) {
                 if (response.success == true) {
                     $scope.saved = true;
@@ -120,7 +118,6 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         self.paramMap2Entries = function (data) {
             angular.forEach(data.jobConfs, function (jobConf, index) {
                 jobConf.inParamsEntries = self.map2Entries(jobConf.parameterMap);
-                console.log("paramMap2Entries");
             });
         };
 

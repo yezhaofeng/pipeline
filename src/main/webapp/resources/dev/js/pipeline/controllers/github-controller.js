@@ -29,7 +29,6 @@ define(['app', 'constants'], function (app, constants) {
             self.showLoading = true;
             pipelineDataService.addModule(self.username, self.configModule)
                 .then(function (data) {
-                    console.log(data);
                     $scope.result = data;
                     return $scope.uibModalInstance = $uibModal.open({
                         templateUrl: constants.resource('config/config.result.html'),

@@ -146,6 +146,19 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
         /**
+         * 手动构建流水线
+         * @param module
+         * @param branchType
+         * @param triggerId 若为0，则拿最新的commit进行构建
+         * @returns {*}
+         */
+        self.buildPipeline = function (module,branchType, triggerId) {
+            return  $http.post(constants.api('pipeline/build/'+module+'/'+branchType+'?triggerId='+triggerId))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
          * 获取Jenkins配置信息
          * @returns {*}
          */

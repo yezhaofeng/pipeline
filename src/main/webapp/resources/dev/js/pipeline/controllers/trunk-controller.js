@@ -26,21 +26,10 @@ define(['app', 'angular'], function (app, angular) {
         self.showLoadMoreBuildsLoader = false;
         self.noMoreBuildsToLoad = false;
         self.initBuildsDone = false;
-        self.doPipelineBuildByTriggerId = function(triggerId){
-            pipelineDataService.buildPipeline(self.pipelineConfId, triggerId).then(function(response){
-                if (response.success == true) {
-                    alert("任务提交成功");
-                } else {
-                    alert(response.message);
-                }
-            });
-        };
         self.initBuilds = pipelineDataService.getPipelineBuilds(self.module, "TRUNK")
             .then(function (data) {
                 self.pipelineBuilds = data instanceof Array ? data : [];
                 self.initBuildsDone = true;
-                // TODO init pipelineConfId
-
             });
 
         self.loadMoreBuilds = function () {

@@ -46,7 +46,6 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                     }
                                 }
                                 pipelineDataService.getJobRuntimeRequire(jobBuild.id).then(function (runtimeRequireList) {
-                                    console.log(runtimeRequireList);
                                     scope.runtimeRequireList = runtimeRequireList;
                                     angular.forEach(runtimeRequireList, function (runtimeRequire, index) {
                                         scope.runtimeParam.runtimePluginParam[runtimeRequire.name] = runtimeRequire.defaultValue;

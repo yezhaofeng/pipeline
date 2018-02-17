@@ -11,13 +11,28 @@ define(['app'], function (app) {
         '$location',
         '$state',
         'pipelineContextService',
+        'pipelineDataService',
         BuildsController
     ]);
 
-    function BuildsController($scope, $location, $state, pipelineContextService) {
+    function BuildsController($scope, $location, $state, pipelineContextService,pipelineDataService) {
         var self = this;
-
         self.context = pipelineContextService.context;
-
+        $scope.buildPipeline = function(){
+            var module = self.context.module;
+            var branchType = self.context.branchType;
+            if(branchType === 'TRUNK'){
+            pipelineDataService.buildPipeline(module, branchType,0).then(function(response){
+                if (response.success == true) {
+                    alert("任务提交成功");
+                } else {
+                    alert(response.message);
+                }
+            });
+            }else if(branchType === 'BRANCH'){
+                // TODO
+                console.log("未实现")
+            }
+        };
     }
 });
