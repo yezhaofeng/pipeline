@@ -12,6 +12,7 @@ import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.plugin.instance.release.VersionValueGenerator;
 import com.jlu.plugin.instance.release.service.impl.ReleaseServiceImpl;
 import com.jlu.plugin.runtime.RuntimeRequire;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by langshiquan on 18/1/20.
@@ -158,6 +159,9 @@ public class ReleaseBuild {
     }
 
     public String getReleaseProductWgetCommand() {
+        if(StringUtils.isBlank(releasePath)){
+            return null;
+        }
         return WGET_COMMAND_PREFIX + releasePath + WGET_COMMAND_SUFFIX;
     }
 

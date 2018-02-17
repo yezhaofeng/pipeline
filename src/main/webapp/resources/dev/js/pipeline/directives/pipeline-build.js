@@ -117,6 +117,7 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                             });
                         };
                         scope.stageTabToggle = function (jobIndex) {
+                            scope.jobBuildInfo = {};
                             var templateUrl = "pipeline-plugin-info-tpl";
                             if (jobIndex == -1) {
                                 templateUrl = "pipeline-commit-info-tpl";
@@ -127,9 +128,8 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 //templateUrl = "pipeline-" + pluginType + "-info-tpl";
                                 // 模板数据约定
                                 pipelineDataService.getJobBuild(currentJob.id).then(function (jobBuildInfo) {
-                                    scope.jobBuildInfo = {};
                                     scope.jobBuildInfo = jobBuildInfo;
-                                    console.log(jobBuildInfo);
+                                    console.log(scope.jobBuildInfo);
                                 });
                             }
                             if (previousJobIndex !== jobIndex) {
@@ -147,7 +147,6 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                         };
 
                         scope.toggleInfo = function (stageIndex, templateUrl) {
-                            console.log(toggleExpand);
                             if (!toggleExpand) {
                                 var expandArea = el.children()[1];
                                 if (angular.isDefined(expandArea)) {

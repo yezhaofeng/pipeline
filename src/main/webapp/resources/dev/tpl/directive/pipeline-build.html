@@ -3,8 +3,7 @@
         <!-- start commitInfo -->
         <div class="pipeline-global-info col-md-3" style="padding-left: 0px;">
             <div class="row" style="font-size: 13px !important;">
-                    <span ng-class="pipelineStatusClass"
-                          ng-click="stageTabToggle(-1)">
+                    <span ng-class="pipelineStatusClass">
                         <span ng-class="expandClass" style="top: 43px;">
                             <i ng-class="{'fa fa-refresh fa-spin': currentBuild.pipelineStatus === 'INIT'}"></i>
                         </span>
@@ -41,7 +40,7 @@
                         </div>
                     </div>
                     <div class="pipeline-process-bar bg-success" style="margin-top: 9px;"
-                         ng-class="{active:currentJobExpandPointers[-1]}">
+                         ng-class="{active:currentJobExpandPointers[-1]}" ng-click="stageTabToggle(-1)">
                         <span class="expand-pointer success-stage-expand"
                               ng-show="currentJobExpandPointers[-1]">
                         </span>
@@ -133,20 +132,29 @@
                 <div class="expand-contents">
                     <table class="table-list-unstyled">
                         <tr>
+                            <div class="col-pl-60" ng-if="jobBuildInfo.jobStatus == 'INIT'">
+                                <span class="cost-time"></span> <span class="cost-time-val"> 未运行</span>
+                            </div>
                             <td class="col-pl-60">
                                 <!-- FIXME 灵活性很差的方式 -->
-                                <a ng-if="jobBuildInfo.pluginBuild.logUrl != null && jobBuildInfo.pluginType == 'COMPILE'"
-                                   ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
-                                <a ng-if="jobBuildInfo.pluginBuild.logUrl != null && jobBuildInfo.pluginType == 'RELEASE'"
-                                   ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
-                                <a ng-if="jobBuildInfo.pluginBuild.buildUrl != null && jobBuildInfo.pluginType == 'JENKINS_JOB'"
-                                   ng-href="{{::jobBuildInfo.pluginBuild.buildUrl}}" target="_blank">查看构建日志</a>&nbsp;&nbsp;
-                                <a ng-if="jobBuildInfo.pluginBuild.productWgetCommand != null && jobBuildInfo.pluginType == 'COMPILE' && jobBuildInfo.jobStatus == 'SUCCESS'"
-                                   ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.productWgetCommand)"
-                                   target="_blank">查看编译产出下载命令</a>&nbsp;&nbsp;
-                                <a ng-if="jobBuildInfo.pluginBuild.releaseProductWgetCommand != null  && jobBuildInfo.pluginType == 'RELEASE' && jobBuildInfo.jobStatus == 'SUCCESS'"
-                                   ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.releaseProductWgetCommand)"
-                                   target="_blank">查看发布产出下载命令</a>&nbsp;&nbsp;
+                                <div ng-if="jobBuildInfo.pluginType == 'COMPILE'">
+                                    <a ng-if="jobBuildInfo.pluginBuild.logUrl != null"
+                                       ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
+                                    <a ng-if="jobBuildInfo.pluginBuild.productWgetCommand != null && jobBuildInfo.jobStatus == 'SUCCESS'"
+                                       ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.productWgetCommand)"
+                                       target="_blank">查看编译产出下载命令</a>&nbsp;&nbsp;
+                                </div>
+                                <div ng-if="jobBuildInfo.pluginType == 'JENKINS_JOB'">
+                                    <a ng-if="jobBuildInfo.pluginBuild.buildUrl != null && jobBuildInfo.pluginType == 'JENKINS_JOB'"
+                                       ng-href="{{::jobBuildInfo.pluginBuild.buildUrl}}" target="_blank">查看构建日志</a>&nbsp;&nbsp;
+                                </div>
+                                <div ng-if="jobBuildInfo.pluginType == 'RELEASE'">
+                                    <a ng-if="jobBuildInfo.pluginBuild.logUrl != null"
+                                       ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
+                                    <a ng-if="jobBuildInfo.pluginBuild.releaseProductWgetCommand != null && jobBuildInfo.jobStatus == 'SUCCESS'"
+                                       ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.releaseProductWgetCommand)"
+                                       target="_blank">查看发布产出下载命令</a>&nbsp;&nbsp;
+                                </div>
                             </td>
                             <td class="col-pl-60" style="color:darkred" ng-show="jobBuildInfo.jobStatus == 'FAILED'" ng-bind="jobBuildInfo.message + jobBuildInfo.pluginBuild.messgae">
                             </td>
