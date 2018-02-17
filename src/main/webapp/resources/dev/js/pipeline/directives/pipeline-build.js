@@ -129,7 +129,6 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 // 模板数据约定
                                 pipelineDataService.getJobBuild(currentJob.id).then(function (jobBuildInfo) {
                                     scope.jobBuildInfo = jobBuildInfo;
-                                    console.log(scope.jobBuildInfo);
                                 });
                             }
                             if (previousJobIndex !== jobIndex) {

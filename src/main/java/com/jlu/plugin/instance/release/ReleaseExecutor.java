@@ -142,6 +142,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             newParams.put(JobParameter.PIPELINE_RELEASE_PRODUCT_PATH, releaseBuild.getReleasePath());
             newParams.put(JobParameter.PIPELINE_RELEASE_VERSION, releaseBuild.getVersion());
         }
+        jobBuild.setName(jobBuild.getName()+" "+releaseBuild.getVersion());
         jobBuildService.notifiedJobBuildUpdated(jobBuild, newParams);
     }
 }
