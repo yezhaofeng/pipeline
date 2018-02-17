@@ -47,7 +47,7 @@ public class JenkinsJobDataOperator extends AbstractDataOperator<JenkinsJobConf,
         JenkinsJobBuild jenkinsJobBuild = new JenkinsJobBuild();
         BeanUtils.copyProperties(jenkinsJobConf,jenkinsJobBuild);
         jenkinsJobBuild.setId(null);
-        jenkinsJobBuildDao.saveOrUpdate(jenkinsJobBuild);
+        jenkinsJobBuildDao.save(jenkinsJobBuild);
         return jenkinsJobBuild.getId();
     }
 }

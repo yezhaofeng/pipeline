@@ -42,10 +42,9 @@ public class JenkinsJobExecutor extends AbstractExecutor {
                     .getJobName(), jobBuild
                     .getInParameterMap(), jobBuild);
             StringBuilder logUrl = new StringBuilder();
-            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(File.separator)
-                    .append("job").append(File.separator).append(jenkinsJobBuild.getJobName())
-                    .append(File.separator).append(buildNumber)
-                    .append(File.separator).append("console");
+            logUrl.append(jenkinsJobBuild.getJobFullName()).append("/")
+                    .append("/").append(buildNumber)
+                    .append("/").append("console");
             jenkinsJobBuild.setBuildUrl(logUrl.toString());
             jenkinsJobDao.saveOrUpdate(jenkinsJobBuild);
             notifyJobStartSucc(jobBuild);

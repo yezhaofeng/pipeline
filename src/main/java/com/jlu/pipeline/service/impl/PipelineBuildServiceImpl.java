@@ -137,8 +137,9 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         }
         PipelineBuild pipelineBuild = initPipelineBuildByCommit(gitHubCommit, pipelineConf, TriggerMode.MANUAL,
                 UserLoginHelper.getLoginUserName());
-        Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         IPipelineBuildDao.saveOrUpdate(pipelineBuild);
+        Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
+
         Long pipelineBuildId = pipelineBuild.getId();
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConfId);
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
@@ -157,9 +158,10 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     public Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit) {
         PipelineBuild pipelineBuild =
                 initPipelineBuildByCommit(gitHubCommit, pipelineConf, TriggerMode.AUTO, StringUtils.EMPTY);
+        IPipelineBuildDao.saveOrUpdate(pipelineBuild);
         Map<String, String> params = initJobParams(pipelineBuild, gitHubCommit);
         List<JobConfBean> jobConfBeanList = jobConfService.getJobConfs(pipelineConf.getId());
-        IPipelineBuildDao.saveOrUpdate(pipelineBuild);
+
         Long pipelineBuildId = pipelineBuild.getId();
         initJobBuilds(pipelineBuildId, jobConfBeanList, params);
         return pipelineBuildId;

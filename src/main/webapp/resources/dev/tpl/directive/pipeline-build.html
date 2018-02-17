@@ -4,7 +4,7 @@
         <div class="pipeline-global-info col-md-3" style="padding-left: 0px;">
             <div class="row" style="font-size: 13px !important;">
                     <span ng-class="pipelineStatusClass"
-                          ng-click="stageTabToggle(-1, 'pipeline-commit-info-tpl')">
+                          ng-click="stageTabToggle(-1)">
                         <span ng-class="expandClass" style="top: 43px;">
                             <i ng-class="{'fa fa-refresh fa-spin': currentBuild.pipelineStatus === 'INIT'}"></i>
                         </span>
@@ -35,21 +35,23 @@
                                 </div>
                                 <div class="commit-start-time">
                                     <span class="start-time"></span>
-                                    &nbsp;{{currentBuild.gitHubCommit.commitTime}}
+                                    &nbsp;{{currentBuild.startTime | date:"yyyy-MM-dd hh:mm:ss"}}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="pipeline-process-bar bg-success" style="margin-top: 9px;"
-                         ng-class="{active:currentStageExpandPointers[-1]}">
+                         ng-class="{active:currentJobExpandPointers[-1]}">
                         <span class="expand-pointer success-stage-expand"
-                              ng-show="currentStageExpandPointers[-1]">
+                              ng-show="currentJobExpandPointers[-1]">
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         <!-- end commitInfo -->
+
+        <!-- start job -->
         <div class="pipeline-stages col-md-9">
             <div class="row">
                 <!-- job build begin -->
@@ -57,7 +59,7 @@
                 <!--$last!=true ? (12/currentBuild.jobBuildBeanList.length | number:0) : (12-(currentBuild.jobBuildBeanList.length|number:0)*($index+1))-->
                 <div class="pipeline-stage col-md-{{::12/currentBuild.jobBuildBeanList.length | number:0}} padding-left-right-0"
                      ng-class="stageWidthClass"
-                     ng-click="stageTabToggle(-2, 'pipeline-compile-info-tpl'); $event.stopPropagation();"
+                     ng-click="stageTabToggle($index); $event.stopPropagation();"
                      ng-repeat="jobBuild in currentBuild.jobBuildBeanList track by $index">
                     <div class="font-normal-color">
                         <span ng-class="{running:jobBuild.jobStatus==='RUNNING',fail:jobBuild.jobStatus==='FAILED',success:jobBuild.jobStatus==='SUCCESS'}">
@@ -82,25 +84,25 @@
                                         'success-stage-expand': jobBuild.jobStatus === 'SUCCESS',
                                         'fail-stage-expand': jobBuild.jobStatus === 'FAILED',
                                         'running-stage-expand': jobBuild.jobStatus === 'RUNNING'}"
-                              ng-show="currentStageExpandPointers[-2]">
+                              ng-show="currentJobExpandPointers[$index]">
                         </span>
                         <span class="progress-bar-span" ng-class="{'bg-waiting': jobBuild.jobStatus === 'INIT',
                                     'bg-success': jobBuild.jobStatus === 'SUCCESS',
                                     'bg-fail': jobBuild.jobStatus === 'FAILED',
                                     'bg-running running-progress-bar': jobBuild.jobStatus === 'RUNNING',
-                                    'active':currentStageExpandPointers[-2]}"
+                                    'active':currentJobExpandPointers[$index]}"
                               ng-style="{width: jobBuild.runPercentage + '%'}">
                             &nbsp;
                         </span>
                     </div>
                 </div>
                 <!-- end jobBuild -->
-
-
-                <!--模板区域-->
-                <!--Start 代码提交信息模板-->
-                <script type="text/ng-template" id="pipeline-commit-info-tpl">
-                    <div class="expand-container">
+            </div>
+        </div>
+        <!--模板区域-->
+        <!--Start 代码提交信息模板-->
+        <script type="text/ng-template" id="pipeline-commit-info-tpl">
+            <div class="expand-container">
                 <span class="expand-contents">
                     <ul class="list-unstyled commit-info-ul">
                         <li>
@@ -116,17 +118,71 @@
                         </li>
                     </ul>
                 </span>
-                        <div class="operation">
-                            <div class="pull-right">
-                                <span><label>代码提交人:</label> {{::currentBuild.gitHubCommit.committer}}</span>
-                                <span><label>提交时间:</label> {{::currentBuild.gitHubCommit.commitTime}}</span>
-                            </div>
-                        </div>
+                <div class="operation">
+                    <div class="pull-right">
+                        <span><label>代码提交人:</label> {{::currentBuild.gitHubCommit.committer}}</span>
+                        <span><label>提交时间:</label> {{::currentBuild.gitHubCommit.commitTime}}</span>
                     </div>
-                </script>
-                <!--End 代码提交信息模板-->
+                </div>
             </div>
-            <div class="expand-area clearfix col-md-1" style="margin-bottom: 25px;"></div>
-        </div>
+        </script>
+
+        <!--Start Plugin stage模板-->
+        <script type="text/ng-template" id="pipeline-plugin-info-tpl">
+            <div class="expand-container">
+                <div class="expand-contents">
+                    <table class="table-list-unstyled">
+                        <tr>
+                            <td class="col-pl-60">
+                                <!-- FIXME 灵活性很差的方式 -->
+                                <a ng-if="jobBuildInfo.pluginBuild.logUrl != null && jobBuildInfo.pluginType == 'COMPILE'"
+                                   ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
+                                <a ng-if="jobBuildInfo.pluginBuild.logUrl != null && jobBuildInfo.pluginType == 'RELEASE'"
+                                   ng-href="{{::jobBuildInfo.pluginBuild.logUrl}}" target="_blank">查看日志</a>&nbsp;&nbsp;
+                                <a ng-if="jobBuildInfo.pluginBuild.buildUrl != null && jobBuildInfo.pluginType == 'JENKINS_JOB'"
+                                   ng-href="{{::jobBuildInfo.pluginBuild.buildUrl}}" target="_blank">查看构建日志</a>&nbsp;&nbsp;
+                                <a ng-if="jobBuildInfo.pluginBuild.productWgetCommand != null && jobBuildInfo.pluginType == 'COMPILE' && jobBuildInfo.jobStatus == 'SUCCESS'"
+                                   ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.productWgetCommand)"
+                                   target="_blank">查看编译产出下载命令</a>&nbsp;&nbsp;
+                                <a ng-if="jobBuildInfo.pluginBuild.releaseProductWgetCommand != null  && jobBuildInfo.pluginType == 'RELEASE' && jobBuildInfo.jobStatus == 'SUCCESS'"
+                                   ng-click="tool.alertInfo(jobBuildInfo.pluginBuild.releaseProductWgetCommand)"
+                                   target="_blank">查看发布产出下载命令</a>&nbsp;&nbsp;
+                            </td>
+                            <td class="col-pl-60" style="color:darkred" ng-show="jobBuildInfo.jobStatus == 'FAILED'" ng-bind="jobBuildInfo.message + jobBuildInfo.pluginBuild.messgae">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="operation">
+                    <button type="button" class="agile large blue icon button"
+                            ng-if="stageBuild.type === 'PLUGIN' && stageBuild.status !== 'WAITTING'"
+                            app-build-stage="stageBuild"
+                            app-context="context"
+                            is-rebuild="{{true}}"
+                            app-can-build="{{true}}">
+                        <i class="fa fa-caret-right icon"></i>&nbsp;
+                        重新执行
+                    </button>
+                    <button type="button" class="agile large blue icon button"
+                            ng-if="stageBuild.type === 'BCLOUD' && stageBuild.status !== 'WAITTING'"
+                            app-re-compile="currentBuild">
+                        <i class="fa fa-caret-right icon"></i>&nbsp;
+                        重新编译
+                    </button>
+                    <div class="pull-right">
+                        <a href="javascript:void(0)"
+                           ng-click="showBuildParam(jobBuildInfo)"  ng-show="jobBuildInfo.jobStatus != 'INIT'">点击查看构建参数</a>
+                        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                        <span ng-if="jobBuildInfo.triggerUser != null"><label>触发人:</label> {{::jobBuildInfo.triggerUser}}</span>
+                        <span ng-if="jobBuildInfo.triggerTime != null"><label>触发时间:</label> {{::jobBuildInfo.triggerTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+                        <span ng-if="jobBuildInfo.startTime != null"><label>开始时间:</label> {{::jobBuildInfo.startTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+                        <span ng-if="jobBuildInfo.endTime != null"><label>结束时间:</label> {{jobBuildInfo.endTime |  date:"yyyy-MM-dd HH:mm:ss" }}</span>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <!--End Plugin stage模板-->
+
     </div>
+    <div class="expand-area clearfix col-md-1" style="margin-bottom: 25px;"></div>
 </div>

@@ -29,6 +29,8 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 scope.runtimeParam = {};
                                 scope.runtimeParam.execParam = {};
                                 scope.runtimeParam.runtimePluginParam = {};
+
+                                // 需要找用户自定义参数
                                 for (var key in jobBuild.inParameterMap) {
                                     if (key.indexOf("PIPELINE_") !== 0) {
                                         scope.runtimeParam.execParam[key] = jobBuild.inParameterMap[key];
@@ -65,21 +67,13 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                             cancelWindow: function () {
                                 return scope.uibModalInstance && scope.uibModalInstance.dismiss();
                             },
-                            isSuccBuildStatus: function (status) {
-                                return 'SUCCESS' === status;
-                            },
-                            isCanRelease: function () {
-                                var compileBuildStatus = scope.currentBuild.compileBuildBean.buildStatus;
-                                var releaseInfo = scope.currentBuild.releaseBean || {};
-                                return scope.tool.isSuccBuildStatus(compileBuildStatus)
-                                    && 'SUCCESS' !== releaseInfo.releaseStatus
-                                    && 'RUNNING' !== releaseInfo.releaseStatus;
-                            },
                             updateJobBuild: function () {
                                 var promises = [];
                                 return $q.all(promises);
+                            },
+                            alertInfo: function (message) {
+                                window.alert(message);
                             }
-
                         };
 
                         changePipelineStatus(scope.currentBuild.pipelineStatus);
@@ -87,42 +81,77 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
 
                         /* 详情展开页 start*/
                         var toggleExpand = false;
-                        var previousStageIndex = -1;
-                        scope.currentStageExpandPointers = new Array(3);
-                        for (var i = 0; i < scope.currentStageExpandPointers.length; i++) {
-                            scope.currentStageExpandPointers[i] = false;
+                        var previousJobIndex = -2;
+                        // 控制显示向下箭头
+                        scope.currentJobExpandPointers = new Array(scope.currentBuild.jobBuildBeanList.length);
+                        // 初始化currentJobExpandPointers
+                        for (var i = 0; i < scope.currentJobExpandPointers.length; i++) {
+                            scope.currentJobExpandPointers[i] = false;
                         }
 
-                        scope.stageTabToggle = function (stageIndex, templateUrl) {
-                            if (previousStageIndex !== stageIndex) {
-                                scope.currentStageExpandPointers[previousStageIndex] = false;
-                                scope.currentStageExpandPointers[stageIndex] = true;
-                                previousStageIndex = stageIndex;
+
+                        scope.cancelParameterDiffWindow = function () {
+                            return scope.parameterDiffModalInstance && scope.parameterDiffModalInstance.dismiss();
+                        };
+                        scope.showBuildParam = function (jobBuildInfo) {
+                            var parameterDiffList = [];
+                            var param;
+                            if (jobBuildInfo.jobStatus == "SUCCESS") {
+                                param = jobBuildInfo.outParameterMap;
+                            } else {
+                                param = jobBuildInfo.inParameterMap;
+                            }
+                            for (var key in param) {
+                                var parameterDiff = {};
+                                parameterDiff.name = key;
+                                parameterDiff.inValue = jobBuildInfo.inParameterMap[key] === undefined ? '-' : jobBuildInfo.inParameterMap[key];
+                                parameterDiff.outValue = jobBuildInfo.outParameterMap[key];
+                                parameterDiffList.push(parameterDiff);
+                            }
+                            scope.parameterDiffList = parameterDiffList;
+                            scope.parameterDiffModalInstance = $uibModal.open({
+                                scope: scope,
+                                templateUrl: constants.resource('config/parameter.diff.html'),
+                                size: 'lg',
+                                windowClass: 'zoom'
+                            });
+                        };
+                        scope.stageTabToggle = function (jobIndex) {
+                            var templateUrl = "pipeline-plugin-info-tpl";
+                            if (jobIndex == -1) {
+                                templateUrl = "pipeline-commit-info-tpl";
+                            } else {
+                                var currentJob = scope.currentBuild.jobBuildBeanList[jobIndex];
+                                var pluginType = currentJob.pluginType;
+                                // 模板名字约定
+                                //templateUrl = "pipeline-" + pluginType + "-info-tpl";
+                                // 模板数据约定
+                                pipelineDataService.getJobBuild(currentJob.id).then(function (jobBuildInfo) {
+                                    scope.jobBuildInfo = {};
+                                    scope.jobBuildInfo = jobBuildInfo;
+                                    console.log(jobBuildInfo);
+                                });
+                            }
+                            if (previousJobIndex !== jobIndex) {
+                                scope.currentJobExpandPointers[previousJobIndex] = false;
+                                scope.currentJobExpandPointers[jobIndex] = true;
+                                previousJobIndex = jobIndex;
                                 toggleExpand = false;
 
-                            } else if (previousStageIndex === stageIndex) {
-                                scope.currentStageExpandPointers[previousStageIndex]
-                                    = !scope.currentStageExpandPointers[previousStageIndex];
+                            } else if (previousJobIndex === jobIndex) {
+                                scope.currentJobExpandPointers[previousJobIndex]
+                                    = !scope.currentJobExpandPointers[previousJobIndex];
                             }
-                            scope.toggleInfo(stageIndex, templateUrl);
+
+                            scope.toggleInfo(jobIndex, templateUrl);
                         };
 
                         scope.toggleInfo = function (stageIndex, templateUrl) {
+                            console.log(toggleExpand);
                             if (!toggleExpand) {
                                 var expandArea = el.children()[1];
                                 if (angular.isDefined(expandArea)) {
-                                    if (stageIndex === -3) {
-                                        templateUrl = 'pipeline-release-info-tpl';
-                                    } else {
-                                        if (stageIndex === -1) {
-                                            templateUrl = 'pipeline-commit-info-tpl';
-                                        }
-                                        else {
-                                            templateUrl = 'pipeline-compile-info-tpl';
-                                        }
-                                    }
                                     var template = $templateCache.get(templateUrl);
-
                                     if (template == null) {
                                         throw new URIError('无法找到指定模版:' + templateUrl);
                                     }
@@ -132,10 +161,11 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                         var compiledTemplate = $compile(template)(scope);
                                         // console.log(compiledTemplate);
                                         angularExpandArea.html(compiledTemplate);
-                                        // var insertedTemplate = angular.element(compiledTemplate);
 
+                                        // var insertedTemplate = angular.element(compiledTemplate);
                                         // see http://stackoverflow.com/questions/9911554/jquery-get-div
                                         // -width-after-document-is-ready-and-rendered
+
                                         /* setTimeout(function () {
                                          angularExpandArea[0].style.height = insertedTemplate[0].clientHeight + 'px';
                                          }, 0);*/

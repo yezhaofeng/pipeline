@@ -239,7 +239,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
         BeanUtils.copyProperties(jobBuild, jobBuildBean);
         Object pluginBuild = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator()
-                .getBuild(jobBuild.getPipelineBuildId());
+                .getBuild(jobBuild.getPluginBuildId());
 
         jobBuildBean.setPluginBuild(pluginBuild);
         return jobBuildBean;

@@ -96,6 +96,27 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
 
+
+
+        /**
+         * Job构建信息
+         * @param id
+         * @param param
+         * @returns {*}
+         */
+        self.getJobBuild = function (id) {
+            return  $http.get(constants.api('/pipeline/job/' + id))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+
+        /**
+         * 手动构建Job
+         * @param id
+         * @param param
+         * @returns {*}
+         */
         self.doJobBuild = function (id, param) {
            return  $http.post(constants.api('/pipeline/job/' + id), param)
                 .then(function (data) {
@@ -112,6 +133,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                     return data.data;
                 });
         };
+
         /**
          * 删除Jenkins配置
          * @param id

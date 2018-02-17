@@ -1,0 +1,29 @@
+<div class="plugin-job-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancelParameterDiffWindow()"
+                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">构建参数列表</h4>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th style="width:300px">参数名称</th>
+                <th style="width:300px">执行前</th>
+                <th style="width:300px">执行后</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="parameterDiff in parameterDiffList">
+                <td ng-bind="parameterDiff.name" ></td>
+                <td ng-bind="parameterDiff.inValue" style="word-break: break-all;white-space: normal;"></td>
+                <td ng-bind="parameterDiff.outValue" style="word-break: break-all;white-space: normal;"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="agile large button cancel-button" type="button" ng-click="cancelParameterDiffWindow()">关闭
+        </button>
+    </div>
+</div>

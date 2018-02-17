@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 @Service
 public class JenkinsConfServiceImpl implements IJenkinsConfService {
 
+    private final Logger logger = LoggerFactory.getLogger(JenkinsConfServiceImpl.class);
     @Autowired
     private IJenkinsConfDao jenkinsConfDao;
 
@@ -62,13 +65,17 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
 
         CollUtils.addAll(jenkinsConfs, jenkinsConfList.iterator());
         for (JenkinsConf jenkinsConf : jenkinsConfs) {
-            JenkinsJobsBean jenkinsJobsBean = new JenkinsJobsBean();
-            jenkinsJobsBean.setServerUrl(jenkinsConf.getServerUrl());
-            jenkinsJobsBean.setJenkinsServerId(jenkinsConf.getId());
-            JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(jenkinsConf);
-            Set<String> jobs = jenkinsServerService.getJobs(jenkinsServer);
-            jenkinsJobsBean.setJobs(jobs);
-            jenkinsJobs.add(jenkinsJobsBean);
+            try {
+                JenkinsJobsBean jenkinsJobsBean = new JenkinsJobsBean();
+                jenkinsJobsBean.setServerUrl(jenkinsConf.getServerUrl());
+                jenkinsJobsBean.setJenkinsServerId(jenkinsConf.getId());
+                JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(jenkinsConf);
+                Set<String> jobs = jenkinsServerService.getJobs(jenkinsServer);
+                jenkinsJobsBean.setJobs(jobs);
+                jenkinsJobs.add(jenkinsJobsBean);
+            } catch (Exception e) {
+                logger.warn("get jobs from {} occur error:{}",jenkinsConf,e);
+            }
         }
         return jenkinsJobs;
     }
