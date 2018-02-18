@@ -56,6 +56,17 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                     return data.data;
                 });
         };
+
+        /**
+         * 开启默认流水线
+         * @param module
+         */
+        self.openDefaultPipelineConf = function (module) {
+            return $http.post(constants.api('pipeline/conf/' + module))
+                .then(function (data) {
+                    return data.data;
+                })
+        };
         /**
          * 获取流水线配置信息
          * @param module

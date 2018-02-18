@@ -19,6 +19,28 @@ define(['app', 'constants'], function (app, constants) {
     function BuildsController($scope, $location, $state, $uibModal, pipelineContextService, pipelineDataService) {
         var self = this;
         self.context = pipelineContextService.context;
+
+        $scope.hasDefaultPipeline = false;
+        $scope.opening = false;
+
+        pipelineDataService.getPipelineConf(self.context.module, self.context.branchType)
+            .then(function (reponse) {
+                if (reponse == null || reponse == '' || reponse == undefined) {
+                    $scope.hasDefaultPipeline = true;
+                }
+            });
+
+        $scope.openDefaultPipeline = function () {
+            $scope.opening = true;
+            pipelineDataService.openDefaultPipelineConf(self.context.module).then(function (response) {
+                if (response.success == true) {
+                    $state.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        };
+
         $scope.buildPipeline = function () {
             var module = self.context.module;
             var branchType = self.context.branchType;
@@ -57,6 +79,7 @@ define(['app', 'constants'], function (app, constants) {
                 }
             });
         };
+
         $scope.cancelWindow = function () {
             return $scope.buildModal && $scope.buildModal.dismiss();
         }
