@@ -47,13 +47,10 @@ define(['app', 'angular', 'constants'], function appPlContextService(app, angula
 
         self.initContext = function () {
             var lastVisitModule = localStorageService.getRecentModule();
-            if (lastVisitModule === '') {
-                window.location.href='/intro';
-            }
             self.context.module = lastVisitModule;
             pipelineDataService.getLoginUserInfo().then(function (data) {
                 if (data == null || data == '' || data == undefined) {
-                    window.location.href='/login';
+                    window.location.href = '/login';
                 }
                 self.context.username = data.username;
             });

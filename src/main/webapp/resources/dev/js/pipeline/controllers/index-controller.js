@@ -16,7 +16,7 @@ define(['app'], function (app) {
         'localStorageService',
         IndexController
     ]);
-    
+    // angular的body入口js
     function IndexController($scope, $location, $state, $window, pipelineDataService,
                              pipelineContextService, permissionService, localStorageService) {
         var self = this;

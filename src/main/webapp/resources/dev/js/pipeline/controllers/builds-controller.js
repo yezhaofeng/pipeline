@@ -12,15 +12,21 @@ define(['app', 'constants'], function (app, constants) {
         '$state',
         '$stateParams',
         '$uibModal',
+        '$window',
         'pipelineContextService',
         'pipelineDataService',
+        'localStorageService',
         BuildsController
     ]);
 
-    function BuildsController($scope, $location, $state, $stateParams, $uibModal, pipelineContextService, pipelineDataService) {
+    function BuildsController($scope, $location, $state, $stateParams, $uibModal, $window, pipelineContextService, pipelineDataService, localStorageService) {
         var self = this;
         self.context = pipelineContextService.context;
-
+        var module = $stateParams.module;
+        if (module == undefined || module == '') {
+            $window.location.href = '/intro';
+        }
+        pipelineContextService.setModule(module);
         $scope.hasDefaultPipeline = false;
         $scope.opening = false;
 
@@ -88,7 +94,12 @@ define(['app', 'constants'], function (app, constants) {
         $scope.$watch(function () {
             return $stateParams.module;
         }, function (module) {
+
+            if (module == undefined || module == '') {
+                $location.href = '/intro';
+            }
             pipelineContextService.setModule(module);
+            localStorageService.addRecentModule(module);
             $state.go(
                 'builds.trunk',
                 {
