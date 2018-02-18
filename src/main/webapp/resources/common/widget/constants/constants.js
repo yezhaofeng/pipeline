@@ -13,6 +13,12 @@ define([], function () {
         resource: function (path) {
             return formatUrl("resources/dev/tpl/" + path);
         },
+        trunk:function(){
+            return "TRUNK"
+        },
+        branch:function(){
+            return "BRANCH"
+        }
     };
     
     return exports;

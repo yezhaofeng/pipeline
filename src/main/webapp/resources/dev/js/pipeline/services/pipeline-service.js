@@ -24,7 +24,13 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                     return data.data;
                 });
         };
-
+        // 获取commit信息
+        self.getCommits = function (module, branchType) {
+            return $http.get(constants.api('github/' + module + '/' + branchType + "/commits"))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
         /**
          * 获得流水线构建信息
          * @param module

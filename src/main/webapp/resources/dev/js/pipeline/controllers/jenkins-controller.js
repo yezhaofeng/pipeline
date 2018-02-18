@@ -30,12 +30,12 @@ define(['app', 'constants'], function (app, constants) {
         self.addJenkinsConf = function () {
             pipelineDataService.addJenkinsConf($scope.jenkinsConf).then(function (data) {
                 alert(data);
-                $window.location.reload();
+                $state.reload();
             });
         };
         self.delete = function (id) {
             pipelineDataService.deleteJenkinsConf(id).then(function (data) {
-                $window.location.reload();
+                $state.reload();
             })
         };
         self.cancel = function () {

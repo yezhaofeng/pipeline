@@ -35,7 +35,7 @@ define(['app'], function (app) {
                     if ('SUCC' === self.loginStatus) {
                         pipelineContextService.setUsername(self.username);
                         localStorageService.addLoginUser(self.username);
-                        $window.location.reload();
+                        $state.reload();
                     }
             });
         };

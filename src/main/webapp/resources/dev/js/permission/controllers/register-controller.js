@@ -45,7 +45,7 @@ define(['app'], function (app) {
                     if (result.REGISTER_STATUS === true) {
                         $window.location.href = "http://localhost:8080/";
                     } else {
-                        $window.location.reload();
+                        $state.reload();
                     }
                 });
         };

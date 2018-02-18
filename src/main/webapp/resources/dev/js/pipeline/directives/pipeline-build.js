@@ -11,8 +11,9 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
             '$templateCache',
             '$compile',
             '$uibModal',
+            '$state',
             '$q',
-            function (pipelineDataService, $templateCache, $compile, $uibModal, $q) {
+            function (pipelineDataService, $templateCache, $compile, $uibModal, $state, $q) {
                 return {
                     restrict: 'E',
                     scope: {
@@ -24,10 +25,11 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                     replace: true,
                     link: function (scope, el) {
                         scope.tool = {
-                            buildPipeline:function(pipelineConfId,triggerId){
-                                pipelineDataService.buildPipeline(pipelineConfId,triggerId).then(function(response){
+                            buildPipeline: function (pipelineConfId, triggerId) {
+                                pipelineDataService.buildPipeline(pipelineConfId, triggerId).then(function (response) {
                                     if (response.success == true) {
                                         alert("任务提交成功");
+                                        $state.reload();
                                     } else {
                                         alert(response.message);
                                     }
@@ -67,6 +69,7 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 pipelineDataService.doJobBuild(id, scope.runtimeParam).then(function (response) {
                                     if (response.success == true) {
                                         scope.tool.cancelWindow();
+                                        $state.reload();
                                     } else {
                                         alert(response.message);
                                     }

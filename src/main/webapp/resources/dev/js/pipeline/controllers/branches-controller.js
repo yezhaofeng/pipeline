@@ -29,17 +29,19 @@ define(['app', 'angular'], function (app, angular) {
         self.initBuilds = pipelineDataService.getPipelineBuilds(self.module, "BRANCH")
             .then(function (data) {
                 var branchPipelines = {};
+                var otherBranchPipelines = {};
                 angular.forEach(data,function(pipelineBuild,index){
                     var branch = pipelineBuild.branch;
-                    console.log(pipelineBuild);
                     if(branchPipelines[branch] == undefined){
                         branchPipelines[branch] = [];
+                        otherBranchPipelines[branch] = [];
                         branchPipelines[branch].push(pipelineBuild);
                     }else{
-                        branchPipelines[branch].push(pipelineBuild);
+                        otherBranchPipelines[branch].push(pipelineBuild);
                     }
                 });
                 self.branchPipelines = branchPipelines;
+                self.otherBranchPipelines = otherBranchPipelines;
                 self.initBuildsDone = true;
             })
             .then(function () {
@@ -55,10 +57,9 @@ define(['app', 'angular'], function (app, angular) {
 
         self.loadSingleBranchPipelines = function (fold, branch) {
             if (!fold) {
-                pipelineDataService.getPipelineBuildsByBranch(self.module, "BRANCH", branch)
-                    .then(function (data) {
-                        self.branchPipelines[branch] = data;
-                    });
+                angular.forEach(self.otherBranchPipelines[branch],function(otherPipelines,index){
+                    self.branchPipelines[branch].push(otherPipelines);
+                });
             }
         };
 
