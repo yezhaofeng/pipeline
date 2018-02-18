@@ -10,13 +10,14 @@ define(['app', 'constants'], function (app, constants) {
         '$scope',
         '$location',
         '$state',
+        '$stateParams',
         '$uibModal',
         'pipelineContextService',
         'pipelineDataService',
         BuildsController
     ]);
 
-    function BuildsController($scope, $location, $state, $uibModal, pipelineContextService, pipelineDataService) {
+    function BuildsController($scope, $location, $state, $stateParams, $uibModal, pipelineContextService, pipelineDataService) {
         var self = this;
         self.context = pipelineContextService.context;
 
@@ -82,6 +83,19 @@ define(['app', 'constants'], function (app, constants) {
 
         $scope.cancelWindow = function () {
             return $scope.buildModal && $scope.buildModal.dismiss();
-        }
+        };
+
+        $scope.$watch(function () {
+            return $stateParams.module;
+        }, function (module) {
+            pipelineContextService.setModule(module);
+            $state.go(
+                'builds.trunk',
+                {
+                    module: module
+                }
+            );
+        });
+
     }
 });

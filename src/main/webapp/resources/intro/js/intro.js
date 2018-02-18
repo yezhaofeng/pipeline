@@ -1,37 +1,14 @@
 var Agileplus = Agileplus || {};
 $(function () {
     Agileplus.introPage.fullPage();
-
-    // var hasVisited = CIToolNS.localStorage('hasVisitedIntroPage');
-    // if (true === CIToolNS.utils.isNull(hasVisited)) {
-    //     CIToolNS.localStorage('hasVisitedIntroPage', '');
-    //     Agileplus.introPage.upgradeDialog();
-    // }
-    // CITool.suggest.productModuleSuggest($('#module-search'),null,{smartMatch: true});
-    // Firefox有滚动异常，resize后正常
     $(window).resize();
 });
 
 Agileplus.introPage = {
     moduleSearch: function () {
-        console.log("123");
         var module = $("#module-search").val();
         var url =  '/#/builds/' + module;
         window.location.href = url;
-        // TODO
-        // var moduleCompleted = CITool.suggest.productModuleSuggest($('#module-search'), null, {smartMatch: true});
-        // var submitProxy = CITool.util.getSubmitProxy([moduleCompleted]);
-        // submitProxy(function () {
-        //     setTimeout(function () {
-        // var module = $('#module-search').val();
-        // if (CIToolNS.utils.isEmpty(module)) {
-        //     return;
-        // }
-        // var url = CITool.constants.CONTEXT + '#/builds/' + module;
-        // window.location.href = url;
-        // console.log("yyyy")
-        // }, 100);
-        // });
     },
     fullPage: function () {
         $('#fullpage').fullpage({

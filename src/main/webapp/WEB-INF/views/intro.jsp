@@ -17,8 +17,7 @@
 <body>
 <div id="search-wrapper" class="search-wrapper-top">
     <input class="search" id="module-search" type="text"
-           onkeydown='if(event.keyCode==13){Agileplus.introPage.moduleSearch()}' placeholder="输入模块名立即体验"/>
-
+           onkeydown='if(event.keyCode==13){Agileplus.introPage.moduleSearch()}' placeholder="输入模块名,例如：${currentUser.username}/repository"/>
     <img src="/resources/intro/images/intro_search_icon.png" id="search-btn" onclick="Agileplus.introPage.moduleSearch()">
 </div>
 <div id="fullpage">

@@ -38,7 +38,7 @@ define(['app'], function (app) {
             permissionService.exitLogin(self.context.username)
                 .then(function (result) {
                     if (result) {
-                        $window.location.href = "http://localhost:8080/";
+                        $window.location.href = "/login";
                     }
                 });
         };
