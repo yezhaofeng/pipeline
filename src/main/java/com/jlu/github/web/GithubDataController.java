@@ -26,6 +26,7 @@ import com.jlu.github.service.IGitHubHookService;
 import com.jlu.github.service.IGithubDataService;
 
 import net.sf.json.JSONObject;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by niuwanpeng on 17/3/24.
@@ -47,6 +48,7 @@ public class GithubDataController {
      * @param request
      * @param response
      */
+    @ApiIgnore
     @PermissionPass
     @RequestMapping(value = "/webHooks", method = RequestMethod.POST)
     @ResponseBody

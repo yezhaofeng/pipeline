@@ -104,6 +104,15 @@
             <div class="expand-container">
                 <span class="expand-contents">
                     <ul class="list-unstyled commit-info-ul">
+                        <li ng-show="currentBuild.gitHubCommit.addedFiles !== '[]'">
+                            <apan style="color:darkgreen">A：</apan>{{::currentBuild.gitHubCommit.addedFiles}}
+                        </li>
+                        <li ng-show="currentBuild.gitHubCommit.modifiedFiles !== '[]'">
+                            <apan style="color:darkgoldenrod">M：</apan>{{::currentBuild.gitHubCommit.modifiedFiles}}
+                        </li>
+                        <li ng-show="currentBuild.gitHubCommit.removedFiles !== '[]'">
+                            <apan style="color:darkred">D：</apan>{{::currentBuild.gitHubCommit.removedFiles}}
+                        </li>
                         <li>
                             <span class="label-message">Commits: </span>
                             <span>{{::currentBuild.gitHubCommit.commits}}</span>
