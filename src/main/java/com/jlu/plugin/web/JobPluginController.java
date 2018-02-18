@@ -12,10 +12,12 @@ import com.jlu.common.permission.annotations.PermissionAdmin;
 import com.jlu.common.web.ResponseBean;
 import com.jlu.plugin.bean.PluginConfig;
 import com.jlu.plugin.service.IPluginInfoService;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Job plugin controller
  */
+@ApiIgnore
 @Controller
 @RequestMapping("/plugin/job")
 public class JobPluginController {

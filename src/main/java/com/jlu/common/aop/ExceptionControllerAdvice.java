@@ -29,9 +29,7 @@ public class ExceptionControllerAdvice {
         return ResponseBean.fail(fbex.getMessage());
     }
 
-    // 400
     @ExceptionHandler(PipelineRuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ResponseBean pipelineRuntimeExceptionHandler(PipelineRuntimeException pre) {
         return ResponseBean.fail(pre.getMessage());

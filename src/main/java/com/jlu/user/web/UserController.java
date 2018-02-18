@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jlu.common.permission.annotations.PermissionPass;
 import com.jlu.user.model.GithubUser;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by langshiquan on 18/1/28.
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/pipeline/user")
 public class UserController {

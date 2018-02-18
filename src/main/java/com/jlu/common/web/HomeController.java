@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jlu.common.permission.annotations.PermissionPass;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by Administrator on 2017/8/4.
  */
 
+@ApiIgnore
 @Controller
 public class HomeController {
 

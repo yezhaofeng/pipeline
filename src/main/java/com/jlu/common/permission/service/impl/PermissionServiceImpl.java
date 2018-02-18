@@ -59,10 +59,10 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Autowired
     private IJenkinsConfDao jenkinsConfDao;
+
     /**
      * @param paramType
      * @param paramValue
-     *
      * @return 模块名字
      */
     @Override
@@ -166,7 +166,6 @@ public class PermissionServiceImpl implements IPermissionService {
             whiteUrlList.add(Swagger2Config.JSON_URL);
             whiteUrlList.add(Swagger2Config.UI_URL);
             whiteUrlList.add("/mock/userLogin");
-            whiteUrlList.add("/swagger-ui.html");
         }
         logger.info("admin ulr list:{}", whiteUrlList);
 
@@ -176,10 +175,11 @@ public class PermissionServiceImpl implements IPermissionService {
     public void initAdminListUrl() {
         initSetBySpringMvcAnnotation(PERMISSION_PASS_CLASS_PATTERN, PermissionAdmin.class, adminUrlList);
         // 线上环境
-        if (EnvType.ONLINE.toString().equals(PipelineConfigReader.getConfigValueByKey("env.type"))) {
-            adminUrlList.add(Swagger2Config.JSON_URL);
-            adminUrlList.add("/swagger-ui.html");
-        }
+        //        if (EnvType.ONLINE.toString().equals(PipelineConfigReader.getConfigValueByKey("env.type"))) {
+        //            adminUrlList.add(Swagger2Config.JSON_URL);
+        //            adminUrlList.add(Swagger2Config.UI_URL);
+        //            adminUrlList.add("/swagger-ui.html");
+        //        }
 
         logger.info("white ulr list:{}", adminUrlList);
 

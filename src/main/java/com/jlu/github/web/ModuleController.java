@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.github.model.Module;
 import com.jlu.github.service.IModuleService;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by niuwanpeng on 17/3/21.
@@ -26,6 +27,7 @@ public class ModuleController {
     @Autowired
     private IModuleService moduleService;
 
+    @ApiIgnore
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     @ResponseBody
     public List<Module> getSuggetsModules(@RequestParam(value = "q", required = false) String query,
