@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jlu.common.exception.PipelineRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +41,10 @@ public class AccessLogHelper {
         String method = request.getMethod();
         String requestUrl = request.getRequestURL().toString();
         String queryString = request.getQueryString(); // 问号传值
-        request.setAttribute("error", true);
-        LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
-
+        if(!(e instanceof PipelineRuntimeException)){
+            request.setAttribute("error", true);
+            LOG.error("{} {} {} params:{} end,error:{}", username, method, requestUrl, queryString, e);
+        }
     }
 
     public static void logAccessOut(HttpServletRequest request, HttpServletResponse response) {

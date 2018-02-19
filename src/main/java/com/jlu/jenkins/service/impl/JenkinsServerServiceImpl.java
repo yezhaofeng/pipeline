@@ -130,7 +130,6 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
             uri = new URI(serverUrl);
         } catch (URISyntaxException e) {
             throw new JenkinsException(JenkinsExceptionEnum.WRONG_URL);
-
         }
         JenkinsServer jenkinsServer = new JenkinsServer(uri, username, password);
         Boolean isRunning = jenkinsServer.isRunning();

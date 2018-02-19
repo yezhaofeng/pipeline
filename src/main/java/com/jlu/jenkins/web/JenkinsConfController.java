@@ -3,6 +3,8 @@ package com.jlu.jenkins.web;
 import java.io.IOException;
 import java.util.List;
 
+import com.jlu.common.interceptor.UserLoginHelper;
+import com.jlu.jenkins.service.IJenkinsServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,9 @@ public class JenkinsConfController extends AbstractController {
 
     @Autowired
     private IJenkinsConfService jenkinsConfService;
+
+    @Autowired
+    private IJenkinsServerService jenkinsServerService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean add(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
@@ -66,5 +71,11 @@ public class JenkinsConfController extends AbstractController {
     @RequestMapping(value = "/jobs", method = RequestMethod.GET)
     public List<JenkinsJobsBean> getJobs(String owner) throws IOException {
         return jenkinsConfService.getJobsByCreateUser(owner);
+    }
+
+    @RequestMapping(value = "/isActive", method = RequestMethod.POST)
+    public ResponseBean isActive(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
+        jenkinsServerService.getJenkinsServer(jenkinsConfDTO.toJenkinsConf(UserLoginHelper.getLoginUserName()));
+        return ResponseBean.TRUE;
     }
 }
