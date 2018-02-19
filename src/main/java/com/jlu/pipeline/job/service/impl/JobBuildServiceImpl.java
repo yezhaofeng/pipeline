@@ -246,7 +246,17 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         BeanUtils.copyProperties(jobBuild, jobBuildBean);
         Object pluginBuild = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator()
                 .getBuild(jobBuild.getPluginBuildId());
-
+        Long upStreamBuildId = jobBuild.getUpStreamJobBuildId();
+        PipelineJobStatus upStreamJobStatus;
+        if (upStreamBuildId == 0L) {
+            upStreamJobStatus = PipelineJobStatus.SUCCESS;
+        } else {
+            JobBuild upJobBuild = jobBuildDao.findById(upStreamBuildId);
+            upStreamJobStatus = upJobBuild == null ? PipelineJobStatus.FAILED : upJobBuild.getJobStatus();
+        }
+        if (PipelineJobStatus.SUCCESS.equals(upStreamJobStatus) && PipelineJobStatus.INIT.equals(jobBuild.getJobStatus())) {
+            jobBuildBean.setBuildable(true);
+        }
         jobBuildBean.setPluginBuild(pluginBuild);
         return jobBuildBean;
     }
