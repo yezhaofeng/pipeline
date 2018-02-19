@@ -23,7 +23,15 @@ public class UserDaoImpl extends AbstractBaseDao<GithubUser> implements IUserDao
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("username", username);
         conditionAndSet.put("role", role);
-        List<GithubUser> admins = findByProperties(conditionAndSet);
-        return CollUtils.isEmpty(admins) ? null : admins.get(0);
+        List<GithubUser> users = findByProperties(conditionAndSet);
+        return CollUtils.isEmpty(users) ? null : users.get(0);
+    }
+
+    @Override
+    public GithubUser get(String pipelineToken) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineToken", pipelineToken);
+        List<GithubUser> users = findByProperties(conditionAndSet);
+        return CollUtils.isEmpty(users) ? null : users.get(0);
     }
 }

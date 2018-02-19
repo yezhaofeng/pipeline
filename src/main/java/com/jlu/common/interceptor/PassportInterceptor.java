@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jlu.user.dao.IUserDao;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class PassportInterceptor implements HandlerInterceptor {
     private static Logger logger = LoggerFactory.getLogger(PassportInterceptor.class);
     @Autowired
     private IPermissionService permissionService;
+    @Autowired
+    private IUserDao userDao;
 
     @LogExecTime
     @Override
@@ -45,8 +49,14 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (permissionService.getWhiteUrlList().contains(uri)) {
             return true;
         }
-        // 获取登陆用户
-        GithubUser githubUser = UserLoginHelper.getLoginUser(request);
+        // 获取当前用户
+        GithubUser githubUser = null;
+        String pipelineToken = request.getHeader("pipeline-token");
+        if (StringUtils.isBlank(pipelineToken)) {
+            githubUser = UserLoginHelper.getLoginUser(request);
+        } else {
+            githubUser = userDao.get(pipelineToken);
+        }
 
         // 检验是否登陆
         if (githubUser == null) {

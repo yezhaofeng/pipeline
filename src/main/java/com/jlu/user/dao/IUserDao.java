@@ -11,4 +11,6 @@ public interface IUserDao extends IBaseDao<GithubUser> {
 
     GithubUser get(String username, Role role);
 
+    GithubUser get(String pipelineToken);
+
 }
