@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jlu.common.db.sqlcondition.LessThanCondition;
 import org.springframework.stereotype.Repository;
 
 import com.jlu.common.db.dao.AbstractBaseDao;
@@ -35,7 +36,7 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
         DescOrder descOrder = new DescOrder("id");
-        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet,descOrder);
+        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet, descOrder);
         return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 
@@ -43,9 +44,19 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
     public List<PipelineBuild> get(Long pipelineConfId, String branchName) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
-        conditionAndSet.put("branch",branchName);
+        conditionAndSet.put("branch", branchName);
         DescOrder descOrder = new DescOrder("id");
-        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet,descOrder);
+        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet, descOrder);
+        return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
+    }
+
+    @Override
+    public List<PipelineBuild> get(String module, String commitId) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("commitId", commitId);
+        conditionAndSet.put("module", module);
+        DescOrder descOrder = new DescOrder("id");
+        List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet, descOrder);
         return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 }

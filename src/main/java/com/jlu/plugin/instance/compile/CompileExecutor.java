@@ -1,11 +1,14 @@
 package com.jlu.plugin.instance.compile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import com.jlu.plugin.bean.PluginType;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.plugin.core.Plugin;
 import org.springframework.stereotype.Service;
 
 import com.jlu.common.utils.DateUtils;
@@ -46,8 +49,27 @@ public class CompileExecutor extends AbstractExecutor {
 
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
-        CompileBuild compileBuild = compileBuildDao.findById(jobBuild.getPluginBuildId());
         Map<String, String> compileParam = jobBuild.getInParameterMap();
+        CompileBuild compileBuild = compileBuildDao.findById(jobBuild.getPluginBuildId());
+        String module = compileParam.get(JobParameter.PIPELINE_MODULE);
+        String commitId = compileParam.get(JobParameter.PIPELINE_COMMIT_ID);
+        Long pipelineBuildId = Long.parseLong(compileParam.get(JobParameter.PIPELINE_BUILD_ID));
+        // 复用编译产出
+        if (pipelineBuildId != null && compileBuild.getMulti()) {
+            JobBuild lastSuccBuild = jobBuildService.getLastSuccBuild(module, commitId, PluginType.COMPILE, pipelineBuildId);
+            // 7天清空编译产出
+            if (lastSuccBuild != null && DateUtils.addDays(lastSuccBuild.getTriggerTime(), 7).after(new Date())) {
+                CompileBuild lastSuccCompile = compileBuildDao.findById(lastSuccBuild.getPluginBuildId());
+                compileBuild.setBuildPath(lastSuccCompile.getBuildPath());
+                compileBuild.setLogUrl(lastSuccCompile.getLogUrl());
+                compileBuildDao.update(compileBuild);
+                jobBuild.setName(jobBuild.getName() + "(复用)");
+                jobBuild.setJobStatus(PipelineJobStatus.SUCCESS);
+                handleCallback(jobBuild);
+                return;
+            }
+        }
+
         compileParam.put(JOB_BUILD_ID, String.valueOf(jobBuild.getId()));
         compileParam.put(RANDOM_UUID, UUID.randomUUID().toString());
         compileParam.put(CURRENT_DATA, DateUtils.getNowDateFormat());
@@ -57,8 +79,8 @@ public class CompileExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
                             jobBuild);
             StringBuilder buildPath = new StringBuilder();
-            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_MODULE))
-                    .append(SEPARATOR).append(compileParam.get(JobParameter.PIPELINE_COMMIT_ID))
+            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(module)
+                    .append(SEPARATOR).append(commitId)
                     .append(SEPARATOR).append(compileParam.get(CURRENT_DATA))
                     .append(SEPARATOR).append(compileParam.get(JOB_BUILD_ID))
                     .append(SEPARATOR).append(compileParam.get(RANDOM_UUID));
@@ -94,6 +116,6 @@ public class CompileExecutor extends AbstractExecutor {
         if (jobBuild.getJobStatus().equals(PipelineJobStatus.SUCCESS)) {
             newParams.put(JobParameter.PIPELINE_COMPILE_PRODUCT_PATH, compileBuild.getBuildPath());
         }
-        jobBuildService.notifiedJobBuildUpdated(jobBuild, newParams);
+        jobBuildService.notifiedJobBuildFinished(jobBuild, newParams);
     }
 }

@@ -7,6 +7,7 @@ import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.model.JobBuild;
+import com.jlu.plugin.bean.PluginType;
 import com.jlu.plugin.runtime.bean.RunTimeBean;
 
 /**
@@ -20,7 +21,7 @@ public interface IJobBuildService {
 
     void build(Long jobBuildId, Map<String, String> execParam, Map<String, Object> runtimeJobParam, TriggerMode triggerMode, String triggerUser);
 
-    void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams);
+    void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 
@@ -29,4 +30,6 @@ public interface IJobBuildService {
     JobBuildBean getBuildInfo(Long jobBuildId);
 
     List<RunTimeBean> getRuntimeRequire(Long jobBuildId);
+
+    JobBuild getLastSuccBuild(String module, String commitId, PluginType pluginType,Long currentPipelineBuildId);
 }

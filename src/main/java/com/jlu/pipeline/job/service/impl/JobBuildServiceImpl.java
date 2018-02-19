@@ -176,7 +176,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     @Override
-    public void notifiedJobBuildUpdated(JobBuild jobBuild, Map<String, String> newOutParams) {
+    public void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams) {
         // 保存job状态，以及参数
         Map<String, String> outParams = CollUtils.merge(newOutParams, jobBuild.getInParameterMap());
         jobBuild.setOutParams(JSON.toJSONString(outParams));
@@ -275,6 +275,26 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
             }
         }
         return runTimeBeanList;
+    }
+
+    @Override
+    public JobBuild getLastSuccBuild(String module, String commitId, PluginType pluginType, Long currentPipelineBuildId) {
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(module, commitId);
+        if (CollUtils.isEmpty(pipelineBuilds)) {
+            return null;
+        }
+        for (PipelineBuild pipelineBuild : pipelineBuilds) {
+            Long pipelineBuildId = pipelineBuild.getId();
+            if (pipelineBuildId == currentPipelineBuildId) {
+                continue;
+            }
+            JobBuild jobBuild = jobBuildDao.getLastBuild(pipelineBuildId, pluginType, PipelineJobStatus.SUCCESS);
+            if (jobBuild == null) {
+                continue;
+            }
+            return jobBuild;
+        }
+        return null;
     }
 
     @Override

@@ -17,6 +17,22 @@ public class CompileBuild {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Boolean isMulti = true;
+
+    public Boolean getMulti() {
+        if (isMulti == null) {
+            return false;
+        }
+        return isMulti;
+    }
+
+    public void setMulti(Boolean multi) {
+        if (isMulti == null) {
+            isMulti = false;
+        }
+        isMulti = multi;
+    }
+
     private String logUrl;
 
     private String buildPath;

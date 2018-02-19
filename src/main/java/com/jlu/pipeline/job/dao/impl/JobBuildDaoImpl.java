@@ -3,6 +3,9 @@ package com.jlu.pipeline.job.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jlu.common.db.sqlcondition.DescOrder;
+import com.jlu.pipeline.job.bean.PipelineJobStatus;
+import com.jlu.plugin.bean.PluginType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,6 +26,7 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
 
     @Autowired
     private IPipelineBuildDao pipelineBuildDao;
+
     @Override
     public JobBuild getTopJob(Long pipelineBuildId) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
@@ -60,5 +64,16 @@ public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBu
             return StringUtils.EMPTY;
         }
         return pipelineBuild.getModule();
+    }
+
+    @Override
+    public JobBuild getLastBuild(Long pipelineBuildId, PluginType pluginType, PipelineJobStatus jobStatus) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineBuildId", pipelineBuildId);
+        conditionAndSet.put("pluginType", pluginType);
+        conditionAndSet.put("jobStatus", jobStatus);
+        DescOrder descOrder = new DescOrder("id");
+        List<JobBuild> jobBuilds = findByProperties(conditionAndSet, descOrder);
+        return CollUtils.isEmpty(jobBuilds) ? null : jobBuilds.get(0);
     }
 }

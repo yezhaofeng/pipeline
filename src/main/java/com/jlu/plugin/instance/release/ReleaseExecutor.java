@@ -145,6 +145,6 @@ public class ReleaseExecutor extends AbstractExecutor {
         if(PipelineJobStatus.SUCCESS.equals(jobBuild.getJobStatus())) {
             jobBuild.setName(jobBuild.getName() + " " + releaseBuild.getVersion());
         }
-        jobBuildService.notifiedJobBuildUpdated(jobBuild, newParams);
+        jobBuildService.notifiedJobBuildFinished(jobBuild, newParams);
     }
 }

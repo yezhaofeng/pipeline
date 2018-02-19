@@ -1,6 +1,7 @@
 package com.jlu.plugin.instance.compile;
 
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,9 @@ public class CompileDataOperator extends AbstractDataOperator<CompileConf, Compi
 
     @Override
     public Long initPluginBuildByPluginConf(Long pluginConfId) {
+        CompileConf compileConf = compileConfDao.findById(pluginConfId);
         CompileBuild compileBuild = new CompileBuild();
+        BeanUtils.copyProperties(compileConf, compileBuild);
         compileBuildDao.save(compileBuild);
         return compileBuild.getId();
     }

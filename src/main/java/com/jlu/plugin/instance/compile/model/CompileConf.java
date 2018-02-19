@@ -14,6 +14,16 @@ public class CompileConf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Boolean isMulti = true;
+
+    public Boolean getMulti() {
+        return isMulti;
+    }
+
+    public void setMulti(Boolean multi) {
+        isMulti = multi;
+    }
+
     public Long getId() {
         return id;
     }

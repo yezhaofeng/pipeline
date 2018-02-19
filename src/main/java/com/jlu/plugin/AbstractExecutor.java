@@ -70,7 +70,7 @@ public abstract class AbstractExecutor {
     protected abstract void execute(JobBuildContext context, JobBuild jobBuild);
 
     public void handleCallback(JobBuild jobBuild) {
-        jobBuildService.notifiedJobBuildUpdated(jobBuild, new HashMap());
+        jobBuildService.notifiedJobBuildFinished(jobBuild, new HashMap());
     }
 
     protected void notifyJobStartFailed(JobBuild jobBuild, String message) {
