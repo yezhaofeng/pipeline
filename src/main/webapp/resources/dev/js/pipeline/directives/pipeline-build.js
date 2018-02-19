@@ -143,6 +143,13 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                     // 局部更新状态
                                     scope.currentBuild.jobBuildBeanList[jobIndex] = jobBuildInfo;
                                     console.log(scope.jobBuildInfo);
+                                    // 更新下游
+                                    if (jobBuildInfo.jobStatus === "SUCCESS") {
+                                        var upStreamJobBuildId = scope.currentBuild.jobBuildBeanList[jobIndex + 1].id;
+                                        pipelineDataService.getJobBuild(upStreamJobBuildId).then(function (jobBuildInfo) {
+                                            scope.currentBuild.jobBuildBeanList[jobIndex + 1] = jobBuildInfo;
+                                        });
+                                    }
 
                                 });
                             }

@@ -43,7 +43,7 @@ public class JobBuildBean extends JobBuild {
     }
 
     public Integer getRunPercentage() {
-        switch (jobStatus) {
+        switch (super.jobStatus) {
             case SUCCESS:
             case FAILED:
                 return 100;
