@@ -23,14 +23,26 @@ define(['app', 'constants'], function (app, constants) {
         self.username = pipelineContextService.context.username;
         self.context = pipelineContextService;
         self.showLoading = false;
+        $scope.checked = false;
+        $scope.jenkinsConf = {};
 
         pipelineDataService.getJenkinsConfs(self.username).then(function (data) {
             self.jenkinsConfs = data;
         });
         self.addJenkinsConf = function () {
-            pipelineDataService.addJenkinsConf($scope.jenkinsConf).then(function (data) {
-                alert(data);
-                $state.reload();
+            pipelineDataService.addJenkinsConf($scope.jenkinsConf).then(function (response) {
+                if (response.success == true) {
+                    alert("添加成功");
+                    $state.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        };
+        self.checkConf = function () {
+            pipelineDataService.checkJenkinsConf($scope.jenkinsConf).then(function (response) {
+                $scope.checked = response.success;
+                $scope.message = response.message;
             });
         };
         self.delete = function (id) {

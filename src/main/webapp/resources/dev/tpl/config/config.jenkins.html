@@ -41,16 +41,22 @@
         </tbody>
     </table>
     <!-- 添加Jenkins -->
-    <div>
-        <div class="input-group">
-            <input class="form-control"  type="text" placeholder="Jenkins URL" ng-model="jenkinsConf.serverUrl"/>
+    <br/>
+    <hr/>
+    <div style="margin-left: 5px;">
+        <div class="input-group" >
+            <input class="form-control" type="text" placeholder="Jenkins URL" ng-model="jenkinsConf.serverUrl"/>
         </div>
         <div class="input-group">
-            <input class="form-control"  type="text" placeholder="Jenkins master的用户名" ng-model="jenkinsConf.masterUser"/>
+            <input class="form-control" type="text" placeholder="Jenkins master的用户名" ng-model="jenkinsConf.masterUser"/>
         </div>
         <div class="input-group">
-            <input class="form-control"  type="password" placeholder="Jenkins master的密码" ng-model="jenkinsConf.masterPassword"/>
+            <input class="form-control" type="password" placeholder="Jenkins master的密码"
+                   ng-model="jenkinsConf.masterPassword"/>
         </div>
-        <button class="btn btn-default" ng-click="jenkinsCtrl.addJenkinsConf()">添加</button>
+        <button class="btn btn-default" ng-click="jenkinsCtrl.checkConf()">验证配置</button>
+        <span class="error" ng-bind="message"></span><br/>
+        <button class="btn btn-default" ng-click="jenkinsCtrl.addJenkinsConf()" ng-disabled="!checked">添加</button>
+        <span class="warning" ng-show="!checked">保存配置之前，请先验证</span>
     </div>
 </div>

@@ -102,6 +102,18 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
         /**
+         * 验证Jenkins配置
+         * @param jenkinsConf
+         * @returns {*}
+         */
+        self.checkJenkinsConf = function (jenkinsConf) {
+            return $http.post(constants.api('pipeline/jenkins/server/isActive'), jenkinsConf)
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+
+        /**
          *
          * 获取发布记录
          * @param module
