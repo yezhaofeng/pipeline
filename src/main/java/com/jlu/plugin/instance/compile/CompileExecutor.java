@@ -32,6 +32,7 @@ public class CompileExecutor extends AbstractExecutor {
     private final static String RANDOM_UUID = "RANDOM_UUID";
     private final static String CURRENT_DATA = "CURRENT_DATA";
     private final static String OWNER = "OWNER";
+    private final static String PIPELINE_PARAMETER = "PIPELINE_PARAMETER";
     private final static String FTP_SERVER_URL = "ftp://139.199.15.115/";
 
     @Autowired
@@ -50,6 +51,7 @@ public class CompileExecutor extends AbstractExecutor {
         compileParam.put(JOB_BUILD_ID, String.valueOf(jobBuild.getId()));
         compileParam.put(RANDOM_UUID, UUID.randomUUID().toString());
         compileParam.put(CURRENT_DATA, DateUtils.getNowDateFormat());
+        compileParam.put(PIPELINE_PARAMETER, jobBuild.getInParams());
         try {
             Integer buildNumber = jenkinsBuildService
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
