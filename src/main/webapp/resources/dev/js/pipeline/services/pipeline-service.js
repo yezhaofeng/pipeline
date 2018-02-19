@@ -169,7 +169,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          * @param triggerId 若为0，则拿最新的commit进行构建
          * @returns {*}
          */
-        self.buildPipeline = function (pipelineConfId, triggerId) {
+        self.buildPipelineByConfId = function (pipelineConfId, triggerId) {
             return $http.post(constants.api('pipeline/build?pipelineConfId=' + pipelineConfId + '&triggerId=' + triggerId))
                 .then(function (data) {
                     return data.data;
