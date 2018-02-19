@@ -12,8 +12,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final String ZERO_SECONDS_READAVLE = "0s";
-    private static final String ZERO_SECONDS_CHINESE_READAVLE = "0秒";
+    private static final String ZERO_SECONDS_READAVLE = "<0ms";
+    private static final String ZERO_SECONDS_CHINESE_READAVLE = "小于1毫秒";
     private static final String MSEC_READABLE = "ms";
     private static final String MSEC_CHINESE_READABLE = "毫秒";
     private static final List<DateRealableBean> readableList = new LinkedList<>();

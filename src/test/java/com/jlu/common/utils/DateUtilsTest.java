@@ -26,4 +26,12 @@ public class DateUtilsTest {
         Assert.assertEquals("7天13时54分16秒", readableTime);
     }
 
+    @Test
+    public void testGetChineseRealableTime0s() {
+        Long mills = 0L;
+        String readableTime = DateUtils.getRealableChineseTime(mills);
+        Assert.assertEquals("小于1毫秒", readableTime);
+    }
+
+
 }

@@ -63,6 +63,7 @@ public class CompileExecutor extends AbstractExecutor {
                 compileBuild.setBuildPath(lastSuccCompile.getBuildPath());
                 compileBuild.setLogUrl(lastSuccCompile.getLogUrl());
                 compileBuildDao.update(compileBuild);
+                jobBuild.setStartTime(new Date());
                 jobBuild.setName(jobBuild.getName() + "(复用)");
                 jobBuild.setJobStatus(PipelineJobStatus.SUCCESS);
                 handleCallback(jobBuild);

@@ -27,7 +27,6 @@ public class JobBuildBean extends JobBuild {
             case INIT:
                 return null;
             case RUNNING:
-                // TODO 进度条
                 return DateUtils.getRealableChineseTime(new Date().getTime() - triggerTime.getTime());
             default:
                 return null;
