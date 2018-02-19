@@ -61,8 +61,7 @@
                      ng-click="stageTabToggle($index); $event.stopPropagation();"
                      ng-repeat="jobBuild in currentBuild.jobBuildBeanList track by $index">
                     <div class="font-normal-color">
-                        <span ng-class="{running:jobBuild.jobStatus==='RUNNING',fail:jobBuild.jobStatus==='FAILED',success:jobBuild.jobStatus==='SUCCESS'}">
-                            {{::jobBuild.name}}
+                        <span ng-class="{running:jobBuild.jobStatus==='RUNNING',fail:jobBuild.jobStatus==='FAILED',success:jobBuild.jobStatus==='SUCCESS'}" ng-bind="jobBuild.name">
                         </span>
                     </div>
                     <div class="stage-cost-time font-normal-color">
