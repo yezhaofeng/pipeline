@@ -7,7 +7,7 @@ import com.jlu.user.model.GithubUser;
  */
 public interface IUserService {
 
-    void saveUser(GithubUser githubUser);
+    void saveOrUpdateUser(GithubUser githubUser);
 
     /**
      * 通过用户名获得用户

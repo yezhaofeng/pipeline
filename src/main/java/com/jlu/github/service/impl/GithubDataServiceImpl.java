@@ -67,7 +67,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
         }
         GithubUser githubUser = userBean.toUser();
         githubUser.setPipelineToken(UUID.randomUUID().toString());
-        userService.saveUser(githubUser);
+        userService.saveOrUpdateUser(githubUser);
         return githubUser;
     }
 

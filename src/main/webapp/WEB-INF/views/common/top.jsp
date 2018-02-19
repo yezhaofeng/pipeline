@@ -39,9 +39,10 @@
                     <li><a href="http://blog.csdn.net/z521598/article/details/79307482" target="_blank"
                            style="color: white !important;">用户手册</a></li>
                     <li><a href="mailto:576506402@qq.com" style="color: white !important;">联系我们</a></li>
-                    <li><a href="https://github.com/${currentUser.username}" target="_blank" style="color: white !important;">${currentUser.username}</a></li>
+                    <li><a href="https://github.com/${currentUser.username}" target="_blank"
+                           style="color: white !important;">${currentUser.username}</a></li>
                     <li class="btn-group" uib-dropdown="">
-                        <a href="#"  role="button" class="dropdown-toggle" uib-dropdown-toggle=""
+                        <a href="#" role="button" class="dropdown-toggle" uib-dropdown-toggle=""
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
                            style="color: white !important;">
                             <img src="${currentUser.avatarUrl}" style="width:25px;height: 25px"/>
@@ -53,6 +54,9 @@
                                    style="color: #4a4a4a !important;">github主頁</a></li>
                             <li>
                                 <a href="" onclick="javascript:void(window.alert('${currentUser.pipelineToken}'))">查看token</a>
+                            </li>
+                            <li>
+                                <a href="/pipeline/user/resetToken" onclick="javascript:void(0)">重置token</a>
                             </li>
                             <li><a href="/github/exit">退出登录</a></li>
                         </ul>

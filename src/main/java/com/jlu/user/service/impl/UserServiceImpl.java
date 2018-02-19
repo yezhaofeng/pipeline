@@ -20,8 +20,8 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private IUserDao userDao;
 
-    public void saveUser(GithubUser githubUser) {
-        userDao.save(githubUser);
+    public void saveOrUpdateUser(GithubUser githubUser) {
+        userDao.saveOrUpdate(githubUser);
     }
 
     /**

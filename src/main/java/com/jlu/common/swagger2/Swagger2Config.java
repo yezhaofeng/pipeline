@@ -22,8 +22,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2Config {
 
+    public static final String DESCRIPTION = "使用方法：\n\n" +
+            "在登录状态下：直接访问。\n\n" +
+            "在非登录状态下：每次请求需要带上请求头\"pipeline-token\":\"token在首页右上角处[查看token]\"。\n" +
+            "\n" +
+            "注意：请妥善保管您的token，是您身份的唯一标识。\n\n" +
+            "若您的token已经泄露，请在首页重置您的token，重置token接口仅允许在登录状态下访问，不允许通过API调用。";
     public static final String JSON_URL = "/v2/api-docs";
     public static final String UI_URL = "/swagger-resources";
+
     @Bean
     public Docket buildDocket() throws UnsupportedEncodingException {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -35,10 +42,9 @@ public class Swagger2Config {
 
     private ApiInfo buildApiInf() throws UnsupportedEncodingException {
         return new ApiInfoBuilder()
-                .title("Pipeline流水线API列表")
-                .termsOfServiceUrl("https://github.com/z521598/pipeline_v2")
-                .description(
-                        new String(PipelineConfigReader.getConfigValueByKey("swagger.description").getBytes("ISO-8859-1"), "UTF-8"))
+                .title("持续交付平台API列表")
+                .termsOfServiceUrl("https://github.com/z521598/pipeline")
+                .description(DESCRIPTION)
                 .contact(new Contact("langshiquan", PipelineConfigReader.getConfigValueByKey("pipeline.home"),
                         "576506402@qq.com"))
                 .build();
