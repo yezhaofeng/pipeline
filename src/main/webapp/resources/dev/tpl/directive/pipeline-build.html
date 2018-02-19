@@ -72,12 +72,13 @@
                     </div>
                     <div class="pipeline-process-bar">
                         <span class="action-span"
-                              ng-class="{'manually-trigger-waiting':jobBuild.jobStatus === 'INIT',
-                                  'auto-trigger-waiting': jobBuild.jobStatus === 'INIT',
+                              ng-class="{'manually-trigger-waiting':jobBuild.buildable,
+                                  'auto-trigger-waiting': jobBuild.buildable,
                                   'auto-trigger-success': jobBuild.jobStatus === 'SUCCESS',
                                   'auto-trigger-fail': jobBuild.jobStatus === 'FAILED' ,
                                    'auto-trigger-running': jobBuild.jobStatus === 'RUNNING'}"
-                              ng-click="tool.buildManual(jobBuild); $event.stopPropagation();">
+                              ng-click="!jobBuild.buildable || tool.buildManual(jobBuild); $event.stopPropagation();">
+                            <!-- 解决 ng-disabled="!jobBuild.buildable" 不起作用的问题-->
                         </span>
                         <span class="expand-pointer" ng-class="{'waiting-stage-expand': jobBuild.jobStatus === 'INIT',
                                         'success-stage-expand': jobBuild.jobStatus === 'SUCCESS',
@@ -105,13 +106,16 @@
                 <span class="expand-contents">
                     <ul class="list-unstyled commit-info-ul">
                         <li ng-show="currentBuild.gitHubCommit.addedFiles !== '[]'">
-                            <apan style="color:darkgreen">A：</apan>{{::currentBuild.gitHubCommit.addedFiles}}
+                            <apan style="color:darkgreen">A：</apan>
+                            {{::currentBuild.gitHubCommit.addedFiles}}
                         </li>
                         <li ng-show="currentBuild.gitHubCommit.modifiedFiles !== '[]'">
-                            <apan style="color:darkgoldenrod">M：</apan>{{::currentBuild.gitHubCommit.modifiedFiles}}
+                            <apan style="color:darkgoldenrod">M：</apan>
+                            {{::currentBuild.gitHubCommit.modifiedFiles}}
                         </li>
                         <li ng-show="currentBuild.gitHubCommit.removedFiles !== '[]'">
-                            <apan style="color:darkred">D：</apan>{{::currentBuild.gitHubCommit.removedFiles}}
+                            <apan style="color:darkred">D：</apan>
+                            {{::currentBuild.gitHubCommit.removedFiles}}
                         </li>
                         <li>
                             <span class="label-message">Commits: </span>
@@ -128,9 +132,9 @@
                 </span>
                 <div class="operation">
                     <button type="button" class="btn"
-                                ng-click="tool.buildPipeline(currentBuild.pipelineConfId,currentBuild.gitHubCommit.id)">
+                            ng-click="tool.buildPipeline(currentBuild.pipelineConfId,currentBuild.gitHubCommit.id)">
                         <i class="fa fa-caret-right icon"></i>&nbsp;
-                            重新构建流水线
+                        重新构建流水线
                     </button>
                     <div class="pull-right">
                         <span><label>代码提交人:</label> {{::currentBuild.gitHubCommit.committer}}</span>
@@ -170,7 +174,8 @@
                                        target="_blank">查看发布产出下载命令</a>&nbsp;&nbsp;
                                 </div>
                             </td>
-                            <td class="col-pl-60" style="color:darkred" ng-show="jobBuildInfo.jobStatus == 'FAILED'" ng-bind="jobBuildInfo.message + jobBuildInfo.pluginBuild.messgae">
+                            <td class="col-pl-60" style="color:darkred" ng-show="jobBuildInfo.jobStatus == 'FAILED'"
+                                ng-bind="jobBuildInfo.message + jobBuildInfo.pluginBuild.messgae">
                             </td>
                         </tr>
                     </table>
@@ -184,7 +189,8 @@
                     </button>
                     <div class="pull-right">
                         <a href="javascript:void(0)"
-                           ng-click="showBuildParam(jobBuildInfo)"  ng-show="jobBuildInfo.jobStatus != 'INIT'">点击查看构建参数</a>
+                           ng-click="showBuildParam(jobBuildInfo)"
+                           ng-show="jobBuildInfo.jobStatus != 'INIT'">点击查看构建参数</a>
                         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                         <span ng-if="jobBuildInfo.triggerUser != null"><label>触发人:</label> {{::jobBuildInfo.triggerUser}}</span>
                         <span ng-if="jobBuildInfo.triggerTime != null"><label>触发时间:</label> {{::jobBuildInfo.triggerTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>

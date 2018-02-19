@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class JobBuildBean extends JobBuild {
     Object pluginBuild;
+    public Boolean buildable = false;
 
     public Object getPluginBuild() {
         return pluginBuild;
@@ -19,8 +20,16 @@ public class JobBuildBean extends JobBuild {
         this.pluginBuild = pluginBuild;
     }
 
-    public String getDurationTime(){
-        switch (jobStatus){
+    public Boolean getBuildable() {
+        return buildable;
+    }
+
+    public void setBuildable(Boolean buildable) {
+        this.buildable = buildable;
+    }
+
+    public String getDurationTime() {
+        switch (jobStatus) {
             case SUCCESS:
             case FAILED:
                 return DateUtils.getRealableChineseTime(endTime.getTime() - triggerTime.getTime());
@@ -34,7 +43,7 @@ public class JobBuildBean extends JobBuild {
     }
 
     public Integer getRunPercentage() {
-        switch (jobStatus){
+        switch (jobStatus) {
             case SUCCESS:
             case FAILED:
                 return 100;
@@ -47,4 +56,5 @@ public class JobBuildBean extends JobBuild {
                 return 0;
         }
     }
+
 }

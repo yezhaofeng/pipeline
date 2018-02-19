@@ -216,10 +216,16 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     public List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId) {
         List<JobBuildBean> jobBuildBeanList = new LinkedList<>();
         List<JobBuild> jobBuilds = jobBuildDao.getByPipelineBuildId(pipelineBuildId);
+        PipelineJobStatus lastJobStatus = PipelineJobStatus.SUCCESS;
         for (JobBuild jobBuild : jobBuilds) {
             JobBuildBean jobBuildBean = new JobBuildBean();
+            // 上一个job是成功的，当前job是未执行的时候，才能执行
+            if (PipelineJobStatus.INIT.equals(jobBuild.getJobStatus()) && lastJobStatus.equals(PipelineJobStatus.SUCCESS)) {
+                jobBuildBean.setBuildable(true);
+            }
             BeanUtils.copyProperties(jobBuild, jobBuildBean);
             jobBuildBeanList.add(jobBuildBean);
+            lastJobStatus = jobBuild.getJobStatus();
         }
         // jobBuild是按照id从小到大的顺序排列的,此处查询出来也是如此，不需要再次排序
         return jobBuildBeanList;
