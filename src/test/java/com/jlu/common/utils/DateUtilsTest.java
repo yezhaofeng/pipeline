@@ -6,6 +6,9 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 
 import junit.framework.Assert;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by langshiquan on 18/1/26.
  */
@@ -33,5 +36,21 @@ public class DateUtilsTest {
         Assert.assertEquals("小于1毫秒", readableTime);
     }
 
+    @Test
+    public void testThreadSafe() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            final int finalI = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Date date = DateUtils.addDays(new Date(), finalI);
+                    String actual = DateUtils.format(date);
+                    String excepted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+                    Assert.assertEquals(excepted, actual);
+                }
+            }).start();
+        }
+        Thread.sleep(2000);
 
+    }
 }

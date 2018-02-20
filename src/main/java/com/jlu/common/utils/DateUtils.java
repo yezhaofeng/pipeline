@@ -10,8 +10,11 @@ import java.util.List;
  */
 public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    // SimpleDateFormat线程不安全
+    //    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String TIME_FORMAT_STR = "yyyy-MM-dd HH:mm:ss";
+    //    private static final SimpleDateFormat dateFormat = new Sim/leDateFormat("yyyy-MM-dd");
+    private static final String DATE_FORMAT_STR = "yyyy-MM-dd";
     private static final String ZERO_SECONDS_READAVLE = "<0ms";
     private static final String ZERO_SECONDS_CHINESE_READAVLE = "小于1毫秒";
     private static final String MSEC_READABLE = "ms";
@@ -47,15 +50,16 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 
     /**
      * 获取当前时间格式化输出
+     *
      * @return
      */
     public static String getNowTimeFormat() {
-        return timeFormat.format(new Date());
+        return new SimpleDateFormat(TIME_FORMAT_STR).format(new Date());
     }
 
     public static String format(Date time) {
 
-        return timeFormat.format(time);
+        return new SimpleDateFormat(TIME_FORMAT_STR).format(time);
     }
 
     /**
@@ -64,7 +68,7 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * @return
      */
     public static String getNowDateFormat() {
-        return dateFormat.format(new Date());
+        return new SimpleDateFormat(DATE_FORMAT_STR).format(new Date());
     }
 
     /**
@@ -72,7 +76,6 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * e.g.:1d7h12m9s
      *
      * @param time
-     *
      * @return
      */
     public static String getRealableTime(Long time) {
@@ -99,7 +102,6 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * e.g.:1d7h12m9s
      *
      * @param time
-     *
      * @return
      */
     public static String getRealableChineseTime(Long time) {
