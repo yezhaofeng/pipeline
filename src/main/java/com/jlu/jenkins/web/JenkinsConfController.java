@@ -45,7 +45,8 @@ public class JenkinsConfController extends AbstractController {
     }
 
     @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.PUT)
-    public ResponseBean update(@PathVariable Long jenkinsServerId, @RequestBody JenkinsConfDTO jenkinsConfDTO) {
+    public ResponseBean update(@PathVariable Long jenkinsServerId, @Valid @RequestBody JenkinsConfDTO jenkinsConfDTO,BindingResult result) {
+        checkBindingResult(result);
         JenkinsConf jenkinsConf = jenkinsConfDTO.toJenkinsConf();
         jenkinsConf.setId(jenkinsServerId);
         jenkinsConfService.saveOrUpdate(jenkinsConf);

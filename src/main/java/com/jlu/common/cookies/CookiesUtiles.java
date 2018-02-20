@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by niuwanpeng on 17/3/16.
+ * Created by langshiquan on 17/3/16.
  */
 public class CookiesUtiles {
 

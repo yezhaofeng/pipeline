@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.model.PipelineConf;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by langshiquan on 18/1/14.
@@ -12,6 +13,7 @@ import com.jlu.pipeline.model.PipelineConf;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PipelineConfBean extends PipelineConf {
 
+    @NotEmpty(message = "至少配置一个Job")
     private List<JobConfBean> jobConfs;
 
     public List<JobConfBean> getJobConfs() {

@@ -31,7 +31,7 @@ import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
- * Created by niuwanpeng on 17/3/24.
+ * Created by langshiquan on 17/3/24.
  */
 @Service
 public class GithubDataServiceImpl implements IGithubDataService {

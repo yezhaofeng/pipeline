@@ -13,7 +13,7 @@ import com.jlu.common.db.sqlcondition.ConditionAndSet;
 import com.jlu.common.utils.CollUtils;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  *
  *  模块信息dao实体类
  */

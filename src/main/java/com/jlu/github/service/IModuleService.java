@@ -5,7 +5,7 @@ import java.util.List;
 import com.jlu.github.model.Module;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  */
 public interface IModuleService {
 

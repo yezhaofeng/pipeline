@@ -12,7 +12,7 @@ import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  */
 @Service
 public class UserServiceImpl implements IUserService {

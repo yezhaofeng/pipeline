@@ -3,6 +3,8 @@ package com.jlu.jenkins.bean;
 import java.util.Date;
 
 import com.jlu.common.interceptor.UserLoginHelper;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.BeanUtils;
 
 import com.jlu.jenkins.model.JenkinsConf;
@@ -14,11 +16,15 @@ import javax.validation.constraints.NotNull;
  */
 public class JenkinsConfDTO {
     Long id;
-    @NotNull(message = "Jenkins URL不能为空")
+
+    @NotBlank(message = "Jenkins URL不能为空")
+    @URL(message = "Jenkins URL不合法")
     String serverUrl;
-    @NotNull(message = "master用户名不能为空")
+
+    @NotBlank(message = "master用户名不能为空")
     String masterUser;
-    @NotNull(message = "密码不能为空")
+
+    @NotBlank(message = "密码不能为空")
     String masterPassword;
 
     public Long getId() {

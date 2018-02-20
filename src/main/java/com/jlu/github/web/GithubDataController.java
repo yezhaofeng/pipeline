@@ -29,7 +29,7 @@ import net.sf.json.JSONObject;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Created by niuwanpeng on 17/3/24.
+ * Created by langshiquan on 17/3/24.
  */
 @Controller
 @RequestMapping("/github")

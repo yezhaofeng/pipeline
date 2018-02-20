@@ -1,7 +1,7 @@
 package com.jlu.common.cookies;
 
 /**
- * Created by niuwanpeng on 17/3/17.
+ * Created by langshiquan on 17/3/17.
  */
 public class EncryUtil {
     /**

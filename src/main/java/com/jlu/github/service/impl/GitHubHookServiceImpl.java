@@ -29,7 +29,7 @@ import com.jlu.pipeline.service.IPipelineConfService;
 import net.sf.json.JSONObject;
 
 /**
- * Created by niuwanpeng on 17/4/19.
+ * Created by langshiquan on 17/4/19.
  */
 @Service
 public class GitHubHookServiceImpl implements IGitHubHookService {

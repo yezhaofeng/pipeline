@@ -5,7 +5,7 @@ import java.util.List;
 import com.jlu.branch.model.GithubBranch;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  */
 public interface IBranchService {
 

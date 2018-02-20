@@ -2,6 +2,7 @@ package com.jlu.pipeline.web;
 
 import com.jlu.common.permission.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import com.jlu.pipeline.service.IPipelineConfService;
 
 import io.swagger.annotations.ApiOperation;
 
+import javax.validation.Valid;
+
 /**
  * Created by langshiquan on 18/1/14.
  */
@@ -29,8 +32,10 @@ public class PipelineConfController extends AbstractController {
 
     @ApiOperation(value = "修改流水线配置")
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.PUT)
-    public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean, @PathVariable String owner,
+    public ResponseBean saveConf(@Valid @RequestBody PipelineConfBean pipelineConfBean, BindingResult result,
+                                 @PathVariable String owner,
                                  @PathVariable String repository, @PathVariable BranchType branchType) {
+        checkBindingResult(result);
         String moduleInPath = PipelineUtils.getFullModule(owner, repository);
         String moduleInBody = pipelineConfBean.getModule();
         if (!moduleInPath.equals(moduleInBody)) {
@@ -57,7 +62,8 @@ public class PipelineConfController extends AbstractController {
 
     @Deprecated
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean) {
+    public ResponseBean saveConf(@Valid @RequestBody PipelineConfBean pipelineConfBean, BindingResult result) {
+        checkBindingResult(result);
         pipelineConfService.processPipelineWithTransaction(pipelineConfBean);
         return ResponseBean.TRUE;
     }

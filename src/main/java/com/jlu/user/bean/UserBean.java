@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.BeanUtils;
 
 import com.jlu.user.model.GithubUser;
 
-/**
- * Created by niuwanpeng on 17/3/29.
- */
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBean {
 
     private String token;
@@ -23,6 +20,7 @@ public class UserBean {
     private String gitHubToken;
 
     @NotNull
+    @Email(message = "邮箱格式错误")
     private String email;
 
     // 头像地址

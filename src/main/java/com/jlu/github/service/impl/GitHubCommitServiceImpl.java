@@ -17,7 +17,7 @@ import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;
 
 /**
- * Created by niuwanpeng on 17/4/25.
+ * Created by langshiquan on 17/4/25.
  */
 @Service
 public class GitHubCommitServiceImpl implements IGitHubCommitService {

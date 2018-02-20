@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by niuwanpeng on 17/4/25.
+ * Created by langshiquan on 17/4/25.
  */
 @Repository
 public class GitHubCommitDaoImpl extends AbstractBaseDao<GitHubCommit> implements IGitHubCommitDao {

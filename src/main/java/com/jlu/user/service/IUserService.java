@@ -3,7 +3,7 @@ package com.jlu.user.service;
 import com.jlu.user.model.GithubUser;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  */
 public interface IUserService {
 

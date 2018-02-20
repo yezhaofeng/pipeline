@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import com.jlu.branch.bean.BranchType;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  *
  * 分支实体类, 与用户名关联
  */

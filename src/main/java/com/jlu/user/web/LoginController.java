@@ -5,12 +5,15 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import com.jlu.common.web.AbstractController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +36,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @PermissionPass
 @Controller
 @RequestMapping("/github")
-public class LoginController {
+public class LoginController extends AbstractController{
 
     @Autowired
     private IGithubDataService githubDataService;
@@ -66,8 +69,10 @@ public class LoginController {
     // 根据用户注册信息初始化用户
     @RequestMapping(value = "/initUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean initUser(UserBean userBean, HttpServletRequest request,
+    public ResponseBean initUser(@Valid UserBean userBean, BindingResult result,
+                                 HttpServletRequest request,
                                  HttpServletResponse response) throws IOException {
+        checkBindingResult(result);
         if (!githubOAuthService.checkRegisterToken(userBean.getRegisterToken())) {
             throw new ForbiddenException("鉴权失败");
         }

@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by niuwanpeng on 17/3/25.
+ * Created by langshiquan on 17/3/25.
  */
 public class HttpClientAuth {
 

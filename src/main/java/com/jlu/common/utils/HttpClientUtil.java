@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import com.jlu.common.utils.bean.TwoResultBean;
 
 /**
- * Created by niuwanpeng on 17/3/24.
+ * Created by langshiquan on 17/3/24.
  */
 public class HttpClientUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtil.class);

@@ -3,7 +3,7 @@ package com.jlu.github.service;
 import net.sf.json.JSONObject;
 
 /**
- * Created by niuwanpeng on 17/4/19.
+ * Created by langshiquan on 17/4/19.
  */
 public interface IGitHubHookService {
 

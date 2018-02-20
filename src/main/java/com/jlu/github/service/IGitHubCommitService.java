@@ -6,7 +6,7 @@ import com.jlu.github.model.GitHubCommit;
 import java.util.List;
 
 /**
- * Created by niuwanpeng on 17/4/25.
+ * Created by langshiquan on 17/4/25.
  */
 public interface IGitHubCommitService {
 

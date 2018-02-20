@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by niuwanpeng on 17/3/24.
+ * Created by langshiquan on 17/3/24.
  */
 public class DateUtils extends org.apache.commons.lang.time.DateUtils {
 

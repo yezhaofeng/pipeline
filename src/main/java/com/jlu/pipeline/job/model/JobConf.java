@@ -12,6 +12,8 @@ import javax.persistence.Lob;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.plugin.bean.PluginType;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -24,6 +26,7 @@ public class JobConf {
     protected Long id;
     protected Long upStreamJobConfId;
     protected Long pipelineConfId;
+
     protected String name;
     @Enumerated(EnumType.STRING)
     protected PluginType pluginType;

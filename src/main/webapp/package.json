@@ -6,7 +6,7 @@
   "scripts": {
     "test": "run test"
   },
-  "author": "niuwanpeng",
+  "author": "langshiquan",
   "license": "ISC",
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -11,7 +11,7 @@ import com.jlu.branch.bean.BranchType;
 import com.jlu.common.utils.PipelineConfigReader;
 
 /**
- * Created by niuwanpeng on 17/4/25.
+ * Created by langshiquan on 17/4/25.
  * <p>
  * 代码提交信息
  */

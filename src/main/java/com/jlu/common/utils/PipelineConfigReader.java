@@ -7,7 +7,7 @@ import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
 
 /**
- * Created by niuwanpeng on 17/3/24.
+ * Created by langshiquan on 17/3/24.
  *
  * 系统常量配置工具类
  */

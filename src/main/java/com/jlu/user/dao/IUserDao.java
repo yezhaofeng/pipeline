@@ -5,7 +5,7 @@ import com.jlu.user.bean.Role;
 import com.jlu.user.model.GithubUser;
 
 /**
- * Created by niuwanpeng on 17/3/10.
+ * Created by langshiquan on 17/3/10.
  */
 public interface IUserDao extends IBaseDao<GithubUser> {
 
