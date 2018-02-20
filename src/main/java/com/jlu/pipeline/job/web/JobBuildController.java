@@ -1,7 +1,6 @@
 package com.jlu.pipeline.job.web;
 
 import java.util.List;
-import java.util.Map;
 
 import com.jlu.pipeline.job.bean.JobRuntimeDTO;
 import com.jlu.plugin.runtime.bean.RunTimeBean;
@@ -36,7 +35,7 @@ public class JobBuildController extends AbstractController {
 
     @RequestMapping(value = "{jobBuildId}", method = RequestMethod.GET)
     public JobBuildBean buildInfo(@PathVariable Long jobBuildId) {
-        return jobBuildService.getBuildInfo(jobBuildId);
+        return jobBuildService.getWithPluginBuild(jobBuildId);
     }
 
     @RequestMapping(value = "/runtimeRequire/{jobBuildId}", method = RequestMethod.GET)

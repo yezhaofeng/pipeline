@@ -11,6 +11,7 @@ import com.jlu.jenkins.model.JenkinsConf;
 
 /**
  * Created by langshiquan on 18/1/21.
+ * FIXME 安全问题
  */
 @Component
 public class DefaultJenkinsServer {

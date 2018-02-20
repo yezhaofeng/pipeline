@@ -35,13 +35,13 @@ public class JenkinsConfController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean add(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
-        jenkinsConfService.save(jenkinsConfDTO.toJenkinsConf(getLoginUserName()));
+        jenkinsConfService.save(jenkinsConfDTO.toJenkinsConf());
         return ResponseBean.TRUE;
     }
 
     @RequestMapping(value = "{jenkinsServerId}", method = RequestMethod.PUT)
     public ResponseBean update(@PathVariable Long jenkinsServerId, @RequestBody JenkinsConfDTO jenkinsConfDTO) {
-        JenkinsConf jenkinsConf = jenkinsConfDTO.toJenkinsConf(getLoginUserName());
+        JenkinsConf jenkinsConf = jenkinsConfDTO.toJenkinsConf();
         jenkinsConf.setId(jenkinsServerId);
         jenkinsConfService.saveOrUpdate(jenkinsConf);
         return ResponseBean.TRUE;
@@ -75,7 +75,7 @@ public class JenkinsConfController extends AbstractController {
 
     @RequestMapping(value = "/isActive", method = RequestMethod.POST)
     public ResponseBean isActive(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
-        jenkinsServerService.getJenkinsServer(jenkinsConfDTO.toJenkinsConf(UserLoginHelper.getLoginUserName()));
+        jenkinsServerService.getJenkinsServer(jenkinsConfDTO.toJenkinsConf());
         return ResponseBean.TRUE;
     }
 }

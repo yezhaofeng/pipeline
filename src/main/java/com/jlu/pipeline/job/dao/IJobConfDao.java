@@ -9,5 +9,5 @@ import com.jlu.pipeline.job.model.JobConf;
  * Created by langshiquan on 18/1/14.
  */
 public interface IJobConfDao extends IBaseDao<JobConf> {
-    List<JobConf> findByPipelineConfIdAndDeleteStatus(Long pipelineConfId, Boolean deleteStatus);
+    List<JobConf> get(Long pipelineConfId, Boolean deleteStatus);
 }

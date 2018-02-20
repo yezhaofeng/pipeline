@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.jlu.branch.bean.BranchType;
 import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.utils.CollUtils;
 import com.jlu.pipeline.bean.PipelineConfBean;
 import com.jlu.pipeline.dao.IPipelineConfDao;
@@ -37,38 +36,9 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
 
     @Override
     public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean) {
-        PipelineConf pipelineConf = null;
-        Long pipelineConfId = pipelineConfBean.getId();
-        if (pipelineConfId != null) {
-            pipelineConf = pipelineConfDao.findById(pipelineConfId);
-        }
-
-        if (pipelineConf != null) {
-            BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
-            pipelineConf.setId(pipelineConfId);
-        } else {
-            pipelineConf = new PipelineConf();
-            BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
-            pipelineConf.setCreateTime(new Date());
-            pipelineConf.setCreateUser(UserLoginHelper.getLoginUserName());
-        }
-
-        pipelineConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
-        pipelineConf.setLastModifiedTime(new Date());
-        pipelineConfDao.saveOrUpdate(pipelineConf);
-        List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
-        jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
-    }
-
-    @Override
-    public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String module,
-                                               BranchType branchType) {
-        PipelineConf pipelineConf = pipelineConfDao.get(module, branchType);
+        PipelineConf pipelineConf = pipelineConfDao.get(pipelineConfBean.getModule(), pipelineConfBean.getBranchType());
         if (pipelineConf == null) {
             throw new PipelineRuntimeException("未找到流水线配置");
-        }
-        if (!pipelineConfBean.getModule().equals(module)) {
-            throw new ForbiddenException("无权限");
         }
         BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
         pipelineConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
@@ -126,12 +96,34 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         // 主干流水线
         PipelineConfBean masterPipelineConf = initDefaultPipelineConf(module, DEFAULT_MASTER_PIPELINE_NAME,
                 BranchType.TRUNK, DEFAULT_MASTER_PIPELINE_REMARK);
-        processPipelineWithTransaction(masterPipelineConf);
+        processPipelineForInitWithTransaction(masterPipelineConf);
         // 分支流水线
         PipelineConfBean branchPipelineConf = initDefaultPipelineConf(module, DEFAULT_BRANCH_PIPELINE_NAME,
                 BranchType.BRANCH, DEFAULT_BRANCH_PIPELINE_REMARK);
-        processPipelineWithTransaction(branchPipelineConf);
+        processPipelineForInitWithTransaction(branchPipelineConf);
+    }
+    private void processPipelineForInitWithTransaction(PipelineConfBean pipelineConfBean) {
+        PipelineConf pipelineConf = null;
+        Long pipelineConfId = pipelineConfBean.getId();
+        if (pipelineConfId != null) {
+            pipelineConf = pipelineConfDao.findById(pipelineConfId);
+        }
 
+        if (pipelineConf != null) {
+            BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
+            pipelineConf.setId(pipelineConfId);
+        } else {
+            pipelineConf = new PipelineConf();
+            BeanUtils.copyProperties(pipelineConfBean, pipelineConf);
+            pipelineConf.setCreateTime(new Date());
+            pipelineConf.setCreateUser(UserLoginHelper.getLoginUserName());
+        }
+
+        pipelineConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
+        pipelineConf.setLastModifiedTime(new Date());
+        pipelineConfDao.saveOrUpdate(pipelineConf);
+        List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
+        jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
     }
 
     @Override

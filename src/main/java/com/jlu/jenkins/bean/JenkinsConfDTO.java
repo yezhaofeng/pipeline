@@ -2,6 +2,7 @@ package com.jlu.jenkins.bean;
 
 import java.util.Date;
 
+import com.jlu.common.interceptor.UserLoginHelper;
 import org.springframework.beans.BeanUtils;
 
 import com.jlu.jenkins.model.JenkinsConf;
@@ -47,12 +48,12 @@ public class JenkinsConfDTO {
         this.masterPassword = masterPassword;
     }
 
-    public JenkinsConf toJenkinsConf(String userName) {
+    public JenkinsConf toJenkinsConf() {
         JenkinsConf jenkinsConf = new JenkinsConf();
         BeanUtils.copyProperties(this, jenkinsConf);
         jenkinsConf.setCreateTime(new Date());
-        jenkinsConf.setCreateUser(userName);
-        jenkinsConf.setLastModifiedUser(userName);
+        jenkinsConf.setCreateUser(UserLoginHelper.getLoginUserName());
+        jenkinsConf.setLastModifiedUser(UserLoginHelper.getLoginUserName());
         return jenkinsConf;
     }
 

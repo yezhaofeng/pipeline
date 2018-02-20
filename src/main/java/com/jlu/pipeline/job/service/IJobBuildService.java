@@ -25,11 +25,11 @@ public interface IJobBuildService {
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);
 
-    void saveOrUpdate(JobBuild jobBuild);
+    JobBuildBean getWithPluginBuild(Long jobBuildId);
 
-    JobBuildBean getBuildInfo(Long jobBuildId);
+    void saveOrUpdate(JobBuild jobBuild);
 
     List<RunTimeBean> getRuntimeRequire(Long jobBuildId);
 
-    JobBuild getLastSuccBuild(String module, String commitId, PluginType pluginType,Long currentPipelineBuildId);
+    JobBuild getLastSuccBuild(String module, String commitId, PluginType pluginType, Long currentPipelineBuildId);
 }

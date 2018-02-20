@@ -13,13 +13,14 @@ import com.jlu.pipeline.model.PipelineConf;
  * Created by langshiquan on 18/1/14.
  */
 public interface IPipelineBuildService {
-    void build(Long pipelineConfId);
 
-    void rebuild(Long triggerId);
+    void build(Long pipelineConfId);
 
     void build(Long pipelineConfId, Long triggerId);
 
     void build(Long pipelineConfId, GitHubCommit gitHubCommit);
+
+    void rebuild(Long triggerId);
 
     @LogExecTime
     Long initPipelineBuild(PipelineConf pipelineConf);
@@ -27,9 +28,9 @@ public interface IPipelineBuildService {
     @LogExecTime
     Long initPipelineBuild(PipelineConf pipelineConf, GitHubCommit gitHubCommit);
 
-    List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId);
-
     PipelineBuild get(Long pipelineBuildId);
+
+    List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId);
 
     List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType);
 

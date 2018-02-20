@@ -52,7 +52,7 @@ public class ReleaseExecutor extends AbstractExecutor {
 
     @Override
     protected void execute(JobBuildContext context, JobBuild jobBuild) {
-        ReleaseBuild releaseBuild = releaseService.find(jobBuild.getPluginBuildId());
+        ReleaseBuild releaseBuild = releaseService.get(jobBuild.getPluginBuildId());
         PipelineBuild pipelineBuild = context.getPipelineBuild();
         Map<String, String> inParams = jobBuild.getInParameterMap();
         String compileProductFtpPath = inParams.get(JobParameter.PIPELINE_COMPILE_PRODUCT_PATH);
@@ -68,14 +68,14 @@ public class ReleaseExecutor extends AbstractExecutor {
             if (StringUtils.isBlank(version)) {
                 version = releaseService.increaseVersion(maxVersion);
             }
-            if (!releaseService.check(version)) {
+            if (!releaseService.checkVersion(version)) {
                 releaseBuild.setStatus(PipelineJobStatus.FAILED);
                 releaseBuild.setMessage(VERSION_FORMAT_ERROR_MESSAGE);
                 releaseService.saveOrUpdate(releaseBuild);
                 notifyJobStartFailed(jobBuild, VERSION_FORMAT_ERROR_MESSAGE);
                 return;
             }
-            if (!releaseService.compare(version, maxVersion)) {
+            if (!releaseService.compareVersion(version, maxVersion)) {
                 releaseBuild.setStatus(PipelineJobStatus.FAILED);
                 releaseBuild.setMessage(VERSION_LESS_MESSAGE);
                 releaseService.saveOrUpdate(releaseBuild);
@@ -134,7 +134,7 @@ public class ReleaseExecutor extends AbstractExecutor {
 
     @Override
     public void handleCallback(JobBuild jobBuild) {
-        ReleaseBuild releaseBuild = releaseService.find(jobBuild.getPluginBuildId());
+        ReleaseBuild releaseBuild = releaseService.get(jobBuild.getPluginBuildId());
         releaseBuild.setStatus(jobBuild.getJobStatus());
         releaseService.saveOrUpdate(releaseBuild);
         Map<String, String> newParams = new HashedMap();

@@ -2,7 +2,6 @@ package com.jlu.pipeline.job.service.impl;
 
 import java.util.*;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -65,7 +64,7 @@ public class JobConfServiceImpl implements IJobConfService {
 
     @Override
     public void processJobWithTransaction(List<JobConfBean> jobConfBeans, Long pipelineConfId) {
-        List<JobConf> jobConfsInDb = jobConfDao.findByPipelineConfIdAndDeleteStatus(pipelineConfId, false);
+        List<JobConf> jobConfsInDb = jobConfDao.get(pipelineConfId, false);
         if (CollUtils.isEmpty(jobConfBeans)) {
             return;
         }
@@ -96,7 +95,7 @@ public class JobConfServiceImpl implements IJobConfService {
     @Override
     public List<JobConfBean> getJobConfs(Long pipelineConfId) {
         List<JobConfBean> jobConfBeanList = new ArrayList<>();
-        List<JobConf> jobConfs = jobConfDao.findByPipelineConfIdAndDeleteStatus(pipelineConfId, false);
+        List<JobConf> jobConfs = jobConfDao.get(pipelineConfId, false);
 
         for (JobConf jobConf : jobConfs) {
             JobConfBean jobConfBean = new JobConfBean();

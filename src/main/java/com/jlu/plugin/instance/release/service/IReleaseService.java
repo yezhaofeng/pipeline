@@ -8,18 +8,19 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
  * Created by langshiquan on 18/1/22.
  */
 public interface IReleaseService {
-    String getMaxVersion(String module);
-
     void saveOrUpdate(ReleaseBuild releaseBuild);
 
-    ReleaseBuild find(Long id);
+    ReleaseBuild get(Long id);
+
+    List<ReleaseBuild> getReleaseBuild(String module);
+
+    String getMaxVersion(String module);
 
     String increaseVersion(String version);
 
-    Boolean compare(String version1, String version2);
+    Boolean compareVersion(String version1, String version2);
 
-    Boolean check(String version);
+    Boolean checkVersion(String version);
 
-    List<ReleaseBuild> getReleaseInfo(String module);
 
 }

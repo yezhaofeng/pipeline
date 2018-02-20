@@ -38,12 +38,12 @@ public class ReleaseServiceImpl implements IReleaseService {
     }
 
     @Override
-    public ReleaseBuild find(Long id) {
+    public ReleaseBuild get(Long id) {
         return releaseBuildDao.findById(id);
     }
 
     @Override
-    public List<ReleaseBuild> getReleaseInfo(String module) {
+    public List<ReleaseBuild> getReleaseBuild(String module) {
         return releaseBuildDao.get(module);
     }
 
@@ -63,7 +63,7 @@ public class ReleaseServiceImpl implements IReleaseService {
      * @return
      */
     @Override
-    public Boolean compare(String version1, String version2) {
+    public Boolean compareVersion(String version1, String version2) {
         if (!Pattern.matches(VERSION_REGEX, version1)) {
             throw new PipelineRuntimeException(version1 + " 版本号不合法");
         }
@@ -87,7 +87,7 @@ public class ReleaseServiceImpl implements IReleaseService {
     }
 
     @Override
-    public Boolean check(String version) {
+    public Boolean checkVersion(String version) {
         if (StringUtils.isBlank(version)) {
             return false;
         }

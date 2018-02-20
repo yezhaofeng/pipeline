@@ -9,23 +9,10 @@ import com.jlu.branch.model.GithubBranch;
  */
 public interface IBranchService {
 
-    /**
-     * 保存模块分支信息
-     * @param githubBranch
-     */
     void saveBranch(GithubBranch githubBranch);
 
-    /**
-     * 批量保存模块分支信息
-     * @param githubBranches
-     */
     void saveBranches(List<GithubBranch> githubBranches);
 
-    /**
-     * 获得分支名集合
-     * @param moduleName
-     * @return
-     */
     List<GithubBranch> getBranchesByModule(String moduleName);
 
     void updateRemark(Long branchId, String remark);

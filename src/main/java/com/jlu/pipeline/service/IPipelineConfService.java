@@ -9,9 +9,9 @@ import com.jlu.pipeline.model.PipelineConf;
  */
 public interface IPipelineConfService {
 
-    void processPipelineWithTransaction(PipelineConfBean pipelineConfBean);
-
     PipelineConfBean getPipelineConfBean(Long pipelineConfId);
+
+    PipelineConfBean getPipelineConfBean(String module, BranchType branchType);
 
     PipelineConf getPipelineConf(Long pipelineConfId);
 
@@ -19,9 +19,7 @@ public interface IPipelineConfService {
 
     PipelineConf getPipelineConf(String module, BranchType branchType);
 
+    void processPipelineWithTransaction(PipelineConfBean pipelineConfBean);
+
     void initDefaultConf(String module);
-
-    PipelineConfBean getPipelineConfBean(String module, BranchType branchType);
-
-    void processPipelineWithTransaction(PipelineConfBean pipelineConfBean, String module, BranchType branchType);
 }

@@ -10,7 +10,6 @@ import com.jlu.jenkins.model.JenkinsConf;
  * Created by langshiquan on 18/1/10.
  */
 public interface IJenkinsConfService {
-    void saveOrUpdate(JenkinsConf jenkinsConf);
 
     JenkinsConf get(String serverUrl, String username, String password);
 
@@ -20,7 +19,10 @@ public interface IJenkinsConfService {
 
     List<JenkinsJobsBean> getJobsByCreateUser(String createUser) throws IOException;
 
+    void saveOrUpdate(JenkinsConf jenkinsConf);
+
     void save(JenkinsConf jenkinsConf);
 
     void delete(Long jenkinsServerId);
+
 }

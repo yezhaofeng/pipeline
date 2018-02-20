@@ -25,7 +25,7 @@ public class PluginInfo {
     private String description;
 
     private Integer priority;
-    //    private String dependencyParam;
+
     @Deprecated
     private Boolean disabled = false;
 

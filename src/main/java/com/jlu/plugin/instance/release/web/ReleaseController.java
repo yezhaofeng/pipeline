@@ -24,6 +24,6 @@ public class ReleaseController {
 
     @RequestMapping(value = "/{owner}/{repository}", method = RequestMethod.GET)
     public List<ReleaseBuild> releaseInfo(@PathVariable String owner, @PathVariable String repository) {
-        return releaseService.getReleaseInfo(PipelineUtils.getFullModule(owner, repository));
+        return releaseService.getReleaseBuild(PipelineUtils.getFullModule(owner, repository));
     }
 }

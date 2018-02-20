@@ -16,7 +16,7 @@ import com.jlu.pipeline.job.model.JobConf;
 public class JobConfDaoImpl extends AbstractBaseDao<JobConf> implements IJobConfDao {
 
     @Override
-    public List<JobConf> findByPipelineConfIdAndDeleteStatus(Long pipelineConfId, Boolean deleteStatus) {
+    public List<JobConf> get(Long pipelineConfId, Boolean deleteStatus) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
         conditionAndSet.put("deleteStatus", deleteStatus);

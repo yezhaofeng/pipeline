@@ -1,5 +1,6 @@
 package com.jlu.pipeline.web;
 
+import com.jlu.common.permission.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +31,12 @@ public class PipelineConfController extends AbstractController {
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.PUT)
     public ResponseBean saveConf(@RequestBody PipelineConfBean pipelineConfBean, @PathVariable String owner,
                                  @PathVariable String repository, @PathVariable BranchType branchType) {
-        pipelineConfService.processPipelineWithTransaction(pipelineConfBean, PipelineUtils.getFullModule(owner,
-                repository), branchType);
+        String moduleInPath = PipelineUtils.getFullModule(owner, repository);
+        String moduleInBody = pipelineConfBean.getModule();
+        if (!moduleInPath.equals(moduleInBody)) {
+            throw new ForbiddenException("无权限");
+        }
+        pipelineConfService.processPipelineWithTransaction(pipelineConfBean);
         return ResponseBean.TRUE;
     }
 

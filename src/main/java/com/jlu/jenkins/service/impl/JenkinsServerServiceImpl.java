@@ -154,7 +154,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
 
     @Deprecated
     @Override
-    public Integer buildWithParamters(JenkinsServer jenkinsServer, String jobName, Map<String, String> params)
+    public Integer buildWithParameters(JenkinsServer jenkinsServer, String jobName, Map<String, String> params)
             throws IOException {
         Job job = jenkinsServer.getJob(jobName);
         QueueReference queueReference = job.build(params, true);

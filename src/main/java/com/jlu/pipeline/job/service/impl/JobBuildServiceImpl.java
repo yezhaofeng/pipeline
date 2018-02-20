@@ -237,7 +237,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     @Override
-    public JobBuildBean getBuildInfo(Long jobBuildId) {
+    public JobBuildBean getWithPluginBuild(Long jobBuildId) {
         JobBuildBean jobBuildBean = new JobBuildBean();
         JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
         if (jobBuild == null) {
