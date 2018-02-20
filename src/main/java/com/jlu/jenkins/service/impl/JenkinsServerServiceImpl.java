@@ -38,6 +38,9 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
 
     @Override
     public JenkinsServer getJenkinsServer(String serverUrl, String username, String password) {
+        if (serverUrl == null) {
+            throw new JenkinsException(JenkinsExceptionEnum.WRONG_URL);
+        }
         JenkinsServer jenkinsServer = jenkinsServerMap.get(serverUrl);
         if (jenkinsServer != null) {
             logger.info("get JenkinsServer from cache:{}", serverUrl);

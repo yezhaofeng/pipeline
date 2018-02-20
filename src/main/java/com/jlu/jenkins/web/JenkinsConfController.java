@@ -6,6 +6,9 @@ import java.util.List;
 import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,8 @@ import com.jlu.jenkins.bean.JenkinsConfDTO;
 import com.jlu.jenkins.bean.JenkinsJobsBean;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsConfService;
+
+import javax.validation.Valid;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -34,7 +39,7 @@ public class JenkinsConfController extends AbstractController {
     private IJenkinsServerService jenkinsServerService;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseBean add(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
+    public ResponseBean add(@Valid @RequestBody JenkinsConfDTO jenkinsConfDTO) {
         jenkinsConfService.save(jenkinsConfDTO.toJenkinsConf());
         return ResponseBean.TRUE;
     }
@@ -74,7 +79,8 @@ public class JenkinsConfController extends AbstractController {
     }
 
     @RequestMapping(value = "/isActive", method = RequestMethod.POST)
-    public ResponseBean isActive(@RequestBody JenkinsConfDTO jenkinsConfDTO) {
+    public ResponseBean isActive(@Valid @RequestBody JenkinsConfDTO jenkinsConfDTO, BindingResult result) {
+        checkBindingResult(result);
         jenkinsServerService.getJenkinsServer(jenkinsConfDTO.toJenkinsConf());
         return ResponseBean.TRUE;
     }

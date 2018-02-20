@@ -7,13 +7,18 @@ import org.springframework.beans.BeanUtils;
 
 import com.jlu.jenkins.model.JenkinsConf;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by langshiquan on 18/1/10.
  */
 public class JenkinsConfDTO {
     Long id;
+    @NotNull(message = "Jenkins URL不能为空")
     String serverUrl;
+    @NotNull(message = "master用户名不能为空")
     String masterUser;
+    @NotNull(message = "密码不能为空")
     String masterPassword;
 
     public Long getId() {

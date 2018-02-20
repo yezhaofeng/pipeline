@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,14 @@ public class ExceptionControllerAdvice {
     @ResponseBody
     public ResponseBean forbiddenExceptionHandler(ForbiddenException fbex) {
         return ResponseBean.fail(fbex.getMessage());
+    }
+
+    // 400
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseBody
+    public ResponseBean HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException hmnr) {
+        return ResponseBean.fail("请求参数格式有误");
     }
 
     @ExceptionHandler(PipelineRuntimeException.class)
