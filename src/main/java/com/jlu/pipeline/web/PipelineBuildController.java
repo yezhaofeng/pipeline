@@ -35,22 +35,27 @@ public class PipelineBuildController extends AbstractController {
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.GET)
     public List<PipelineBuildBean> getPipelineBuildBeans(@PathVariable String owner,
                                                          @PathVariable String repository,
-                                                         @PathVariable BranchType branchType) {
-        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType);
+                                                         @PathVariable BranchType branchType,
+                                                         @RequestParam(required = false, defaultValue = "0") int offset,
+                                                         @RequestParam(required = false, defaultValue = "15") int limit) {
+        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType, offset, limit);
     }
+
     @RequestMapping(value = "/{owner}/{repository}/{branchType}/{branchName}", method = RequestMethod.GET)
     public List<PipelineBuildBean> getPipelineBuildBeans(@PathVariable String owner,
                                                          @PathVariable String repository,
                                                          @PathVariable BranchType branchType,
-                                                         @PathVariable String branchName) {
-        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType,branchName);
+                                                         @PathVariable String branchName,
+                                                         @RequestParam(required = false, defaultValue = "0") int offset,
+                                                         @RequestParam(required = false, defaultValue = "15") int limit) {
+        return pipelineBuildService.getPipelineBuildBean(PipelineUtils.getFullModule(owner, repository), branchType, branchName, offset, limit);
     }
 
     @RequestMapping(value = "/{owner}/{repository}/{branchType}", method = RequestMethod.POST)
     public ResponseBean build(@PathVariable String owner, @PathVariable String repository,
                               @PathVariable BranchType branchType, @RequestParam(required = false, defaultValue = "0") Long triggerId) {
-        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(PipelineUtils.getFullModule(owner,repository),branchType);
-        if(pipelineConf == null){
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(PipelineUtils.getFullModule(owner, repository), branchType);
+        if (pipelineConf == null) {
             throw new PipelineRuntimeException("无流水线配置");
         }
         Long pipelineConfId = pipelineConf.getId();

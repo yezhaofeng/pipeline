@@ -168,43 +168,50 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
     }
 
     @Override
+    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, int offset, int limit) {
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
+        if (pipelineConf == null) {
+            return new ArrayList<>(0);
+        }
+        return getPipelineBuildBean(pipelineConf.getId(), offset, limit);
+    }
+
+    @Override
+    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName, int offset, int limit) {
+        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
+        if (pipelineConf == null) {
+            return new ArrayList<>(0);
+        }
+        return getPipelineBuildBean(pipelineConf.getId(), branchName, offset, limit);
+    }
+
+
+    @Override
     public List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId) {
-        List<PipelineBuildBean> pipelineBuildBeans = new LinkedList<>();
         List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId);
-        for (PipelineBuild pipelineBuild : pipelineBuilds) {
-            PipelineBuildBean pipelineBuildBean = new PipelineBuildBean();
-            BeanUtils.copyProperties(pipelineBuild, pipelineBuildBean);
-            Long triggerId = pipelineBuild.getTriggerId();
-            GitHubCommit githubCommit = gitHubCommitService.get(triggerId);
-            pipelineBuildBean.setGitHubCommit(githubCommit);
-            List<JobBuildBean> jobBuildBeans = jobBuildService.getJobBuildBeans(pipelineBuild.getId());
-            pipelineBuildBean.setJobBuildBeanList(jobBuildBeans);
-            pipelineBuildBeans.add(pipelineBuildBean);
-        }
-        return pipelineBuildBeans;
+        return assemblePipelineBuildBean(pipelineBuilds);
     }
 
     @Override
-    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType) {
-        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
-        if (pipelineConf == null) {
-            return new ArrayList<>(0);
-        }
-        return getPipelineBuildBean(pipelineConf.getId());
+    public List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, int offset, int limit) {
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId, offset, limit);
+        return assemblePipelineBuildBean(pipelineBuilds);
     }
 
     @Override
-    public List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName) {
-        PipelineConf pipelineConf = pipelineConfService.getPipelineConf(module, branchType);
-        if (pipelineConf == null) {
-            return new ArrayList<>(0);
-        }
-        return getPipelineBuildBean(pipelineConf.getId(),branchName);
+    public List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName) {
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId, branchName);
+        return assemblePipelineBuildBean(pipelineBuilds);
     }
 
-    private List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName) {
+    @Override
+    public List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName, int offset, int limit) {
+        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId, branchName, offset, limit);
+        return assemblePipelineBuildBean(pipelineBuilds);
+    }
+
+    private List<PipelineBuildBean> assemblePipelineBuildBean(List<PipelineBuild> pipelineBuilds) {
         List<PipelineBuildBean> pipelineBuildBeans = new LinkedList<>();
-        List<PipelineBuild> pipelineBuilds = pipelineBuildDao.get(pipelineConfId,branchName);
         for (PipelineBuild pipelineBuild : pipelineBuilds) {
             PipelineBuildBean pipelineBuildBean = new PipelineBuildBean();
             BeanUtils.copyProperties(pipelineBuild, pipelineBuildBean);

@@ -14,7 +14,12 @@ public interface IPipelineBuildDao extends IBaseDao<PipelineBuild> {
 
     List<PipelineBuild> get(Long pipelineConfId);
 
+    List<PipelineBuild> get(Long pipelineConfId, int offset, int limit);
+
     List<PipelineBuild> get(Long pipelineConfId, String branchName);
 
+    List<PipelineBuild> get(Long pipelineConfId, String branchName, int offset, int limit);
+
     List<PipelineBuild> get(String module, String commitId);
+
 }

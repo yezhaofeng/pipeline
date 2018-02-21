@@ -26,7 +26,7 @@ define(['app', 'angular'], function (app, angular) {
         self.noMoreBuildsToLoad = false;
         self.initBuildsDone = false;
 
-        self.initBuilds = pipelineDataService.getPipelineBuilds(self.module, "BRANCH")
+        self.initBuilds = pipelineDataService.getPipelineBuildsPaging(self.module, "BRANCH", 0, 100)
             .then(function (data) {
                 var branchPipelines = {};
                 var otherBranchPipelines = {};

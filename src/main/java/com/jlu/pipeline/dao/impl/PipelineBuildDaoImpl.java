@@ -1,6 +1,7 @@
 package com.jlu.pipeline.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,12 +42,31 @@ public class PipelineBuildDaoImpl extends AbstractBaseDao<PipelineBuild> impleme
     }
 
     @Override
+    public List<PipelineBuild> get(Long pipelineConfId, int offset, int limit) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineConfId", pipelineConfId);
+        DescOrder descOrder = new DescOrder("id");
+        List<PipelineBuild> pipelineBuilds = findHeadByProperties(conditionAndSet, Arrays.asList(descOrder), offset, limit);
+        return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
+    }
+
+    @Override
     public List<PipelineBuild> get(Long pipelineConfId, String branchName) {
         ConditionAndSet conditionAndSet = new ConditionAndSet();
         conditionAndSet.put("pipelineConfId", pipelineConfId);
         conditionAndSet.put("branch", branchName);
         DescOrder descOrder = new DescOrder("id");
         List<PipelineBuild> pipelineBuilds = findByProperties(conditionAndSet, descOrder);
+        return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
+    }
+
+    @Override
+    public List<PipelineBuild> get(Long pipelineConfId, String branchName, int offset, int limit) {
+        ConditionAndSet conditionAndSet = new ConditionAndSet();
+        conditionAndSet.put("pipelineConfId", pipelineConfId);
+        conditionAndSet.put("branch", branchName);
+        DescOrder descOrder = new DescOrder("id");
+        List<PipelineBuild> pipelineBuilds = findHeadByProperties(conditionAndSet, Arrays.asList(descOrder), offset, limit);
         return CollUtils.isEmpty(pipelineBuilds) ? new LinkedList<>() : pipelineBuilds;
     }
 

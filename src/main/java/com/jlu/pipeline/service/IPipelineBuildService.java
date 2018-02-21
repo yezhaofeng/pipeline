@@ -32,7 +32,13 @@ public interface IPipelineBuildService {
 
     List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId);
 
-    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType);
+    List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, int offset, int limit);
 
-    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName);
+    List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName);
+
+    List<PipelineBuildBean> getPipelineBuildBean(Long pipelineConfId, String branchName, int offset, int limit);
+
+    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, int offset, int limit);
+
+    List<PipelineBuildBean> getPipelineBuildBean(String module, BranchType branchType, String branchName, int offset, int limit);
 }

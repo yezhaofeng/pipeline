@@ -44,7 +44,22 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
         /**
-         * 获得流水线构建信息
+         * 获得流水线构建信息,分页
+         * @param module
+         * @param branchType
+         * @param offset
+         * @param limit
+         * @returns {*}
+         */
+        self.getPipelineBuildsPaging = function (module, branchType, offset, limit) {
+            return $http.get(constants.api('pipeline/build/' + module + '/' + branchType + "?offset=" + offset + "&limit=" + limit))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+
+        /**
+         * 获得分支流水线构建信息
          * @param module
          * @param branchType
          * @param branch
@@ -52,6 +67,21 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
          */
         self.getPipelineBuildsByBranch = function (module, branchType, branch) {
             return $http.get(constants.api('pipeline/build/' + module + '/' + branchType + "/" + branch))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
+         * 获得分支流水线构建信息
+         * @param module
+         * @param branchType
+         * @param branch
+         * @param offset
+         * @param limit
+         * @returns {*}
+         */
+        self.getPipelineBuildsByBranchPaging = function (module, branchType, branch, offset, limit) {
+            return $http.get(constants.api('pipeline/build/' + module + '/' + branchType + "/" + branch + "?offset=" + offset + "&limit=" + limit))
                 .then(function (data) {
                     return data.data;
                 });

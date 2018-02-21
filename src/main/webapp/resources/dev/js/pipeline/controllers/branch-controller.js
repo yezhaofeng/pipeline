@@ -33,7 +33,7 @@ define(['app', 'angular'], function (app, angular) {
                 self.initBuildsDone = true;
             })
             .then(function () {
-                pipelineDataService.getBranches(self.module,"BRANCH")
+                pipelineDataService.getBranches(self.module, "BRANCH")
                     .then(function (data) {
                         var branches = [];
                         angular.forEach(data, function (branchObj, index) {
@@ -42,24 +42,23 @@ define(['app', 'angular'], function (app, angular) {
                         self.branches = branches;
                     });
             });
-
+        var offset = 15;
+        var limit = 15;
         self.loadMoreBuilds = function () {
-            var lastPipelineId = self.pipelineBuilds[self.pipelineBuilds.length - 1].pipelineBuildId;
-            if (angular.isDefined(lastPipelineId)) {
-                self.showLoadMoreBuildsLoader = true;
-                pipelineDataService.getBranchPipelines(self.context.username, self.module, self.branchName, lastPipelineId)
-                    .then(function (data) {
-                        if (data instanceof  Array && data.length > 0) {
-                            angular.forEach(data, function (data) {
-                                self.pipelineBuilds.push(data);
-                            });
-                        }
-                        else {
-                            self.noMoreBuildsToLoad = true;
-                        }
-                        self.showLoadMoreBuildsLoader = false;
-                    });
-            }
+            self.showLoadMoreBuildsLoader = true;
+            pipelineDataService.getPipelineBuildsByBranchPaging(self.module, "BRANCH", self.branchName, offset, limit)
+                .then(function (data) {
+                    if (data instanceof Array && data.length > 0) {
+                        angular.forEach(data, function (data) {
+                            self.pipelineBuilds.push(data);
+                        });
+                    }
+                    else {
+                        self.noMoreBuildsToLoad = true;
+                    }
+                    self.showLoadMoreBuildsLoader = false;
+                });
+            offset += limit;
         };
     }
 });
