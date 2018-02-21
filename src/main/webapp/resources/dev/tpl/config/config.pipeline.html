@@ -71,7 +71,7 @@
 
         <!-- job 具体配置 -->
     </div>
-    <div class="form-group task-config-group">
+    <div class="form-group task-config-group" ng-show="showJob">
         <div class="task-header">
             任务名称：<input type="text" ng-model="configCtrl.activeJob.name"/> <br/>
             触发方式：
@@ -79,7 +79,7 @@
             <input type="radio" ng-model="configCtrl.activeJob.triggerMode" value="MANUAL"/>手动
             <div class="clear"></div>
             <br/>
-            <img  ng-src="/resources/dev/img/plugin/{{activeJobPluginInfo.pluginType}}.png"><br/><br/>
+            <img ng-src="/resources/dev/img/plugin/{{activeJobPluginInfo.pluginType}}.png"><br/><br/>
             任务类型：<label ng-bind="activeJobPluginInfo.name"></label><br/>
             说明：<label ng-bind="activeJobPluginInfo.description"></label>
             <br/>
@@ -94,53 +94,52 @@
                     app-config="configCtrl.activeJob.pluginConf"
                     app-page="configCtrl.activeJob.configPage">
             </app-real-job-config>
-        <div class="clear"></div>
-        <br/>
-        <div class="form-group params-group">
-            <label>构建参数</label>
-            <a href="http://wiki.baidu.com/pages/viewpage.action?pageId=158562481" target="_blank"
-               class="tooltip-top" tooltip-data="传入 Job 的自定义参数">
-                <i class="fa fa-question-circle"></i>
-            </a>
-            <ul class="list-unstyled">
-                <li ng-repeat="entryParam in configCtrl.activeJob.inParamsEntries track by $index"
-                    class="params-list-item">
-                    <div class="input-group key col-xs-5">
-                        <span class="input-group-addon">参数名</span>
-                        <input type="text" class="form-control" placeholder="输入参数名"
-                               ng-model="entryParam.key" required>
-                    </div>
-                    <div class="input-group value col-xs-5">
-                        <span class="input-group-addon">参数值</span>
-                        <input type="text" class="form-control" placeholder="输入参数值"
-                               ng-bind="entryParam.value" ng-model="entryParam.value">
-                    </div>
-                    <div class="delete-parameter">
+            <div class="clear"></div>
+            <br/>
+            <div class="form-group params-group">
+                <label>构建参数</label>
+                <a href="http://wiki.baidu.com/pages/viewpage.action?pageId=158562481" target="_blank"
+                   class="tooltip-top" tooltip-data="传入 Job 的自定义参数">
+                    <i class="fa fa-question-circle"></i>
+                </a>
+                <ul class="list-unstyled">
+                    <li ng-repeat="entryParam in configCtrl.activeJob.inParamsEntries track by $index"
+                        class="params-list-item">
+                        <div class="input-group key col-xs-5">
+                            <span class="input-group-addon">参数名</span>
+                            <input type="text" class="form-control" placeholder="输入参数名"
+                                   ng-model="entryParam.key" required>
+                        </div>
+                        <div class="input-group value col-xs-5">
+                            <span class="input-group-addon">参数值</span>
+                            <input type="text" class="form-control" placeholder="输入参数值"
+                                   ng-bind="entryParam.value" ng-model="entryParam.value">
+                        </div>
+                        <div class="delete-parameter">
                                 <span class="delete-parameter-span "
                                       ng-click="configCtrl.delJobInParamByIndex(index)">
                                     <i class="fa fa-trash-o"></i>
                                 </span>
-                    </div>
-                </li>
-                <li class="params-list-item">
-                    <button type="button" class="agile middle blue icon button add-button"
-                            ng-click="configCtrl.addJobInParam()">
-                        <i class="fa fa-plus"></i>&nbsp;添加参数
-                    </button>
-                </li>
-            </ul>
+                        </div>
+                    </li>
+                    <li class="params-list-item">
+                        <button type="button" class="agile middle blue icon button add-button"
+                                ng-click="configCtrl.addJobInParam()">
+                            <i class="fa fa-plus"></i>&nbsp;添加参数
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="form-group operation-button-group">
-        <button type="button" class="agile button ok-button" ng-click="configCtrl.submit()"
-                ng-disabled="saving">
-            保存
-        </button>
-        <button type="button" ng-click="cancel()" class="agile button cancel-button">取消</button>
+        <div class="form-group operation-button-group">
+            <button type="button" class="agile button ok-button" ng-click="configCtrl.submit()"
+                    ng-disabled="saving">
+                保存
+            </button>
+            <button type="button" ng-click="cancel()" class="agile button cancel-button">取消</button>
         <span class="agile left pointing blue basic label save-done-label" style="color:darkred" ng-if="saved">
             配置已保存,重新构建或者提交代码将应用最新配置!
         </span>
+        </div>
     </div>
-    </form>
-</div>
 </div>

@@ -22,6 +22,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
         self.username = pipelineContextService.context.username;
         self.context = pipelineContextService;
         self.config = {};
+        $scope.showJob = true;
         // 默认是主干
         $scope.branchType = "TRUNK";
 
@@ -56,6 +57,7 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 parameterMap: {},
                 inParamsEntries: []
             };
+            $scope.showJob = true;
             var length = self.config.jobConfs.push(newJobConf);
             self.toggleActiveJob(length - 1);
             $scope.cancelWindow();
@@ -84,6 +86,9 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
 
         self.deleteJob = function (index) {
             self.config.jobConfs.splice(index, 1);
+            if (self.config.jobConfs.length == 0) {
+                $scope.showJob = false;
+            }
             self.toggleActiveJob(index - 1 >= 0 ? index - 1 : 0);
         };
 
