@@ -12,8 +12,10 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
             '$compile',
             '$uibModal',
             '$state',
+            '$timeout',
+            '$interval',
             '$q',
-            function (pipelineDataService, $templateCache, $compile, $uibModal, $state, $q) {
+            function (pipelineDataService, $templateCache, $compile, $uibModal, $state, $timeout, $interval, $q) {
                 return {
                     restrict: 'E',
                     scope: {
@@ -100,7 +102,6 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                             scope.currentJobExpandPointers[i] = false;
                         }
 
-
                         scope.cancelParameterDiffWindow = function () {
                             return scope.parameterDiffModalInstance && scope.parameterDiffModalInstance.dismiss();
                         };
@@ -134,24 +135,11 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 templateUrl = "pipeline-commit-info-tpl";
                             } else {
                                 var currentJob = scope.currentBuild.jobBuildBeanList[jobIndex];
-                                var pluginType = currentJob.pluginType;
-                                // 模板名字约定
-                                //templateUrl = "pipeline-" + pluginType + "-info-tpl";
                                 // 模板数据约定
-                                pipelineDataService.getJobBuild(currentJob.id).then(function (jobBuildInfo) {
-                                    scope.jobBuildInfo = jobBuildInfo;
-                                    // 局部更新状态
-                                    scope.currentBuild.jobBuildBeanList[jobIndex] = jobBuildInfo;
-                                    console.log(scope.jobBuildInfo);
-                                    // 更新下游
-                                    if (jobBuildInfo.jobStatus === "SUCCESS") {
-                                        var upStreamJobBuildId = scope.currentBuild.jobBuildBeanList[jobIndex + 1].id;
-                                        pipelineDataService.getJobBuild(upStreamJobBuildId).then(function (jobBuildInfo) {
-                                            scope.currentBuild.jobBuildBeanList[jobIndex + 1] = jobBuildInfo;
-                                        });
-                                    }
-
-                                });
+                                scope.updateJobInfo(currentJob.id, jobIndex);
+                                var promise = $interval(function () {
+                                    scope.updateJobInfo(currentJob.id, jobIndex, promise);
+                                }, 2000, 2000, true);
                             }
                             if (previousJobIndex !== jobIndex) {
                                 scope.currentJobExpandPointers[previousJobIndex] = false;
@@ -167,6 +155,26 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                             scope.toggleInfo(jobIndex, templateUrl);
                         };
 
+                        scope.updateJobInfo = function (jobBuildId, jobIndex, promise) {
+                            pipelineDataService.getJobBuild(jobBuildId).then(function (jobBuildInfo) {
+                                scope.jobBuildInfo = jobBuildInfo;
+                                // 局部更新状态
+                                scope.currentBuild.jobBuildBeanList[jobIndex] = jobBuildInfo;
+                                console.log(scope.jobBuildInfo);
+                                // 更新下游
+                                if (jobBuildInfo.jobStatus === "SUCCESS") {
+                                    if (jobIndex < scope.currentBuild.jobBuildBeanList.length - 1) {
+                                        var upStreamJobBuildId = scope.currentBuild.jobBuildBeanList[jobIndex + 1].id;
+                                        pipelineDataService.getJobBuild(upStreamJobBuildId).then(function (jobBuildInfo) {
+                                            scope.currentBuild.jobBuildBeanList[jobIndex + 1] = jobBuildInfo;
+                                        });
+                                    }
+                                }
+                                if (jobBuildInfo.jobStatus !== "RUNNING") {
+                                    $interval.cancel(promise);
+                                }
+                            });
+                        };
                         scope.toggleInfo = function (stageIndex, templateUrl) {
                             if (!toggleExpand) {
                                 var expandArea = el.children()[1];
