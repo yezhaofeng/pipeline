@@ -2,7 +2,9 @@ package com.jlu.plugin.instance.jenkinsjob;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import com.jlu.common.utils.CollUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,23 +33,23 @@ public class JenkinsJobExecutor extends AbstractExecutor {
     @Autowired
     private IJenkinsJobBuildDao jenkinsJobDao;
 
-    @Autowired
-    private IJobBuildService jobBuildService;
-
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
         JenkinsJobBuild jenkinsJobBuild = jenkinsJobDao.findById(jobBuild.getPluginBuildId());
         try {
-            Integer buildNumber = jenkinsBuildService.buildJob(jenkinsJobBuild.getJenkinsServerId(), jenkinsJobBuild
-                    .getJobName(), jobBuild
+            Long jenkinsServerId = jenkinsJobBuild.getJenkinsServerId();
+            String jobName = jenkinsJobBuild.getJobName();
+            Integer buildNumber = jenkinsBuildService.buildJob(jenkinsServerId, jobName, jobBuild
                     .getInParameterMap(), jobBuild);
+            logger.info("jobBuildId-{} buildNumber-{}", jobBuild.getId(), buildNumber);
             StringBuilder logUrl = new StringBuilder();
             logUrl.append(jenkinsJobBuild.getJobFullName()).append("/")
                     .append("/").append(buildNumber)
                     .append("/").append("console");
             jenkinsJobBuild.setBuildUrl(logUrl.toString());
+            jenkinsJobBuild.setBuildNumber(buildNumber);
             jenkinsJobDao.saveOrUpdate(jenkinsJobBuild);
-            notifyJobStartSucc(jobBuild);
+            ;
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "通讯异常");
             return;

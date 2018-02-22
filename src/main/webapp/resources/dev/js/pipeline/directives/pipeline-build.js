@@ -160,7 +160,6 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 scope.jobBuildInfo = jobBuildInfo;
                                 // 局部更新状态
                                 scope.currentBuild.jobBuildBeanList[jobIndex] = jobBuildInfo;
-                                console.log(scope.jobBuildInfo);
                                 // 更新下游
                                 if (jobBuildInfo.jobStatus === "SUCCESS") {
                                     if (jobIndex < scope.currentBuild.jobBuildBeanList.length - 1) {

@@ -104,6 +104,8 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
             return JenkinsExceptionEnum.SLAVE_OFFLINE;
         } else if (why.contains("no nodes")) {
             return JenkinsExceptionEnum.SLAVE_NOT_FOUND;
+        } else if (why.contains("already in progress")) {
+            return JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY;
         } else {
             return JenkinsExceptionEnum.UNKOWN;
         }

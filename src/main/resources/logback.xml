@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="logStoreDirectory" value="/Users/langshiquan/logs/pipe"/>
+    <property name="logStoreDirectory" value="D:\\logs"/>
 
     <!-- pipeline日志 -->
     <appender name="pipelineAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
