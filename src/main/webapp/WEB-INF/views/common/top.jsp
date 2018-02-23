@@ -36,7 +36,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/swagger-ui.html" target="_blank"
                            style="color: white !important;">REST API</a></li>
-                    <li><a href="http://blog.csdn.net/z521598/article/details/79307482" target="_blank"
+                    <li><a href="https://github.com/z521598/pipeline/wiki/Pipeline%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E5%B9%B3%E5%8F%B0" target="_blank"
                            style="color: white !important;">用户手册</a></li>
                     <li><a href="mailto:576506402@qq.com" style="color: white !important;">联系我们</a></li>
                     <li><a href="https://github.com/${currentUser.username}" target="_blank"
