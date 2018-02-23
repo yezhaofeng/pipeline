@@ -15,6 +15,7 @@ import com.jlu.common.permission.service.IPermissionService;
 public class UserLoginInterceptor implements HandlerInterceptor {
     @Autowired
     private IPermissionService permissionService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o)
             throws Exception {
@@ -22,6 +23,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             return true;
         }
         UserLoginHelper.register(UserLoginHelper.getLoginUser(request));
+        TrackHelper.registerTrack(request);
         return true;
     }
 
@@ -32,6 +34,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             return;
         }
         UserLoginHelper.destory();
+        // TrackHelper.destroyTrack();
     }
 
     @Override

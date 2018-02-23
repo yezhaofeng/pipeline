@@ -99,6 +99,12 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
             @Override
             public void run() {
                 try {
+                    // 防止事务交叉提交
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    // do nothing
+                }
+                try {
                     ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,6 +142,11 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    // do nothing
+                }
                 try {
                     ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
                 } catch (Exception e) {

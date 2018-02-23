@@ -147,37 +147,13 @@
             <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
         </encoder>
     </appender>
-
-    <logger name="methodExecTimeLog" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="methodExecTimeLogAppender"/>
-    </logger>
-
-    <logger name="com.jlu">
-        <level value="INFO"/>
-        <appender-ref ref="pipelineAppender"/>
-    </logger>
-    <logger name="com.jlu.github">
-        <level value="INFO"/>
-        <appender-ref ref="githubAppender"/>
-    </logger>
-    <logger name="com.jlu.jenkins">
-        <level value="INFO"/>
-        <appender-ref ref="jenkinsAppender"/>
-    </logger>
-
-    <logger name="com.jlu">
-        <level value="ERROR"/>
-        <appender-ref ref="pipelineErrorAppender"/>
-    </logger>
-
     <logger name="org.springframework" additivity="false">
         <level value="debug"/>
         <appender-ref ref="springAppender"/>
     </logger>
-    <logger name="accseeLog" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="pipelineAccessAppender"/>
+    <logger name="ch.qos.logback" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="springAppender"/>
     </logger>
 
     <root>

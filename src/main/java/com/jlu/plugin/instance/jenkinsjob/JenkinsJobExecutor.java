@@ -1,20 +1,16 @@
 package com.jlu.plugin.instance.jenkinsjob;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import com.jlu.common.utils.CollUtils;
-import org.slf4j.Logger;
+import com.jlu.common.logger.TrackLogger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.jenkins.exception.JenkinsException;
-import com.jlu.jenkins.service.DefaultJenkinsServer;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.pipeline.job.model.JobBuild;
-import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.AbstractExecutor;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
@@ -41,6 +37,7 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             String jobName = jenkinsJobBuild.getJobName();
             Integer buildNumber = jenkinsBuildService.buildJob(jenkinsServerId, jobName, jobBuild
                     .getInParameterMap(), jobBuild);
+            System.out.println("jobBuildId-" + jobBuild.getId() + " buildNumber-" + buildNumber);
             logger.info("jobBuildId-{} buildNumber-{}", jobBuild.getId(), buildNumber);
             StringBuilder logUrl = new StringBuilder();
             logUrl.append(jenkinsJobBuild.getJobFullName()).append("/")
@@ -49,7 +46,6 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             jenkinsJobBuild.setBuildUrl(logUrl.toString());
             jenkinsJobBuild.setBuildNumber(buildNumber);
             jenkinsJobDao.saveOrUpdate(jenkinsJobBuild);
-            ;
         } catch (IOException ioe) {
             notifyJobStartFailed(jobBuild, "通讯异常");
             return;
@@ -57,7 +53,7 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             notifyJobStartFailed(jobBuild, jre.getMessage());
             return;
         } catch (Exception e) {
-            logger.error("jenkins job html.error", e);
+            logger.error("jenkins job build unkown error", e);
             notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
             return;
         }

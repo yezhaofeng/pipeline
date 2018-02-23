@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jlu.branch.bean.BranchType;
-import com.jlu.branch.model.GithubBranch;
 import com.jlu.common.utils.PipelineUtils;
 import com.jlu.github.model.GitHubCommit;
 import com.jlu.github.service.IGitHubCommitService;

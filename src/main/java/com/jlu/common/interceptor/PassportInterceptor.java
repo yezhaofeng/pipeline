@@ -1,7 +1,6 @@
 package com.jlu.common.interceptor;
 
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +67,6 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (Role.ADMIN.equals(githubUser.getRole())) {
             return true;
         }
-
         // 校验具体的资源权限
         if (handler instanceof HandlerMethod) {
             // 普通用户不允许访问管理员url

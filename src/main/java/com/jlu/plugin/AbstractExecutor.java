@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jlu.common.logger.TrackLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,8 @@ public abstract class AbstractExecutor {
     }
 
     protected void notifyJobStartFailed(JobBuild jobBuild, String message) {
+        logger.info("Job-{}, startFailed:{}", jobBuild, message);
+        System.out.println(jobBuild.toString() + " startFailed " + message);
         jobBuild.setJobStatus(PipelineJobStatus.FAILED);
         jobBuild.setEndTime(new Date());
         jobBuild.setMessage(message);
@@ -81,6 +84,8 @@ public abstract class AbstractExecutor {
     }
 
     protected void notifyJobStartSucc(JobBuild jobBuild) {
+        logger.info("Job-{}, startSucc", jobBuild);
+        System.out.println(jobBuild.toString() + " startSucc ");
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         jobBuild.setStartTime(new Date());
         jobBuild.setEndTime(new Date());

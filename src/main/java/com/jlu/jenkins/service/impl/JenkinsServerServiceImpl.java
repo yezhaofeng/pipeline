@@ -94,7 +94,25 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         if (why != null) {
             throw new JenkinsException(formatWhy(why));
         }
-        Build build = jenkinsServer.getBuild(queueItem);
+        // 有的时候，虽然触发成功了，但是没有buildNumber.重试机制
+        int reTryTime = 0;
+        Build build = null;
+        while (build == null && reTryTime < 5) {
+            try {
+                build = jenkinsServer.getBuild(queueItem);
+            } catch (NullPointerException e) {
+                // 等2s重试
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e1) {
+                    // do nothing
+                }
+                logger.warn("get buildNumber with jobName:{} retry time:{}", jobName, reTryTime++);
+            }
+        }
+        if (build == null) {
+            throw new JenkinsException(JenkinsExceptionEnum.UNKOWN);
+        }
         return build.getNumber();
     }
 
