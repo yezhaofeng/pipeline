@@ -124,6 +124,7 @@ public class JenkinsConf {
                 Objects.equals(masterPassword, that.masterPassword);
     }
 
+    // 重写equals的时候，必须重写hashCode()
     @Override
     public int hashCode() {
         return Objects.hash(serverUrl, masterUser, masterPassword);

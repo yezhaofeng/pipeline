@@ -51,7 +51,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     @Override
     public PipelineConfBean getPipelineConfBean(Long pipelineConfId) {
         PipelineConfBean pipelineConfBean = new PipelineConfBean();
-        if (pipelineConfId == null && pipelineConfId == 0L) {
+        if (pipelineConfId == null || pipelineConfId == 0L) {
             return null;
         }
         PipelineConf pipelineConf = pipelineConfDao.findById(pipelineConfId);

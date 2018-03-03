@@ -47,7 +47,10 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
             return jenkinsServer;
         }
         JenkinsServer newJenkinsServer = initJenkinsServer(serverUrl, username, password);
-        jenkinsServerMap.put(serverUrl, newJenkinsServer);
+        // 此处可以接受线程不安全
+        //（1）如果是新的记录，那么会向map中添加该键值对，并返回null。
+        //（2）如果已经存在，那么不会覆盖已有的值，直接返回已经存在的值。
+        jenkinsServerMap.putIfAbsent(serverUrl, newJenkinsServer);
         logger.info("init a new JenkinsServer:{}", serverUrl);
         return newJenkinsServer;
     }
