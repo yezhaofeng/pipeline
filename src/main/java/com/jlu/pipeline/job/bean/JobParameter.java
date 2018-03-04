@@ -5,7 +5,7 @@ package com.jlu.pipeline.job.bean;
  */
 public class JobParameter {
     // 提交信息
-    public static final String PIPELINE_MODULE = "PIPELINE_MODULE_NAME";
+    public static final String PIPELINE_MODULE_NAME = "PIPELINE_MODULE_NAME";
     public static final String PIPELINE_BRANCH = "PIPELINE_BRANCH";
     public static final String PIPELINE_COMMIT_ID = "PIPELINE_COMMIT_ID";
     public static final String PIPELINE_COMMIT_COMMENTS = "PIPELINE_COMMIT_COMMENTS";
@@ -21,4 +21,8 @@ public class JobParameter {
     public static final String PIPELINE_COMPILE_PRODUCT_PATH = "PIPELINE_COMPILE_PRODUCT_PATH";
     public static final String PIPELINE_RELEASE_PRODUCT_PATH = "PIPELINE_RELEASE_PRODUCT_PATH";
     public static final String PIPELINE_RELEASE_VERSION = "PIPELINE_RELEASE_VERSION";
+
+    // 私有构造器
+    private JobParameter() {
+    }
 }

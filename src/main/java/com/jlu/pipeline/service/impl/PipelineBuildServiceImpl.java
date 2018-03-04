@@ -279,7 +279,7 @@ public class PipelineBuildServiceImpl implements IPipelineBuildService {
         params.put(JobParameter.PIPELINE_BUILD_ID, String.valueOf(pipelineBuild.getId()));
         params.put(JobParameter.PIPELINE_BUILD_NUMBER, String.valueOf(pipelineBuild.getBuildNumber()));
         params.put(JobParameter.PIPELINE_COMMIT_COMMENTS, gitHubCommit.getCommits());
-        params.put(JobParameter.PIPELINE_MODULE, pipelineBuild.getModule());
+        params.put(JobParameter.PIPELINE_MODULE_NAME, pipelineBuild.getModule());
         params.put(JobParameter.PIPELINE_REPOSITORY_GITHUB_URL,
                 String.format(PipelineConfigReader.getConfigValueByKey("github.base.repo"), gitHubCommit.getOwner(),
                         PipelineUtils.getRepoNameByModule(gitHubCommit.getModule())));

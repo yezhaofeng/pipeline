@@ -8,7 +8,6 @@ import java.util.UUID;
 import com.jlu.plugin.bean.PluginType;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.plugin.core.Plugin;
 import org.springframework.stereotype.Service;
 
 import com.jlu.common.utils.DateUtils;
@@ -51,7 +50,7 @@ public class CompileExecutor extends AbstractExecutor {
     public void execute(JobBuildContext context, JobBuild jobBuild) {
         Map<String, String> compileParam = jobBuild.getInParameterMap();
         CompileBuild compileBuild = compileBuildDao.findById(jobBuild.getPluginBuildId());
-        String module = compileParam.get(JobParameter.PIPELINE_MODULE);
+        String module = compileParam.get(JobParameter.PIPELINE_MODULE_NAME);
         String commitId = compileParam.get(JobParameter.PIPELINE_COMMIT_ID);
         Long pipelineBuildId = Long.parseLong(compileParam.get(JobParameter.PIPELINE_BUILD_ID));
         // 复用编译产出
