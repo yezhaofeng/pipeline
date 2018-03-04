@@ -24,13 +24,14 @@ background-size: 100%; font-size:20px;color: #bbbbbb;">
             <p class="help-block">
                 <a href="${githubHome}" target="_blank">${username}</a>
             <div>欢迎您</div>
+
             </p>
             <form role="form" action="/github/initUser" method="post">
                 <input type="hidden" name="username" value="${username}"/>
                 <input type="hidden" name="registerToken" value="${registerToken}"/><br/>
                 <input type="hidden" name="avatarUrl" value="${avatarUrl}"/><br/>
                 <div class="form-group">
-                    <label for="gitHubTokenid">GitHub-token</label>
+                    <label for="gitHubTokenid">GitHub-token <a href="https://github.com/settings/tokens/new" target="_blank">去生成</a></label>
                     <input type="text" name="gitHubToken" class="form-control" id="gitHubTokenid"/>
                 </div>
                 <br/>
