@@ -1,6 +1,11 @@
 package com.jlu.common.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,12 +59,17 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * @return
      */
     public static String getNowTimeFormat() {
-        return new SimpleDateFormat(TIME_FORMAT_STR).format(new Date());
+        // JDK8特性
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(TIME_FORMAT_STR));
+//        return new SimpleDateFormat(TIME_FORMAT_STR).format(new Date());
     }
 
     public static String format(Date time) {
-
-        return new SimpleDateFormat(TIME_FORMAT_STR).format(time);
+        return convertDateToLDT(time).format(DateTimeFormatter.ofPattern(TIME_FORMAT_STR));
+    }
+    // Date转换为LocalDateTime
+    private static LocalDateTime convertDateToLDT(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
     /**
@@ -68,7 +78,8 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
      * @return
      */
     public static String getNowDateFormat() {
-        return new SimpleDateFormat(DATE_FORMAT_STR).format(new Date());
+        // JDK8特性
+        return LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT_STR));
     }
 
     /**

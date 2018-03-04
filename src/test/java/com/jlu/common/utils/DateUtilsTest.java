@@ -7,6 +7,10 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import junit.framework.Assert;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -51,6 +55,14 @@ public class DateUtilsTest {
             }).start();
         }
         Thread.sleep(2000);
+
+    }
+
+    @Test
+    public void testName() throws Exception {
+        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        System.out.println(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
     }
 }
