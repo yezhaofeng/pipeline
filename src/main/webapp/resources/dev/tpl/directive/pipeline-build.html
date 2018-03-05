@@ -163,7 +163,7 @@
                                 </div>
                                 <div ng-if="jobBuildInfo.pluginType == 'JENKINS_JOB'">
                                     <a ng-if="jobBuildInfo.pluginBuild.buildUrl != null && jobBuildInfo.pluginType == 'JENKINS_JOB'"
-                                       ng-href="{{::jobBuildInfo.pluginBuild.buildUrl}}" target="_blank">查看构建日志</a>&nbsp;&nbsp;
+                                       ng-href="{{::jobBuildInfo.pluginBuild.buildUrl}}" target="_blank" ng-bind="jobBuildInfo.pluginBuild.buildUrl"></a>&nbsp;&nbsp;
                                 </div>
                                 <div ng-if="jobBuildInfo.pluginType == 'RELEASE'">
                                     <a ng-if="jobBuildInfo.pluginBuild.logUrl != null"
