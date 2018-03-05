@@ -108,6 +108,8 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                     $scope.cancel();
                 } else {
                     $scope.saving = false;
+                    $scope.saveFailed = true;
+                    $scope.message = response.message;
                 }
             });
         };
