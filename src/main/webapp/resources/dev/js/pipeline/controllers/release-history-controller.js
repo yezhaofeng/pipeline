@@ -50,7 +50,9 @@ define(['app', 'angular'], function (app, angular) {
                     });
             }
         };
-
+        self.alertInfo = function (message) {
+            window.alert(message);
+        };
         $scope.$watch(function () {
             return self.context.module;
         }, function (module) {
