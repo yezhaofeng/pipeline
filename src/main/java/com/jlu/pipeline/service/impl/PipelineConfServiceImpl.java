@@ -1,9 +1,11 @@
 package com.jlu.pipeline.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
 
     @Override
     public void processPipelineWithTransaction(PipelineConfBean pipelineConfBean) {
+        checkValid(pipelineConfBean);
         PipelineConf pipelineConf = pipelineConfDao.get(pipelineConfBean.getModule(), pipelineConfBean.getBranchType());
         if (pipelineConf == null) {
             throw new PipelineRuntimeException("未找到流水线配置");
@@ -46,6 +49,45 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         pipelineConfDao.saveOrUpdate(pipelineConf);
         List<JobConfBean> jobConfBeans = pipelineConfBean.getJobConfs();
         jobConfService.processJobWithTransaction(jobConfBeans, pipelineConf.getId());
+    }
+
+
+    private void checkValid(PipelineConfBean pipelineConfBean) {
+        List<Integer> compileJobIndexs = new ArrayList<>();
+        List<Integer> releaseJobIndexs = new ArrayList<>();
+        List<JobConfBean> jobConfBeanList = pipelineConfBean.getJobConfs();
+        for (int i = 0; i < jobConfBeanList.size(); i++) {
+            JobConfBean jobConfBean = jobConfBeanList.get(i);
+            // 名字不能为空
+            if (StringUtils.isBlank(jobConfBean.getName())) {
+                // i + 1  自然序列从1开始
+                throw new PipelineRuntimeException(String.format("第%d个Job的名字不能为空", i + 1));
+            }
+            if (PluginType.COMPILE.equals(jobConfBean.getPluginType())) {
+                compileJobIndexs.add(i);
+            }
+            if (PluginType.RELEASE.equals(jobConfBean.getPluginType())) {
+                releaseJobIndexs.add(i);
+            }
+        }
+        // 最多只能配置一个编译Job
+        if (compileJobIndexs.size() > 1) {
+            throw new PipelineRuntimeException("仅允许配置一个'编译构建'Job");
+        }
+        // 最多只能配置一个发版Job
+        if (releaseJobIndexs.size() > 1) {
+            throw new PipelineRuntimeException("仅允许配置一个'发版'Job");
+        }
+        // 不能只配置一个发版Job，而不配置编译Job
+        if (compileJobIndexs.size() == 0 && releaseJobIndexs.size() == 1) {
+            throw new PipelineRuntimeException("'发版'Job依赖'编译构建'Job，请在此之前配置'编译构建'Job");
+        }
+        // 若配置发版Job，那么之前必须有编译Job
+        if (compileJobIndexs.size() == 1 && releaseJobIndexs.size() == 1) {
+            if (compileJobIndexs.get(0) > releaseJobIndexs.get(0)) {
+                throw new PipelineRuntimeException("'编译构建'Job必须配置在'发版'Job之前");
+            }
+        }
     }
 
     @Override
@@ -102,6 +144,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
                 BranchType.BRANCH, DEFAULT_BRANCH_PIPELINE_REMARK);
         processPipelineForInitWithTransaction(branchPipelineConf);
     }
+
     private void processPipelineForInitWithTransaction(PipelineConfBean pipelineConfBean) {
         PipelineConf pipelineConf = null;
         Long pipelineConfId = pipelineConfBean.getId();
