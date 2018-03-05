@@ -1,9 +1,12 @@
 package com.jlu.plugin.instance.jenkinsjob.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by langshiquan on 18/1/10.
@@ -13,8 +16,11 @@ public class JenkinsJobConf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //    @NotNull
     private Long jenkinsServerId;
+    //    @NotBlank
     private String jobFullName;
+    //    @NotBlank
     private String jobName;
 
     public Long getId() {
@@ -57,5 +63,9 @@ public class JenkinsJobConf {
                 ", jobFullName='" + jobFullName + '\'' +
                 ", jobName='" + jobName + '\'' +
                 '}';
+    }
+
+    public boolean isValid() {
+        return !(jenkinsServerId == null || jobName == null || jobFullName == null);
     }
 }

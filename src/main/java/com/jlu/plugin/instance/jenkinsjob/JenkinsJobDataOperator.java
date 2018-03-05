@@ -1,5 +1,6 @@
 package com.jlu.plugin.instance.jenkinsjob;
 
+import com.jlu.common.exception.PipelineRuntimeException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class JenkinsJobDataOperator extends AbstractDataOperator<JenkinsJobConf,
     @Override
     public Long saveConf(JSONObject json) {
         JenkinsJobConf jenkinsJobConf = JsonUtils.getObjectByJsonObject(json, JenkinsJobConf.class);
+        if(!jenkinsJobConf.isValid()){
+            throw new PipelineRuntimeException("Jenkins Job配置不能为空");
+        }
         jenkinsJobConfDao.saveOrUpdate(jenkinsJobConf);
         return jenkinsJobConf.getId();
     }
