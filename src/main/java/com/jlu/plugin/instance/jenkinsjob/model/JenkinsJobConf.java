@@ -60,7 +60,7 @@ public class JenkinsJobConf {
         return "JenkinsJobConf{" +
                 "id=" + id +
                 ", jenkinsServerId=" + jenkinsServerId +
-                ", jobFullName='" + jobFullName + '\'' +
+                ", jobFullName='" + jobFullName + '\''  +
                 ", jobName='" + jobName + '\'' +
                 '}';
     }

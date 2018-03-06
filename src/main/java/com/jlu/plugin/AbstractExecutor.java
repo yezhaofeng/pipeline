@@ -29,8 +29,9 @@ public abstract class AbstractExecutor {
     @Autowired
     protected IJobBuildService jobBuildService;
 
+    // 禁止子类重写
     @LogExecTime
-    public void executeJob(JobBuildContext context, JobBuild jobBuild) {
+    public final void executeJob(JobBuildContext context, JobBuild jobBuild) {
         logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
         if (jobBuild == null) {
             notifyJobStartFailed(jobBuild, "未找到Job构建记录");

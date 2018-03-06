@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * Created by Administrator on 2018/1/24.
  */
 @Component
-public class VersionValueGenerator implements PluginValueGenerator {
+public class VersionValueGenerator implements PluginValueGenerator<String> {
     @Autowired
     private IReleaseService releaseService;
     @Autowired
