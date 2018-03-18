@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +43,9 @@ public class GithubDataController {
     @Autowired
     private IGitHubCommitService gitHubCommitService;
 
+    // 尽量不漏掉webHook消息
+    private ExecutorService webHookExecutor = Executors.newCachedThreadPool();
+
     /**
      * 监听代码提交事件（push），触法流水线
      *
@@ -64,7 +69,7 @@ public class GithubDataController {
             if (info != null) {
                 final JSONObject hookMessage = JSONObject.fromObject(info.toString());
                 logger.info("whook-message:{}", hookMessage);
-                new Thread(new Runnable() {
+                webHookExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -74,7 +79,7 @@ public class GithubDataController {
                             logger.error("deal hook-message failed,json:{},html.error:", hookMessage, e);
                         }
                     }
-                }).start();
+                });
             }
         } catch (IOException e) {
             logger.error("Resolving hook-message is fail! hook:{}", info.toString());
