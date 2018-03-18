@@ -17,10 +17,12 @@ import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.runtime.RuntimeRequire;
 import com.jlu.plugin.service.IPluginInfoService;
+import org.springframework.stereotype.Component;
 
 /**
  * Job executor
  */
+@Component
 public abstract class AbstractExecutor {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractExecutor.class);
@@ -29,9 +31,10 @@ public abstract class AbstractExecutor {
     @Autowired
     protected IJobBuildService jobBuildService;
 
+    // FIXME 方法定义为final，空指针？
     // 禁止子类重写
     @LogExecTime
-    public final void executeJob(JobBuildContext context, JobBuild jobBuild) {
+    public void executeJob(JobBuildContext context, JobBuild jobBuild) {
         logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
         if (jobBuild == null) {
             notifyJobStartFailed(jobBuild, "未找到Job构建记录");
