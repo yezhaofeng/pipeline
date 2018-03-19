@@ -49,4 +49,9 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    @Override
+    public GithubUser getUserByPipelineToken(String pipelineToken) {
+        return userDao.get(pipelineToken);
+    }
+
 }

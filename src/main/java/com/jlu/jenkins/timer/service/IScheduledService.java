@@ -1,7 +1,6 @@
 package com.jlu.jenkins.timer.service;
 
 import com.jlu.jenkins.timer.bean.JenkinsBuildScheduledTask;
-import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.pipeline.job.model.JobBuild;
 
 /**

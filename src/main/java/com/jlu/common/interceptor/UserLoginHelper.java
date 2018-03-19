@@ -3,6 +3,7 @@ package com.jlu.common.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.jlu.common.service.ServiceBeanFactory;
 import com.jlu.user.dao.IUserDao;
 import com.jlu.user.model.GithubUser;
 import org.apache.commons.lang.StringUtils;
@@ -16,15 +17,6 @@ import org.springframework.stereotype.Component;
 public class UserLoginHelper {
 
     private static final ThreadLocal<GithubUser> USER_TL = new ThreadLocal<>();
-
-
-    private static IUserDao userDao;
-
-    // 使用非静态的setter进行注入
-    @Autowired
-    public void setUserDao(IUserDao userDao) {
-        UserLoginHelper.userDao = userDao;
-    }
 
     /**
      * 在用户验证拦截器中设置session中用户到ThreadLocal中
@@ -56,7 +48,7 @@ public class UserLoginHelper {
             HttpSession session = request.getSession();
             githubUser = session.getAttribute(GithubUser.CURRENT_USER_NAME);
         } else {
-            githubUser = userDao.get(pipelineToken);
+            githubUser = ServiceBeanFactory.getUserService().getUserByPipelineToken(pipelineToken);
         }
         if (githubUser instanceof GithubUser) {
             return (GithubUser) githubUser;

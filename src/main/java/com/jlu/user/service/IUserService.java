@@ -17,4 +17,6 @@ public interface IUserService {
     GithubUser getUserByName(String username);
 
     Boolean idAdmin(String username);
+
+    GithubUser getUserByPipelineToken(String pipelineToken);
 }
