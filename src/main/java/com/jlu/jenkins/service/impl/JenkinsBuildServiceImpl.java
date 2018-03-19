@@ -3,6 +3,8 @@ package com.jlu.jenkins.service.impl;
 import java.io.IOException;
 import java.util.Map;
 
+import com.jlu.jenkins.timer.bean.JenkinsBuildScheduledTask;
+import com.jlu.jenkins.timer.service.IScheduledService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +40,8 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     @Autowired
     private IJenkinsConfDao jenkinsConfDao;
 
-    @Qualifier("scheduledTimerServiceImpl")
     @Autowired
-    private ITimerService timerService;
+    private IScheduledService scheduledService;
 
     @Autowired
     private IPluginInfoService pluginInfoService;
@@ -62,9 +63,8 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
         period = period > DEFAULT_PERIOD ? period : DEFAULT_PERIOD;
 
         Integer buildNumber = jenkinsServerService.build(jenkinsServer, jobName, params);
-        JenkinsBuildTimerTask jenkinsBuildTimerTask = new JenkinsBuildTimerTask(this, jenkinsServerService,
-                jenkinsServer, jobName, buildNumber, jobBuild);
-        timerService.register(jenkinsBuildTimerTask, delay, period);
+        JenkinsBuildScheduledTask jenkinsBuildScheduledTask = new JenkinsBuildScheduledTask(jenkinsServer, jobName, buildNumber, jobBuild);
+        scheduledService.register(jenkinsBuildScheduledTask, delay, period);
         return buildNumber;
     }
 

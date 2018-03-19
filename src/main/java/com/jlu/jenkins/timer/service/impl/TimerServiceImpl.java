@@ -23,7 +23,7 @@ import com.jlu.pipeline.job.model.JobBuild;
  * Timer存在缺陷
  */
 @Deprecated
-@Service
+//@Service
 public class TimerServiceImpl implements ITimerService {
 
     private final Logger logger = LoggerFactory.getLogger(TimerServiceImpl.class);
@@ -47,7 +47,7 @@ public class TimerServiceImpl implements ITimerService {
         return timer;
     }
 
-    //    @PostConstruct
+    @PostConstruct
     private void clearCanceledTask() {
         timer.schedule(new TimerTask() {
             @Override
@@ -61,7 +61,7 @@ public class TimerServiceImpl implements ITimerService {
         }, new Date(), CLEAR_TASK_PERIOD);
     }
 
-    //    @PreDestroy
+    @PreDestroy
     public void stashRuntimeTask() {
         timer.cancel();
         logger.warn("{} task is running", vector.size());

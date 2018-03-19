@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.plugin.thread.PluginThreadService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +45,7 @@ import com.jlu.plugin.service.IPluginInfoService;
 public class JobBuildServiceImpl implements IJobBuildService, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
     @Autowired
     private IPluginInfoService pluginInfoService;
 
@@ -52,6 +54,9 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
 
     @Autowired
     private IPipelineBuildDao pipelineBuildDao;
+
+    @Autowired
+    private PluginThreadService pluginThreadService;
 
     @Override
     public Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId,
@@ -95,7 +100,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         PluginType pluginType = jobBuild.getPluginType();
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam, runtimeJobParam);
-        new Thread(new Runnable() {
+        pluginThreadService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -110,7 +115,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 
     @Override
@@ -139,7 +144,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>(), new HashMap<>());
-        new Thread(new Runnable() {
+        pluginThreadService.execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -153,7 +158,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 
     private void updatePipelineBuildStart(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {

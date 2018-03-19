@@ -17,6 +17,7 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
 /**
  * Created by langshiquan on 18/1/10.
  */
+@Deprecated
 public class JenkinsBuildTimerTask extends TimerTask {
 
     private Logger logger = LoggerFactory.getLogger(JenkinsBuildTimerTask.class);
@@ -89,7 +90,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
             }
 
         } catch (Exception e) {
-            logger.info("jobBuildId-{} jobName-{} buildNumber-{} occur Exception,html.error:", jobBuild.getId(), jobName,
+            logger.info("jobBuildId-{} jobName-{} buildNumber-{} occur Exception,error:", jobBuild.getId(), jobName,
                     buildNumber, e);
             this.cancel();
         }
