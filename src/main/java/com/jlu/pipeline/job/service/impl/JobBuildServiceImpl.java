@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.plugin.thread.PluginTask;
 import com.jlu.plugin.thread.PluginThreadService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
@@ -98,24 +99,10 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
             updatePipelineBuildStart(jobBuild.getPipelineBuildId(), PipelineJobStatus.RUNNING);
         }
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
-        PluginType pluginType = jobBuild.getPluginType();
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam, runtimeJobParam);
-        pluginThreadService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // 防止事务交叉提交
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // do nothing
-                }
-                try {
-                    ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        PluginTask pluginTask = new PluginTask(jobBuildContext, jobBuild);
+
+        pluginThreadService.execute(pluginTask);
     }
 
     @Override
@@ -136,7 +123,6 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         jobBuild.setMessage(StringUtils.EMPTY);
         jobBuildDao.saveOrUpdate(jobBuild);
-        PluginType pluginType = jobBuild.getPluginType();
         Map<String, Object> runtimeParamMap = new HashedMap();
         List<RunTimeBean> runTimeBeanList = getRuntimeRequire(jobBuild.getId());
         for (RunTimeBean runTimeBean : runTimeBeanList) {
@@ -144,21 +130,10 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>(), new HashMap<>());
-        pluginThreadService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // do nothing
-                }
-                try {
-                    ((IPluginInfoService) AopTargetUtils.getTarget(pluginInfoService)).getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        PluginTask pluginTask = new PluginTask(jobBuildContext, jobBuild);
+
+        pluginThreadService.execute(pluginTask);
+
     }
 
     private void updatePipelineBuildStart(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
