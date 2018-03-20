@@ -33,6 +33,18 @@ public class JobBuildController extends AbstractController {
         return ResponseBean.TRUE;
     }
 
+    @RequestMapping(value = "{jobBuildId}/cancel", method = RequestMethod.POST)
+    public ResponseBean build(@PathVariable Long jobBuildId) {
+        boolean realCanceled = jobBuildService.cancel(jobBuildId);
+        if (realCanceled) {
+            return ResponseBean.succ("中断请求已发出,请稍后");
+        } else {
+            return ResponseBean.succ("取消成功");
+        }
+    }
+
+
+
     @RequestMapping(value = "{jobBuildId}", method = RequestMethod.GET)
     public JobBuildBean buildInfo(@PathVariable Long jobBuildId) {
         return jobBuildService.getWithPluginBuild(jobBuildId);

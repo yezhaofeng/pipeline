@@ -15,6 +15,12 @@ public class ResponseBean {
         response.setMessage(error);
         return response;
     }
+    public static ResponseBean succ(String message) {
+        ResponseBean response = new ResponseBean(true);
+        response.setMessage(message);
+        return response;
+    }
+
 
     public ResponseBean(boolean success) {
         this.success = success;

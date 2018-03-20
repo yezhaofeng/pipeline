@@ -85,6 +85,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     @Override
     public void build(Long jobBuildId, Map<String, String> execParam, Map<String, Object> runtimeJobParam, TriggerMode triggerMode, String triggerUser) {
         JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
+        // TODO: 2018/3/20
         if (jobBuild == null) {
             throw new PipelineRuntimeException("TODO");
         }
@@ -164,6 +165,27 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         jobBuild.setInParams(paramStr);
         jobBuildDao.saveOrUpdate(jobBuild);
         return jobBuildContext;
+    }
+
+    @Override
+    public boolean cancel(Long jobBuildId) {
+        Thread jobThread = pluginThreadService.getJobBuildThread(jobBuildId);
+        // 如果仍然在线程执行中,发出中断请求
+        if (jobThread != null) {
+            jobThread.interrupt();
+            return false;
+        }
+        JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
+        if (jobBuild == null) {
+            throw new PipelineRuntimeException("无此Job记录");
+        }
+        if (!PipelineJobStatus.RUNNING.equals(jobBuild.getJobStatus())) {
+            throw new PipelineRuntimeException("该Job未处于运行中,无法取消");
+        }
+        PluginType pluginType = jobBuild.getPluginType();
+        // 如果已经调起，则执行Job的取消方法
+        pluginInfoService.getRealJobPlugin(pluginType).getExecutor().cancel(jobBuild);
+        return true;
     }
 
     @Override

@@ -21,6 +21,12 @@ public interface IJobBuildService {
 
     void build(Long jobBuildId, Map<String, String> execParam, Map<String, Object> runtimeJobParam, TriggerMode triggerMode, String triggerUser);
 
+    /**
+     * @return 是否真正取消成功
+     */
+
+    boolean cancel(Long jobBuildId);
+
     void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);

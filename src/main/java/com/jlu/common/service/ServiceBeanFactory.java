@@ -4,8 +4,8 @@ import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.service.IScheduledService;
 import com.jlu.plugin.service.IPluginInfoService;
+import com.jlu.plugin.thread.PluginThreadService;
 import com.jlu.user.service.IUserService;
-import com.offbytwo.jenkins.JenkinsServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,12 @@ public class ServiceBeanFactory {
     private static IScheduledService scheduledService;
     private static IUserService userService;
     private static IPluginInfoService pluginInfoService;
+    private static PluginThreadService pluginThreadService;
+
+    @Autowired
+    public void setPluginThreadService(PluginThreadService pluginThreadService) {
+        ServiceBeanFactory.pluginThreadService = pluginThreadService;
+    }
 
     @Autowired
     public void setJenkinsBuildService(IJenkinsBuildService jenkinsBuildService) {
@@ -43,6 +49,10 @@ public class ServiceBeanFactory {
     @Autowired
     public void setPluginInfoService(IPluginInfoService pluginInfoService) {
         ServiceBeanFactory.pluginInfoService = pluginInfoService;
+    }
+
+    public static PluginThreadService getPluginThreadService() {
+        return pluginThreadService;
     }
 
     public static IPluginInfoService getPluginInfoService() {
