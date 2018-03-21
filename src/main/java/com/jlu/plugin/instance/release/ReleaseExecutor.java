@@ -111,6 +111,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             releaseBuild.setTriggerUser(jobBuild.getTriggerUser());
             releaseBuild.setStatus(PipelineJobStatus.RUNNING);
             releaseBuild.setPipelineName(pipelineBuild.getName());
+            releaseBuild.setBuildNumber(buildNumber);
             releaseService.saveOrUpdate(releaseBuild);
             jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         } catch (IOException ioe) {
@@ -120,7 +121,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             notifyJobStartFailed(jobBuild, jre.getMessage());
             return;
         } catch (Exception e) {
-            logger.error("release occur unkown error,",e);
+            logger.error("release occur unknown error,", e);
             notifyJobStartFailed(jobBuild, "UnKnown Error:" + e.getMessage());
             return;
         }
@@ -142,7 +143,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             newParams.put(JobParameter.PIPELINE_RELEASE_PRODUCT_PATH, releaseBuild.getReleasePath());
             newParams.put(JobParameter.PIPELINE_RELEASE_VERSION, releaseBuild.getVersion());
         }
-        if(PipelineJobStatus.SUCCESS.equals(jobBuild.getJobStatus())) {
+        if (PipelineJobStatus.SUCCESS.equals(jobBuild.getJobStatus())) {
             jobBuild.setName(jobBuild.getName() + " " + releaseBuild.getVersion());
         }
         jobBuildService.notifiedJobBuildFinished(jobBuild, newParams);

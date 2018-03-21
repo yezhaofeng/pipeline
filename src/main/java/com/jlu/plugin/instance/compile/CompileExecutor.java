@@ -91,6 +91,7 @@ public class CompileExecutor extends AbstractExecutor {
                     .append(SEPARATOR).append("console");
             compileBuild.setBuildPath(buildPath.toString());
             compileBuild.setLogUrl(logUrl.toString());
+            compileBuild.setBuildNumber(buildNumber);
             compileBuildDao.saveOrUpdate(compileBuild);
             jobBuild.setJobStatus(PipelineJobStatus.RUNNING);
         } catch (IOException ioe) {

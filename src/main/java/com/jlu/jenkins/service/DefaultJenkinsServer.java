@@ -20,6 +20,7 @@ public class DefaultJenkinsServer {
     public final static String MASTER_USERNAME = "langshiquan";
     public final static String MASTER_PASSWORD = "941207";
     public final static String ADMIN_USERNAME = "pipeline_admin";
+    public static JenkinsConf defaultJenkinsConf;
 
     @Autowired
     private IJenkinsConfService jenkinsConfService;
@@ -42,6 +43,7 @@ public class DefaultJenkinsServer {
         jenkinsConf.setCreateUser(DefaultJenkinsServer.ADMIN_USERNAME);
         jenkinsConf.setLastModifiedUser(DefaultJenkinsServer.ADMIN_USERNAME);
         jenkinsConfService.saveOrUpdate(jenkinsConf);
+        defaultJenkinsConf = jenkinsConf;
         ID = jenkinsConf.getId();
     }
 }

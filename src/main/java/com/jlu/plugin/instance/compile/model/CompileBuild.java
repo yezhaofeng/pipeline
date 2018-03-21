@@ -39,6 +39,8 @@ public class CompileBuild {
 
     private String message;
 
+    private Integer buildNumber;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class CompileBuild {
 
     public void setBuildPath(String buildPath) {
         this.buildPath = buildPath;
+    }
+
+    public Integer getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(Integer buildNumber) {
+        this.buildNumber = buildNumber;
     }
 
     public String getMessage() {

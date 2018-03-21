@@ -50,6 +50,8 @@ public class ReleaseBuild {
 
     private String releasePath;
 
+    private Integer buildNumber;
+
     @RuntimeRequire(defaultValueClass = VersionValueGenerator.class,
             checkRegex = ReleaseServiceImpl.VERSION_REGEX, description = "版本号")
     private String version;
@@ -61,6 +63,14 @@ public class ReleaseBuild {
     private String remark;
 
     private String message;
+
+    public Integer getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(Integer buildNumber) {
+        this.buildNumber = buildNumber;
+    }
 
     public Long getId() {
         return id;
@@ -85,6 +95,7 @@ public class ReleaseBuild {
     public void setReleasePath(String releasePath) {
         this.releasePath = releasePath;
     }
+
 
     public String getMessage() {
         return message;
