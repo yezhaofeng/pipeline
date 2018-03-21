@@ -3,7 +3,6 @@ package com.jlu.plugin.thread;
 import com.jlu.common.exception.PipelineRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.*;
@@ -37,7 +36,6 @@ public class PluginThreadService {
     public void register(Long jobBuildId, Thread thread) {
 
         jobBuildThreadMap.put(jobBuildId, thread);
-        System.out.println(jobBuildThreadMap);
     }
 
     public void destroy(Long jobBuildId) {
@@ -47,10 +45,6 @@ public class PluginThreadService {
 
     public Thread getJobBuildThread(Long jobBuildId) {
         // FIXME: 2018/3/20 如何保证对象只在一个容器里?
-        System.out.println(applicationContext.getId());
-        System.out.println(System.identityHashCode(jobBuildThreadMap));
-        System.out.println(System.identityHashCode(this));
-        System.out.println(jobBuildThreadMap);
         return jobBuildThreadMap.get(jobBuildId);
     }
 

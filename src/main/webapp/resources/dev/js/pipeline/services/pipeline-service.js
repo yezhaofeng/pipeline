@@ -182,6 +182,17 @@ define(['app', 'angular', 'constants'], function (app, angular, constants) {
                 });
         };
         /**
+         * 取消Job
+         * @param id
+         * @returns {*}
+         */
+        self.cancelJob = function (id) {
+            return $http.post(constants.api('/pipeline/job/' + id + '/cancel'))
+                .then(function (data) {
+                    return data.data;
+                });
+        };
+        /**
          * 获取模块下所有的分支（不含master）
          * @param module
          * @returns {*}

@@ -25,10 +25,22 @@ public class PluginTask implements Runnable {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            ServiceBeanFactory.getJobBuildService().notifiedJobBuildStartCanceled(jobBuild);
+            return;
         }
-        ServiceBeanFactory.getPluginInfoService().getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
-        ServiceBeanFactory.getPluginThreadService().destroy(jobBuild.getId());
-
+        try {
+            ServiceBeanFactory.getPluginInfoService().getRealJobPlugin(pluginType).getExecutor().executeJob(jobBuildContext, jobBuild);
+            checkInterrupted();
+        } finally {
+            ServiceBeanFactory.getPluginThreadService().destroy(jobBuild.getId());
+        }
     }
+
+    private void checkInterrupted() {
+        if (Thread.currentThread().isInterrupted()) {
+            ServiceBeanFactory.getPluginInfoService().getRealJobPlugin(pluginType).getExecutor().cancel(jobBuild);
+            ServiceBeanFactory.getJobBuildService().notifiedJobBuildCanceled(jobBuild);
+        }
+    }
+
 }

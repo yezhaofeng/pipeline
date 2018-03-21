@@ -32,6 +32,8 @@ public interface IJenkinsServerService {
     Integer build(JenkinsServer jenkinsServer, String jobName, Map<String, String> params)
             throws IOException;
 
+    void cancel(JenkinsServer jenkinsServer, String jobName,Integer buildNumber) throws IOException;
+
     Long getLastSuccessfulBuildDuration(JenkinsServer jenkinsServer, String jobName) throws IOException;
 
     Build getJobBuild(JenkinsServer jenkinsServer, String jobName, Integer buildNumber) throws IOException;

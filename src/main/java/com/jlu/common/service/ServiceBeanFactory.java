@@ -3,16 +3,18 @@ package com.jlu.common.service;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.jenkins.timer.service.IScheduledService;
+import com.jlu.pipeline.job.service.IJobBuildService;
 import com.jlu.plugin.service.IPluginInfoService;
 import com.jlu.plugin.thread.PluginThreadService;
 import com.jlu.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Administrator on 2018/3/19.
  */
-@Component
+@Service
 public class ServiceBeanFactory {
     private static IJenkinsBuildService jenkinsBuildService;
     private static IJenkinsServerService jenkinsServerService;
@@ -20,6 +22,12 @@ public class ServiceBeanFactory {
     private static IUserService userService;
     private static IPluginInfoService pluginInfoService;
     private static PluginThreadService pluginThreadService;
+    private static IJobBuildService jobBuildService;
+
+    @Autowired
+    public void setJobBuildService(IJobBuildService jobBuildService) {
+        ServiceBeanFactory.jobBuildService = jobBuildService;
+    }
 
     @Autowired
     public void setPluginThreadService(PluginThreadService pluginThreadService) {
@@ -49,6 +57,10 @@ public class ServiceBeanFactory {
     @Autowired
     public void setPluginInfoService(IPluginInfoService pluginInfoService) {
         ServiceBeanFactory.pluginInfoService = pluginInfoService;
+    }
+
+    public static IJobBuildService getJobBuildService() {
+        return jobBuildService;
     }
 
     public static PluginThreadService getPluginThreadService() {

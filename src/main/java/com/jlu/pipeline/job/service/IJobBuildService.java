@@ -27,6 +27,10 @@ public interface IJobBuildService {
 
     boolean cancel(Long jobBuildId);
 
+    void notifiedJobBuildStartCanceled(JobBuild jobBuild);
+
+    void notifiedJobBuildCanceled(JobBuild jobBuild);
+
     void notifiedJobBuildFinished(JobBuild jobBuild, Map<String, String> newOutParams);
 
     List<JobBuildBean> getJobBuildBeans(Long pipelineBuildId);

@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.jlu.common.exception.PipelineRuntimeException;
-import com.jlu.plugin.thread.PluginThreadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,8 +79,9 @@ public abstract class AbstractExecutor {
     }
 
     public void cancel(JobBuild jobBuild) {
-        throw new PipelineRuntimeException(jobBuild.getPluginType().getPluginName() + "任务不支持取消操作");
+        throw new PipelineRuntimeException("此任务不支持取消操作");
     }
+
 
     protected void notifyJobStartFailed(JobBuild jobBuild, String message) {
         logger.info("Job-{}, startFailed:{}", jobBuild, message);

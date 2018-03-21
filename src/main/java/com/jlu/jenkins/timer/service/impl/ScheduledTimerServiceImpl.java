@@ -23,7 +23,7 @@ public class ScheduledTimerServiceImpl implements IScheduledService {
 
     private ScheduledExecutorService jenkinsJobScheduledExecutor = Executors.newScheduledThreadPool(6);
 
-    private ConcurrentHashMap<JobBuild, ScheduledFuture> scheduledFutureMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Long, ScheduledFuture> scheduledFutureMap = new ConcurrentHashMap<>();
 
     @Override
     public void register(JenkinsBuildScheduledTask timerTask, Long delay, Long period) {
@@ -31,15 +31,18 @@ public class ScheduledTimerServiceImpl implements IScheduledService {
                 DateUtils.getRealableTime(period));
         // FIXME maybe throws RejectedExecutionException if the task cannot be scheduled for execution
         ScheduledFuture scheduledFuture = jenkinsJobScheduledExecutor.scheduleWithFixedDelay(timerTask, delay, period, TimeUnit.MILLISECONDS);
-        scheduledFutureMap.put(timerTask.getJobBuild(), scheduledFuture);
+        scheduledFutureMap.put(timerTask.getJobBuild().getId(), scheduledFuture);
     }
 
     @Override
     public void cancel(JobBuild jobBuild) {
-        ScheduledFuture scheduledFuture = scheduledFutureMap.get(jobBuild);
-        if (jobBuild != null) {
+        if (jobBuild == null) {
+            return;
+        }
+        ScheduledFuture scheduledFuture = scheduledFutureMap.get(jobBuild.getId());
+        if (scheduledFuture != null) {
             // 等待任务完成
-            scheduledFuture.cancel(false);
+            scheduledFuture.cancel(true);
         }
         scheduledFutureMap.remove(jobBuild);
     }

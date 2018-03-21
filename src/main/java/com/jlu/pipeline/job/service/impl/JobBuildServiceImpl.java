@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.plugin.thread.PluginTask;
 import com.jlu.plugin.thread.PluginThreadService;
 import org.apache.commons.collections.map.HashedMap;
@@ -186,6 +187,25 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         // 如果已经调起，则执行Job的取消方法
         pluginInfoService.getRealJobPlugin(pluginType).getExecutor().cancel(jobBuild);
         return true;
+    }
+
+    @Override
+    public void notifiedJobBuildStartCanceled(JobBuild jobBuild) {
+        jobBuild.setStartTime(null);
+        jobBuild.setTriggerUser(null);
+        // TODO CANCELED
+        jobBuild.setJobStatus(PipelineJobStatus.INIT);
+        jobBuild.setTriggerTime(null);
+        jobBuildDao.saveOrUpdate(jobBuild);
+    }
+
+    @Override
+    public void notifiedJobBuildCanceled(JobBuild jobBuild) {
+        jobBuild.setMessage("任务被取消");
+        jobBuild.setEndTime(new Date());
+        // TODO CANCELED
+        jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+        jobBuildDao.saveOrUpdate(jobBuild);
     }
 
     @Override

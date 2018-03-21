@@ -119,6 +119,11 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         return build.getNumber();
     }
 
+    @Override
+    public void cancel(JenkinsServer jenkinsServer, String jobName, Integer buildNumber) throws IOException {
+        jenkinsServer.getJob(jobName).getBuildByNumber(buildNumber).Stop();
+    }
+
     private JenkinsExceptionEnum formatWhy(String why) {
 
         if (why.contains("offline")) {

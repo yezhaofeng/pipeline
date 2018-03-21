@@ -37,6 +37,11 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                     }
                                 });
                             },
+                            cancel: function (jobBuild) {
+                                pipelineDataService.cancelJob(jobBuild.id).then(function (response) {
+                                    alert(response.message);
+                                });
+                            },
                             buildManual: function (jobBuild) {
                                 scope.jobBuild = jobBuild;
                                 scope.runtimeParam = {};
