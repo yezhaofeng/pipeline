@@ -79,7 +79,7 @@ public class CompileExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
                             jobBuild);
             StringBuilder buildPath = new StringBuilder();
-            buildPath.append(FTP_SERVER_URL).append(SEPARATOR).append(module)
+            buildPath.append(FTP_SERVER_URL).append(module)
                     .append(SEPARATOR).append(commitId)
                     .append(SEPARATOR).append(compileParam.get(CURRENT_DATA))
                     .append(SEPARATOR).append(compileParam.get(JOB_BUILD_ID))

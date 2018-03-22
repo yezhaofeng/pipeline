@@ -98,7 +98,7 @@ public class ReleaseExecutor extends AbstractExecutor {
             releasePath.append(FTP_SERVER_URL).append(module)
                     .append(SEPARATOR).append(version.replace(".", "_"));
             StringBuilder logUrl = new StringBuilder();
-            logUrl.append(DefaultJenkinsServer.SERVER_URL).append(SEPARATOR)
+            logUrl.append(DefaultJenkinsServer.SERVER_URL)
                     .append("job").append(SEPARATOR).append(RELEASE_JENKINS_JOB_NAME)
                     .append(SEPARATOR).append(buildNumber)
                     .append(SEPARATOR).append("console");
@@ -129,8 +129,8 @@ public class ReleaseExecutor extends AbstractExecutor {
     }
 
     private String getCompileLocation(String compileProductFtpPath) {
-        // "ftp://139.199.15.115/" 长度为21
-        return "snapshot" + compileProductFtpPath.substring(21, compileProductFtpPath.length());
+        // "ftp://139.199.15.115" 长度为20
+        return "snapshot" + SEPARATOR + compileProductFtpPath.substring(FTP_SERVER_URL.length(), compileProductFtpPath.length());
     }
 
     @Override
