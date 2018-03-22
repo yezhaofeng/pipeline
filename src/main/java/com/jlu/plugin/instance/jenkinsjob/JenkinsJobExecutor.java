@@ -90,5 +90,6 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             throw new PipelineRuntimeException("网络异常");
         }
         scheduledService.cancel(jobBuild);
+        notifiedJobBuildCanceled(jobBuild);
     }
 }

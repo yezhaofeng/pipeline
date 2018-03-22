@@ -17,24 +17,18 @@ import java.util.concurrent.*;
  */
 @Service
 public class PluginThreadService {
-    @Autowired
-    private ApplicationContext applicationContext;
-    private BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<>();
+    private BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<>(WORK_QUEUE_SIZE);
     private static final int CORE_POOL_SIZE = 6;
-    private static final int MAX_POOL_SIZE = 10;
+    private static final int MAX_POOL_SIZE = 12;
+    private static final int WORK_QUEUE_SIZE = 50;
     private ThreadPoolExecutor pluginExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, 10, TimeUnit.MINUTES, workQueue);
     private volatile ConcurrentHashMap<Long, Thread> jobBuildThreadMap = new ConcurrentHashMap<>();
 
-    public void execute(PluginTask pluginTask) {
-        try {
-            pluginExecutor.execute(pluginTask);
-        } catch (RejectedExecutionException re) {
-            throw new PipelineRuntimeException("系统繁忙,请稍后");
-        }
+    public void execute(PluginTask pluginTask) throws RejectedExecutionException {
+        pluginExecutor.execute(pluginTask);
     }
 
     public void register(Long jobBuildId, Thread thread) {
-
         jobBuildThreadMap.put(jobBuildId, thread);
     }
 
@@ -46,6 +40,17 @@ public class PluginThreadService {
     public Thread getJobBuildThread(Long jobBuildId) {
         // FIXME: 2018/3/20 如何保证对象只在一个容器里?
         return jobBuildThreadMap.get(jobBuildId);
+    }
+
+    /**
+     *
+     * @param pluginTask
+     * @return
+     * true 有此Task且remove成功
+     * false 无此Task
+     */
+    public boolean removeInQueue(PluginTask pluginTask) {
+        return workQueue.remove(pluginTask);
     }
 
     public ConcurrentHashMap<Long, Thread> getJobBuildThreadMap() {

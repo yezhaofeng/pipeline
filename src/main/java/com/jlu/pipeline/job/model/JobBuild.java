@@ -226,4 +226,20 @@ public class JobBuild {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JobBuild jobBuild = (JobBuild) o;
+
+        return id.equals(jobBuild.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

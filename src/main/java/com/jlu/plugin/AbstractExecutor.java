@@ -98,4 +98,7 @@ public abstract class AbstractExecutor {
         jobBuildService.saveOrUpdate(jobBuild);
     }
 
+    protected void notifiedJobBuildCanceled(JobBuild jobBuild){
+        jobBuildService.notifiedJobBuildCanceled(jobBuild);
+    }
 }

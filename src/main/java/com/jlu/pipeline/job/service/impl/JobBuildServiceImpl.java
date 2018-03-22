@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
 
 import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.plugin.thread.PluginTask;
@@ -46,6 +47,7 @@ import com.jlu.plugin.service.IPluginInfoService;
 @Service
 public class JobBuildServiceImpl implements IJobBuildService, ApplicationContextAware {
 
+    private static final String SERVER_BUSY = "系统繁忙，请稍后重试";
     private ApplicationContext applicationContext;
 
     @Autowired
@@ -103,8 +105,21 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         Long pipelineBuildId = jobBuild.getPipelineBuildId();
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, execParam, runtimeJobParam);
         PluginTask pluginTask = new PluginTask(jobBuildContext, jobBuild);
+        try {
+            pluginThreadService.execute(pluginTask);
+        } catch (RejectedExecutionException re) {
+            if (triggerMode.equals(TriggerMode.AUTO)) {
+                notifiedJobBuildBusy(jobBuild);
+            } else {
+                throw new PipelineRuntimeException(SERVER_BUSY);
+            }
+        }
+    }
 
-        pluginThreadService.execute(pluginTask);
+    private void notifiedJobBuildBusy(JobBuild jobBuild) {
+        jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+        jobBuild.setMessage(SERVER_BUSY);
+        notifiedJobBuildFinished(jobBuild, null);
     }
 
     @Override
@@ -133,9 +148,11 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         // 自动执行的job无用户自定义参数
         JobBuildContext jobBuildContext = initJobBuildContext(pipelineBuildId, jobBuild, new HashMap<>(), new HashMap<>());
         PluginTask pluginTask = new PluginTask(jobBuildContext, jobBuild);
-
-        pluginThreadService.execute(pluginTask);
-
+        try {
+            pluginThreadService.execute(pluginTask);
+        } catch (RejectedExecutionException re) {
+            notifiedJobBuildBusy(jobBuild);
+        }
     }
 
     private void updatePipelineBuildStart(Long pipelineBuildId, PipelineJobStatus pipelineStatus) {
@@ -170,13 +187,19 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
 
     @Override
     public boolean cancel(Long jobBuildId) {
+        JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
+        // 检查是否在队列阻塞中
+        boolean isInQueue = pluginThreadService.removeInQueue(new PluginTask(jobBuild));
+        if (isInQueue) {
+            notifiedJobBuildStartCanceled(jobBuild);
+            return true;
+        }
         Thread jobThread = pluginThreadService.getJobBuildThread(jobBuildId);
         // 如果仍然在线程执行中,发出中断请求
         if (jobThread != null) {
             jobThread.interrupt();
             return false;
         }
-        JobBuild jobBuild = jobBuildDao.findById(jobBuildId);
         if (jobBuild == null) {
             throw new PipelineRuntimeException("无此Job记录");
         }

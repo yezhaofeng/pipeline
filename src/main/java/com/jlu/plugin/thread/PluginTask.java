@@ -1,5 +1,6 @@
 package com.jlu.plugin.thread;
 
+import com.jlu.common.exception.PipelineRuntimeException;
 import com.jlu.common.service.ServiceBeanFactory;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.plugin.bean.JobBuildContext;
@@ -19,8 +20,16 @@ public class PluginTask implements Runnable {
         pluginType = jobBuild.getPluginType();
     }
 
+    // 此构造方法构造的对象不能用于run
+    public PluginTask(JobBuild jobBuild) {
+        this.jobBuild = jobBuild;
+    }
+
     @Override
     public void run() {
+        if (jobBuild == null || jobBuildContext == null) {
+            throw new PipelineRuntimeException("非法请求");
+        }
         ServiceBeanFactory.getPluginThreadService().register(jobBuild.getId(), Thread.currentThread());
         try {
             Thread.sleep(3000);
@@ -43,4 +52,19 @@ public class PluginTask implements Runnable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PluginTask that = (PluginTask) o;
+
+        return jobBuild.equals(that.jobBuild);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return jobBuild.hashCode();
+    }
 }
