@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e1) {
-                    // do nothing
+                    Thread.currentThread().interrupt();
                 }
                 logger.warn("get buildNumber with jobName:{} retry time:{}", jobName, reTryTime++);
             }
@@ -121,7 +122,21 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
 
     @Override
     public void cancel(JenkinsServer jenkinsServer, String jobName, Integer buildNumber) throws IOException {
-        jenkinsServer.getJob(jobName).getBuildByNumber(buildNumber).Stop();
+        JobWithDetails jobWithDetails = jenkinsServer.getJob(jobName);
+        if (jobWithDetails == null) {
+            throw new JenkinsException("无此Job");
+        }
+        Build build = jobWithDetails.getBuildByNumber(buildNumber);
+        if (build == null) {
+            throw new JenkinsException("未找到此次构建");
+        }
+        if (!build.details().isBuilding()) {
+            throw new JenkinsException("Job未处于运行中状态，无法取消");
+        }
+        String cancelResult = build.Stop();
+        if (StringUtils.isNotBlank(cancelResult)) {
+            logger.warn("cancel {}-{} return {}", jobName, buildNumber, cancelResult);
+        }
     }
 
     private JenkinsExceptionEnum formatWhy(String why) {

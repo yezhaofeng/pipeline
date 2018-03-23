@@ -11,6 +11,10 @@ public class JenkinsException extends PipelineRuntimeException {
         super(type.name() + ":" + type.message + "," + e.getMessage());
     }
 
+    public JenkinsException(String message) {
+        super(message);
+    }
+
     public JenkinsException(JenkinsExceptionEnum type) {
         super(type.name() + ":" + type.message);
     }
