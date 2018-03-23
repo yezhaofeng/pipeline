@@ -5,7 +5,13 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.jenkins.model.JenkinsConf;
+import com.jlu.jenkins.service.IJenkinsServerService;
+import com.jlu.jenkins.timer.service.IScheduledService;
 import com.jlu.plugin.bean.PluginType;
+import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
+import com.offbytwo.jenkins.JenkinsServer;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +51,12 @@ public class CompileExecutor extends AbstractExecutor {
 
     @Autowired
     private IJobBuildService jobBuildService;
+
+    @Autowired
+    private IJenkinsServerService jenkinsServerService;
+
+    @Autowired
+    private IScheduledService scheduledService;
 
     @Override
     public void execute(JobBuildContext context, JobBuild jobBuild) {
@@ -118,5 +130,22 @@ public class CompileExecutor extends AbstractExecutor {
             newParams.put(JobParameter.PIPELINE_COMPILE_PRODUCT_PATH, compileBuild.getBuildPath());
         }
         jobBuildService.notifiedJobBuildFinished(jobBuild, newParams);
+    }
+
+    @Override
+    public void cancel(JobBuild jobBuild) {
+        Long pluginBuildId = jobBuild.getPluginBuildId();
+        CompileBuild compileBuild = compileBuildDao.findById(pluginBuildId);
+        String serverUrl = DefaultJenkinsServer.SERVER_URL;
+        Integer buildNumber = compileBuild.getBuildNumber();
+        String jobName = COMPILE_JENKINS_JOB_NAME;
+        JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(serverUrl, DefaultJenkinsServer.MASTER_USERNAME, DefaultJenkinsServer.MASTER_PASSWORD);
+        try {
+            jenkinsServerService.cancel(jenkinsServer, jobName, buildNumber);
+        } catch (IOException e) {
+            throw new PipelineRuntimeException("网络异常");
+        }
+        scheduledService.cancel(jobBuild);
+        notifiedJobBuildCanceled(jobBuild);
     }
 }

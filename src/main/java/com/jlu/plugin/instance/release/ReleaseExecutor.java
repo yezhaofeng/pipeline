@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jlu.common.exception.PipelineRuntimeException;
+import com.jlu.jenkins.service.IJenkinsServerService;
+import com.jlu.jenkins.timer.service.IScheduledService;
+import com.jlu.plugin.instance.compile.model.CompileBuild;
+import com.jlu.plugin.instance.release.dao.IReleaseBuildDao;
+import com.offbytwo.jenkins.JenkinsServer;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -49,6 +55,15 @@ public class ReleaseExecutor extends AbstractExecutor {
 
     @Autowired
     private IReleaseService releaseService;
+
+    @Autowired
+    private IReleaseBuildDao releaseBuildDao;
+
+    @Autowired
+    private IJenkinsServerService jenkinsServerService;
+
+    @Autowired
+    private IScheduledService scheduledService;
 
     @Override
     protected void execute(JobBuildContext context, JobBuild jobBuild) {
@@ -147,5 +162,22 @@ public class ReleaseExecutor extends AbstractExecutor {
             jobBuild.setName(jobBuild.getName() + " " + releaseBuild.getVersion());
         }
         jobBuildService.notifiedJobBuildFinished(jobBuild, newParams);
+    }
+
+    @Override
+    public void cancel(JobBuild jobBuild) {
+        Long pluginBuildId = jobBuild.getPluginBuildId();
+        ReleaseBuild releaseBuild = releaseBuildDao.findById(pluginBuildId);
+        String serverUrl = DefaultJenkinsServer.SERVER_URL;
+        Integer buildNumber = releaseBuild.getBuildNumber();
+        String jobName = RELEASE_JENKINS_JOB_NAME;
+        JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(serverUrl, DefaultJenkinsServer.MASTER_USERNAME, DefaultJenkinsServer.MASTER_PASSWORD);
+        try {
+            jenkinsServerService.cancel(jenkinsServer, jobName, buildNumber);
+        } catch (IOException e) {
+            throw new PipelineRuntimeException("网络异常");
+        }
+        scheduledService.cancel(jobBuild);
+        notifiedJobBuildCanceled(jobBuild);
     }
 }
