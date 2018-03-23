@@ -64,7 +64,8 @@ public class GithubDataController {
             byte[] buffer = new byte[1024];
             int iRead;
             while ((iRead = buf.read(buffer)) != -1) {
-                info.append(new String(buffer, 0, iRead, "gbk"));
+                // 防止中文乱码
+                info.append(new String(buffer, 0, iRead, "utf-8"));
             }
             if (info != null) {
                 final JSONObject hookMessage = JSONObject.fromObject(info.toString());
