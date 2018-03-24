@@ -21,7 +21,11 @@ public class ScheduledTimerServiceImpl implements IScheduledService {
 
     private final Logger logger = LoggerFactory.getLogger(ScheduledTimerServiceImpl.class);
 
-    private ScheduledExecutorService jenkinsJobScheduledExecutor = Executors.newScheduledThreadPool(6);
+    private ScheduledThreadPoolExecutor jenkinsJobScheduledExecutor = new ScheduledThreadPoolExecutor(6);
+
+    {
+        jenkinsJobScheduledExecutor.setRemoveOnCancelPolicy(true);
+    }
 
     private ConcurrentHashMap<Long, ScheduledFuture> scheduledFutureMap = new ConcurrentHashMap<>();
 
