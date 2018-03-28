@@ -2,15 +2,12 @@ package com.jlu.jenkins.timer.service.impl;
 
 import com.jlu.common.utils.DateUtils;
 import com.jlu.jenkins.timer.bean.JenkinsBuildScheduledTask;
-import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 import com.jlu.jenkins.timer.service.IScheduledService;
-import com.jlu.jenkins.timer.service.ITimerService;
 import com.jlu.pipeline.job.model.JobBuild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Vector;
 import java.util.concurrent.*;
 
 /**
@@ -21,7 +18,8 @@ public class ScheduledTimerServiceImpl implements IScheduledService {
 
     private final Logger logger = LoggerFactory.getLogger(ScheduledTimerServiceImpl.class);
 
-    private ScheduledThreadPoolExecutor jenkinsJobScheduledExecutor = new ScheduledThreadPoolExecutor(6);
+    private JenkinsScheduledThreadFactory jenkinsScheduledThreadFactory = new JenkinsScheduledThreadFactory();
+    private ScheduledThreadPoolExecutor jenkinsJobScheduledExecutor = new ScheduledThreadPoolExecutor(6, jenkinsScheduledThreadFactory);
 
     {
         jenkinsJobScheduledExecutor.setRemoveOnCancelPolicy(true);

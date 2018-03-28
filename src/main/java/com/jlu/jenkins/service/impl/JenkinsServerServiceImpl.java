@@ -126,6 +126,9 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         if (jobWithDetails == null) {
             throw new JenkinsException("无此Job");
         }
+        if(buildNumber == null){
+            throw new JenkinsException("构建号不能为空");
+        }
         Build build = jobWithDetails.getBuildByNumber(buildNumber);
         if (build == null) {
             throw new JenkinsException("未找到此次构建");

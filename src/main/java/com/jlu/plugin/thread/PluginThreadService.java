@@ -21,7 +21,8 @@ public class PluginThreadService {
     private static final int CORE_POOL_SIZE = 6;
     private static final int MAX_POOL_SIZE = 12;
     private static final int WORK_QUEUE_SIZE = 50;
-    private ThreadPoolExecutor pluginExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, 10, TimeUnit.MINUTES, workQueue);
+    private ThreadFactory pluginThreadFactory = new PluginThreadFactory();
+    private ThreadPoolExecutor pluginExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, 10, TimeUnit.MINUTES, workQueue, pluginThreadFactory);
     private volatile ConcurrentHashMap<Long, Thread> jobBuildThreadMap = new ConcurrentHashMap<>();
 
     public void execute(PluginTask pluginTask) throws RejectedExecutionException {
@@ -43,10 +44,8 @@ public class PluginThreadService {
     }
 
     /**
-     *
      * @param pluginTask
-     * @return
-     * true 有此Task且remove成功
+     * @return true 有此Task且remove成功
      * false 无此Task
      */
     public boolean removeInQueue(PluginTask pluginTask) {
