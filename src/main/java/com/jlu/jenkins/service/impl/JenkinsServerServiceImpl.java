@@ -95,9 +95,8 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         String why = queueItem.getWhy();
         logger.info("job-{} build info :{}", job.getUrl(), why);
-        if (why != null) {
-            throw new JenkinsException(formatWhy(why));
-        }
+        dealBuildInfo(why);
+
         // 有的时候，虽然触发成功了，但是没有buildNumber.重试机制
         int reTryTime = 0;
         Build build = null;
@@ -119,6 +118,28 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         }
         return build.getNumber();
     }
+
+    private void dealBuildInfo(String why) {
+        if (why == null) {
+            return;
+        }
+        if (why.contains("offline")) {
+            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_OFFLINE);
+        } else if (why.contains("no nodes")) {
+            throw new JenkinsException (JenkinsExceptionEnum.SLAVE_NOT_FOUND);
+        } else if (why.contains("already in progress")) {
+            throw new JenkinsException (JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY);
+        } else if(why.contains("In the quiet period")){
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }else {
+            throw new JenkinsException( JenkinsExceptionEnum.UNKOWN);
+        }
+    }
+
 
     @Override
     public void cancel(JenkinsServer jenkinsServer, String jobName, Integer buildNumber) throws IOException {
@@ -142,18 +163,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         }
     }
 
-    private JenkinsExceptionEnum formatWhy(String why) {
 
-        if (why.contains("offline")) {
-            return JenkinsExceptionEnum.SLAVE_OFFLINE;
-        } else if (why.contains("no nodes")) {
-            return JenkinsExceptionEnum.SLAVE_NOT_FOUND;
-        } else if (why.contains("already in progress")) {
-            return JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY;
-        } else {
-            return JenkinsExceptionEnum.UNKOWN;
-        }
-    }
 
     @Override
     public Long getLastSuccessfulBuildDuration(JenkinsServer jenkinsServer, String jobName) throws IOException {
