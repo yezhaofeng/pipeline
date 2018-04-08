@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.jlu.common.exception.PipelineRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,9 @@ public class JenkinsConfServiceImpl implements IJenkinsConfService {
                 jenkinsJobsBean.setJobs(jobs);
                 jenkinsJobs.add(jenkinsJobsBean);
             } catch (Exception e) {
+                if(e instanceof PipelineRuntimeException){
+                    continue;
+                }
                 logger.warn("get jobs from {} occur error:{}",jenkinsConf,e);
             }
         }
