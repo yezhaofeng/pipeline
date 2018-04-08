@@ -1,9 +1,7 @@
 package com.jlu.common.utils;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -24,31 +22,31 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
     private static final String ZERO_SECONDS_CHINESE_READAVLE = "小于1毫秒";
     private static final String MSEC_READABLE = "ms";
     private static final String MSEC_CHINESE_READABLE = "毫秒";
-    private static final List<DateRealableBean> readableList = new LinkedList<>();
+    private static final List<DateReadableBean> readableList = new LinkedList<>();
 
     static {
-        DateRealableBean dayReadable = new DateRealableBean();
+        DateReadableBean dayReadable = new DateReadableBean();
         dayReadable.setMillis(MILLIS_PER_DAY);
         dayReadable.setChineseReabale("天");
-        dayReadable.setReabale("d");
+        dayReadable.setReadable("d");
         readableList.add(dayReadable);
 
-        DateRealableBean hourReadable = new DateRealableBean();
+        DateReadableBean hourReadable = new DateReadableBean();
         hourReadable.setMillis(MILLIS_PER_HOUR);
         hourReadable.setChineseReabale("时");
-        hourReadable.setReabale("h");
+        hourReadable.setReadable("h");
         readableList.add(hourReadable);
 
-        DateRealableBean minuteReadable = new DateRealableBean();
+        DateReadableBean minuteReadable = new DateReadableBean();
         minuteReadable.setMillis(MILLIS_PER_MINUTE);
         minuteReadable.setChineseReabale("分");
-        minuteReadable.setReabale("m");
+        minuteReadable.setReadable("m");
         readableList.add(minuteReadable);
 
-        DateRealableBean secondsReadable = new DateRealableBean();
+        DateReadableBean secondsReadable = new DateReadableBean();
         secondsReadable.setMillis(MILLIS_PER_SECOND);
         secondsReadable.setChineseReabale("秒");
-        secondsReadable.setReabale("s");
+        secondsReadable.setReadable("s");
 
         readableList.add(secondsReadable);
     }
@@ -98,11 +96,11 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
         }
         StringBuilder timeSb = new StringBuilder();
         for (int i = 0; i < readableList.size(); i++) {
-            DateRealableBean dateRealableBean = readableList.get(i);
-            Long num = time / dateRealableBean.getMillis();
-            time = time % dateRealableBean.getMillis();
+            DateReadableBean dateReadableBean = readableList.get(i);
+            Long num = time / dateReadableBean.getMillis();
+            time = time % dateReadableBean.getMillis();
             if (num != 0L) {
-                timeSb.append(num).append(dateRealableBean.getReabale());
+                timeSb.append(num).append(dateReadableBean.getReadable());
             }
         }
         return timeSb.toString();
@@ -124,19 +122,19 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
         }
         StringBuilder timeSb = new StringBuilder();
         for (int i = 0; i < readableList.size(); i++) {
-            DateRealableBean dateRealableBean = readableList.get(i);
-            Long num = time / dateRealableBean.getMillis();
-            time = time % dateRealableBean.getMillis();
+            DateReadableBean dateReadableBean = readableList.get(i);
+            Long num = time / dateReadableBean.getMillis();
+            time = time % dateReadableBean.getMillis();
             if (num != 0L) {
-                timeSb.append(num).append(dateRealableBean.getChineseReabale());
+                timeSb.append(num).append(dateReadableBean.getChineseReabale());
             }
         }
         return timeSb.toString();
     }
 
-    private static class DateRealableBean {
+    private static class DateReadableBean {
         private Long millis;
-        private String reabale;
+        private String readable;
         private String chineseReabale;
 
         public Long getMillis() {
@@ -147,12 +145,12 @@ public class DateUtils extends org.apache.commons.lang.time.DateUtils {
             this.millis = millis;
         }
 
-        public String getReabale() {
-            return reabale;
+        public String getReadable() {
+            return readable;
         }
 
-        public void setReabale(String reabale) {
-            this.reabale = reabale;
+        public void setReadable(String readable) {
+            this.readable = readable;
         }
 
         public String getChineseReabale() {
