@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.offbytwo.jenkins.model.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
@@ -21,11 +22,6 @@ import com.jlu.jenkins.exception.JenkinsExceptionEnum;
 import com.jlu.jenkins.model.JenkinsConf;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
-import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobWithDetails;
-import com.offbytwo.jenkins.model.QueueItem;
-import com.offbytwo.jenkins.model.QueueReference;
 
 /**
  * Created by langshiquan on 17/12/23.
@@ -92,10 +88,13 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
                     .getStatusCode(), e.getMessage());
             queueReference = job.build(true);
         }
+        System.out.println(queueReference.getQueueItemUrlPart());
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         String why = queueItem.getWhy();
         logger.info("job-{} build info :{}", job.getUrl(), why);
         dealBuildInfo(why);
+        System.out.println(queueItem.getUrl());
+        System.out.println(queueItem.getTask().getUrl());
 
         // 有的时候，虽然触发成功了，但是没有buildNumber.重试机制
         int reTryTime = 0;
@@ -130,11 +129,11 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         } else if (why.contains("already in progress")) {
             throw new JenkinsException (JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY);
         } else if(why.contains("In the quiet period")){
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            }
         }else {
             throw new JenkinsException( JenkinsExceptionEnum.UNKOWN);
         }
