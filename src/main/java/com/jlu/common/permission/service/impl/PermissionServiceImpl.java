@@ -147,13 +147,15 @@ public class PermissionServiceImpl implements IPermissionService {
                 return false;
             }
         } else {
-            Set<String> keySet = resourceParam.keySet();
+            // entrySet比keySet更有效
+            Set<Map.Entry<String, String>> resourceParamEntrySet = resourceParam.entrySet();
             Boolean result = true;
-            for (String key : keySet) {
-                Boolean sourcePermission = checkPermissionByParamType(key, resourceParam.get(key), username);
+            for (Map.Entry<String, String> entry : resourceParamEntrySet) {
+                Boolean sourcePermission = checkPermissionByParamType(entry.getKey(), entry.getValue(), username);
                 result = result && sourcePermission;
             }
             return result;
+
         }
 
     }

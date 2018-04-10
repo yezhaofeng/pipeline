@@ -35,8 +35,7 @@ public class ModuleController {
                                           @RequestParam Integer limit) {
         List<Module> modules = new ArrayList<Module>();
         if (StringUtils.isNotBlank(query)) {
-            String pathStr = new String(query);
-            modules = moduleService.getSuggestProductModules(pathStr, owner, limit);
+            modules = moduleService.getSuggestProductModules(query, owner, limit);
         }
         if (null == modules) {
             modules = new ArrayList<>();

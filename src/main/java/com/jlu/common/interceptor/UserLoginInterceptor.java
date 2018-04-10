@@ -23,7 +23,6 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             return true;
         }
         UserLoginHelper.register(UserLoginHelper.getLoginUser(request));
-        TrackHelper.registerTrack(request);
         return true;
     }
 
@@ -34,7 +33,6 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             return;
         }
         UserLoginHelper.destory();
-        // TrackHelper.destroyTrack();
     }
 
     @Override

@@ -70,7 +70,7 @@ public class PipelineBuildController extends AbstractController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseBean build(@RequestParam(required = false, defaultValue = "0") Long pipelineConfId,
                               @RequestParam(required = false, defaultValue = "0") Long triggerId) {
-        if (pipelineConfId == 0L || triggerId == null) {
+        if (pipelineConfId == null || triggerId == null) {
             throw new PipelineRuntimeException("缺少参数");
         }
         if (triggerId == 0L) {

@@ -57,4 +57,24 @@ public class JobBuildBean extends JobBuild {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        JobBuildBean that = (JobBuildBean) o;
+
+        if (!pluginBuild.equals(that.pluginBuild)) return false;
+        return buildable.equals(that.buildable);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + pluginBuild.hashCode();
+        result = 31 * result + buildable.hashCode();
+        return result;
+    }
 }

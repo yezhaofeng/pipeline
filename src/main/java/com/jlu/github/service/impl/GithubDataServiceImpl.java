@@ -121,15 +121,15 @@ public class GithubDataServiceImpl implements IGithubDataService {
         if (moduleInDB != null) {
             throw new PipelineRuntimeException("该模块已存在，不需要再次配置。");
         }
-        LOGGER.info("Start initBuild module:{} on user:{}", moduleInDB, username);
+        LOGGER.info("Start initModule repository:{} on user:{}", repository, username);
         Module module = new Module(PipelineUtils.getFullModule(username, repository), username, repository);
         moduleService.saveModule(module);
         try {
-            LOGGER.info("Start initBuild branch on module:{}, user:{}", moduleInDB, username);
+            LOGGER.info("Start init branch on repository:{}, user:{}", repository, username);
             this.initBranch(module, username);
-            LOGGER.info("Start create hook on module:{}, user:{}", moduleInDB, username);
+            LOGGER.info("Start create hook on repository:{}, user:{}", repository, username);
             this.creatHooks(username, repository, githubUser.getGitHubToken());
-            LOGGER.info("Add module is successful! module:{}, user:{}", moduleInDB, username);
+            LOGGER.info("Add module is successful! repository:{}, user:{}", repository, username);
         } catch (Exception e) {
             moduleService.delete(module);
             throw new PipelineRuntimeException("该仓库不存在，请检查是否配置正确。");
@@ -184,7 +184,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      */
     private void saveBranchs(List<GithubBranchBean> branchBeans, Module module) {
         List<GithubBranch> githubBranches = new ArrayList<>();
-        if (githubBranches == null) {
+        if (branchBeans == null) {
             return;
         }
         for (int i = 0; branchBeans != null && i < branchBeans.size(); i++) {

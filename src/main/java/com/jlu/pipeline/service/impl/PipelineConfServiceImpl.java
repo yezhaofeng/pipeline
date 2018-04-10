@@ -121,12 +121,12 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
         return pipelineConfDao.get(module, branchType);
     }
 
-    private final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
-    private final String DEFAULT_BRANCH_PIPELINE_NAME = "BranchPipeline";
-    private final String DEFAULT_MASTER_PIPELINE_REMARK = "主干";
-    private final String DEFAULT_BRANCH_PIPELINE_REMARK = "分支";
-    private final String DEFAULT_COMPILE_JOB_NAME = "构建";
-    private final String DEFAULT_RELEASE_JOB_NAME = "发版";
+    private static final String DEFAULT_MASTER_PIPELINE_NAME = "MasterPipeline";
+    private static final String DEFAULT_BRANCH_PIPELINE_NAME = "BranchPipeline";
+    private static final String DEFAULT_MASTER_PIPELINE_REMARK = "主干";
+    private static final String DEFAULT_BRANCH_PIPELINE_REMARK = "分支";
+    private static final String DEFAULT_COMPILE_JOB_NAME = "构建";
+    private static final String DEFAULT_RELEASE_JOB_NAME = "发版";
 
     // TODO 锁
     @Override

@@ -36,10 +36,6 @@ public abstract class AbstractExecutor {
     @LogExecTime
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
         logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
-        if (jobBuild == null) {
-            notifyJobStartFailed(jobBuild, "未找到Job构建记录");
-            return;
-        }
         Long pluginBuildId = jobBuild.getPluginBuildId();
         if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
             notifyJobStartFailed(jobBuild, "未找到插件配置");
