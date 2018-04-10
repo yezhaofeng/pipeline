@@ -1,11 +1,6 @@
 package com.jlu.github.model;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.jlu.branch.bean.BranchType;
 import com.jlu.common.utils.PipelineConfigReader;
@@ -37,10 +32,16 @@ public class GitHubCommit {
 
     private String commitTime;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String addedFiles;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String removedFiles;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String modifiedFiles;
 
     private String commitId;
