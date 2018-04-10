@@ -357,7 +357,7 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
         }
         for (PipelineBuild pipelineBuild : pipelineBuilds) {
             Long pipelineBuildId = pipelineBuild.getId();
-            if (pipelineBuildId == currentPipelineBuildId) {
+            if (pipelineBuildId.equals(currentPipelineBuildId)) {
                 continue;
             }
             JobBuild jobBuild = jobBuildDao.getLastBuild(pipelineBuildId, pluginType, PipelineJobStatus.SUCCESS);

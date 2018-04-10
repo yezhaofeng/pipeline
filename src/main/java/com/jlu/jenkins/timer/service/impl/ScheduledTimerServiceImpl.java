@@ -46,7 +46,7 @@ public class ScheduledTimerServiceImpl implements IScheduledService {
             // 等待任务完成
             scheduledFuture.cancel(true);
         }
-        scheduledFutureMap.remove(jobBuild);
+        scheduledFutureMap.remove(jobBuild.getId());
     }
 
 }

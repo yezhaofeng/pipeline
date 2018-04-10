@@ -91,7 +91,20 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         QueueItem queueItem = jenkinsServer.getQueueItem(queueReference);
         String why = queueItem.getWhy();
         logger.info("job-{} build info :{}", job.getUrl(), why);
-        dealBuildInfo(why);
+        if (why == null) {
+            // do nothing
+        } else if (why.contains("offline")) {
+            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_OFFLINE);
+        } else if (why.contains("no nodes")) {
+            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_NOT_FOUND);
+        } else if (why.contains("already in progress")) {
+            throw new JenkinsException(JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY);
+        } else if (why.contains("In the quiet period")) {
+            return job.details().getNextBuildNumber();
+        } else {
+            throw new JenkinsException(JenkinsExceptionEnum.UNKOWN);
+        }
+
         // 有的时候，虽然触发成功了，但是没有buildNumber.重试机制
         int reTryTime = 0;
         Build build = null;
@@ -114,23 +127,6 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         return build.getNumber();
     }
 
-    private void dealBuildInfo(String why) {
-        if (why == null) {
-            return;
-        }
-        if (why.contains("offline")) {
-            throw new JenkinsException(JenkinsExceptionEnum.SLAVE_OFFLINE);
-        } else if (why.contains("no nodes")) {
-            throw new JenkinsException (JenkinsExceptionEnum.SLAVE_NOT_FOUND);
-        } else if (why.contains("already in progress")) {
-            throw new JenkinsException (JenkinsExceptionEnum.NOT_SUPPORT_CONCURRENCY);
-        } else if(why.contains("In the quiet period")){
-            return;
-        }else {
-            throw new JenkinsException( JenkinsExceptionEnum.UNKOWN);
-        }
-    }
-
 
     @Override
     public void cancel(JenkinsServer jenkinsServer, String jobName, Integer buildNumber) throws IOException {
@@ -138,7 +134,7 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
         if (jobWithDetails == null) {
             throw new JenkinsException("无此Job");
         }
-        if(buildNumber == null){
+        if (buildNumber == null) {
             throw new JenkinsException("构建号不能为空");
         }
         Build build = jobWithDetails.getBuildByNumber(buildNumber);
@@ -153,7 +149,6 @@ public class JenkinsServerServiceImpl implements IJenkinsServerService {
             logger.warn("cancel {}-{} return {}", jobName, buildNumber, cancelResult);
         }
     }
-
 
 
     @Override
