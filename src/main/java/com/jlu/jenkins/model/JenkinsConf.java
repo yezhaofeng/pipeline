@@ -45,6 +45,9 @@ public class JenkinsConf {
     }
 
     public void setServerUrl(String serverUrl) {
+        if(!serverUrl.endsWith("/")){
+            serverUrl = serverUrl +"/";
+        }
         this.serverUrl = serverUrl;
     }
 
