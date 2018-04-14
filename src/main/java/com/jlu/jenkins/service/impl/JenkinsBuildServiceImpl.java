@@ -1,8 +1,11 @@
 package com.jlu.jenkins.service.impl;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
+import com.jlu.jenkins.dao.IJenkinsBuildDao;
+import com.jlu.jenkins.model.JenkinsBuild;
 import com.jlu.jenkins.timer.bean.JenkinsBuildScheduledTask;
 import com.jlu.jenkins.timer.service.IScheduledService;
 import org.slf4j.Logger;
@@ -46,11 +49,13 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
     @Autowired
     private IPluginInfoService pluginInfoService;
 
+    @Autowired
+    private IJenkinsBuildDao jenkinsBuildDao;
 
     @Override
-    public Integer buildJob(Long jenkinsServerId, String jobName, Map<String, String> params, JobBuild jobBuild)
+    public Integer buildJob(Long jenkinsConfId, String jobName, Map<String, String> params, JobBuild jobBuild)
             throws IOException {
-        JenkinsConf jenkinsConf = jenkinsConfDao.findById(jenkinsServerId);
+        JenkinsConf jenkinsConf = jenkinsConfDao.findById(jenkinsConfId);
         JenkinsServer jenkinsServer = jenkinsServerService.getJenkinsServer(jenkinsConf.getServerUrl(),
                 jenkinsConf.getMasterUser(), jenkinsConf.getMasterPassword());
         Boolean isExists = jenkinsServerService.isExists(jenkinsServer, jobName);
@@ -63,21 +68,37 @@ public class JenkinsBuildServiceImpl implements IJenkinsBuildService {
         period = period > DEFAULT_PERIOD ? period : DEFAULT_PERIOD;
 
         Integer buildNumber = jenkinsServerService.build(jenkinsServer, jobName, params);
-        JenkinsBuildScheduledTask jenkinsBuildScheduledTask = new JenkinsBuildScheduledTask(jenkinsServer, jobName, buildNumber, jobBuild);
+
+        JenkinsBuild jenkinsBuild = new JenkinsBuild();
+        jenkinsBuild.setStartTime(new Date());
+        jenkinsBuild.setBuildNumber(buildNumber);
+        jenkinsBuild.setJenkinsConfId(jenkinsConfId);
+        jenkinsBuild.setPipelineJobBuildId(jobBuild.getId());
+        jenkinsBuild.setJobName(jobName);
+        jenkinsBuildDao.saveOrUpdate(jenkinsBuild);
+        JenkinsBuildScheduledTask jenkinsBuildScheduledTask = new JenkinsBuildScheduledTask(jenkinsServer, jobName, buildNumber, jobBuild, jenkinsBuild);
         scheduledService.register(jenkinsBuildScheduledTask, delay, period);
         return buildNumber;
     }
 
     @Override
     public void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,
-                                       BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException {
+                                       BuildWithDetails buildWithDetails, JobBuild jobBuild, JenkinsBuild jenkinsBuild) throws IOException {
         if (buildWithDetails == null) {
+            jenkinsBuild.setBuildResult(BuildResult.UNKNOWN);
+            jenkinsBuild.setEndTime(new Date());
+            jenkinsBuildDao.saveOrUpdate(jenkinsBuild);
+
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage(JenkinsExceptionEnum.NETWORK_UNREACHABLE.name());
             pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getExecutor().handleCallback(jobBuild);
             return;
         }
+
         BuildResult buildResult = buildWithDetails.getResult();
+        jenkinsBuild.setBuildResult(buildResult);
+        jenkinsBuild.setRealEndTime(buildWithDetails.getTimestamp());
+        jenkinsBuildDao.saveOrUpdate(jenkinsBuild);
         logger.info("jobBuildId-{} {} {} has finished,status:{}", jobBuild.getId(), jobName, buildNumber,
                 buildResult.name());
         jobBuild.setJobStatus(PipelineJobStatus.fromJenkinsBuildStatus(buildResult));

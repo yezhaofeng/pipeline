@@ -1,6 +1,7 @@
 package com.jlu.jenkins.timer.bean;
 
 import com.jlu.common.service.ServiceBeanFactory;
+import com.jlu.jenkins.model.JenkinsBuild;
 import com.jlu.jenkins.service.IJenkinsBuildService;
 import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.pipeline.job.model.JobBuild;
@@ -27,12 +28,14 @@ public class JenkinsBuildScheduledTask implements Runnable {
     private String jobName;
     private Integer buildNumber;
     private JobBuild jobBuild;
+    private JenkinsBuild jenkinsBuild;
 
-    public JenkinsBuildScheduledTask(JenkinsServer jenkinsServer, String jobName, Integer buildNumber, JobBuild jobBuild) {
+    public JenkinsBuildScheduledTask(JenkinsServer jenkinsServer, String jobName, Integer buildNumber, JobBuild jobBuild, JenkinsBuild jenkinsBuild) {
         this.jenkinsServer = jenkinsServer;
         this.jobName = jobName;
         this.buildNumber = buildNumber;
         this.jobBuild = jobBuild;
+        this.jenkinsBuild = jenkinsBuild;
     }
 
     public JobBuild getJobBuild() {
@@ -51,7 +54,7 @@ public class JenkinsBuildScheduledTask implements Runnable {
                 return;
             } else {
                 ServiceBeanFactory.getJenkinsBuildService().handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
-                        buildWithDetails, jobBuild);
+                        buildWithDetails, jobBuild, jenkinsBuild);
                 cancel();
             }
         } catch (IOException e) {
@@ -68,7 +71,7 @@ public class JenkinsBuildScheduledTask implements Runnable {
         if (ioErrorTimes >= maxIoErrorTimes) {
             try {
                 ServiceBeanFactory.getJenkinsBuildService().handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
-                        null, jobBuild);
+                        null, jobBuild, jenkinsBuild);
             } catch (Exception ce) {
                 logger.info("jobBuildId-{} jobName-{} buildNumber-{} notify IOException message occur Exception,"
                         + "html.error:", jobBuild.getId(), jobName, buildNumber, ce);

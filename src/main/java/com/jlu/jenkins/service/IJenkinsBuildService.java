@@ -3,6 +3,7 @@ package com.jlu.jenkins.service;
 import java.io.IOException;
 import java.util.Map;
 
+import com.jlu.jenkins.model.JenkinsBuild;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.BuildWithDetails;
@@ -12,9 +13,9 @@ import com.offbytwo.jenkins.model.BuildWithDetails;
  */
 public interface IJenkinsBuildService {
 
-    Integer buildJob(Long jenkinsServerId, String jobName, Map<String, String> params, JobBuild jobBuild)
+    Integer buildJob(Long jenkinsConfId, String jobName, Map<String, String> params, JobBuild jobBuild)
             throws IOException;
 
     void handleJenkinsJobFinish(JenkinsServer jenkinsServer, String jobName, Integer buildNumber,
-                                BuildWithDetails buildWithDetails, JobBuild jobBuild) throws IOException;
+                                BuildWithDetails buildWithDetails, JobBuild jobBuild, JenkinsBuild jenkinsBuild) throws IOException;
 }

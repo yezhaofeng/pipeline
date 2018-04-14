@@ -26,7 +26,6 @@ public class JenkinsBuild {
 
     @Enumerated(EnumType.STRING)
     private BuildResult buildResult;
-    private String triggerUser;
     private Date startTime;
     private Date endTime;
     private Date realEndTime;
@@ -79,14 +78,6 @@ public class JenkinsBuild {
         this.buildResult = buildResult;
     }
 
-    public String getTriggerUser() {
-        return triggerUser;
-    }
-
-    public void setTriggerUser(String triggerUser) {
-        this.triggerUser = triggerUser;
-    }
-
     public Date getStartTime() {
         return startTime;
     }
@@ -109,5 +100,24 @@ public class JenkinsBuild {
 
     public void setRealEndTime(Date realEndTime) {
         this.realEndTime = realEndTime;
+    }
+    public void setRealEndTime(long realEndTime) {
+        this.realEndTime = new Date(realEndTime);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JenkinsBuild{");
+        sb.append("id=").append(id);
+        sb.append(", jenkinsConfId=").append(jenkinsConfId);
+        sb.append(", pipelineJobBuildId=").append(pipelineJobBuildId);
+        sb.append(", jobName='").append(jobName).append('\'');
+        sb.append(", buildNumber=").append(buildNumber);
+        sb.append(", buildResult=").append(buildResult);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", realEndTime=").append(realEndTime);
+        sb.append('}');
+        return sb.toString();
     }
 }

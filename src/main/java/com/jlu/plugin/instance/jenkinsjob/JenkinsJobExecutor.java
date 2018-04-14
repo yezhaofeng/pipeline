@@ -52,7 +52,6 @@ public class JenkinsJobExecutor extends AbstractExecutor {
             String jobName = jenkinsJobBuild.getJobName();
             Integer buildNumber = jenkinsBuildService.buildJob(jenkinsServerId, jobName, jobBuild
                     .getInParameterMap(), jobBuild);
-//            System.out.println("jobBuildId-" + jobBuild.getId() + " buildNumber-" + buildNumber);
             logger.info("jobBuildId-{} buildNumber-{}", jobBuild.getId(), buildNumber);
             StringBuilder logUrl = new StringBuilder();
             logUrl.append(jenkinsJobBuild.getJobFullName()).append("/")

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import com.jlu.jenkins.model.JenkinsBuild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,19 +32,21 @@ public class JenkinsBuildTimerTask extends TimerTask {
     private Integer buildNumber;
     private JobBuild jobBuild;
     private Vector vector;
+    JenkinsBuild jenkinsBuild;
 
     public JenkinsBuildTimerTask() {
     }
 
     public JenkinsBuildTimerTask(IJenkinsBuildService jenkinsBuildService,
                                  IJenkinsServerService jenkinsServerService,
-                                 JenkinsServer jenkinsServer, String jobName, Integer buildNumber, JobBuild jobBuild) {
+                                 JenkinsServer jenkinsServer, String jobName, Integer buildNumber, JobBuild jobBuild, JenkinsBuild jenkinsBuild) {
         this.jenkinsBuildService = jenkinsBuildService;
         this.jenkinsServerService = jenkinsServerService;
         this.jenkinsServer = jenkinsServer;
         this.jobName = jobName;
         this.buildNumber = buildNumber;
         this.jobBuild = jobBuild;
+        this.jenkinsBuild = jenkinsBuild;
     }
 
     public JobBuild getJobBuild() {
@@ -70,7 +73,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
                     vector.remove(this.getJobBuild());
                 }
                 jenkinsBuildService.handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
-                        buildWithDetails, jobBuild);
+                        buildWithDetails, jobBuild, jenkinsBuild);
             }
         } catch (IOException e) {
             logger.warn("jobBuildId-{} jobName-{} buildNumber-{} occur IOException {} times,html.error:", jobBuild.getId
@@ -82,7 +85,7 @@ public class JenkinsBuildTimerTask extends TimerTask {
                 }
                 try {
                     jenkinsBuildService.handleJenkinsJobFinish(jenkinsServer, jobName, buildNumber,
-                            null, jobBuild);
+                            null, jobBuild, jenkinsBuild);
                 } catch (Exception ce) {
                     logger.info("jobBuildId-{} jobName-{} buildNumber-{} notify IOException message occur Exception,"
                             + "html.error:", jobBuild.getId(), jobName, buildNumber, ce);
