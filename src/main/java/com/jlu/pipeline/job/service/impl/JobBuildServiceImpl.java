@@ -213,6 +213,13 @@ public class JobBuildServiceImpl implements IJobBuildService, ApplicationContext
     }
 
     @Override
+    public void notifiedJobBuildStarFailed(JobBuild jobBuild) {
+        jobBuild.setEndTime(new Date());
+        jobBuild.setJobStatus(PipelineJobStatus.FAILED);
+        jobBuildDao.saveOrUpdate(jobBuild);
+    }
+
+    @Override
     public void notifiedJobBuildStartCanceled(JobBuild jobBuild) {
         jobBuild.setStartTime(null);
         jobBuild.setTriggerUser(null);

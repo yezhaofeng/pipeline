@@ -35,37 +35,42 @@ public abstract class AbstractExecutor {
     // 禁止子类重写
     @LogExecTime
     public void executeJob(JobBuildContext context, JobBuild jobBuild) {
-        logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
-        Long pluginBuildId = jobBuild.getPluginBuildId();
-        if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
-            notifyJobStartFailed(jobBuild, "未找到插件配置");
-            return;
-        }
-        // 插件运行时的参数保存到PluginBuild中
-        Map<String, Object> runtimePluginParam = context.getRuntimePluginParam();
-        AbstractDataOperator abstractDataOperator = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator();
-        Object pluginBuild = abstractDataOperator.getBuild(jobBuild.getPluginBuildId());
-        if (pluginBuild == null) {
-            notifyJobStartFailed(jobBuild, "插件初始化失败");
-            return;
-        }
-        Class buildClass = abstractDataOperator.getBuildClass();
-        Field[] fields = buildClass.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field filed = fields[i];
-            RuntimeRequire runtimeRequire = filed.getAnnotation(RuntimeRequire.class);
-            if (runtimeRequire != null) {
-                try {
-                    filed.setAccessible(true);
-                    filed.set(pluginBuild, runtimePluginParam.get(filed.getName()));
-                } catch (Exception e) {
-                    // TODO log
-                    continue;
+        try {
+            logger.info("JobBuildId-{} start build,context:{}", jobBuild.getId(), context);
+            Long pluginBuildId = jobBuild.getPluginBuildId();
+            if (pluginBuildId == null || pluginBuildId == -1L || pluginBuildId == 0L) {
+                notifyJobStartFailed(jobBuild, "未找到插件配置");
+                return;
+            }
+            // 插件运行时的参数保存到PluginBuild中
+            Map<String, Object> runtimePluginParam = context.getRuntimePluginParam();
+            AbstractDataOperator abstractDataOperator = pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator();
+            Object pluginBuild = abstractDataOperator.getBuild(jobBuild.getPluginBuildId());
+            if (pluginBuild == null) {
+                notifyJobStartFailed(jobBuild, "插件初始化失败");
+                return;
+            }
+            Class buildClass = abstractDataOperator.getBuildClass();
+            Field[] fields = buildClass.getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                Field filed = fields[i];
+                RuntimeRequire runtimeRequire = filed.getAnnotation(RuntimeRequire.class);
+                if (runtimeRequire != null) {
+                    try {
+                        filed.setAccessible(true);
+                        filed.set(pluginBuild, runtimePluginParam.get(filed.getName()));
+                    } catch (Exception e) {
+                        // TODO log
+                        continue;
+                    }
                 }
             }
+            pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator().updateBuild(pluginBuild);
+            execute(context, jobBuild);
+        } catch (Exception e) {
+            logger.warn("start job failed {}", jobBuild, e);
+            jobBuildService.notifiedJobBuildStarFailed(jobBuild);
         }
-        pluginInfoService.getRealJobPlugin(jobBuild.getPluginType()).getDataOperator().updateBuild(pluginBuild);
-        execute(context, jobBuild);
     }
 
     protected abstract void execute(JobBuildContext context, JobBuild jobBuild);
@@ -94,7 +99,7 @@ public abstract class AbstractExecutor {
         jobBuildService.saveOrUpdate(jobBuild);
     }
 
-    protected void notifiedJobBuildCanceled(JobBuild jobBuild){
+    protected void notifiedJobBuildCanceled(JobBuild jobBuild) {
         jobBuildService.notifiedJobBuildCanceled(jobBuild);
     }
 }

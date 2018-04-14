@@ -27,6 +27,8 @@ public interface IJobBuildService {
 
     boolean cancel(Long jobBuildId);
 
+    void notifiedJobBuildStarFailed(JobBuild jobBuild);
+
     void notifiedJobBuildStartCanceled(JobBuild jobBuild);
 
     void notifiedJobBuildCanceled(JobBuild jobBuild);
