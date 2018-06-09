@@ -142,9 +142,10 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                 var currentJob = scope.currentBuild.jobBuildBeanList[jobIndex];
                                 // 模板数据约定
                                 scope.updateJobInfo(currentJob.id, jobIndex);
-                                var promise = $interval(function () {
-                                    scope.updateJobInfo(currentJob.id, jobIndex, promise);
-                                }, 2000, 2000, true);
+
+                                //var promise = $interval(function () {
+                                //    scope.updateJobInfo(currentJob.id, jobIndex, promise);
+                                //}, 2000, 2000, true);
                             }
                             if (previousJobIndex !== jobIndex) {
                                 scope.currentJobExpandPointers[previousJobIndex] = false;
@@ -174,9 +175,9 @@ define(['app', 'constants', 'angular'], function (app, constants, angular) {
                                         });
                                     }
                                 }
-                                if (jobBuildInfo.jobStatus !== "RUNNING") {
-                                    $interval.cancel(promise);
-                                }
+                                //if (jobBuildInfo.jobStatus !== "RUNNING") {
+                                //    $interval.cancel(promise);
+                                //}
                             });
                         };
                         scope.toggleInfo = function (stageIndex, templateUrl) {
