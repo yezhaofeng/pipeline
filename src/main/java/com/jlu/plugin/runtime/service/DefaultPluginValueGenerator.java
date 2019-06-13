@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Administrator on 2018/1/24.
+ * Created by Administrator on 2019/1/24.
  */
 @Component
 public class DefaultPluginValueGenerator implements PluginValueGenerator<String> {

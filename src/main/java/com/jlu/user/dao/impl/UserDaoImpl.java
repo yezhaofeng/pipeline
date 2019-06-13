@@ -12,7 +12,7 @@ import com.jlu.user.dao.IUserDao;
 import com.jlu.user.model.GithubUser;
 
 /**
- * Created by langshiquan on 17/3/10.
+ * Created by yezhaofeng on 2019/3/10.
  *
  * 用户信息管理dao实体类
  */

@@ -25,7 +25,7 @@ import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
 
 /**
- * Created by langshiquan on 18/1/25.
+ * Created by yezhaofeng on 2019/1/25.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class JenkinsConfServiceImplTest {
@@ -41,14 +41,14 @@ public class JenkinsConfServiceImplTest {
 
     @Test
     public void testGetByCreateUser() throws IOException, URISyntaxException {
-        String createUser = "langshiquan";
+        String createUser = "yezhaofeng";
         List<JenkinsConf> jenkinsConfs = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             JenkinsConf jenkinsConf = new JenkinsConf();
             jenkinsConf.setId(Long.parseLong(String.valueOf(i)));
             jenkinsConf.setServerUrl("http://localhost:8080");
-            jenkinsConf.setMasterUser("langshiquan");
-            jenkinsConf.setMasterPassword("langshiquan");
+            jenkinsConf.setMasterUser("yezhaofeng");
+            jenkinsConf.setMasterPassword("yezhaofeng");
             jenkinsConf.setCreateTime(new Date());
             jenkinsConfs.add(jenkinsConf);
         }

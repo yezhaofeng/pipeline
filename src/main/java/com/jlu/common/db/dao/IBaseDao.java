@@ -10,7 +10,7 @@ import com.jlu.common.db.sqlcondition.ConditionSet;
 import com.jlu.common.db.sqlcondition.OrderCondition;
 
 /**
- * Created by Wonpang New on 2016/9/6.
+ * Created by Wonpang New on 2019/9/6.
  *
  * 数据库基本操作接口
  */

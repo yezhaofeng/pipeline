@@ -10,7 +10,7 @@ import com.jlu.branch.model.GithubBranch;
 import com.jlu.branch.service.IBranchService;
 
 /**
- * Created by langshiquan on 17/3/10.
+ * Created by yezhaofeng on 2019/3/10.
  */
 @Service
 public class BranchServiceImpl implements IBranchService {

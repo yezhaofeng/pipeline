@@ -9,7 +9,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
 
 /**
- * Created by langshiquan on 17/12/23.
+ * Created by yezhaofeng on 2019/12/23.
  */
 public interface IJenkinsServerService {
 

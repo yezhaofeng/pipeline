@@ -15,14 +15,22 @@ import com.jlu.plugin.runtime.RuntimeRequire;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Entity
 public class ReleaseBuild {
 
-    private static final String WGET_COMMAND_PREFIX = "wget -r -nH --level=0 --cut-dirs=3 ";
+    /**
+     * --no-passive-ftp 不使用被动模式
+     * -r, --recursive 递归下载
+     * -nH, --no-host-directories 不创建含有远程主机名称的目录。
+     * -l, --level=数字 最大递归深度(inf 或 0 表示无限)。
+     * --cut-dirs=数目 忽略远程目录中指定数目的目录层,在此例中4层是指从release到版本号，output是第五层，只下载output文件夹
+     * -p,--preserve-permissions 提取有关文件权限的信息（超级用户默认选项）,即wget下来的文件的权限不变
+     */
+    private static final String WGET_COMMAND_PREFIX = "wget --no-passive-ftp -r -nH --level=0 --cut-dirs=4 ";
     private static final String WGET_COMMAND_SUFFIX =
-            " --user release --password release@123 --preserve-permissions";
+            " --user ftptest --password ftptest --preserve-permissions";
 
     public static final AbstractPropertyGetter<String, ReleaseBuild> VERSION_GETTER =
             new AbstractPropertyGetter<String, ReleaseBuild>() {

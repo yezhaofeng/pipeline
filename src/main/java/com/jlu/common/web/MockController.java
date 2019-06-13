@@ -21,7 +21,7 @@ import com.jlu.user.bean.Role;
 import com.jlu.user.model.GithubUser;
 
 /**
- * Created by langshiquan on 18/2/3.
+ * Created by yezhaofeng on 2019/2/3.
  */
 
 @Controller

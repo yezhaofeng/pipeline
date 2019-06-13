@@ -1,7 +1,7 @@
 package com.jlu.common.utils.bean;
 
 /**
- * Created by langshiquan on 18/1/22.
+ * Created by yezhaofeng on 2019/1/22.
  */
 public abstract class AbstractPropertyGetter<K, T> extends AbstractBeanProcessor<K, T> {
     @Override

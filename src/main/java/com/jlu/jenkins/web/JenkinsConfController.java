@@ -26,7 +26,7 @@ import com.jlu.jenkins.service.IJenkinsConfService;
 import javax.validation.Valid;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 @RestController
 @RequestMapping("/pipeline/jenkins/server")

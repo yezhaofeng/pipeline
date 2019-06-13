@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Repository
 public class JenkinsJobBuildDaoImpl extends AbstractBaseDao<JenkinsJobBuild> implements IJenkinsJobBuildDao {

@@ -13,7 +13,7 @@ import com.jlu.pipeline.job.bean.PipelineJobStatus;
 import com.jlu.pipeline.job.bean.TriggerMode;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 @Entity
 public class PipelineBuild {

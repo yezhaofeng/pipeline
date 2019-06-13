@@ -13,7 +13,7 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import com.jlu.plugin.instance.release.service.IReleaseService;
 
 /**
- * Created by langshiquan on 18/1/22.
+ * Created by yezhaofeng on 2019/1/22.
  */
 @Repository
 public class ReleaseServiceImpl implements IReleaseService {

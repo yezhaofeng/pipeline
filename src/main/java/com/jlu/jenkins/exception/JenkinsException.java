@@ -3,7 +3,7 @@ package com.jlu.jenkins.exception;
 import com.jlu.common.exception.PipelineRuntimeException;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 public class JenkinsException extends PipelineRuntimeException {
 

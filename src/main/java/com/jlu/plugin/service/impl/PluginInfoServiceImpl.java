@@ -16,7 +16,7 @@ import com.jlu.plugin.model.PluginInfo;
 import com.jlu.plugin.service.IPluginInfoService;
 
 /**
- * Created by langshiquan on 18/1/13.
+ * Created by yezhaofeng on 2019/1/13.
  */
 @Service
 public class PluginInfoServiceImpl implements IPluginInfoService {

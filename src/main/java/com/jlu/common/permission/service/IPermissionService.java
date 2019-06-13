@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by langshiquan on 18/2/2.
+ * Created by yezhaofeng on 2019/2/2.
  */
 public interface IPermissionService {
     /**

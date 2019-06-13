@@ -19,7 +19,7 @@ import com.jlu.jenkins.timer.service.ITimerService;
 import com.jlu.pipeline.job.model.JobBuild;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  * Timer存在缺陷
  */
 @Deprecated

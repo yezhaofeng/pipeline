@@ -1,7 +1,7 @@
 package com.jlu.jenkins.exception;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 public enum JenkinsExceptionEnum {
     WRONG_URL("Jenkins URL不合法"), SERVER_INIT_FAILED("Jenkins服务不在线或者帐号密码错误"),

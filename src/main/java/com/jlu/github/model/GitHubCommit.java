@@ -6,7 +6,7 @@ import com.jlu.branch.bean.BranchType;
 import com.jlu.common.utils.PipelineConfigReader;
 
 /**
- * Created by langshiquan on 17/4/25.
+ * Created by yezhaofeng on 2019/4/25.
  * <p>
  * 代码提交信息
  */

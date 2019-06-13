@@ -1,7 +1,7 @@
 package com.jlu.common.db.sqlcondition;
 
 /**
- * Created by Wonpang New on 2016/9/6.
+ * Created by Wonpang New on 2019/9/6.
  */
 public class ConditionAndSet extends ConditionSet {
     private static final long serialVersionUID = -7785215850623407374L;

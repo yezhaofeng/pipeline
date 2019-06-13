@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jlu.common.permission.service.IPermissionService;
 
 /**
- * Created by langshiquan on 18/2/3.
+ * Created by yezhaofeng on 2019/2/3.
  */
 public class UserLoginInterceptor implements HandlerInterceptor {
     @Autowired

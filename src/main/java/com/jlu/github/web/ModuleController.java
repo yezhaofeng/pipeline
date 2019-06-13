@@ -18,7 +18,7 @@ import com.jlu.github.service.IModuleService;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Created by langshiquan on 17/3/21.
+ * Created by yezhaofeng on 2019/3/21.
  */
 @Controller
 @RequestMapping("/pipeline/module")

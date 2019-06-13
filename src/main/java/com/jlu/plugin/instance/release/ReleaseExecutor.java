@@ -31,7 +31,7 @@ import com.jlu.plugin.instance.release.model.ReleaseBuild;
 import com.jlu.plugin.instance.release.service.IReleaseService;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Service
 public class ReleaseExecutor extends AbstractExecutor {
@@ -42,7 +42,7 @@ public class ReleaseExecutor extends AbstractExecutor {
     private final static String RELEASE_JENKINS_JOB_NAME = "release";
     private final static String TEMP_PRODUCT_SOURCE_LOCATION = "TEMP_PRODUCT_SOURCE_LOCATION";
     private final static String RELEASE_PRODUCT_TARGET_LOCATION = "RELEASE_PRODUCT_TARGET_LOCATION";
-    private final static String FTP_SERVER_URL = "ftp://139.199.15.115/";
+    private final static String FTP_SERVER_URL = "ftp://139.196.97.69/";
 
     private final static String VERSION_LESS_MESSAGE = "版本号不能减小";
     private final static String VERSION_FORMAT_ERROR_MESSAGE = "版本号格式不正确";
@@ -110,7 +110,8 @@ public class ReleaseExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, RELEASE_JENKINS_JOB_NAME, releaseParams, jobBuild);
 
             StringBuilder releasePath = new StringBuilder();
-            releasePath.append(FTP_SERVER_URL).append(module)
+            releasePath.append(FTP_SERVER_URL).append("release")
+                    .append(SEPARATOR).append(module)
                     .append(SEPARATOR).append(version.replace(".", "_"));
             StringBuilder logUrl = new StringBuilder();
             logUrl.append(DefaultJenkinsServer.SERVER_URL)
@@ -145,7 +146,8 @@ public class ReleaseExecutor extends AbstractExecutor {
 
     private String getCompileLocation(String compileProductFtpPath) {
         // "ftp://139.199.15.115" 长度为20
-        return "snapshot" + SEPARATOR + compileProductFtpPath.substring(FTP_SERVER_URL.length(), compileProductFtpPath.length());
+        //return "snapshot" + SEPARATOR + compileProductFtpPath.substring(FTP_SERVER_URL.length(), compileProductFtpPath.length());
+        return compileProductFtpPath.substring(FTP_SERVER_URL.length(), compileProductFtpPath.length());
     }
 
     @Override

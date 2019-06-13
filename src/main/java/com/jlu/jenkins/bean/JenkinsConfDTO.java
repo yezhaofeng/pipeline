@@ -12,7 +12,7 @@ import com.jlu.jenkins.model.JenkinsConf;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 public class JenkinsConfDTO {
     Long id;

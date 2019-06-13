@@ -8,7 +8,7 @@ import com.jlu.common.permission.annotations.PermissionPass;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Created by Administrator on 2017/8/4.
+ * Created by Administrator on 2019/8/4.
  */
 
 @ApiIgnore

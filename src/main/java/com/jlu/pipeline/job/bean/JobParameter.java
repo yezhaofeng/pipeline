@@ -1,7 +1,7 @@
 package com.jlu.pipeline.job.bean;
 
 /**
- * Created by Administrator on 2018/1/19.
+ * Created by Administrator on 2019/1/19.
  */
 public class JobParameter {
     // 提交信息

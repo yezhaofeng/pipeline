@@ -13,7 +13,7 @@ import com.jlu.jenkins.dao.IJenkinsConfDao;
 import com.jlu.jenkins.model.JenkinsConf;
 
 /**
- * Created by langshiquan on 18/1/15.
+ * Created by yezhaofeng on 2019/1/15.
  */
 @Repository
 public class JenkinsConfDaoImpl extends AbstractBaseDao<JenkinsConf> implements IJenkinsConfDao {

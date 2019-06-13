@@ -39,7 +39,7 @@ import com.jlu.common.db.sqlcondition.NotInCondition;
 import com.jlu.common.db.sqlcondition.OrderCondition;
 
 /**
- * Created by Wonpang New on 2016/9/6.
+ * Created by Wonpang New on 2019/9/6.
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class AbstractBaseDao<C> implements IBaseDao<C> {

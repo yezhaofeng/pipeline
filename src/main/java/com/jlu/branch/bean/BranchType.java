@@ -1,7 +1,7 @@
 package com.jlu.branch.bean;
 
 /**
- * Created by langshiquan on 17/3/10.
+ * Created by yezhaofeng on 2019/3/10.
  */
 public enum BranchType {
     TRUNK, BRANCH;

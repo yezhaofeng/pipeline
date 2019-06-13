@@ -10,7 +10,7 @@ import com.jlu.pipeline.model.PipelineBuild;
 import com.jlu.pipeline.model.PipelineConf;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 public interface IPipelineBuildService {
 

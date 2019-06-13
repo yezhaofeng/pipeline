@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
 /**
- * Created by langshiquan on 18/1/28.
+ * Created by yezhaofeng on 2019/1/28.
  */
 public interface IGithubOAuthService {
     String getAuthorizationUrl();

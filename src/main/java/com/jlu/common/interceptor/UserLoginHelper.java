@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by langshiquan on 18/1/29.
+ * Created by yezhaofeng on 2019/1/29.
  */
 @Component
 public class UserLoginHelper {

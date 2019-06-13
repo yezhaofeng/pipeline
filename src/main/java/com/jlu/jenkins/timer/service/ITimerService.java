@@ -3,7 +3,7 @@ package com.jlu.jenkins.timer.service;
 import com.jlu.jenkins.timer.bean.JenkinsBuildTimerTask;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 @Deprecated
 public interface ITimerService {

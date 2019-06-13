@@ -8,7 +8,7 @@ import org.springframework.validation.ObjectError;
 import java.util.List;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 public abstract class AbstractController {
     protected String getLoginUserName() {

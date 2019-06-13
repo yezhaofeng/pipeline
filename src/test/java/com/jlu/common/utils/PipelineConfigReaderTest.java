@@ -9,7 +9,7 @@ import com.jlu.SpringBaseTest;
 import junit.framework.Assert;
 
 /**
- * Created by langshiquan on 18/1/30.
+ * Created by yezhaofeng on 2019/1/30.
  */
 public class PipelineConfigReaderTest extends SpringBaseTest {
     @Test

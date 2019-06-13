@@ -18,7 +18,7 @@ import com.jlu.github.service.IModuleService;
 import net.sf.json.JSONObject;
 
 /**
- * Created by langshiquan on 18/1/27.
+ * Created by yezhaofeng on 2019/1/27.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class GitHubHookServiceImplTest {
@@ -41,12 +41,12 @@ public class GitHubHookServiceImplTest {
             + "      \"url\": \"https://github"
             + ".com/z521598/pipeline_v2/commit/9f2bae75366c3f3023dc040f3253496eb3190dbf\",\n"
             + "      \"author\": {\n"
-            + "        \"name\": \"langshiquan\",\n"
-            + "        \"email\": \"langshiquan@baidu.com\"\n"
+            + "        \"name\": \"yezhaofeng\",\n"
+            + "        \"email\": \"yezhaofeng@baidu.com\"\n"
             + "      },\n"
             + "      \"committer\": {\n"
-            + "        \"name\": \"langshiquan\",\n"
-            + "        \"email\": \"langshiquan@baidu.com\"\n"
+            + "        \"name\": \"yezhaofeng\",\n"
+            + "        \"email\": \"yezhaofeng@baidu.com\"\n"
             + "      },\n"
             + "      \"added\": [\n"
             + "\n"
@@ -68,12 +68,12 @@ public class GitHubHookServiceImplTest {
             + "    \"url\": \"https://github.com/z521598/pipeline_v2/commit/9f2bae75366c3f3023dc040f3253496eb3190dbf"
             + "\",\n"
             + "    \"author\": {\n"
-            + "      \"name\": \"langshiquan\",\n"
-            + "      \"email\": \"langshiquan@baidu.com\"\n"
+            + "      \"name\": \"yezhaofeng\",\n"
+            + "      \"email\": \"yezhaofeng@baidu.com\"\n"
             + "    },\n"
             + "    \"committer\": {\n"
-            + "      \"name\": \"langshiquan\",\n"
-            + "      \"email\": \"langshiquan@baidu.com\"\n"
+            + "      \"name\": \"yezhaofeng\",\n"
+            + "      \"email\": \"yezhaofeng@baidu.com\"\n"
             + "    },\n"
             + "    \"added\": [\n"
             + "\n"

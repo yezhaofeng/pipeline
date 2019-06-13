@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Entity
 public class CompileConf {

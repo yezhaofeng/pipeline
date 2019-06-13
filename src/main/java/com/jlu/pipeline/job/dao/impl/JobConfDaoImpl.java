@@ -10,7 +10,7 @@ import com.jlu.pipeline.job.dao.IJobConfDao;
 import com.jlu.pipeline.job.model.JobConf;
 
 /**
- * Created by langshiquan on 18/1/15.
+ * Created by yezhaofeng on 2019/1/15.
  */
 @Repository
 public class JobConfDaoImpl extends AbstractBaseDao<JobConf> implements IJobConfDao {

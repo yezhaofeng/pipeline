@@ -22,7 +22,7 @@ import org.springframework.util.SystemPropertyUtils;
 import com.google.common.collect.Sets;
 
 /**
- * Created by langshiquan on 18/2/2.
+ * Created by yezhaofeng on 2019/2/2.
  */
 public class PackageScanUtils {
     private static final Logger LOG = LoggerFactory.getLogger(PackageScanUtils.class);

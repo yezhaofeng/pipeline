@@ -87,9 +87,6 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="hibernateProperties">
             <props>
-                <!--指定二级缓存的外部实现类-->
-                <!--<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>-->
-                <!--!!!!!注意：大部分属性需要带hibernate标签!!!!!!!!!!-->
                 <!--为true表示将Hibernate发送给数据库的sql显示出来 -->
                 <prop key="hibernate.show_sql">false</prop>
                 <!--对sql语句进行排版-->

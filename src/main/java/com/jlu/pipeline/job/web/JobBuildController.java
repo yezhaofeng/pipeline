@@ -18,7 +18,7 @@ import com.jlu.pipeline.job.bean.TriggerMode;
 import com.jlu.pipeline.job.service.IJobBuildService;
 
 /**
- * Created by langshiquan on 18/1/19.
+ * Created by yezhaofeng on 2019/1/19.
  */
 @RestController
 @RequestMapping("/pipeline/job/")

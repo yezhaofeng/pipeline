@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.*;
 
 /**
- * Created by Administrator on 2018/3/18.
+ * Created by Administrator on 2019/3/18.
  */
 
 /**
@@ -39,7 +39,7 @@ public class PluginThreadService {
 
 
     public Thread getJobBuildThread(Long jobBuildId) {
-        // FIXME: 2018/3/20 如何保证对象只在一个容器里?
+        // FIXME: 2019/3/20 如何保证对象只在一个容器里?
         return jobBuildThreadMap.get(jobBuildId);
     }
 

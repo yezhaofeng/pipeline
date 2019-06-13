@@ -6,7 +6,7 @@ import com.jlu.pipeline.job.bean.JobConfBean;
 import com.jlu.pipeline.job.model.JobConf;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 public interface IJobConfService {
 

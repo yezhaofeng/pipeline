@@ -45,7 +45,7 @@ public class Swagger2Config {
                 .title("持续交付平台API列表")
                 .termsOfServiceUrl("https://github.com/z521598/pipeline")
                 .description(DESCRIPTION)
-                .contact(new Contact("langshiquan", PipelineConfigReader.getConfigValueByKey("pipeline.home"),
+                .contact(new Contact("yezhaofeng", PipelineConfigReader.getConfigValueByKey("pipeline.home"),
                         "576506402@qq.com"))
                 .build();
 

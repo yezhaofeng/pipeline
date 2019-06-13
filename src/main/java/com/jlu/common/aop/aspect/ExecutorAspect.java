@@ -6,7 +6,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by langshiquan on 18/1/25.
+ * Created by yezhaofeng on 2019/1/25.
  */
 @Aspect
 @Component
@@ -15,6 +15,6 @@ public class ExecutorAspect {
 
     @Pointcut()
     public void executor() {
-        // TODO: 18/2/2
+        // TODO: 2019/2/2
     }
 }

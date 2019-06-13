@@ -7,7 +7,7 @@ import org.apache.commons.collections.map.HashedMap;
 import com.jlu.pipeline.model.PipelineBuild;
 
 /**
- * Created by langshiquan on 18/1/13.
+ * Created by yezhaofeng on 2019/1/13.
  */
 // job执行的上下文信息
 public class JobBuildContext {

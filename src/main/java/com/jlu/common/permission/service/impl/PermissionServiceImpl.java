@@ -34,7 +34,7 @@ import com.jlu.pipeline.dao.IPipelineConfDao;
 import com.jlu.pipeline.job.dao.IJobBuildDao;
 
 /**
- * Created by langshiquan on 18/2/2.
+ * Created by yezhaofeng on 2019/2/2.
  */
 @Service
 public class PermissionServiceImpl implements IPermissionService {

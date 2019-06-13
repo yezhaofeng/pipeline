@@ -3,7 +3,7 @@ package com.jlu.jenkins.bean;
 import java.util.Set;
 
 /**
- * Created by Administrator on 2018/1/23.
+ * Created by Administrator on 2019/1/23.
  */
 public class JenkinsJobsBean {
     private String serverUrl;

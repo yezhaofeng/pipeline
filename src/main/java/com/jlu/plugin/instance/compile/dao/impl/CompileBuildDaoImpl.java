@@ -7,7 +7,7 @@ import com.jlu.plugin.instance.compile.dao.ICompileBuildDao;
 import com.jlu.plugin.instance.compile.model.CompileBuild;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Repository
 public class CompileBuildDaoImpl extends AbstractBaseDao<CompileBuild> implements ICompileBuildDao{

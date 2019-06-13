@@ -10,15 +10,19 @@ import org.springframework.stereotype.Component;
 import com.jlu.jenkins.model.JenkinsConf;
 
 /**
- * Created by langshiquan on 18/1/21.
+ * Created by yezhaofeng on 2019/1/21.
  * FIXME 安全问题
  */
 @Component
 public class DefaultJenkinsServer {
     public static Long ID;
-    public final static String SERVER_URL = "http://60.205.178.34:8081/";
-    public final static String MASTER_USERNAME = "langshiquan";
+/*    public final static String SERVER_URL = "http://60.205.178.34:8081/";
+    public final static String MASTER_USERNAME = "yezhaofeng";
     public final static String MASTER_PASSWORD = "941207";
+    public final static String ADMIN_USERNAME = "pipeline_admin";*/
+    public final static String SERVER_URL = "http://139.196.97.69:8080/";
+    public final static String MASTER_USERNAME = "yezhaofeng";
+    public final static String MASTER_PASSWORD = "jenkins";
     public final static String ADMIN_USERNAME = "pipeline_admin";
     public static JenkinsConf defaultJenkinsConf;
 

@@ -14,7 +14,7 @@ import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobConf;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @Service
 public class JenkinsJobDataOperator extends AbstractDataOperator<JenkinsJobConf, JenkinsJobBuild> {

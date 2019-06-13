@@ -5,7 +5,7 @@ import java.util.List;
 import com.jlu.plugin.instance.release.model.ReleaseBuild;
 
 /**
- * Created by langshiquan on 18/1/22.
+ * Created by yezhaofeng on 2019/1/22.
  */
 public interface IReleaseService {
     void saveOrUpdate(ReleaseBuild releaseBuild);

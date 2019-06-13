@@ -7,7 +7,7 @@ import com.jlu.plugin.instance.compile.dao.ICompileConfDao;
 import com.jlu.plugin.instance.compile.model.CompileConf;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Repository
 public class CompileConfDaoImpl extends AbstractBaseDao<CompileConf> implements ICompileConfDao {

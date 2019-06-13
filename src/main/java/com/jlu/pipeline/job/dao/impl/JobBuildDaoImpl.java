@@ -19,7 +19,7 @@ import com.jlu.pipeline.job.model.JobBuild;
 import com.jlu.pipeline.model.PipelineBuild;
 
 /**
- * Created by langshiquan on 18/1/15.
+ * Created by yezhaofeng on 2019/1/15.
  */
 @Repository
 public class JobBuildDaoImpl extends AbstractBaseDao<JobBuild> implements IJobBuildDao {

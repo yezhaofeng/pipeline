@@ -20,7 +20,7 @@ import com.jlu.pipeline.bean.PipelineBuildBean;
 import com.jlu.pipeline.service.IPipelineBuildService;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @RestController
 @RequestMapping("/pipeline/build")

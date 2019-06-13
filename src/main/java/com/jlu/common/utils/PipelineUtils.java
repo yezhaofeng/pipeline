@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.jlu.common.exception.PipelineRuntimeException;
 
 /**
- * Created by langshiquan on 18/1/31.
+ * Created by yezhaofeng on 2019/1/31.
  */
 public class PipelineUtils {
     public static String getFullModule(String owner, String repository) {

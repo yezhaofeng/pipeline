@@ -11,7 +11,7 @@ import com.jlu.plugin.model.PluginInfo;
 import java.util.List;
 
 /**
- * Created by langshiquan on 18/1/15.
+ * Created by yezhaofeng on 2019/1/15.
  */
 @Repository
 public class PluginInfoDaoImpl extends AbstractBaseDao<PluginInfo> implements IPluginInfoDao {

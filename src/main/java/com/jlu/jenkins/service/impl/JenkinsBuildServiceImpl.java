@@ -34,7 +34,7 @@ import javax.annotation.PostConstruct;
 import javax.print.attribute.standard.JobName;
 
 /**
- * Created by langshiquan on 18/1/13.
+ * Created by yezhaofeng on 2019/1/13.
  */
 @Service
 public class JenkinsBuildServiceImpl implements IJenkinsBuildService {

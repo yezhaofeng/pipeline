@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by langshiquan on 17/3/25.
+ * Created by yezhaofeng on 2019/3/25.
  */
 public class HttpClientAuth {
 
@@ -38,6 +38,7 @@ public class HttpClientAuth {
      * @return
      */
     public static String postForCreateHook(String url, String token) {
+        System.out.println("postForCreateHook url:" + url);
         CloseableHttpClient httpClient = getHttpClient();
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader("Authorization", "token " + token);

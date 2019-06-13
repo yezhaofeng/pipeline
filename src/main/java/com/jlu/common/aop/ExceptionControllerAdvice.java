@@ -16,7 +16,7 @@ import com.jlu.common.permission.exception.ForbiddenException;
 import com.jlu.common.web.ResponseBean;
 
 /**
- * Created by langshiquan on 18/1/28.
+ * Created by yezhaofeng on 2019/1/28.
  */
 @ControllerAdvice
 public class ExceptionControllerAdvice {

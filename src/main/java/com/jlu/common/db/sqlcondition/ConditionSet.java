@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Wonpang New on 2016/9/6.
+ * Created by Wonpang New on 2019/9/6.
  */
 public abstract class ConditionSet {
     private static final long serialVersionUID = -110803228763256709L;

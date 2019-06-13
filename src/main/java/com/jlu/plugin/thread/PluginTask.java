@@ -7,7 +7,7 @@ import com.jlu.plugin.bean.JobBuildContext;
 import com.jlu.plugin.bean.PluginType;
 
 /**
- * Created by Administrator on 2018/3/19.
+ * Created by Administrator on 2019/3/19.
  */
 public class PluginTask implements Runnable {
     private JobBuildContext jobBuildContext;

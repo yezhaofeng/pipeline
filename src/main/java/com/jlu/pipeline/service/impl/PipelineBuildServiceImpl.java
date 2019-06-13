@@ -38,7 +38,7 @@ import com.jlu.pipeline.service.IPipelineBuildService;
 import com.jlu.pipeline.service.IPipelineConfService;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @Service
 public class PipelineBuildServiceImpl implements IPipelineBuildService {

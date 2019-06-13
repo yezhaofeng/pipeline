@@ -25,7 +25,7 @@ import com.jlu.pipeline.service.IPipelineConfService;
 import com.jlu.plugin.bean.PluginType;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @Service
 public class PipelineConfServiceImpl implements IPipelineConfService {
@@ -126,7 +126,7 @@ public class PipelineConfServiceImpl implements IPipelineConfService {
     private static final String DEFAULT_MASTER_PIPELINE_REMARK = "主干";
     private static final String DEFAULT_BRANCH_PIPELINE_REMARK = "分支";
     private static final String DEFAULT_COMPILE_JOB_NAME = "构建";
-    private static final String DEFAULT_RELEASE_JOB_NAME = "发版";
+    private static final String DEFAULT_RELEASE_JOB_NAME = "发布";
 
     // TODO 锁
     @Override

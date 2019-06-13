@@ -6,7 +6,7 @@ import com.jlu.pipeline.job.model.JobBuild;
 import java.util.Date;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 public class JobBuildBean extends JobBuild {
     Object pluginBuild;

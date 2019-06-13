@@ -1,7 +1,7 @@
 package com.jlu.plugin.runtime.bean;
 
 /**
- * Created by Administrator on 2018/1/25.
+ * Created by Administrator on 2019/1/25.
  */
 public enum FormType {
     TEXT("text"), TEXTAREA("textarea"), CHECK_BOX("checkbox");

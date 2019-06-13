@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Administrator on 2018/1/24.
+ * Created by Administrator on 2019/1/24.
  */
 @Component
 public class VersionValueGenerator implements PluginValueGenerator<String> {

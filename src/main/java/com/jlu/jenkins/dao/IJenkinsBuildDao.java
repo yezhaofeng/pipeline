@@ -6,7 +6,7 @@ import com.jlu.jenkins.model.JenkinsBuild;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/4/14.
+ * Created by Administrator on 2019/4/14.
  */
 public interface IJenkinsBuildDao extends IBaseDao<JenkinsBuild>{
 

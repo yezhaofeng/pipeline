@@ -7,7 +7,7 @@ import com.jlu.pipeline.job.bean.JobBuildBean;
 import com.jlu.pipeline.model.PipelineBuild;
 
 /**
- * Created by langshiquan on 18/1/19.
+ * Created by yezhaofeng on 2019/1/19.
  */
 public class PipelineBuildBean extends PipelineBuild {
     GitHubCommit gitHubCommit;

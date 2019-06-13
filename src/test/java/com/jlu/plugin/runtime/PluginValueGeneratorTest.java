@@ -7,7 +7,7 @@ import com.jlu.SpringBaseTest;
 import com.jlu.pipeline.job.service.IJobBuildService;
 
 /**
- * Created by Administrator on 2018/1/24.
+ * Created by Administrator on 2019/1/24.
  */
 public class PluginValueGeneratorTest extends SpringBaseTest {
 

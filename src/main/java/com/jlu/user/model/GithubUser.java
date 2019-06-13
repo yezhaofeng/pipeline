@@ -15,7 +15,7 @@ import com.jlu.common.utils.PipelineConfigReader;
 import com.jlu.user.bean.Role;
 
 /**
- * Created by langshiquan on 17/3/10.
+ * Created by yezhaofeng on 2019/3/10.
  *
  *  用户信息实体类
  */

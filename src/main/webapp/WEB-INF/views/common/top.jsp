@@ -15,11 +15,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="color: white !important;">Pipeline</a>
+                <a class="navbar-brand" href="#" style="color: white !important;">CDP</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-left">
+                <%--<form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input class="form-control" style="width: 350px;" type="text"
                                ng-model="ctrl.searchModule"
@@ -32,17 +32,21 @@
                                role="search"
                                uib-dropdown-toggle>
                     </div>
-                </form>
+                </form>--%>
+
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/swagger-ui.html" target="_blank"
+                    <%--<li><a href="/swagger-ui.html" target="_blank"
                            style="color: white !important;">REST API</a></li>
-                    <li>
-                        <a href="https://github.com/z521598/pipeline/wiki/Pipeline%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E5%B9%B3%E5%8F%B0"
+                    <li>--%>
+                        <%--<a href="https://github.com/z521598/pipeline/wiki/Pipeline%E6%8C%81%E7%BB%AD%E4%BA%A4%E4%BB%98%E5%B9%B3%E5%8F%B0"
                            target="_blank"
-                           style="color: white !important;">用户手册</a></li>
-                    <li><a href="mailto:576506402@qq.com" style="color: white !important;">联系我们</a></li>
+                           style="color: white !important;">用户手册</a></li>--%>
+                    <%--<li><a href="mailto:912462891@qq.com" style="color: white !important;">联系我们</a></li>
                     <li><a href="https://github.com/${currentUser.username}" target="_blank"
-                           style="color: white !important;">${currentUser.username}</a></li>
+                           style="color: white !important;">${currentUser.username}</a></li>--%>
+                        <li><a href="/intro" target="_blank"
+                               style="color: white !important;">选择模块</a></li>
+                        <li>
                     <li class="btn-group" uib-dropdown="">
                         <a href="#" role="button" class="dropdown-toggle" uib-dropdown-toggle=""
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"

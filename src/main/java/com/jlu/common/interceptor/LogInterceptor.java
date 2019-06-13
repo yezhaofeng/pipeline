@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jlu.common.aop.utils.AccessLogHelper;
 
 /**
- * Created by langshiquan on 18/1/29.
+ * Created by yezhaofeng on 2019/1/29.
  */
 public class LogInterceptor implements HandlerInterceptor {
     @Override

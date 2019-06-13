@@ -7,7 +7,7 @@ import com.jlu.github.model.GitHubCommit;
 import java.util.List;
 
 /**
- * Created by langshiquan on 17/4/25.
+ * Created by yezhaofeng on 2019/4/25.
  */
 public interface IGitHubCommitDao extends IBaseDao<GitHubCommit> {
     String getModuleById(Long id);

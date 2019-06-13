@@ -6,7 +6,7 @@ import com.jlu.plugin.runtime.service.DefaultPluginValueGenerator;
 import java.lang.annotation.*;
 
 /**
- * Created by Administrator on 2018/1/23.
+ * Created by Administrator on 2019/1/23.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

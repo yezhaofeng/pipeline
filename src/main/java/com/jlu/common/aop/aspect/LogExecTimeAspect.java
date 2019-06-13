@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.jlu.common.aop.annotations.LogExecTime;
 
 /**
- * Created by langshiquan on 18/1/25.
+ * Created by yezhaofeng on 2019/1/25.
  */
 @Aspect
 @Component

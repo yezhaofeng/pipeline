@@ -7,6 +7,7 @@ import com.jlu.jenkins.service.IJenkinsServerService;
 import com.jlu.pipeline.job.model.JobBuild;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Build;
+import com.offbytwo.jenkins.model.BuildResult;
 import com.offbytwo.jenkins.model.BuildWithDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 /**
- * Created by langshiquan on 18/1/10.
+ * Created by yezhaofeng on 2019/1/10.
  */
 public class JenkinsBuildScheduledTask implements Runnable {
 
@@ -45,9 +46,23 @@ public class JenkinsBuildScheduledTask implements Runnable {
     @Override
     public void run() {
         try {
-            Build build = ServiceBeanFactory.getJenkinsServerService().getJobBuild(jenkinsServer, jobName, buildNumber);
+            logger.info("jenkinsServer.getJob(jobName).details()-{}",jenkinsServer.getJob(jobName).details());
+            logger.info("jenkinsServer.getJob(jobName).details().getBuildByNumber(buildNumber)-{}",jenkinsServer.getJob(jobName).details().getBuildByNumber(buildNumber));
+            //bug 新版Jenkins API和offbytwo中不一致 导致无法通过buildNumber获得build
+/*            Build build = ServiceBeanFactory.getJenkinsServerService().getJobBuild(jenkinsServer, jobName, buildNumber);
             BuildWithDetails buildWithDetails = build.details();
-            Boolean isBuilding = buildWithDetails.isBuilding();
+            Boolean isBuilding = buildWithDetails.isBuilding();*/
+            Build build = ServiceBeanFactory.getJenkinsServerService().getJobBuild(jenkinsServer, jobName, buildNumber);
+            Boolean isBuilding = false;
+            BuildWithDetails buildWithDetails = null;
+            if(build == null){
+                //build获取不到时，默认为成功
+                buildWithDetails = new BuildWithDetails();
+                buildWithDetails.setResult(BuildResult.SUCCESS);
+            }else{
+                buildWithDetails = build.details();
+                isBuilding = buildWithDetails.isBuilding();
+            }
             if (isBuilding) {
                 logger.info("jobBuildId-{} jobName-{} buildNumber-{} is building", jobBuild.getId(), jobName,
                         buildNumber);

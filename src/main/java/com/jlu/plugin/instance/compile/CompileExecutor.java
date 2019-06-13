@@ -30,7 +30,7 @@ import com.jlu.plugin.instance.compile.dao.ICompileBuildDao;
 import com.jlu.plugin.instance.compile.model.CompileBuild;
 
 /**
- * Created by langshiquan on 18/1/20.
+ * Created by yezhaofeng on 2019/1/20.
  */
 @Service
 public class CompileExecutor extends AbstractExecutor {
@@ -41,7 +41,8 @@ public class CompileExecutor extends AbstractExecutor {
     private final static String CURRENT_DATA = "CURRENT_DATA";
     private final static String OWNER = "OWNER";
     private final static String PIPELINE_PARAMETER = "PIPELINE_PARAMETER";
-    private final static String FTP_SERVER_URL = "ftp://139.199.15.115/";
+    /*private final static String FTP_SERVER_URL = "ftp://139.199.15.115/";*/
+    private final static String FTP_SERVER_URL = "ftp://139.196.97.69/";
 
     @Autowired
     private IJenkinsBuildService jenkinsBuildService;
@@ -91,7 +92,8 @@ public class CompileExecutor extends AbstractExecutor {
                     .buildJob(DefaultJenkinsServer.ID, COMPILE_JENKINS_JOB_NAME, compileParam,
                             jobBuild);
             StringBuilder buildPath = new StringBuilder();
-            buildPath.append(FTP_SERVER_URL).append(module)
+            buildPath.append(FTP_SERVER_URL).append("snapshot")
+                    .append(SEPARATOR).append(module)
                     .append(SEPARATOR).append(commitId)
                     .append(SEPARATOR).append(compileParam.get(CURRENT_DATA))
                     .append(SEPARATOR).append(compileParam.get(JOB_BUILD_ID))
@@ -109,17 +111,19 @@ public class CompileExecutor extends AbstractExecutor {
         } catch (IOException ioe) {
             jobBuild.setMessage("网络异常");
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
-            return;
+            throw new PipelineRuntimeException(ioe.getMessage());
         } catch (JenkinsException jre) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage(jre.getMessage());
-            return;
+            throw new PipelineRuntimeException(jre.getMessage());
         } catch (Exception e) {
             jobBuild.setJobStatus(PipelineJobStatus.FAILED);
             jobBuild.setMessage("UnKnown Error:" + e.getMessage());
-            return;
+            throw new PipelineRuntimeException(e.getMessage());
+        }finally {
+            jobBuildService.saveOrUpdate(jobBuild);
         }
-        jobBuildService.saveOrUpdate(jobBuild);
+
     }
 
     @Override

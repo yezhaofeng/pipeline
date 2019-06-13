@@ -12,7 +12,7 @@ import com.jlu.common.deserializer.JSONObjectSerializer;
 import com.jlu.pipeline.job.model.JobConf;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobConfBean extends JobConf {

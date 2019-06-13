@@ -28,7 +28,7 @@ import com.jlu.user.service.IGithubOAuthService;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Created by langshiquan on 18/1/28.
+ * Created by yezhaofeng on 2019/1/28.
  */
 @ApiIgnore
 @PermissionPass
@@ -77,7 +77,8 @@ public class LoginController extends AbstractController{
 
         GithubUser githubUser = githubDataService.initUser(userBean);
         request.getSession().setAttribute(GithubUser.CURRENT_USER_NAME, githubUser);
-        response.sendRedirect("/");
+        //response.sendRedirect("/");
+        response.sendRedirect("/intro");
         return ResponseBean.TRUE;
     }
 

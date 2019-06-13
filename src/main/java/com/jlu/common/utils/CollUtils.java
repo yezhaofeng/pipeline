@@ -14,7 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import com.jlu.common.utils.bean.AbstractBeanProcessor;
 
 /**
- * Created by langshiquan on 18/1/22.
+ * Created by yezhaofeng on 2019/1/22.
  */
 public class CollUtils extends CollectionUtils {
     /**

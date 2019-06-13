@@ -7,7 +7,7 @@ import com.jlu.common.db.dao.IBaseDao;
 import com.jlu.github.model.Module;
 
 /**
- * Created by langshiquan on 17/3/10.
+ * Created by yezhaofeng on 2019/3/10.
  */
 public interface IModuleDao extends IBaseDao<Module> {
 

@@ -31,7 +31,7 @@ import com.jlu.user.model.GithubUser;
 import com.jlu.user.service.IUserService;
 
 /**
- * Created by langshiquan on 17/3/24.
+ * Created by yezhaofeng on 2019/3/24.
  */
 @Service
 public class GithubDataServiceImpl implements IGithubDataService {
@@ -101,6 +101,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
     @Override
     public void creatHooks(String username, String repo, String githubToken) {
         String repoUrl = String.format(PipelineConfigReader.getConfigValueByKey("github.all.hooks"), username, repo);
+        LOGGER.info("createhooks repoUrl:{}",repoUrl);
         HttpClientAuth.postForCreateHook(repoUrl, githubToken);
     }
 
@@ -169,7 +170,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
      */
     private void initBranch(Module module, String username) {
         String requestBranchUrl = String.format(PipelineConfigReader.getConfigValueByKey("github.repo.branches"),
-                username, module.getModule());
+                module.getModule());
         String result = HttpClientUtil.get(requestBranchUrl, null);
         List<GithubBranchBean> branchBeans = GSON.fromJson(result, new TypeToken<List<GithubBranchBean>>() {
         }.getType());
@@ -200,7 +201,7 @@ public class GithubDataServiceImpl implements IGithubDataService {
 
     /**
      * 保存一个commit数据，用于触发第一条流水线
-     * FIXME: 18/1/28 暂时无法知道commit所属分支
+     * FIXME: 2019/1/28 暂时无法知道commit所属分支
      * @param userName
      * @param module
      * @param branchName

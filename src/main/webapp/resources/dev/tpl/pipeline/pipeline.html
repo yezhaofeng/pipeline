@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <div ng-show="hasDefaultPipeline">
         <br/>
-        <div class="alert alert-warning">若使用编译功能，请先确定代码库根目录下已添加build.sh，再开启流水线功能。</div>
-        <div class="alert alert-info">将创建2条流水线，一条作用于master主干，一条作用于所有分支</div>
+        <div class="alert alert-warning">若使用编译功能，请先确定代码库根目录下已添加build.sh，再开启任务链。</div>
+        <div class="alert alert-info">将创建2条任务链，一条作用于master主干，一条作用于所有分支</div>
         <div>
             <center>
                 <button class="btn btn-lg btn-success" ng-click="openDefaultPipeline()" ng-disble="opening">
-                    开启默认流水线
+                    启动默认任务链配置
                 </button>
             </center>
         </div>
@@ -33,11 +33,11 @@
                     <a ui-sref="github({module:buildsCtrl.context.module})" class="module-settings-link">
                         <span class="fa fa-resistance"></span> 接入模块
                     </a>
-                    <a ui-sref="jenkins()" class="module-settings-link">
+<                   <!--<a ui-sref="jenkins()" class="module-settings-link">
                         <span class="fa fa-wrench"></span> Jenkins管理
-                    </a>
+                    </a>-->
                     <a ui-sref="config({module:buildsCtrl.context.module})" class="module-settings-link">
-                        <span class="fa fa-cog"></span> 流水线配置
+                        <span class="fa fa-cog"></span> 任务链配置
                     </a>
                 </div>
             </div>

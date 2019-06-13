@@ -22,7 +22,7 @@ import com.jlu.plugin.instance.jenkinsjob.dao.IJenkinsJobBuildDao;
 import com.jlu.plugin.instance.jenkinsjob.model.JenkinsJobBuild;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @Service
 public class JenkinsJobExecutor extends AbstractExecutor {

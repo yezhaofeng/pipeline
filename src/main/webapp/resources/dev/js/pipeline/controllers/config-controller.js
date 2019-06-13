@@ -1,7 +1,7 @@
 /**
  * @file 流水线配置
  *
- * @author langshiquan
+ * @author yezhaofeng
  */
 define(['app', 'angular', 'constants'], function (app, angular, constants) {
     'use strict';

@@ -3,7 +3,7 @@ package com.jlu.pipeline.job.bean;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2018/1/25.
+ * Created by Administrator on 2019/1/25.
  */
 public class JobRuntimeDTO {
     Map<String, String> execParam;

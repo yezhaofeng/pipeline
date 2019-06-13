@@ -13,7 +13,7 @@ import com.jlu.common.interceptor.UserLoginHelper;
 import com.jlu.common.utils.DateUtils;
 
 /**
- * Created by langshiquan on 18/1/29.
+ * Created by yezhaofeng on 2019/1/29.
  */
 public class AccessLogHelper {
     private static Logger ACCESS_LOG = LoggerFactory.getLogger("accseeLog");

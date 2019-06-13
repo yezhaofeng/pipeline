@@ -24,7 +24,7 @@ import com.jlu.jenkins.service.IJenkinsServerService;
 import com.offbytwo.jenkins.JenkinsServer;
 
 /**
- * Created by langshiquan on 17/12/23.
+ * Created by yezhaofeng on 2019/12/23.
  */
 
 @Service

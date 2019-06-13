@@ -4,7 +4,7 @@ import com.jlu.user.bean.UserBean;
 import com.jlu.user.model.GithubUser;
 
 /**
- * Created by langshiquan on 17/3/24.
+ * Created by yezhaofeng on 2019/3/24.
  *
  * 同 github 交互服务
  */

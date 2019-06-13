@@ -13,7 +13,7 @@ import org.springframework.beans.BeanUtils;
 import com.jlu.jenkins.bean.JenkinsConfDTO;
 
 /**
- * Created by langshiquan on 17/12/23.
+ * Created by yezhaofeng on 2019/12/23.
  */
 @Entity
 public class JenkinsConf {

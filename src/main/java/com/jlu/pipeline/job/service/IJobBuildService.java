@@ -11,7 +11,7 @@ import com.jlu.plugin.bean.PluginType;
 import com.jlu.plugin.runtime.bean.RunTimeBean;
 
 /**
- * Created by Administrator on 2018/1/18.
+ * Created by Administrator on 2019/1/18.
  */
 public interface IJobBuildService {
     Long initBuild(JobConfBean jobConfBean, Long pipelineBuildId, Long upStreamJobBuildId, Map<String, String> params);

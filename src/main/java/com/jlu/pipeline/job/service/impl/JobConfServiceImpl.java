@@ -19,7 +19,7 @@ import com.jlu.plugin.AbstractPlugin;
 import com.jlu.plugin.service.IPluginInfoService;
 
 /**
- * Created by langshiquan on 18/1/14.
+ * Created by yezhaofeng on 2019/1/14.
  */
 @Service
 public class JobConfServiceImpl implements IJobConfService {
